@@ -1012,80 +1012,77 @@ Créer mon compte
 
 
             </div>
-          <script>
+         ```html
+<script>
 
 /*==========================================
         BMJ SERVICE
         INSCRIPTION UTILISATEUR
         AVEC PHOTO PROFIL
+        + COMPTES ADMIN PREMIUM
 ==========================================*/
 
 
 document.getElementById("btnInscription")
 .addEventListener("click", function(e){
 
-
     e.preventDefault();
 
 
+    //==========================================
+    // RECUPERATION DES INFORMATIONS
+    //==========================================
 
-    //==================================
-    // RECUPERATION INFORMATIONS
-    //==================================
+    let nom =
+        document.getElementById("nom").value.trim();
+
+    let sexe =
+        document.getElementById("sexe").value;
+
+    let telephone =
+        document.getElementById("telephone").value.trim();
+
+    let email =
+        document.getElementById("email").value.trim().toLowerCase();
+
+    let pays =
+        document.getElementById("pays").value.trim();
+
+    let ville =
+        document.getElementById("ville").value.trim();
+
+    let domaine =
+        document.getElementById("domaine").value;
+
+    let niveau =
+        document.getElementById("niveau").value;
+
+    let password =
+        document.getElementById("password").value;
+
+    let confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+    let fichierPhoto =
+        document.getElementById("photo").files[0];
 
 
-    let nom = document.getElementById("nom").value.trim();
-
-    let sexe = document.getElementById("sexe").value;
-
-    let telephone = document.getElementById("telephone").value.trim();
-
-    let email = document.getElementById("email").value.trim();
-
-    let pays = document.getElementById("pays").value.trim();
-
-    let ville = document.getElementById("ville").value.trim();
-
-    let domaine = document.getElementById("domaine").value;
-
-    let niveau = document.getElementById("niveau").value;
-
-    let password = document.getElementById("password").value;
-
-    let confirmPassword = document.getElementById("confirmPassword").value;
-
-
-    let fichierPhoto = document.getElementById("photo").files[0];
-
-
-
-
-
-    //==================================
-    // VERIFICATION
-    //==================================
-
+    //==========================================
+    // VERIFICATION DES CHAMPS
+    //==========================================
 
     if(
 
         nom === "" ||
-
         sexe === "" ||
-
         telephone === "" ||
-
         email === "" ||
-
         pays === "" ||
-
         ville === "" ||
-
         domaine === "" ||
-
         niveau === "" ||
-
-        password === ""
-
+        password === "" ||
+        confirmPassword === ""
 
     ){
 
@@ -1098,10 +1095,11 @@ document.getElementById("btnInscription")
     }
 
 
-
+    //==========================================
+    // VERIFICATION MOT DE PASSE
+    //==========================================
 
     if(password !== confirmPassword){
-
 
         alert(
             "Les mots de passe ne correspondent pas."
@@ -1112,157 +1110,208 @@ document.getElementById("btnInscription")
     }
 
 
-
-
-
-
-
-    //==================================
-    // UTILISATEURS EXISTANTS
-    //==================================
-
+    //==========================================
+    // VERIFICATION EMAIL
+    //==========================================
 
     let utilisateurs = JSON.parse(
 
-        localStorage.getItem("bmjUtilisateurs")
+        localStorage.getItem(
+            "bmjUtilisateurs"
+        )
 
     ) || [];
 
 
-
-
-
-
-
-    //==================================
-    // VERIFICATION EMAIL
-    //==================================
-
-
     let existe = utilisateurs.find(
 
-        user => user.email === email
+        user =>
+            user.email.toLowerCase() === email
 
     );
 
 
-
     if(existe){
-
 
         alert(
             "Cette adresse email existe déjà."
         );
 
-
         return;
-
 
     }
 
 
+    //==========================================
+    // EMAILS ADMINISTRATEURS BMJ
+    //==========================================
+
+    const emailsAdministrateurs = [
+
+        "direction@bmjservice.com",
+
+        "administration@bmjservice.com",
+
+        "contact@bmjservice.com",
+
+        "formation@bmjservice.com"
+
+    ];
 
 
+    //==========================================
+    // VERIFICATION COMPTE ADMIN
+    //==========================================
+
+    let estAdministrateur =
+
+        emailsAdministrateurs.includes(email);
 
 
+    //==========================================
+    // PREMIUM AUTOMATIQUE
+    //==========================================
+
+    let premiumAutomatique =
+
+        estAdministrateur;
 
 
-    //==================================
+    //==========================================
+    // STATUT DU COMPTE
+    //==========================================
+
+    let statutCompte =
+
+        estAdministrateur
+
+        ? "Administrateur"
+
+        : "Actif";
+
+
+    //==========================================
     // ID BMJ
-    //==================================
-
+    //==========================================
 
     let id_bmj =
 
-    "BMJ" + Date.now();
+        "BMJ" + Date.now();
 
 
-
-
-
-
-
-
-
-    //==================================
+    //==========================================
     // CREATION DU COMPTE
-    //==================================
-
+    //==========================================
 
     function creerCompte(photoFinale){
 
 
-
         let utilisateur = {
 
+            //==============================
+            // IDENTITE
+            //==============================
 
-            id_bmj:id_bmj,
+            id_bmj: id_bmj,
 
+            nom: nom,
 
-            nom:nom,
+            sexe: sexe,
 
+            telephone: telephone,
 
-            sexe:sexe,
+            email: email,
 
+            pays: pays,
 
-            telephone:telephone,
-
-
-            email:email,
-
-
-            pays:pays,
-
-
-            ville:ville,
+            ville: ville,
 
 
-            domaine:domaine,
+            //==============================
+            // FORMATION
+            //==============================
+
+            domaine: domaine,
+
+            niveau: niveau,
 
 
-            niveau:niveau,
+            //==============================
+            // SECURITE
+            //==============================
+
+            password: password,
 
 
-            password:password,
+            //==============================
+            // PHOTO
+            //==============================
+
+            photo: photoFinale,
 
 
+            //==============================
+            // STATUT
+            //==============================
 
-            // PHOTO UTILISATEUR
-
-            photo:photoFinale,
-
-
-
-            statut:"Actif",
+            statut: statutCompte,
 
 
+            //==============================
+            // ROLE
+            //==============================
 
-            progression:0,
+            role:
+
+                estAdministrateur
+
+                ? "admin"
+
+                : "apprenant",
 
 
+            //==============================
+            // PREMIUM
+            //==============================
 
-            premium:false,
+            premium: premiumAutomatique,
 
 
+            //==============================
+            // PROGRESSION
+            //==============================
 
-            certificats:[]
+            progression: 0,
 
 
+            //==============================
+            // CERTIFICATS
+            //==============================
+
+            certificats: [],
+
+
+            //==============================
+            // CHAPITRES VALIDES
+            //==============================
+
+            chapitresValides: [],
+
+
+            //==============================
+            // COURS SUIVIS
+            //==============================
+
+            coursSuivis: []
 
         };
 
 
-
-
-
-
+        //==================================
+        // AJOUT UTILISATEUR
+        //==================================
 
         utilisateurs.push(utilisateur);
-
-
-
-
-
 
 
         localStorage.setItem(
@@ -1274,13 +1323,9 @@ document.getElementById("btnInscription")
         );
 
 
-
-
-
-
-
+        //==================================
         // CONNEXION AUTOMATIQUE
-
+        //==================================
 
         localStorage.setItem(
 
@@ -1291,105 +1336,89 @@ document.getElementById("btnInscription")
         );
 
 
+        //==================================
+        // MESSAGE ADMIN
+        //==================================
+
+        if(estAdministrateur){
+
+            alert(
+
+                "👑 Compte administrateur BMJ SERVICE créé !\n\n" +
+
+                "Identifiant BMJ : " +
+
+                id_bmj +
+
+                "\n\n" +
+
+                "Statut : Administrateur\n" +
+
+                "Premium : Activé automatiquement."
+
+            );
+
+        }
+
+        else{
+
+            alert(
+
+                "✅ Compte créé avec succès !\n\n" +
+
+                "Votre identifiant BMJ est : " +
+
+                id_bmj
+
+            );
+
+        }
 
 
-
-
-
-
-        alert(
-
-            "Compte créé avec succès !\n\nVotre identifiant BMJ est : "
-
-            + id_bmj
-
-        );
-
-
-
-
-
-
+        //==================================
+        // REDIRECTION
+        //==================================
 
         window.location.href =
-
-        "dashboard.html";
-
-
+            "dashboard.html";
 
     }
 
 
-
-
-
-
-
-
-
-    //==================================
-    // ENREGISTREMENT PHOTO
-    //==================================
-
-
+    //==========================================
+    // GESTION DE LA PHOTO
+    //==========================================
 
     if(fichierPhoto){
 
-
-
-        let lecteur = new FileReader();
-
-
+        let lecteur =
+            new FileReader();
 
 
         lecteur.onload = function(e){
 
-
-
             creerCompte(
-
                 e.target.result
-
             );
-
-
 
         };
 
 
-
-
-
         lecteur.readAsDataURL(
-
             fichierPhoto
-
         );
-
-
 
     }
 
     else{
 
-
-
         creerCompte(
-
             "images/user.png"
-
         );
-
 
     }
 
-
-
-
-
 });
-
-
 
 </script>
 </body>
