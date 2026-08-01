@@ -1774,74 +1774,248 @@
 
 
     </footer>
-    <script>
+   <script>
 
-    //==================================================
-    // CHAPITRE 3 : IDENTITÉ DE MARQUE
-    // QUIZ FINAL
-    //==================================================
-
-    let quizReussi = false;
-
-
+/*==================================================
+        BMJ SERVICE
+        CHAPITRE 3
+        IDENTITÉ DE MARQUE
+        QUIZ FINAL
+==================================================*/
 
 
+let quizReussi = false;
 
-    //====================================
-    // CHARGEMENT DE LA PAGE
-    //====================================
 
-    document.addEventListener("DOMContentLoaded", function () {
 
-        let utilisateur = JSON.parse(
+//==================================================
+// CHARGEMENT PAGE
+//==================================================
 
-            localStorage.getItem("bmj_current_user")
+document.addEventListener("DOMContentLoaded", function(){
+
+
+
+    let utilisateur = JSON.parse(
+
+        localStorage.getItem("bmj_current_user")
+
+    );
+
+
+
+    // Vérification connexion
+
+    if(!utilisateur){
+
+        window.location.href="connexion.html";
+
+        return;
+
+    }
+
+
+
+    //==============================
+    // PROFIL HEADER
+    //==============================
+
+
+    let nom = document.getElementById("nomUtilisateur");
+
+
+    if(nom){
+
+        nom.innerHTML = utilisateur.nom;
+
+    }
+
+
+
+    let photo = document.getElementById("photoUtilisateur");
+
+
+    if(photo){
+
+        photo.src = utilisateur.photo || "images/user.png";
+
+    }
+
+
+
+    let domaine = document.getElementById("domaineUtilisateur");
+
+
+    if(domaine){
+
+        domaine.innerHTML = utilisateur.domaine || "Marketing Digital";
+
+    }
+
+
+
+
+
+    //==============================
+    // VERIFICATION QUIZ
+    //==============================
+
+
+    if(
+
+        localStorage.getItem(
+            "identite_marque_quiz"
+        ) === "reussi"
+
+    ){
+
+        quizReussi = true;
+
+    }
+
+
+
+});
+
+
+
+
+
+
+
+//==================================================
+// ALLER AU QUIZ
+//==================================================
+
+function commencerQuiz(){
+
+
+    let quiz = document.getElementById("quiz");
+
+
+    if(quiz){
+
+        quiz.scrollIntoView({
+
+            behavior:"smooth"
+
+        });
+
+    }
+
+}
+
+
+
+
+
+
+
+//==================================================
+// CORRECTION QUIZ
+//==================================================
+
+function corrigerQuiz(){
+
+
+
+    let score = 0;
+
+
+
+    let bonnesReponses = {
+
+
+        q1:"b",
+
+        q2:"a",
+
+        q3:"a",
+
+        q4:"a",
+
+        q5:"a"
+
+
+    };
+
+
+
+
+
+    for(let question in bonnesReponses){
+
+
+
+        let reponse = document.querySelector(
+
+            'input[name="'+question+'"]:checked'
 
         );
 
 
 
-        //--------------------------------
-        // AFFICHAGE DU PROFIL
-        //--------------------------------
+        if(
 
-        if (utilisateur) {
+            reponse &&
 
-            document.getElementById("nomUtilisateur").innerHTML =
+            reponse.value === bonnesReponses[question]
 
-                utilisateur.nom || "Apprenant";
+        ){
 
-            if (document.getElementById("domaineUtilisateur")) {
-
-                document.getElementById("domaineUtilisateur").innerHTML =
-
-                    utilisateur.domaine || "Marketing Digital";
-
-            }
-
-            if (
-
-                utilisateur.photo &&
-
-                utilisateur.photo !== ""
-
-            ) {
-
-                document.getElementById("photoUtilisateur").src =
-
-                    utilisateur.photo;
-
-            }
+            score++;
 
         }
 
 
 
-        //--------------------------------
-        // VÉRIFIER SI LE QUIZ EST DÉJÀ RÉUSSI
-        //--------------------------------
+    }
 
-        let validation = localStorage.getItem(
+
+
+
+
+
+    let resultat = document.getElementById(
+
+        "resultatQuiz"
+
+    );
+
+
+
+    if(!resultat){
+
+        return;
+
+    }
+
+
+
+
+
+    let pourcentage = Math.round(
+
+        (score / 5) * 100
+
+    );
+
+
+
+
+
+
+    // ECHEC
+
+    if(score < 3){
+
+
+
+        quizReussi=false;
+
+
+
+        localStorage.removeItem(
 
             "identite_marque_quiz"
 
@@ -1849,168 +2023,25 @@
 
 
 
-        if (validation === "reussi") {
-
-            quizReussi = true;
-
-        }
-
-    });
-
-
-
-
-
-    //====================================
-    // COMMENCER LE QUIZ
-    //====================================
-
-    function commencerQuiz() {
-
-        document.getElementById("quiz").scrollIntoView({
-
-            behavior: "smooth"
-
-        });
-
-    }
-
-
-
-
-
-    //====================================
-    // CORRECTION DU QUIZ
-    //====================================
-
-    function corrigerQuiz() {
-
-        let score = 0;
-
-        let bonnesReponses = {
-
-            q1: "b",
-
-            q2: "a",
-
-            q3: "a",
-
-            q4: "a",
-
-            q5: "a"
-
-        };
-
-
-
-        for (let question in bonnesReponses) {
-
-            let reponse = document.querySelector(
-
-                'input[name="' + question + '"]:checked'
-
-            );
-
-            if (
-
-                reponse &&
-
-                reponse.value === bonnesReponses[question]
-
-            ) {
-
-                score++;
-
-            }
-
-        }
-
-
-
-        let resultat = document.getElementById(
-
-            "resultatQuiz"
-
-        );
-
-
-
-        let pourcentage = Math.round(
-
-            (score / 5) * 100
-
-        );
-
-
-
-        //--------------------------------
-        // ÉCHEC
-        //--------------------------------
-
-        if (score < 3) {
-
-            quizReussi = false;
-
-            localStorage.removeItem(
-
-                "identite_marque_quiz"
-
-            );
-
-            resultat.innerHTML =
-
-                "❌ Échec de l'évaluation.<br><br>" +
-
-                "Votre score : " + score + "/5<br><br>" +
-
-                "Vous devez obtenir au moins 3/5 pour réussir.";
-
-            resultat.style.background = "#ffe5e5";
-
-            resultat.style.color = "#b30000";
-
-            return;
-
-        }
-
-
-
-        //--------------------------------
-        // RÉUSSITE
-        //--------------------------------
-
-        quizReussi = true;
-
-        localStorage.setItem(
-
-            "identite_marque_quiz",
-
-            "reussi"
-
-        );
-
         resultat.innerHTML =
 
-            "🎉 Félicitations !<br><br>" +
+        `❌ Échec de l'évaluation <br><br>
 
-            "Votre score : " + score + "/5<br>" +
+        Score : ${score}/5 <br><br>
 
-            "Résultat : " + pourcentage + "%<br><br>" +
+        Vous devez obtenir au minimum 3/5.`;
 
-            "Vous pouvez maintenant valider ce chapitre.";
 
-        resultat.style.background = "#e6fff0";
 
-        resultat.style.color = "#087f23";
+        resultat.style.background="#ffe5e5";
 
-    }
-        //====================================
-    // RETOUR AU CHAPITRE
-    //====================================
+        resultat.style.color="#b30000";
 
-    function retourCours() {
 
-        window.location.href = "identitemarque.html";
+
+        return;
+
+
 
     }
 
@@ -2018,165 +2049,325 @@
 
 
 
-    //====================================
-    // TERMINER LE CHAPITRE
-    //====================================
 
-    function terminerChapitre() {
 
-        //--------------------------------
-        // VÉRIFIER LE QUIZ
-        //--------------------------------
+    // REUSSITE
 
-        if (localStorage.getItem("identite_marque_quiz") !== "reussi") {
 
-            alert(
+    quizReussi=true;
 
-                "⚠️ Vous devez réussir l'évaluation finale avant de valider ce chapitre."
 
-            );
 
-            return;
+    localStorage.setItem(
 
-        }
+        "identite_marque_quiz",
 
-        //--------------------------------
-        // VÉRIFIER LES 5 LEÇONS
-        //--------------------------------
+        "reussi"
 
-        let progression = JSON.parse(
+    );
 
-            localStorage.getItem("identite_progression")
 
-        ) || [];
 
-        progression = [...new Set(progression)];
 
-        if (progression.length < 5) {
 
-            alert(
+    resultat.innerHTML =
 
-                "⚠️ Vous devez terminer les 5 leçons avant de valider ce chapitre."
 
-            );
+    `🎉 Félicitations ! <br><br>
 
-            return;
+    Score : ${score}/5 <br>
 
-        }
+    Résultat : ${pourcentage}% <br><br>
 
-        //--------------------------------
-        // UTILISATEUR
-        //--------------------------------
+    Vous pouvez maintenant valider le chapitre.`;
 
-        let utilisateur = JSON.parse(
 
-            localStorage.getItem("bmj_current_user")
 
-        );
 
-        if (!utilisateur) {
 
-            alert("Utilisateur introuvable.");
+    resultat.style.background="#e6fff0";
 
-            return;
+    resultat.style.color="#087f23";
 
-        }
 
-        //--------------------------------
-        // CHAPITRE VALIDÉ
-        //--------------------------------
 
-        if (!utilisateur.chapitresValides) {
+}
 
-            utilisateur.chapitresValides = [];
 
-        }
 
-        if (!utilisateur.chapitresValides.includes("Chapitre 3")) {
 
-            utilisateur.chapitresValides.push("Chapitre 3");
 
-        }
 
-        //--------------------------------
-        // COURS SUIVIS
-        //--------------------------------
 
-        if (!utilisateur.coursSuivis) {
 
-            utilisateur.coursSuivis = [];
 
-        }
+//==================================================
+// RETOUR CHAPITRE
+//==================================================
 
-        if (!utilisateur.coursSuivis.includes("Évaluation finale - Identité de marque")) {
+function retourCours(){
 
-            utilisateur.coursSuivis.push(
 
-                "Évaluation finale - Identité de marque"
+    window.location.href="identitemarque.html";
 
-            );
 
-        }
+}
 
-        //--------------------------------
-        // SAUVEGARDE
-        //--------------------------------
 
-        localStorage.setItem(
 
-            "bmj_current_user",
 
-            JSON.stringify(utilisateur)
 
-        );
 
-        //--------------------------------
-        // MISE À JOUR DE LA LISTE
-        //--------------------------------
 
-        let utilisateurs = JSON.parse(
 
-            localStorage.getItem("bmj_users")
+//==================================================
+// VALIDATION CHAPITRE
+//==================================================
 
-        ) || [];
+function terminerChapitre(){
 
-        let index = utilisateurs.findIndex(function (u) {
 
-            return u.id == utilisateur.id;
 
-        });
 
-        if (index != -1) {
 
-            utilisateurs[index] = utilisateur;
+    // Vérification quiz
 
-            localStorage.setItem(
 
-                "bmj_users",
+    if(
 
-                JSON.stringify(utilisateurs)
+        localStorage.getItem(
 
-            );
+            "identite_marque_quiz"
 
-        }
+        ) !== "reussi"
 
-        //--------------------------------
-        // MESSAGE
-        //--------------------------------
+    ){
+
 
         alert(
 
-            "🏆 Félicitations !\n\nVous avez validé le Chapitre 3 : Identité de marque."
+            "⚠️ Vous devez réussir l'évaluation finale avant de valider ce chapitre."
 
         );
--
-        //--------------------------------
-        // RETOUR AU CHAPITRE
-        //--------------------------------
-    window.location.href = "marketing.html";
+
+
+        return;
+
 
     }
-        
+
+
+
+
+
+
+
+    // Récupération utilisateur
+
+
+    let utilisateur = JSON.parse(
+
+        localStorage.getItem(
+
+            "bmj_current_user"
+
+        )
+
+    );
+
+
+
+
+
+    if(!utilisateur){
+
+
+        alert(
+
+            "Utilisateur introuvable."
+
+        );
+
+
+        return;
+
+
+    }
+
+
+
+
+
+
+
+    // Création tableau chapitres
+
+
+    if(!utilisateur.chapitresValides){
+
+
+        utilisateur.chapitresValides=[];
+
+
+    }
+
+
+
+
+
+
+
+    if(
+
+        !utilisateur.chapitresValides.includes(
+
+            "Chapitre 3 - Identité de marque"
+
+        )
+
+    ){
+
+
+        utilisateur.chapitresValides.push(
+
+            "Chapitre 3 - Identité de marque"
+
+        );
+
+
+    }
+
+
+
+
+
+
+
+    // Sauvegarde progression
+
+
+    localStorage.setItem(
+
+        "bmj_current_user",
+
+        JSON.stringify(utilisateur)
+
+    );
+
+
+
+
+
+
+
+    // Mise à jour liste utilisateurs
+
+
+    let utilisateurs = JSON.parse(
+
+        localStorage.getItem(
+
+            "bmjUtilisateurs"
+
+        )
+
+    ) || [];
+
+
+
+
+
+
+    let index = utilisateurs.findIndex(
+
+        function(user){
+
+
+            return user.id_bmj === utilisateur.id_bmj;
+
+
+        }
+
+    );
+
+
+
+
+
+
+
+    if(index !== -1){
+
+
+
+        utilisateurs[index]=utilisateur;
+
+
+
+        localStorage.setItem(
+
+            "bmjUtilisateurs",
+
+            JSON.stringify(utilisateurs)
+
+        );
+
+
+
+    }
+
+
+
+
+
+
+
+
+    alert(
+
+        "🏆 Félicitations !\n\nChapitre 3 : Identité de marque validé."
+
+    );
+
+
+
+
+
+    window.location.href="marketing.html";
+
+
+
+}
+
+
+
+
+
+
+
+//==================================================
+// DECONNEXION
+//==================================================
+
+
+function deconnexion(){
+
+
+    localStorage.removeItem(
+
+        "bmj_current_user"
+
+    );
+
+
+    window.location.href="connexion.html";
+
+
+}
+
+
+
+
 
 </script>
 
