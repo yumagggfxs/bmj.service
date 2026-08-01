@@ -1,0 +1,1127 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Certificat BMJ SERVICE</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <!-- POLICE DU NOM -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- HTML2PDF -->
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+    </script>
+    ```html
+<!--========================================
+        BIBLIOTHÈQUE HTML2PDF
+=========================================-->
+
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+
+        body {
+
+            font-family: 'Segoe UI', sans-serif;
+
+            background-color: #f5f7fa;
+
+            margin: 0;
+
+            padding: 0;
+
+        }
+
+
+        /*========================================
+                CERTIFICAT
+        ========================================*/
+
+        .certificate {
+
+            width: 1000px;
+
+            margin: 40px auto;
+
+            padding: 50px;
+
+            background: #fff;
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 10px 30px rgba(0,0,0,0.15);
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+        /*========================================
+                BORDURE
+        ========================================*/
+
+        .certificate::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            right: 0;
+
+            bottom: 0;
+
+            border: 8px solid transparent;
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #004aad,
+                    #ff9800
+                );
+
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+
+            -webkit-mask-composite:
+                destination-out;
+
+            mask-composite:
+                exclude;
+
+            padding: 8px;
+
+            pointer-events: none;
+
+        }
+
+
+        /*========================================
+                HEADER
+        ========================================*/
+
+        .header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+        }
+
+
+        .header img {
+
+            height: 70px;
+
+        }
+
+
+        /*========================================
+                TITRE
+        ========================================*/
+
+        .title {
+
+            text-align: center;
+
+            font-size: 34px;
+
+            font-weight: bold;
+
+            color: #004aad;
+
+            margin-top: 20px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 2px;
+
+        }
+
+
+        .subtitle {
+
+            text-align: center;
+
+            font-size: 20px;
+
+            color: #555;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        /*========================================
+                NOM APPRENANT
+        ========================================*/
+
+        .recipient {
+
+            text-align: center;
+
+            font-size: 36px;
+
+            font-family: 'Great Vibes', cursive;
+
+            color: #004aad;
+
+            margin: 30px 0;
+
+        }
+
+
+        /*========================================
+                TEXTE
+        ========================================*/
+
+        .text {
+
+            text-align: center;
+
+            font-size: 16px;
+
+            color: #333;
+
+            margin: 20px 0 40px;
+
+            line-height: 1.6;
+
+        }
+
+
+        /*========================================
+                SIGNATURES
+        ========================================*/
+
+        .signatures {
+
+            display: flex;
+
+            justify-content: space-around;
+
+            align-items: center;
+
+            margin-top: 40px;
+
+        }
+
+
+        .signature-block {
+
+            text-align: center;
+
+        }
+
+
+        .signature-block img {
+
+            height: 50px;
+
+        }
+
+
+        .seal {
+
+            height: 90px;
+
+        }
+
+
+        .name {
+
+            font-weight: bold;
+
+            color: #004aad;
+
+        }
+
+
+        .role {
+
+            font-size: 14px;
+
+            color: #777;
+
+        }
+
+
+        .date {
+
+            font-style: italic;
+
+            font-size: 13px;
+
+            color: #999;
+
+        }
+
+
+        /*========================================
+                BOUTONS
+        ========================================*/
+
+        .actions {
+
+            text-align: center;
+
+            margin: 30px auto;
+
+        }
+
+
+        .actions button {
+
+            border: none;
+
+            padding: 14px 25px;
+
+            margin: 5px;
+
+            border-radius: 30px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .btn-pdf {
+
+            background: #004aad;
+
+            color: white;
+
+        }
+
+
+        .btn-retour {
+
+            background: #eee;
+
+            color: #333;
+
+        }
+
+
+        /*========================================
+                MESSAGE
+        ========================================*/
+
+        #message {
+
+            text-align: center;
+
+            margin: 20px;
+
+            font-weight: bold;
+
+        }
+
+
+        /*========================================
+                MOBILE
+        ========================================*/
+
+        @media(max-width: 1100px){
+
+            .certificate {
+
+                width: calc(100% - 40px);
+
+                box-sizing: border-box;
+
+                padding: 30px;
+
+            }
+
+        }
+
+
+        @media(max-width: 650px){
+
+            .certificate {
+
+                margin: 20px;
+
+                padding: 20px;
+
+            }
+
+
+            .header img {
+
+                height: 45px;
+
+            }
+
+
+            .title {
+
+                font-size: 24px;
+
+            }
+
+
+            .subtitle {
+
+                font-size: 16px;
+
+            }
+
+
+            .recipient {
+
+                font-size: 30px;
+
+            }
+
+
+            .text {
+
+                font-size: 14px;
+
+            }
+
+
+            .signatures {
+
+                flex-direction: column;
+
+                gap: 25px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!--========================================
+        MESSAGE
+=========================================-->
+
+<div id="message"></div>
+
+
+<!--========================================
+        CERTIFICAT
+=========================================-->
+
+<div
+    class="certificate"
+    id="certificat"
+>
+
+
+    <!--====================================
+            HEADER
+    =====================================-->
+
+    <div class="header">
+
+
+        <img
+            src="images/congo.png"
+            alt="Drapeau RDC"
+        >
+
+
+        <img
+            src="images/bmj.jpeg"
+            alt="Logo BMJ SERVICE"
+        >
+
+
+    </div>
+
+
+    <!--====================================
+            TITRE
+    =====================================-->
+
+    <div class="title">
+
+        Certificat d’achèvement
+
+    </div>
+
+
+    <div class="subtitle">
+
+        Ce certificat est fièrement remis à :
+
+    </div>
+
+
+    <!--====================================
+            NOM APPRENANT
+    =====================================-->
+
+    <div
+        class="recipient"
+        id="nom"
+    >
+
+        Apprenant
+
+    </div>
+
+
+    <!--====================================
+            TEXTE
+    =====================================-->
+
+    <div class="text">
+
+        L’éducation, la discipline, l’engagement
+        et la détermination sont les clés de la réussite.
+
+        <br>
+
+        Par ce parcours noble, nous sommes convaincus
+        que la porte des opportunités professionnelles
+        vous est grandement ouverte.
+
+    </div>
+
+
+    <!--====================================
+            SIGNATURES
+    =====================================-->
+
+    <div class="signatures">
+
+
+        <div class="signature-block">
+
+
+            <img
+                src="images/justin.jfif"
+                alt="Signature Justin"
+            >
+
+
+            <div class="name">
+
+                JUSTIN MUSSIWA
+
+            </div>
+
+
+            <div class="role">
+
+                DG Manager
+
+            </div>
+
+
+            <div class="date">
+
+                31 Juillet 2026
+
+            </div>
+
+
+        </div>
+
+
+        <!-- SCEAU -->
+
+        <img
+            src="images/orre.jpg"
+            alt="Sceau doré"
+            class="seal"
+        >
+
+
+        <div class="signature-block">
+
+
+            <img
+                src="images/autre.jfif"
+                alt="Signature Daniel"
+            >
+
+
+            <div class="name">
+
+                DANIEL GALLEGO
+
+            </div>
+
+
+            <div class="role">
+
+                Mentor
+
+            </div>
+
+
+            <div class="date">
+
+                31 Juillet 2026
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!--========================================
+        ACTIONS
+=========================================-->
+
+<div class="actions">
+
+
+    <button
+        class="btn-pdf"
+        onclick="telechargerCertificat()"
+    >
+
+        <i>📄</i>
+
+        Télécharger mon certificat
+
+    </button>
+
+
+    <button
+        class="btn-retour"
+        onclick="retourDashboard()"
+    >
+
+        ← Retour au tableau de bord
+
+    </button>
+
+
+</div>
+
+<script>
+
+/*==================================================
+        BMJ SERVICE
+        CERTIFICAT
+==================================================*/
+
+
+//==================================================
+// CHARGEMENT
+//==================================================
+
+document.addEventListener("DOMContentLoaded", function(){
+
+
+    let utilisateur = JSON.parse(
+
+        localStorage.getItem("bmj_current_user")
+
+    );
+
+
+    if(!utilisateur){
+
+        window.location.href = "connexion.html";
+
+        return;
+
+    }
+
+
+    //==============================================
+    // NOM
+    //==============================================
+
+    let nom = document.getElementById("nom");
+
+
+    if(nom){
+
+        nom.textContent =
+
+            utilisateur.nom ||
+
+            "Apprenant";
+
+    }
+
+
+    //==============================================
+    // DATE DU JOUR
+    //==============================================
+
+    let aujourdHui = new Date();
+
+
+    let options = {
+
+        day: "numeric",
+
+        month: "long",
+
+        year: "numeric"
+
+    };
+
+
+    let date = aujourdHui.toLocaleDateString(
+
+        "fr-FR",
+
+        options
+
+    );
+
+
+    let date1 = document.getElementById(
+
+        "dateCertificat"
+
+    );
+
+
+    let date2 = document.getElementById(
+
+        "dateCertificat2"
+
+    );
+
+
+    if(date1){
+
+        date1.textContent = date;
+
+    }
+
+
+    if(date2){
+
+        date2.textContent = date;
+
+    }
+
+
+});
+
+
+
+
+
+//==================================================
+// TELECHARGEMENT
+//==================================================
+
+async function telechargerCertificat(){
+
+
+    console.log(
+
+        "BMJ SERVICE : début génération"
+
+    );
+
+
+    //==============================================
+    // UTILISATEUR
+    //==============================================
+
+    let utilisateur = JSON.parse(
+
+        localStorage.getItem("bmj_current_user")
+
+    );
+
+
+    if(!utilisateur){
+
+        alert(
+
+            "⚠️ Vous devez être connecté."
+
+        );
+
+        window.location.href =
+
+            "connexion.html";
+
+        return;
+
+    }
+
+
+    //==============================================
+    // PREMIUM
+    //==============================================
+
+    if(utilisateur.premium !== true){
+
+        alert(
+
+            "🔒 Votre compte n'est pas Premium.\n\n" +
+
+            "Veuillez activer votre abonnement Premium."
+
+        );
+
+        window.location.href =
+
+            "paiement_visapay.html";
+
+        return;
+
+    }
+
+
+    //==============================================
+    // HTML2PDF
+    //==============================================
+
+    if(typeof html2pdf === "undefined"){
+
+        alert(
+
+            "❌ Le générateur PDF n'est pas disponible."
+
+        );
+
+        console.error(
+
+            "html2pdf n'est pas chargé."
+
+        );
+
+        return;
+
+    }
+
+
+    //==============================================
+    // CERTIFICAT
+    //==============================================
+
+    let certificat = document.getElementById(
+
+        "certificat"
+
+    );
+
+
+    if(!certificat){
+
+        alert(
+
+            "❌ Certificat introuvable."
+
+        );
+
+        return;
+
+    }
+
+
+    //==============================================
+    // BOUTON
+    //==============================================
+
+    let bouton = document.getElementById(
+
+        "btnTelecharger"
+
+    );
+
+
+    if(bouton){
+
+        bouton.disabled = true;
+
+        bouton.innerHTML =
+
+            "⏳ Génération...";
+
+    }
+
+
+    try{
+
+
+        //==========================================
+        // ATTENDRE LES IMAGES
+        //==========================================
+
+        let images = certificat.querySelectorAll(
+
+            "img"
+
+        );
+
+
+        for(let image of images){
+
+
+            if(!image.complete){
+
+                await new Promise(function(resolve){
+
+                    image.onload = resolve;
+
+                    image.onerror = resolve;
+
+                });
+
+            }
+
+        }
+
+
+        //==========================================
+        // ATTENDRE LE RENDU
+        //==========================================
+
+        await new Promise(function(resolve){
+
+            setTimeout(resolve, 1000);
+
+        });
+
+
+        //==========================================
+        // NOM FICHIER
+        //==========================================
+
+        let nomFichier =
+
+            "Certificat-BMJ-" +
+
+            (
+
+                utilisateur.nom ||
+
+                "Apprenant"
+
+            )
+
+            .replace(/[^a-zA-Z0-9À-ÿ]/g, "-")
+
+            +
+
+            ".pdf";
+
+
+        //==========================================
+        // OPTIONS
+        //==========================================
+
+        let options = {
+
+            filename: nomFichier,
+
+            margin: 0,
+
+            image: {
+
+                type: "jpeg",
+
+                quality: 0.95
+
+            },
+
+            html2canvas: {
+
+                scale: 1.5,
+
+                useCORS: false,
+
+                allowTaint: true,
+
+                logging: true
+
+            },
+
+            jsPDF: {
+
+                unit: "mm",
+
+                format: "a4",
+
+                orientation: "landscape"
+
+            }
+
+        };
+
+
+        console.log(
+
+            "BMJ SERVICE : création PDF..."
+
+        );
+
+
+        //==========================================
+        // CRÉATION
+        //==========================================
+
+        await html2pdf()
+
+            .set(options)
+
+            .from(certificat)
+
+            .save();
+
+
+        console.log(
+
+            "BMJ SERVICE : PDF terminé"
+
+        );
+
+
+        alert(
+
+            "✅ Votre certificat a été téléchargé."
+
+        );
+
+
+    }
+
+    catch(erreur){
+
+
+        console.error(
+
+            "================================"
+
+        );
+
+
+        console.error(
+
+            "ERREUR BMJ CERTIFICAT"
+
+        );
+
+
+        console.error(erreur);
+
+
+        console.error(
+
+            erreur.message
+
+        );
+
+
+        console.error(
+
+            erreur.stack
+
+        );
+
+
+        console.error(
+
+            "================================"
+
+        );
+
+
+        alert(
+
+            "❌ Une erreur est survenue lors du téléchargement."
+
+        );
+
+
+    }
+
+
+    finally{
+
+
+        if(bouton){
+
+            bouton.disabled = false;
+
+            bouton.innerHTML =
+
+                '<i class="fa-solid fa-download"></i> ' +
+
+                'Télécharger mon certificat';
+
+        }
+
+
+    }
+
+}
+
+
+
+
+
+//==================================================
+// RETOUR
+//==================================================
+
+function retourDashboard(){
+
+
+    window.location.href =
+
+        "dashboard.html";
+
+
+}
+
+</script>
+
+</body>
+
+</html>
+
