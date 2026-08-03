@@ -1163,17 +1163,18 @@ header{
     <!--================================
         JAVASCRIPT
     =================================-->
+
 <script>
 
 /*==================================================
         BMJ SERVICE
-        FORMATION ENTREPRENEURIAT
-        PROGRESSION PAR UTILISATEUR
+        VÉRIFICATION FORMATION ENTREPRENEURIAT
+        COURS + PROGRESSION + PREMIUM + CERTIFICAT
 ==================================================*/
 
 
 //==================================================
-// CONFIGURATION DES 4 COURS
+// CONFIGURATION
 //==================================================
 
 const coursEntrepreneuriat = [
@@ -1205,22 +1206,44 @@ const coursEntrepreneuriat = [
 ];
 
 
+const TOTAL_COURS =
+    coursEntrepreneuriat.length;
+
+
 //==================================================
-// RÉCUPÉRER L'UTILISATEUR CONNECTÉ
+// UTILISATEUR CONNECTÉ
 //==================================================
 
 function obtenirUtilisateur() {
 
     try {
 
+        const donnees =
+            localStorage.getItem(
+                "bmj_current_user"
+            );
+
+
+        if (!donnees) {
+
+            return null;
+
+        }
+
+
         return JSON.parse(
-            localStorage.getItem("bmj_current_user")
+            donnees
         );
 
     }
 
     catch (erreur) {
 
+        console.error(
+            "Erreur utilisateur :",
+            erreur
+        );
+
         return null;
 
     }
@@ -1229,34 +1252,91 @@ function obtenirUtilisateur() {
 
 
 //==================================================
-// CLÉ DE PROGRESSION DE L'UTILISATEUR
+// IDENTIFIANT UTILISATEUR
 //==================================================
 
-function obtenirCleProgression() {
+function obtenirIdentifiantUtilisateur(
+    utilisateur
+) {
 
-    const utilisateur = obtenirUtilisateur();
-
-    if (!utilisateur || !utilisateur.id_bmj) {
+    if (!utilisateur) {
 
         return null;
 
     }
 
+
+    return String(
+
+        utilisateur.id_bmj ||
+
+        utilisateur.email ||
+
+        utilisateur.telephone ||
+
+        utilisateur.nom ||
+
+        ""
+
+    ).trim();
+
+}
+
+
+//==================================================
+// CLÉ DE PROGRESSION
+//==================================================
+
+function obtenirCleProgression(
+    utilisateur = obtenirUtilisateur()
+) {
+
+    const identifiant =
+        obtenirIdentifiantUtilisateur(
+            utilisateur
+        );
+
+
+    if (!identifiant) {
+
+        return null;
+
+    }
+
+
     return (
+
         "entrepreneuriat_progression_" +
-        utilisateur.id_bmj
+
+        identifiant
+
     );
 
 }
 
 
 //==================================================
-// RÉCUPÉRER LA PROGRESSION
+// RÉCUPÉRER PROGRESSION
 //==================================================
 
 function recupererProgression() {
 
-    const cle = obtenirCleProgression();
+    const utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
+
+        return [];
+
+    }
+
+
+    const cle =
+        obtenirCleProgression(
+            utilisateur
+        );
+
 
     if (!cle) {
 
@@ -1265,82 +1345,250 @@ function recupererProgression() {
     }
 
 
+    let progression = [];
+
+
     try {
 
-        let progression = JSON.parse(
-            localStorage.getItem(cle)
+        progression = JSON.parse(
+
+            localStorage.getItem(
+                cle
+            )
+
         ) || [];
 
+    }
 
-        if (!Array.isArray(progression)) {
+    catch (erreur) {
 
-            return [];
+        progression = [];
 
-        }
-
-
-        // Supprimer doublons
-
-        progression = [
-            ...new Set(progression)
-        ];
+    }
 
 
-        // Garder uniquement les 4 vrais cours
+    if (!Array.isArray(progression)) {
 
-        progression = progression.filter(
+        progression = [];
+
+    }
+
+
+    /*
+        Supprimer les doublons
+    */
+
+    progression = [
+
+        ...new Set(
+            progression
+        )
+
+    ];
+
+
+    /*
+        Garder uniquement les
+        4 cours de cette formation
+    */
+
+    progression =
+        progression.filter(
+
             function(id) {
 
                 return coursEntrepreneuriat.some(
+
                     function(cours) {
 
                         return cours.id === id;
 
                     }
+
                 );
 
             }
+
         );
 
 
-        return progression;
-
-    }
-
-    catch(erreur) {
-
-        console.error(
-            "Erreur récupération progression :",
-            erreur
-        );
-
-        return [];
-
-    }
+    return progression;
 
 }
 
 
 //==================================================
-// SAUVEGARDER LA PROGRESSION
+// CALCUL PROGRESSION
 //==================================================
 
-function sauvegarderProgression(progression) {
+function calculerProgression() {
 
-    const cle = obtenirCleProgression();
+    const progression =
+        recupererProgression();
 
-    if (!cle) {
+
+    let termines = 0;
+
+
+    coursEntrepreneuriat.forEach(
+
+        function(cours) {
+
+            if (
+                progression.includes(
+                    cours.id
+                )
+            ) {
+
+                termines++;
+
+            }
+
+        }
+
+    );
+
+
+    const pourcentage =
+        Math.round(
+
+            (
+                termines /
+                TOTAL_COURS
+            ) * 100
+
+        );
+
+
+    return {
+
+        termines:
+            termines,
+
+        total:
+            TOTAL_COURS,
+
+        pourcentage:
+            pourcentage
+
+    };
+
+}
+
+
+//==================================================
+// SAUVEGARDER PROGRESSION DANS UTILISATEUR
+//==================================================
+
+function synchroniserUtilisateur() {
+
+    const utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
 
         return;
 
     }
 
 
+    const resultat =
+        calculerProgression();
+
+
+    utilisateur.entrepreneuriatProgression =
+        resultat.pourcentage;
+
+
+    /*
+        Sauvegarde session
+    */
+
     localStorage.setItem(
 
-        cle,
+        "bmj_current_user",
 
-        JSON.stringify(progression)
+        JSON.stringify(
+            utilisateur
+        )
+
+    );
+
+
+    /*
+        Sauvegarde dans la liste
+        générale des utilisateurs
+    */
+
+    let utilisateurs = [];
+
+
+    try {
+
+        utilisateurs = JSON.parse(
+
+            localStorage.getItem(
+                "bmjUtilisateurs"
+            )
+
+        ) || [];
+
+    }
+
+    catch(erreur) {
+
+        utilisateurs = [];
+
+    }
+
+
+    if (!Array.isArray(utilisateurs)) {
+
+        utilisateurs = [];
+
+    }
+
+
+    const identifiant =
+        obtenirIdentifiantUtilisateur(
+            utilisateur
+        );
+
+
+    const index =
+        utilisateurs.findIndex(
+
+            function(user) {
+
+                return (
+
+                    obtenirIdentifiantUtilisateur(
+                        user
+                    ) === identifiant
+
+                );
+
+            }
+
+        );
+
+
+    if (index !== -1) {
+
+        utilisateurs[index] =
+            utilisateur;
+
+    }
+
+
+    localStorage.setItem(
+
+        "bmjUtilisateurs",
+
+        JSON.stringify(
+            utilisateurs
+        )
 
     );
 
@@ -1348,7 +1596,7 @@ function sauvegarderProgression(progression) {
 
 
 //==================================================
-// AFFICHER L'UTILISATEUR
+// AFFICHER UTILISATEUR
 //==================================================
 
 function afficherUtilisateur() {
@@ -1370,18 +1618,6 @@ function afficherUtilisateur() {
         );
 
 
-    const photo =
-        document.getElementById(
-            "photoUtilisateur"
-        );
-
-
-    const domaine =
-        document.getElementById(
-            "domaineUtilisateur"
-        );
-
-
     if (nom) {
 
         nom.textContent =
@@ -1391,6 +1627,12 @@ function afficherUtilisateur() {
     }
 
 
+    const photo =
+        document.getElementById(
+            "photoUtilisateur"
+        );
+
+
     if (photo) {
 
         photo.src =
@@ -1398,6 +1640,12 @@ function afficherUtilisateur() {
             "images/user.png";
 
     }
+
+
+    const domaine =
+        document.getElementById(
+            "domaineUtilisateur"
+        );
 
 
     if (domaine) {
@@ -1412,94 +1660,20 @@ function afficherUtilisateur() {
 
 
 //==================================================
-// CALCULER LA PROGRESSION
-//==================================================
-
-function calculerPourcentage() {
-
-    const progression =
-        recupererProgression();
-
-
-    const total =
-        coursEntrepreneuriat.length;
-
-
-    if (total === 0) {
-
-        return 0;
-
-    }
-
-
-    return Math.round(
-        (progression.length / total) * 100
-    );
-
-}
-
-
-//==================================================
-// AFFICHER LA PROGRESSION
+// AFFICHER PROGRESSION
 //==================================================
 
 function afficherProgression() {
 
-    const progression =
-        recupererProgression();
+    const resultat =
+        calculerProgression();
 
-
-    const total =
-        coursEntrepreneuriat.length;
-
-
-    const termines =
-        progression.length;
-
-
-    const pourcentage =
-        calculerPourcentage();
-
-
-    //==============================================
-    // BARRE
-    //==============================================
 
     const progressBar =
         document.getElementById(
-            "progressBar"
+            "verificationProgressBar"
         );
 
-
-    if (progressBar) {
-
-        progressBar.style.width =
-            pourcentage + "%";
-
-    }
-
-
-    //==============================================
-    // POURCENTAGE
-    //==============================================
-
-    const progressValue =
-        document.getElementById(
-            "progressValue"
-        );
-
-
-    if (progressValue) {
-
-        progressValue.textContent =
-            pourcentage;
-
-    }
-
-
-    //==============================================
-    // TEXTE
-    //==============================================
 
     const progressText =
         document.getElementById(
@@ -1507,40 +1681,81 @@ function afficherProgression() {
         );
 
 
+    if (progressBar) {
+
+        progressBar.style.width =
+            resultat.pourcentage + "%";
+
+    }
+
+
     if (progressText) {
 
         progressText.textContent =
-            termines +
+
+            "Vérification : " +
+
+            resultat.pourcentage +
+
+            "%";
+
+    }
+
+
+    /*
+        Si ta page utilise aussi
+        les anciens éléments
+    */
+
+    const ancienneBarre =
+        document.getElementById(
+            "progressBar"
+        );
+
+
+    if (ancienneBarre) {
+
+        ancienneBarre.style.width =
+            resultat.pourcentage + "%";
+
+    }
+
+
+    const ancienneValeur =
+        document.getElementById(
+            "progressValue"
+        );
+
+
+    if (ancienneValeur) {
+
+        ancienneValeur.textContent =
+            resultat.pourcentage;
+
+    }
+
+
+    const ancienTexte =
+        document.getElementById(
+            "progressText"
+        );
+
+
+    if (ancienTexte) {
+
+        ancienTexte.textContent =
+
+            resultat.termines +
+
             "/" +
-            total +
-            " cours terminés";
 
-    }
+            resultat.total +
 
+            " cours terminés — " +
 
-    //==============================================
-    // SAUVEGARDE DANS L'UTILISATEUR
-    //==============================================
+            resultat.pourcentage +
 
-    const utilisateur =
-        obtenirUtilisateur();
-
-
-    if (utilisateur) {
-
-        utilisateur.entrepreneuriatProgression =
-            pourcentage;
-
-
-        localStorage.setItem(
-
-            "bmj_current_user",
-
-            JSON.stringify(
-                utilisateur
-            )
-
-        );
+            "%";
 
     }
 
@@ -1548,392 +1763,799 @@ function afficherProgression() {
 
 
 //==================================================
-// MARQUER UN COURS TERMINÉ
+// AFFICHER LES DÉTAILS DE VÉRIFICATION
 //==================================================
 
-function marquerCoursTermine(idCours) {
+function afficherDetailsVerification() {
 
-    if (!idCours) {
+    const details =
+        document.getElementById(
+            "verificationDetails"
+        );
 
-        console.error(
-            "ID du cours manquant."
+
+    if (!details) {
+
+        console.warn(
+            "verificationDetails introuvable."
         );
 
         return;
 
     }
 
-
-    const utilisateur =
-        obtenirUtilisateur();
-
-
-    if (!utilisateur) {
-
-        alert(
-            "⚠️ Vous devez être connecté."
-        );
-
-        window.location.href =
-            "connexion.html";
-
-        return;
-
-    }
-
-
-    //==============================================
-    // VÉRIFIER LE COURS
-    //==============================================
-
-    const existe =
-        coursEntrepreneuriat.some(
-            function(cours) {
-
-                return cours.id === idCours;
-
-            }
-        );
-
-
-    if (!existe) {
-
-        console.error(
-            "Cours inconnu :",
-            idCours
-        );
-
-        return;
-
-    }
-
-
-    //==============================================
-    // PROGRESSION DE CET UTILISATEUR
-    //==============================================
-
-    let progression =
-        recupererProgression();
-
-
-    if (!progression.includes(idCours)) {
-
-        progression.push(idCours);
-
-    }
-
-
-    //==============================================
-    // SAUVEGARDER
-    //==============================================
-
-    sauvegarderProgression(
-        progression
-    );
-
-
-    //==============================================
-    // CALCUL
-    //==============================================
-
-    const pourcentage =
-        calculerPourcentage();
-
-
-    utilisateur.entrepreneuriatProgression =
-        pourcentage;
-
-
-    //==============================================
-    // SAUVEGARDER UTILISATEUR
-    //==============================================
-
-    localStorage.setItem(
-
-        "bmj_current_user",
-
-        JSON.stringify(
-            utilisateur
-        )
-
-    );
-
-
-    //==============================================
-    // BMJ UTILISATEURS
-    //==============================================
-
-    let utilisateurs = [];
-
-
-    try {
-
-        utilisateurs =
-            JSON.parse(
-                localStorage.getItem(
-                    "bmjUtilisateurs"
-                )
-            ) || [];
-
-    }
-
-    catch(erreur) {
-
-        utilisateurs = [];
-
-    }
-
-
-    const index =
-        utilisateurs.findIndex(
-            function(user) {
-
-                return (
-                    user.id_bmj ===
-                    utilisateur.id_bmj
-                );
-
-            }
-        );
-
-
-    if (index !== -1) {
-
-        utilisateurs[index] =
-            utilisateur;
-
-
-        localStorage.setItem(
-
-            "bmjUtilisateurs",
-
-            JSON.stringify(
-                utilisateurs
-            )
-
-        );
-
-    }
-
-
-    //==============================================
-    // ACTUALISER
-    //==============================================
-
-    afficherProgression();
-
-    afficherStatutCours();
-
-
-    console.log(
-        "Utilisateur :",
-        utilisateur.id_bmj
-    );
-
-
-    console.log(
-        "Cours terminé :",
-        idCours
-    );
-
-
-    console.log(
-        "Progression :",
-        progression
-    );
-
-
-    console.log(
-        "Pourcentage :",
-        pourcentage + "%"
-    );
-
-}
-
-
-//==================================================
-// VÉRIFIER UN COURS
-//==================================================
-
-function coursTermine(idCours) {
-
-    return recupererProgression()
-        .includes(idCours);
-
-}
-
-
-//==================================================
-// AFFICHER STATUT DES CARTES
-//==================================================
-
-function afficherStatutCours() {
 
     const progression =
         recupererProgression();
 
 
-    const cartes =
-        document.querySelectorAll(
-            ".chapitre-card"
+    details.innerHTML = "";
+
+
+    /*
+        TITRE
+    */
+
+    const titre =
+        document.createElement(
+            "div"
         );
 
 
-    cartes.forEach(
-        function(carte, index) {
-
-            const cours =
-                coursEntrepreneuriat[index];
+    titre.className =
+        "verification-summary";
 
 
-            if (!cours) {
+    titre.innerHTML = `
 
-                return;
+        <strong>
+            Vérification de la formation
+        </strong>
 
-            }
+        <br>
+
+        <span>
+            Vérification des ${TOTAL_COURS} cours
+        </span>
+
+    `;
 
 
-            const bouton =
-                carte.querySelector(
-                    "button"
-                );
+    details.appendChild(
+        titre
+    );
 
 
-            if (
+    /*
+        CHAQUE COURS
+    */
+
+    coursEntrepreneuriat.forEach(
+
+        function(cours) {
+
+            const termine =
                 progression.includes(
                     cours.id
-                )
-            ) {
-
-                carte.classList.add(
-                    "termine"
                 );
 
 
-                if (bouton) {
+            const ligne =
+                document.createElement(
+                    "div"
+                );
 
-                    bouton.innerHTML =
-                        "✓ Terminé";
 
-                }
+            ligne.className =
+                "verification-line";
+
+
+            if (termine) {
+
+                ligne.innerHTML = `
+
+                    <span>
+
+                        <i
+                            class="fa-solid fa-circle-check"
+                        ></i>
+
+                        ${cours.nom}
+
+                    </span>
+
+                    <strong class="ok">
+
+                        Terminé
+
+                    </strong>
+
+                `;
 
             }
 
             else {
 
-                carte.classList.remove(
-                    "termine"
-                );
+                ligne.innerHTML = `
 
+                    <span>
 
-                if (bouton) {
+                        <i
+                            class="fa-solid fa-circle-xmark"
+                        ></i>
 
-                    bouton.innerHTML =
-                        "Commencer";
+                        ${cours.nom}
 
-                }
+                    </span>
+
+                    <strong class="error">
+
+                        Non terminé
+
+                    </strong>
+
+                `;
 
             }
 
+
+            details.appendChild(
+                ligne
+            );
+
         }
+
     );
 
-}
+
+    /*
+        LIGNE PROGRESSION
+    */
+
+    const resultat =
+        calculerProgression();
 
 
-//==================================================
-// OUVRIR UN COURS
-//==================================================
-
-function ouvrirCours(fichier) {
-
-    if (!fichier) {
-
-        alert(
-            "❌ Le cours demandé est introuvable."
+    const progressionLine =
+        document.createElement(
+            "div"
         );
 
-        return;
+
+    progressionLine.className =
+        "verification-line";
+
+
+    progressionLine.innerHTML = `
+
+        <span>
+
+            <i
+                class="fa-solid fa-chart-line"
+            ></i>
+
+            Progression globale
+
+        </span>
+
+        <strong>
+
+            ${resultat.termines}/${resultat.total}
+
+            — ${resultat.pourcentage}%
+
+        </strong>
+
+    `;
+
+
+    details.appendChild(
+        progressionLine
+    );
+
+
+    /*
+        SÉPARATION
+    */
+
+    const separation =
+        document.createElement(
+            "hr"
+        );
+
+
+    details.appendChild(
+        separation
+    );
+
+
+    /*
+        VÉRIFICATION PREMIUM
+    */
+
+    const utilisateur =
+        obtenirUtilisateur();
+
+
+    const premiumActif =
+        verifierPremium(
+            utilisateur
+        );
+
+
+    const premiumLine =
+        document.createElement(
+            "div"
+        );
+
+
+    premiumLine.className =
+        "verification-line";
+
+
+    if (premiumActif) {
+
+        premiumLine.innerHTML = `
+
+            <span>
+
+                <i
+                    class="fa-solid fa-crown"
+                ></i>
+
+                Abonnement Premium
+
+            </span>
+
+            <strong class="ok">
+
+                Actif
+
+            </strong>
+
+        `;
+
+    }
+
+    else {
+
+        premiumLine.innerHTML = `
+
+            <span>
+
+                <i
+                    class="fa-solid fa-crown"
+                ></i>
+
+                Abonnement Premium
+
+            </span>
+
+            <strong class="error">
+
+                Non actif
+
+            </strong>
+
+        `;
 
     }
 
 
-    window.location.href =
-        fichier;
-
-}
-
-
-//==================================================
-// COMMENCER LA FORMATION
-//==================================================
-
-function commencerFormation() {
-
-    ouvrirCours(
-        "introduction_entrepreneuriat.html"
+    details.appendChild(
+        premiumLine
     );
 
 }
 
 
 //==================================================
-// ACCÉDER À UN COURS
+// VÉRIFIER PREMIUM
 //==================================================
 
-function accederCours(
-    fichier,
-    idCours
+function verifierPremium(
+    utilisateur
 ) {
 
-    if (!fichier) {
+    if (!utilisateur) {
 
-        alert(
-            "❌ Cette leçon n'est pas disponible."
-        );
-
-        return;
+        return false;
 
     }
 
 
-    window.location.href =
-        fichier;
+    /*
+        CAS 1 :
+        premium === true
+    */
+
+    if (
+        utilisateur.premium === true
+    ) {
+
+        return true;
+
+    }
+
+
+    /*
+        CAS 2 :
+        abonnementPremium === true
+    */
+
+    if (
+        utilisateur.abonnementPremium === true
+    ) {
+
+        return true;
+
+    }
+
+
+    /*
+        CAS 3 :
+        premiumActif === true
+    */
+
+    if (
+        utilisateur.premiumActif === true
+    ) {
+
+        return true;
+
+    }
+
+
+    /*
+        CAS 4 :
+        Vérification d'une date
+        d'expiration Premium
+    */
+
+    if (
+        utilisateur.premiumExpiration
+    ) {
+
+        const expiration =
+            new Date(
+                utilisateur.premiumExpiration
+            );
+
+
+        if (
+            !isNaN(
+                expiration.getTime()
+            ) &&
+
+            expiration.getTime() >
+            Date.now()
+
+        ) {
+
+            return true;
+
+        }
+
+    }
+
+
+    /*
+        CAS 5 :
+        date expiration abonnement
+    */
+
+    if (
+        utilisateur.dateExpirationPremium
+    ) {
+
+        const expiration =
+            new Date(
+                utilisateur.dateExpirationPremium
+            );
+
+
+        if (
+            !isNaN(
+                expiration.getTime()
+            ) &&
+
+            expiration.getTime() >
+            Date.now()
+
+        ) {
+
+            return true;
+
+        }
+
+    }
+
+
+    return false;
 
 }
 
 
 //==================================================
-// CERTIFICAT
+// AFFICHER SUCCÈS
 //==================================================
 
-function obtenirCertificat() {
+function afficherSucces() {
 
-    const progression =
-        recupererProgression();
-
-
-    const total =
-        coursEntrepreneuriat.length;
-
-
-    if (
-        progression.length < total
-    ) {
-
-        alert(
-
-            "🔒 Vous devez terminer les " +
-            total +
-            " cours de la formation " +
-            "Entrepreneuriat."
-
+    const icon =
+        document.getElementById(
+            "verificationIcon"
         );
 
-        return;
+
+    const titre =
+        document.getElementById(
+            "titreVerification"
+        );
+
+
+    const message =
+        document.getElementById(
+            "messageVerification"
+        );
+
+
+    const action =
+        document.getElementById(
+            "verificationAction"
+        );
+
+
+    if (icon) {
+
+        icon.innerHTML =
+            '<i class="fa-solid fa-circle-check"></i>';
+
+        icon.className =
+            "verification-icon success-icon";
 
     }
 
+
+    if (titre) {
+
+        titre.textContent =
+            "Parcours validé !";
+
+    }
+
+
+    if (message) {
+
+        message.textContent =
+
+            "Félicitations ! Toutes les conditions sont remplies.";
+
+    }
+
+
+    if (action) {
+
+        action.innerHTML = `
+
+            <div class="success-message">
+
+                <strong>
+                    🎓 Formation validée
+                </strong>
+
+                <br><br>
+
+                Vous avez terminé les
+
+                <strong>
+                    ${TOTAL_COURS}/${TOTAL_COURS} cours
+                </strong>
+
+                de la formation
+                <strong>
+                    Entrepreneuriat
+                </strong>.
+
+                <br><br>
+
+                Progression :
+
+                <strong>
+                    100%
+                </strong>
+
+                <br><br>
+
+                Votre abonnement
+
+                <strong>
+                    Premium
+                </strong>
+
+                est actif.
+
+                <br><br>
+
+                Votre certificat est maintenant disponible.
+
+            </div>
+
+            <br>
+
+            <button
+                type="button"
+                onclick="allerAuCertificat()"
+                class="btn-certificat"
+            >
+
+                <i
+                    class="fa-solid fa-certificate"
+                ></i>
+
+                Obtenir mon certificat
+
+            </button>
+
+        `;
+
+    }
+
+}
+
+
+//==================================================
+// PREMIUM NON ACTIF
+//==================================================
+
+function afficherPremiumRequis() {
+
+    const icon =
+        document.getElementById(
+            "verificationIcon"
+        );
+
+
+    const titre =
+        document.getElementById(
+            "titreVerification"
+        );
+
+
+    const message =
+        document.getElementById(
+            "messageVerification"
+        );
+
+
+    const action =
+        document.getElementById(
+            "verificationAction"
+        );
+
+
+    if (icon) {
+
+        icon.innerHTML =
+            '<i class="fa-solid fa-crown"></i>';
+
+        icon.className =
+            "verification-icon premium-icon";
+
+    }
+
+
+    if (titre) {
+
+        titre.textContent =
+            "Abonnement Premium requis";
+
+    }
+
+
+    if (message) {
+
+        message.textContent =
+
+            "Votre formation est terminée, mais votre abonnement Premium n'est pas actif.";
+
+    }
+
+
+    if (action) {
+
+        action.innerHTML = `
+
+            <div class="premium-message">
+
+                <strong>
+                    🎉 Formation terminée !
+                </strong>
+
+                <br><br>
+
+                Vous avez terminé les
+
+                <strong>
+                    ${TOTAL_COURS}/${TOTAL_COURS} cours
+                </strong>
+
+                de la formation
+                <strong>
+                    Entrepreneuriat
+                </strong>.
+
+                <br><br>
+
+                Votre progression est :
+
+                <strong>
+                    100%
+                </strong>.
+
+                <br><br>
+
+                Cependant, votre abonnement
+
+                <strong>
+                    Premium
+                </strong>
+
+                n'est pas actif.
+
+                <br><br>
+
+                Pour obtenir votre certificat,
+                vous devez activer votre abonnement
+                Premium.
+
+            </div>
+
+            <br>
+
+            <button
+                type="button"
+                onclick="activerPremium()"
+                class="btn-premium"
+            >
+
+                <i
+                    class="fa-solid fa-crown"
+                ></i>
+
+                Activer mon abonnement Premium
+
+            </button>
+
+        `;
+
+    }
+
+}
+
+
+//==================================================
+// FORMATION INCOMPLÈTE
+//==================================================
+
+function afficherFormationIncomplete(
+    nombreTermines,
+    pourcentage
+) {
+
+    const icon =
+        document.getElementById(
+            "verificationIcon"
+        );
+
+
+    const titre =
+        document.getElementById(
+            "titreVerification"
+        );
+
+
+    const message =
+        document.getElementById(
+            "messageVerification"
+        );
+
+
+    const action =
+        document.getElementById(
+            "verificationAction"
+        );
+
+
+    if (icon) {
+
+        icon.innerHTML =
+            '<i class="fa-solid fa-circle-xmark"></i>';
+
+        icon.className =
+            "verification-icon error-icon";
+
+    }
+
+
+    if (titre) {
+
+        titre.textContent =
+            "Parcours incomplet";
+
+    }
+
+
+    if (message) {
+
+        message.textContent =
+
+            "Tous les cours doivent être terminés avant de demander le certificat.";
+
+    }
+
+
+    if (action) {
+
+        action.innerHTML = `
+
+            <div class="error-message">
+
+                <strong>
+                    Formation Entrepreneuriat
+                </strong>
+
+                <br><br>
+
+                Cours terminés :
+
+                <strong>
+                    ${nombreTermines}/${TOTAL_COURS}
+                </strong>
+
+                <br><br>
+
+                Progression :
+
+                <strong>
+                    ${pourcentage}%
+                </strong>
+
+                <br><br>
+
+                Consultez les détails ci-dessus
+                pour identifier les cours manquants.
+
+            </div>
+
+            <br>
+
+            <button
+                type="button"
+                onclick="retourFormation()"
+                class="btn-retour"
+            >
+
+                <i
+                    class="fa-solid fa-arrow-left"
+                ></i>
+
+                Retour à la formation
+
+            </button>
+
+        `;
+
+    }
+
+}
+
+
+//==================================================
+// ALLER AU CERTIFICAT
+//==================================================
+
+function allerAuCertificat() {
 
     const utilisateur =
         obtenirUtilisateur();
@@ -1949,11 +2571,64 @@ function obtenirCertificat() {
     }
 
 
+    const resultat =
+        calculerProgression();
+
+
+    if (
+        resultat.pourcentage < 100
+    ) {
+
+        alert(
+            "⚠️ Vous devez terminer tous les cours."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !verifierPremium(
+            utilisateur
+        )
+    ) {
+
+        alert(
+
+            "👑 Votre abonnement Premium " +
+
+            "n'est pas actif."
+
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Enregistrer que la formation
+        est validée
+    */
+
     utilisateur.entrepreneuriatProgression =
         100;
 
 
-    if (!utilisateur.coursSuivis) {
+    utilisateur.formationEntrepreneuriatValidee =
+        true;
+
+
+    utilisateur.coursEntrepreneuriatTermines =
+        true;
+
+
+    if (
+        !Array.isArray(
+            utilisateur.coursSuivis
+        )
+    ) {
 
         utilisateur.coursSuivis = [];
 
@@ -1991,6 +2666,36 @@ function obtenirCertificat() {
 
 
 //==================================================
+// ACTIVER PREMIUM
+//==================================================
+
+function activerPremium() {
+
+    /*
+        MODIFIE cette page si ton
+        système de paiement utilise
+        une autre page.
+    */
+
+    window.location.href =
+        "paiement_visapay.html";
+
+}
+
+
+//==================================================
+// RETOUR FORMATION
+//==================================================
+
+function retourFormation() {
+
+    window.location.href =
+        "entrepreneuriat.html";
+
+}
+
+
+//==================================================
 // RETOUR DASHBOARD
 //==================================================
 
@@ -2003,12 +2708,250 @@ function retourDashboard() {
 
 
 //==================================================
-// BOUTON COMMENCER
+// VÉRIFICATION PRINCIPALE
+//==================================================
+
+function verifierParcours() {
+
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "VÉRIFICATION ENTREPRENEURIAT"
+    );
+
+
+    /*
+        UTILISATEUR
+    */
+
+    const utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
+
+        window.location.href =
+            "connexion.html";
+
+        return;
+
+    }
+
+
+    console.log(
+        "Utilisateur :",
+        obtenirIdentifiantUtilisateur(
+            utilisateur
+        )
+    );
+
+
+    /*
+        AFFICHAGE
+    */
+
+    afficherUtilisateur();
+
+
+    /*
+        PROGRESSION
+    */
+
+    const resultat =
+        calculerProgression();
+
+
+    console.log(
+        "Cours terminés :",
+
+        resultat.termines +
+
+        "/" +
+
+        resultat.total
+    );
+
+
+    console.log(
+        "Progression :",
+
+        resultat.pourcentage +
+
+        "%"
+    );
+
+
+    /*
+        SYNCHRONISER LE COMPTE
+    */
+
+    synchroniserUtilisateur();
+
+
+    /*
+        AFFICHER LA BARRE
+    */
+
+    afficherProgression();
+
+
+    /*
+        AFFICHER LES DÉTAILS
+    */
+
+    afficherDetailsVerification();
+
+
+    /*
+        ATTENDRE UN PETIT MOMENT
+        POUR L'AFFICHAGE VISUEL
+    */
+
+    setTimeout(
+
+        function() {
+
+            /*
+                =================================
+                CAS 1 :
+                FORMATION INCOMPLÈTE
+                =================================
+            */
+
+            if (
+                resultat.termines <
+                TOTAL_COURS
+            ) {
+
+                afficherFormationIncomplete(
+
+                    resultat.termines,
+
+                    resultat.pourcentage
+
+                );
+
+
+                console.log(
+                    "❌ Formation incomplète."
+                );
+
+
+                return;
+
+            }
+
+
+            /*
+                =================================
+                CAS 2 :
+                4/4 COURS TERMINÉS
+                =================================
+            */
+
+            console.log(
+                "✅ Tous les cours sont terminés."
+            );
+
+
+            /*
+                Vérifier Premium
+            */
+
+            const premiumActif =
+                verifierPremium(
+                    utilisateur
+                );
+
+
+            console.log(
+                "Premium :",
+                premiumActif
+            );
+
+
+            /*
+                =================================
+                CAS 3 :
+                FORMATION OK + PREMIUM OK
+                =================================
+            */
+
+            if (premiumActif) {
+
+                console.log(
+                    "✅ Premium actif."
+                );
+
+
+                afficherSucces();
+
+
+                /*
+                    NE PAS rediriger immédiatement.
+                    L'utilisateur voit d'abord
+                    les détails de vérification.
+
+                    Il clique ensuite sur
+                    "Obtenir mon certificat".
+                */
+
+                return;
+
+            }
+
+
+            /*
+                =================================
+                CAS 4 :
+                FORMATION OK + PREMIUM NON
+                =================================
+            */
+
+            console.log(
+                "⚠️ Premium non actif."
+            );
+
+
+            afficherPremiumRequis();
+
+        },
+
+        300
+
+    );
+
+
+    console.log(
+        "================================="
+    );
+
+}
+
+
+//==================================================
+// CHARGEMENT
 //==================================================
 
 document.addEventListener(
     "DOMContentLoaded",
     function() {
+
+        verifierParcours();
+
+    }
+);
+
+
+//==================================================
+// ACTUALISATION SI CHANGEMENT
+//==================================================
+
+window.addEventListener(
+    "storage",
+    function(event) {
 
         const utilisateur =
             obtenirUtilisateur();
@@ -2016,72 +2959,41 @@ document.addEventListener(
 
         if (!utilisateur) {
 
-            window.location.href =
-                "connexion.html";
-
             return;
 
         }
 
 
-        afficherUtilisateur();
-
-        afficherProgression();
-
-        afficherStatutCours();
-
-
-        const bouton =
-            document.querySelector(
-                ".hero-content button"
+        const cle =
+            obtenirCleProgression(
+                utilisateur
             );
 
 
-        if (bouton) {
+        /*
+            Progression modifiée
+        */
 
-            bouton.addEventListener(
-                "click",
-                commencerFormation
-            );
+        if (
+            event.key === cle
+        ) {
+
+            verifierParcours();
 
         }
 
 
-        const progressBar =
-            document.getElementById(
-                "progressBar"
-            );
-
-
-        if (progressBar) {
-
-            progressBar.style.transition =
-                "width 0.8s ease";
-
-        }
-
-    }
-);
-
-
-//==================================================
-// CHANGEMENT DE COMPTE
-//==================================================
-
-window.addEventListener(
-    "storage",
-    function(event) {
+        /*
+            Utilisateur connecté
+            modifié
+        */
 
         if (
             event.key ===
             "bmj_current_user"
         ) {
 
-            afficherUtilisateur();
-
-            afficherProgression();
-
-            afficherStatutCours();
+            verifierParcours();
 
         }
 
@@ -2089,7 +3001,6 @@ window.addEventListener(
 );
 
 </script>
-    
 
 </body>
 
