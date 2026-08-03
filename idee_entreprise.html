@@ -2859,6 +2859,7 @@ function estDejaTerminee() {
 /*==================================================
         BMJ SERVICE
         LEÇON 2 : IDÉE D'ENTREPRISE
+        PROGRESSION PAR UTILISATEUR
 ==================================================*/
 
 
@@ -2866,9 +2867,13 @@ function estDejaTerminee() {
 // CONFIGURATION
 //==================================================
 
-const COURS_ID = "idee_entreprise";
+const COURS_ID =
+    "idee_entreprise";
 
-const COURS_NOM = "Trouver une idée d'entreprise";
+
+const COURS_NOM =
+    "Trouver une idée d'entreprise";
+
 
 const COURS_ENTREPRENEURIAT = [
 
@@ -2884,109 +2889,75 @@ const COURS_ENTREPRENEURIAT = [
 
 
 //==================================================
-// CHARGEMENT DE LA PAGE
+// RÉCUPÉRER L'UTILISATEUR CONNECTÉ
 //==================================================
 
-document.addEventListener("DOMContentLoaded", function () {
-
-    let utilisateur = null;
+function obtenirUtilisateur() {
 
     try {
 
-        utilisateur = JSON.parse(
-            localStorage.getItem("bmj_current_user")
+        return JSON.parse(
+
+            localStorage.getItem(
+                "bmj_current_user"
+            )
+
         );
-
-    } catch (erreur) {
-
-        utilisateur = null;
 
     }
 
+    catch (erreur) {
 
-    //==============================================
-    // VÉRIFICATION UTILISATEUR
-    //==============================================
+        return null;
+
+    }
+
+}
+
+
+//==================================================
+// CLÉ DE PROGRESSION PERSONNELLE
+//==================================================
+
+function obtenirCleProgression(
+    utilisateur
+) {
 
     if (!utilisateur) {
 
-        window.location.href = "connexion.html";
-
-        return;
+        return null;
 
     }
 
 
-    //==============================================
-    // NOM UTILISATEUR
-    //==============================================
-
-    let nomUtilisateur =
-        document.getElementById("nomUtilisateur");
-
-    if (nomUtilisateur) {
-
-        nomUtilisateur.textContent =
-            utilisateur.nom || "Apprenant";
-
-    }
+    let identifiant =
+        utilisateur.id_bmj;
 
 
-    //==============================================
-    // PHOTO UTILISATEUR
-    //==============================================
+    /*
+        Sécurité pour les anciens comptes
+    */
 
-    let photoUtilisateur =
-        document.getElementById("photoUtilisateur");
+    if (!identifiant) {
 
-    if (photoUtilisateur) {
-
-        photoUtilisateur.src =
-            utilisateur.photo || "images/user.png";
+        identifiant =
+            utilisateur.email ||
+            utilisateur.telephone ||
+            utilisateur.nom ||
+            "utilisateur";
 
     }
 
 
-    //==============================================
-    // DOMAINE
-    //==============================================
+    return (
 
-    let domaineUtilisateur =
-        document.getElementById("domaineUtilisateur");
+        "entrepreneuriat_progression_" +
 
-    if (domaineUtilisateur) {
+        String(identifiant)
 
-        domaineUtilisateur.textContent =
-            utilisateur.domaine || "Entrepreneuriat";
+    );
 
-    }
-
-
-    //==============================================
-    // VÉRIFIER LA LEÇON
-    //==============================================
-
-    verifierProgression();
-
-
-    //==============================================
-    // CONNECTER LE BOUTON
-    //==============================================
-
-    let bouton =
-        document.getElementById("terminerLeconBtn");
-
-
-    if (bouton) {
-
-        bouton.addEventListener(
-            "click",
-            terminerLecon
-        );
-
-    }
-
-});
+}
 
 
 //==================================================
@@ -2995,24 +2966,55 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function obtenirProgression() {
 
+    let utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
+
+        return [];
+
+    }
+
+
+    let cle =
+        obtenirCleProgression(
+            utilisateur
+        );
+
+
+    if (!cle) {
+
+        return [];
+
+    }
+
+
     let progression = [];
+
 
     try {
 
         progression = JSON.parse(
 
             localStorage.getItem(
-                "entrepreneuriat_progression"
+                cle
             )
 
         ) || [];
 
-    } catch (erreur) {
+    }
+
+    catch (erreur) {
 
         progression = [];
 
     }
 
+
+    //==============================================
+    // SÉCURITÉ
+    //==============================================
 
     if (!Array.isArray(progression)) {
 
@@ -3021,16 +3023,204 @@ function obtenirProgression() {
     }
 
 
-    // Supprimer les doublons
+    //==============================================
+    // SUPPRIMER DOUBLONS
+    //==============================================
 
     progression = [
+
         ...new Set(progression)
+
     ];
+
+
+    //==============================================
+    // GARDER UNIQUEMENT LES 4 COURS
+    //==============================================
+
+    progression =
+        progression.filter(
+
+            function (id) {
+
+                return COURS_ENTREPRENEURIAT.includes(
+                    id
+                );
+
+            }
+
+        );
 
 
     return progression;
 
 }
+
+
+//==================================================
+// SAUVEGARDER LA PROGRESSION
+//==================================================
+
+function sauvegarderProgression(
+    progression
+) {
+
+    let utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
+
+        return;
+
+    }
+
+
+    let cle =
+        obtenirCleProgression(
+            utilisateur
+        );
+
+
+    if (!cle) {
+
+        return;
+
+    }
+
+
+    localStorage.setItem(
+
+        cle,
+
+        JSON.stringify(
+            progression
+        )
+
+    );
+
+}
+
+
+//==================================================
+// CHARGEMENT DE LA PAGE
+//==================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        //==========================================
+        // UTILISATEUR
+        //==========================================
+
+        let utilisateur =
+            obtenirUtilisateur();
+
+
+        //==========================================
+        // VÉRIFICATION
+        //==========================================
+
+        if (!utilisateur) {
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+
+        }
+
+
+        //==========================================
+        // NOM
+        //==========================================
+
+        let nomUtilisateur =
+            document.getElementById(
+                "nomUtilisateur"
+            );
+
+
+        if (nomUtilisateur) {
+
+            nomUtilisateur.textContent =
+                utilisateur.nom ||
+                "Apprenant";
+
+        }
+
+
+        //==========================================
+        // PHOTO
+        //==========================================
+
+        let photoUtilisateur =
+            document.getElementById(
+                "photoUtilisateur"
+            );
+
+
+        if (photoUtilisateur) {
+
+            photoUtilisateur.src =
+                utilisateur.photo ||
+                "images/user.png";
+
+        }
+
+
+        //==========================================
+        // DOMAINE
+        //==========================================
+
+        let domaineUtilisateur =
+            document.getElementById(
+                "domaineUtilisateur"
+            );
+
+
+        if (domaineUtilisateur) {
+
+            domaineUtilisateur.textContent =
+                utilisateur.domaine ||
+                "Entrepreneuriat";
+
+        }
+
+
+        //==========================================
+        // VÉRIFIER LA PROGRESSION
+        //==========================================
+
+        verifierProgression();
+
+
+        //==========================================
+        // BOUTON
+        //==========================================
+
+        let bouton =
+            document.getElementById(
+                "terminerLeconBtn"
+            );
+
+
+        if (bouton) {
+
+            bouton.addEventListener(
+
+                "click",
+
+                terminerLecon
+
+            );
+
+        }
+
+    }
+);
 
 
 //==================================================
@@ -3056,24 +3246,50 @@ function verifierProgression() {
     }
 
 
+    //==============================================
+    // LEÇON DÉJÀ TERMINÉE
+    //==============================================
+
     if (
-        progression.includes(COURS_ID)
+        progression.includes(
+            COURS_ID
+        )
     ) {
 
         bouton.innerHTML = `
 
             <i class="fa-solid fa-circle-check"></i>
 
-            Leçon terminée
+            Leçon terminée — Continuer
 
         `;
 
 
-        bouton.classList.add("terminee");
+        bouton.classList.add(
+            "terminee"
+        );
 
 
-        // IMPORTANT :
-        // Le bouton reste utilisable
+        /*
+            IMPORTANT :
+
+            Le bouton reste fonctionnel.
+        */
+
+        bouton.disabled = false;
+
+    }
+
+    else {
+
+        bouton.innerHTML = `
+
+            Terminer la leçon
+
+            <i class="fa-solid fa-check"></i>
+
+        `;
+
 
         bouton.disabled = false;
 
@@ -3088,8 +3304,36 @@ function verifierProgression() {
 
 function terminerLecon() {
 
+
     //==============================================
-    // RÉCUPÉRER LA PROGRESSION
+    // UTILISATEUR
+    //==============================================
+
+    let utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
+
+        alert(
+
+            "⚠️ Votre session a expiré." +
+
+            "\n\nVeuillez vous reconnecter."
+
+        );
+
+
+        window.location.href =
+            "connexion.html";
+
+        return;
+
+    }
+
+
+    //==============================================
+    // PROGRESSION ACTUELLE
     //==============================================
 
     let progression =
@@ -3097,33 +3341,33 @@ function terminerLecon() {
 
 
     //==============================================
-    // AJOUTER LA LEÇON
+    // AJOUTER LA LEÇON 2
     //==============================================
 
     if (
-        !progression.includes(COURS_ID)
+        !progression.includes(
+            COURS_ID
+        )
     ) {
 
-        progression.push(COURS_ID);
+        progression.push(
+            COURS_ID
+        );
 
     }
 
 
     //==============================================
-    // SAUVEGARDER
+    // SAUVEGARDER POUR CET UTILISATEUR
     //==============================================
 
-    localStorage.setItem(
-
-        "entrepreneuriat_progression",
-
-        JSON.stringify(progression)
-
+    sauvegarderProgression(
+        progression
     );
 
 
     //==============================================
-    // CALCUL DE LA PROGRESSION GLOBALE
+    // CALCUL PROGRESSION
     //==============================================
 
     let nombreTermines = 0;
@@ -3134,7 +3378,9 @@ function terminerLecon() {
         function (id) {
 
             if (
-                progression.includes(id)
+                progression.includes(
+                    id
+                )
             ) {
 
                 nombreTermines++;
@@ -3153,10 +3399,17 @@ function terminerLecon() {
     let pourcentage =
         Math.round(
 
-            (nombreTermines / totalCours) * 100
+            (
+                nombreTermines /
+                totalCours
+            ) * 100
 
         );
 
+
+    //==============================================
+    // SÉCURITÉ
+    //==============================================
 
     if (pourcentage > 100) {
 
@@ -3165,156 +3418,200 @@ function terminerLecon() {
     }
 
 
+    if (pourcentage < 0) {
+
+        pourcentage = 0;
+
+    }
+
+
     //==============================================
-    // SAUVEGARDER LE POURCENTAGE
+    // METTRE À JOUR L'UTILISATEUR
+    //==============================================
+
+    utilisateur.entrepreneuriatProgression =
+        pourcentage;
+
+
+    //==============================================
+    // LEÇONS TERMINÉES
+    //==============================================
+
+    if (
+        !Array.isArray(
+            utilisateur.leconsTerminees
+        )
+    ) {
+
+        utilisateur.leconsTerminees = [];
+
+    }
+
+
+    if (
+        !utilisateur.leconsTerminees.includes(
+            COURS_ID
+        )
+    ) {
+
+        utilisateur.leconsTerminees.push(
+            COURS_ID
+        );
+
+    }
+
+
+    //==============================================
+    // SAUVEGARDER POURCENTAGE PERSONNEL
     //==============================================
 
     localStorage.setItem(
 
-        "entrepreneuriat_progression_pourcentage",
+        "entrepreneuriat_progression_pourcentage_" +
 
-        String(pourcentage)
+        String(
+            utilisateur.id_bmj ||
+            utilisateur.email ||
+            utilisateur.telephone ||
+            utilisateur.nom
+        ),
+
+        String(
+            pourcentage
+        )
 
     );
 
 
     //==============================================
-    // UTILISATEUR
+    // SAUVEGARDER UTILISATEUR CONNECTÉ
     //==============================================
 
-    let utilisateur = null;
+    localStorage.setItem(
+
+        "bmj_current_user",
+
+        JSON.stringify(
+            utilisateur
+        )
+
+    );
+
+
+    //==============================================
+    // METTRE À JOUR BMJ UTILISATEURS
+    //==============================================
+
+    let utilisateurs = [];
 
 
     try {
 
-        utilisateur = JSON.parse(
+        utilisateurs = JSON.parse(
 
             localStorage.getItem(
-                "bmj_current_user"
+                "bmjUtilisateurs"
             )
 
-        );
+        ) || [];
 
-    } catch (erreur) {
+    }
 
-        utilisateur = null;
+    catch (erreur) {
+
+        utilisateurs = [];
 
     }
 
 
-    if (utilisateur) {
+    let index =
+        utilisateurs.findIndex(
 
-        //==========================================
-        // PROGRESSION
-        //==========================================
+            function (user) {
 
-        utilisateur.entrepreneuriatProgression =
-            pourcentage;
+                return (
 
+                    user.id_bmj ===
+                    utilisateur.id_bmj
 
-        //==========================================
-        // LEÇONS TERMINÉES
-        //==========================================
+                );
 
-        if (
-            !Array.isArray(
-                utilisateur.leconsTerminees
-            )
-        ) {
+            }
 
-            utilisateur.leconsTerminees = [];
-
-        }
+        );
 
 
-        if (
-            !utilisateur.leconsTerminees.includes(
-                COURS_ID
-            )
-        ) {
+    if (index !== -1) {
 
-            utilisateur.leconsTerminees.push(
-                COURS_ID
-            );
+        utilisateurs[index] =
+            utilisateur;
 
-        }
-
-
-        //==========================================
-        // SAUVEGARDER UTILISATEUR
-        //==========================================
 
         localStorage.setItem(
 
-            "bmj_current_user",
+            "bmjUtilisateurs",
 
             JSON.stringify(
-                utilisateur
+                utilisateurs
             )
 
         );
 
-
-        //==========================================
-        // BMJ UTILISATEURS
-        //==========================================
-
-        let utilisateurs = [];
-
-
-        try {
-
-            utilisateurs = JSON.parse(
-
-                localStorage.getItem(
-                    "bmjUtilisateurs"
-                )
-
-            ) || [];
-
-        } catch (erreur) {
-
-            utilisateurs = [];
-
-        }
-
-
-        let index =
-            utilisateurs.findIndex(
-
-                function (user) {
-
-                    return (
-
-                        user.id_bmj ===
-                        utilisateur.id_bmj
-
-                    );
-
-                }
-
-            );
-
-
-        if (index !== -1) {
-
-            utilisateurs[index] =
-                utilisateur;
-
-
-            localStorage.setItem(
-
-                "bmjUtilisateurs",
-
-                JSON.stringify(
-                    utilisateurs
-                )
-
-            );
-
-        }
-
     }
+
+
+    //==============================================
+    // CONSOLE DE VÉRIFICATION
+    //==============================================
+
+    console.log(
+        "================================="
+    );
+
+
+    console.log(
+        "UTILISATEUR :",
+        utilisateur.id_bmj
+    );
+
+
+    console.log(
+        "COURS :",
+        COURS_ID
+    );
+
+
+    console.log(
+        "PROGRESSION :",
+        progression
+    );
+
+
+    console.log(
+        "COURS TERMINÉS :",
+        nombreTermines +
+        "/" +
+        totalCours
+    );
+
+
+    console.log(
+        "POURCENTAGE :",
+        pourcentage + "%"
+    );
+
+
+    console.log(
+        "CLÉ :",
+        obtenirCleProgression(
+            utilisateur
+        )
+    );
+
+
+    console.log(
+        "================================="
+    );
 
 
     //==============================================
@@ -3331,7 +3628,7 @@ function terminerLecon() {
 
         "\n\n" +
 
-        "Progression globale : " +
+        "Progression de la formation : " +
 
         pourcentage +
 
@@ -3387,7 +3684,6 @@ function continuerLecon() {
 }
 
 </script>
-
 </body>
 
 </html>

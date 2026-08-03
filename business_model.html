@@ -2618,113 +2618,238 @@ footer span{
 
 
     </footer>
-
 <script>
 
 /*==================================================
         BMJ SERVICE
-        LEÇON : BUSINESS MODEL
+        LEÇON 3 : BUSINESS MODEL
+        PROGRESSION PAR UTILISATEUR
 ==================================================*/
+
+
+//==================================================
+// CONFIGURATION
+//==================================================
+
+const COURS_ID =
+    "business_model";
+
+const COURS_NOM =
+    "Construire son Business Model";
+
+
+//==================================================
+// LES 4 LEÇONS DE LA FORMATION
+//==================================================
+
+const COURS_ENTREPRENEURIAT = [
+
+    "introduction_entrepreneuriat",
+
+    "idee_entreprise",
+
+    "business_model",
+
+    "lancer_entreprise"
+
+];
 
 
 //==================================================
 // CHARGEMENT DE LA PAGE
 //==================================================
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        //==========================================
+        // RÉCUPÉRER L'UTILISATEUR
+        //==========================================
+
+        let utilisateur =
+            obtenirUtilisateur();
+
+
+        //==========================================
+        // VÉRIFICATION CONNEXION
+        //==========================================
+
+        if (!utilisateur) {
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+
+        }
+
+
+        //==========================================
+        // AFFICHER UTILISATEUR
+        //==========================================
+
+        afficherUtilisateur(
+            utilisateur
+        );
+
+
+        //==========================================
+        // VÉRIFIER LA PROGRESSION
+        //==========================================
+
+        verifierProgression();
+
+
+        //==========================================
+        // CONNECTER LE BOUTON
+        //==========================================
+
+        let bouton =
+            document.getElementById(
+                "terminerLeconBtn"
+            );
+
+
+        if (bouton) {
+
+            bouton.addEventListener(
+                "click",
+                terminerLecon
+            );
+
+        }
+
+    }
+);
+
+
+//==================================================
+// RÉCUPÉRER L'UTILISATEUR
+//==================================================
+
+function obtenirUtilisateur() {
+
+    try {
+
+        return JSON.parse(
+
+            localStorage.getItem(
+                "bmj_current_user"
+            )
+
+        );
+
+    }
+
+    catch (erreur) {
+
+        return null;
+
+    }
+
+}
+
+
+//==================================================
+// AFFICHER L'UTILISATEUR
+//==================================================
+
+function afficherUtilisateur(
+    utilisateur
+) {
 
 
     //==============================================
-    // RÉCUPÉRER L'UTILISATEUR
+    // NOM
     //==============================================
 
-    let utilisateur = JSON.parse(
+    let nom =
+        document.getElementById(
+            "nomUtilisateur"
+        );
 
-        localStorage.getItem("bmj_current_user")
 
-    );
+    if (nom) {
 
-
-    //==============================================
-    // VÉRIFICATION UTILISATEUR
-    //==============================================
-
-    if (!utilisateur) {
-
-        window.location.href = "connexion.html";
-
-        return;
+        nom.textContent =
+            utilisateur.nom ||
+            "Apprenant";
 
     }
 
 
     //==============================================
-    // AFFICHER LE NOM
+    // PHOTO
     //==============================================
 
-    let nomUtilisateur =
-        document.getElementById("nomUtilisateur");
+    let photo =
+        document.getElementById(
+            "photoUtilisateur"
+        );
 
 
-    if (nomUtilisateur) {
+    if (photo) {
 
-        nomUtilisateur.textContent =
-            utilisateur.nom || "Apprenant";
+        photo.src =
+            utilisateur.photo ||
+            "images/user.png";
 
     }
 
 
     //==============================================
-    // AFFICHER LA PHOTO
+    // DOMAINE
     //==============================================
 
-    let photoUtilisateur =
-        document.getElementById("photoUtilisateur");
+    let domaine =
+        document.getElementById(
+            "domaineUtilisateur"
+        );
 
 
-    if (photoUtilisateur) {
+    if (domaine) {
 
-        photoUtilisateur.src =
-            utilisateur.photo || "images/user.png";
-
-    }
-
-
-    //==============================================
-    // AFFICHER LE DOMAINE
-    //==============================================
-
-    let domaineUtilisateur =
-        document.getElementById("domaineUtilisateur");
-
-
-    if (domaineUtilisateur) {
-
-        domaineUtilisateur.textContent =
+        domaine.textContent =
             utilisateur.domaine ||
             "Entrepreneuriat";
 
     }
 
-
-    //==============================================
-    // VÉRIFIER SI LA LEÇON EST DÉJÀ TERMINÉE
-    //==============================================
-
-    verifierProgression();
-
-
-});
-
+}
 
 
 //==================================================
-// IDENTIFIANT DE LA LEÇON
+// CLÉ DE PROGRESSION DE L'UTILISATEUR
 //==================================================
 
-const nomLecon =
-    "business_model";
+function obtenirCleProgression(
+    utilisateur
+) {
 
+
+    /*
+        Chaque utilisateur possède
+        sa propre progression.
+
+        Exemple :
+
+        entrepreneuriat_progression_1001
+
+        entrepreneuriat_progression_1002
+    */
+
+
+    return (
+
+        "entrepreneuriat_progression_" +
+
+        utilisateur.id_bmj
+
+    );
+
+}
 
 
 //==================================================
@@ -2734,13 +2859,80 @@ const nomLecon =
 function obtenirProgression() {
 
 
-    let progression = JSON.parse(
+    let utilisateur =
+        obtenirUtilisateur();
 
-        localStorage.getItem(
-            "entrepreneuriat_progression"
-        )
 
-    ) || [];
+    if (!utilisateur) {
+
+        return [];
+
+    }
+
+
+    let cle =
+        obtenirCleProgression(
+            utilisateur
+        );
+
+
+    let progression = [];
+
+
+    try {
+
+        progression = JSON.parse(
+
+            localStorage.getItem(
+                cle
+            )
+
+        ) || [];
+
+    }
+
+    catch (erreur) {
+
+        progression = [];
+
+    }
+
+
+    //==============================================
+    // SÉCURITÉ
+    //==============================================
+
+    if (!Array.isArray(progression)) {
+
+        progression = [];
+
+    }
+
+
+    //==============================================
+    // SUPPRIMER DOUBLONS
+    //==============================================
+
+    progression = [
+        ...new Set(progression)
+    ];
+
+
+    //==============================================
+    // GARDER UNIQUEMENT LES 4 COURS
+    //==============================================
+
+    progression =
+        progression.filter(
+
+            function (id) {
+
+                return COURS_ENTREPRENEURIAT
+                    .includes(id);
+
+            }
+
+        );
 
 
     return progression;
@@ -2748,27 +2940,102 @@ function obtenirProgression() {
 }
 
 
-
 //==================================================
 // SAUVEGARDER LA PROGRESSION
 //==================================================
 
-function sauvegarderProgression(progression) {
+function sauvegarderProgression(
+    progression
+) {
 
 
-    progression = [...new Set(progression)];
+    let utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
+
+        return;
+
+    }
+
+
+    let cle =
+        obtenirCleProgression(
+            utilisateur
+        );
 
 
     localStorage.setItem(
 
-        "entrepreneuriat_progression",
+        cle,
 
-        JSON.stringify(progression)
+        JSON.stringify(
+            progression
+        )
 
     );
 
 }
 
+
+//==================================================
+// CALCULER LA PROGRESSION
+//==================================================
+
+function calculerProgression() {
+
+
+    let progression =
+        obtenirProgression();
+
+
+    let nombreTerminees = 0;
+
+
+    COURS_ENTREPRENEURIAT.forEach(
+
+        function (id) {
+
+            if (
+                progression.includes(id)
+            ) {
+
+                nombreTerminees++;
+
+            }
+
+        }
+
+    );
+
+
+    let total =
+        COURS_ENTREPRENEURIAT.length;
+
+
+    let pourcentage =
+        Math.round(
+
+            (nombreTerminees / total) * 100
+
+        );
+
+
+    return {
+
+        nombreTerminees:
+            nombreTerminees,
+
+        total:
+            total,
+
+        pourcentage:
+            pourcentage
+
+    };
+
+}
 
 
 //==================================================
@@ -2782,24 +3049,37 @@ function verifierProgression() {
         obtenirProgression();
 
 
-    let termine =
-        progression.includes(nomLecon);
-
-
-    //==============================================
-    // BOUTON
-    //==============================================
-
     let bouton =
         document.getElementById(
-            "terminerLecon"
+            "terminerLeconBtn"
         );
 
 
-    if (bouton && termine) {
+    if (!bouton) {
 
-        bouton.innerHTML =
-            "✓ Leçon terminée";
+        return;
+
+    }
+
+
+    //==============================================
+    // LEÇON DÉJÀ TERMINÉE
+    //==============================================
+
+    if (
+        progression.includes(
+            COURS_ID
+        )
+    ) {
+
+
+        bouton.innerHTML = `
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            Leçon terminée
+
+        `;
 
 
         bouton.classList.add(
@@ -2807,19 +3087,49 @@ function verifierProgression() {
         );
 
 
-        bouton.disabled = true;
+        /*
+            IMPORTANT :
+
+            Le bouton reste activé.
+
+            L'utilisateur peut donc
+            cliquer encore dessus.
+        */
+
+        bouton.disabled = false;
+
+
+    }
+
+    else {
+
+
+        bouton.innerHTML = `
+
+            Terminer la leçon
+
+            <i class="fa-solid fa-check"></i>
+
+        `;
+
+
+        bouton.classList.remove(
+            "terminee"
+        );
+
+
+        bouton.disabled = false;
 
     }
 
 
     //==============================================
-    // PROGRESSION VISUELLE
+    // AFFICHER PROGRESSION
     //==============================================
 
     afficherProgression();
 
 }
-
 
 
 //==================================================
@@ -2833,20 +3143,20 @@ function terminerLecon() {
     // UTILISATEUR
     //==============================================
 
-    let utilisateur = JSON.parse(
-
-        localStorage.getItem(
-            "bmj_current_user"
-        )
-
-    );
+    let utilisateur =
+        obtenirUtilisateur();
 
 
     if (!utilisateur) {
 
         alert(
-            "⚠️ Vous devez être connecté."
+
+            "⚠️ Votre session a expiré.\n\n" +
+
+            "Veuillez vous reconnecter."
+
         );
+
 
         window.location.href =
             "connexion.html";
@@ -2865,30 +3175,25 @@ function terminerLecon() {
 
 
     //==============================================
-    // VÉRIFIER SI DÉJÀ TERMINÉE
+    // AJOUTER LA LEÇON
     //==============================================
 
     if (
-        progression.includes(nomLecon)
+        !progression.includes(
+            COURS_ID
+        )
     ) {
 
-        alert(
-            "Cette leçon est déjà terminée."
+        progression.push(
+            COURS_ID
         );
-
-        return;
 
     }
 
 
     //==============================================
-    // AJOUTER LA LEÇON
+    // SAUVEGARDER PROGRESSION UTILISATEUR
     //==============================================
-
-    progression.push(
-        nomLecon
-    );
-
 
     sauvegarderProgression(
         progression
@@ -2896,10 +3201,42 @@ function terminerLecon() {
 
 
     //==============================================
+    // CALCUL
+    //==============================================
+
+    let resultat =
+        calculerProgression();
+
+
+    let nombreTerminees =
+        resultat.nombreTerminees;
+
+
+    let total =
+        resultat.total;
+
+
+    let pourcentage =
+        resultat.pourcentage;
+
+
+    //==============================================
     // ENREGISTRER DANS L'UTILISATEUR
     //==============================================
 
-    if (!utilisateur.leconsTerminees) {
+    utilisateur.entrepreneuriatProgression =
+        pourcentage;
+
+
+    //==============================================
+    // LEÇONS TERMINÉES
+    //==============================================
+
+    if (
+        !Array.isArray(
+            utilisateur.leconsTerminees
+        )
+    ) {
 
         utilisateur.leconsTerminees = [];
 
@@ -2907,55 +3244,73 @@ function terminerLecon() {
 
 
     if (
-        !utilisateur.leconsTerminees.includes(
-            "Business Model"
-        )
+        !utilisateur.leconsTerminees
+            .includes(COURS_ID)
     ) {
 
         utilisateur.leconsTerminees.push(
-            "Business Model"
+            COURS_ID
         );
 
     }
 
 
     //==============================================
-    // SAUVEGARDER UTILISATEUR
+    // SAUVEGARDER UTILISATEUR ACTUEL
     //==============================================
 
     localStorage.setItem(
 
         "bmj_current_user",
 
-        JSON.stringify(utilisateur)
+        JSON.stringify(
+            utilisateur
+        )
 
     );
 
 
     //==============================================
-    // METTRE À JOUR LA LISTE DES UTILISATEURS
+    // METTRE À JOUR BMJ UTILISATEURS
     //==============================================
 
-    let utilisateurs = JSON.parse(
+    let utilisateurs = [];
 
-        localStorage.getItem(
-            "bmjUtilisateurs"
-        )
 
-    ) || [];
+    try {
+
+        utilisateurs = JSON.parse(
+
+            localStorage.getItem(
+                "bmjUtilisateurs"
+            )
+
+        ) || [];
+
+    }
+
+    catch (erreur) {
+
+        utilisateurs = [];
+
+    }
 
 
     let index =
-        utilisateurs.findIndex(function (u) {
+        utilisateurs.findIndex(
 
-            return (
+            function (user) {
 
-                u.id_bmj ===
-                utilisateur.id_bmj
+                return (
 
-            );
+                    user.id_bmj ===
+                    utilisateur.id_bmj
 
-        });
+                );
+
+            }
+
+        );
 
 
     if (index !== -1) {
@@ -2968,7 +3323,9 @@ function terminerLecon() {
 
             "bmjUtilisateurs",
 
-            JSON.stringify(utilisateurs)
+            JSON.stringify(
+                utilisateurs
+            )
 
         );
 
@@ -2976,29 +3333,43 @@ function terminerLecon() {
 
 
     //==============================================
-    // MESSAGE DE RÉUSSITE
+    // MESSAGE
     //==============================================
 
     alert(
 
         "🎉 Félicitations !\n\n" +
 
-        "Vous avez terminé la leçon : " +
+        "Vous avez terminé :\n" +
 
-        "Business Model."
+        COURS_NOM +
+
+        "\n\n" +
+
+        "Progression de la formation : " +
+
+        pourcentage +
+
+        "%\n\n" +
+
+        "Cours terminés : " +
+
+        nombreTerminees +
+
+        "/" +
+
+        total
 
     );
 
 
     //==============================================
-    // ACTUALISER LA PAGE
+    // ACTUALISER LE BOUTON
     //==============================================
 
     verifierProgression();
 
-
 }
-
 
 
 //==================================================
@@ -3008,46 +3379,12 @@ function terminerLecon() {
 function afficherProgression() {
 
 
-    let progression =
-        obtenirProgression();
-
-
-    /*
-        Les 5 leçons du domaine
-        Entrepreneuriat
-    */
-
-    const totalLecons = 5;
-
-
-    let nombreTerminees =
-        progression.length;
-
-
-    /*
-        Limiter le nombre à 5
-    */
-
-    if (
-        nombreTerminees >
-        totalLecons
-    ) {
-
-        nombreTerminees =
-            totalLecons;
-
-    }
+    let resultat =
+        calculerProgression();
 
 
     let pourcentage =
-        Math.round(
-
-            (
-                nombreTerminees /
-                totalLecons
-            ) * 100
-
-        );
+        resultat.pourcentage;
 
 
     //==============================================
@@ -3085,8 +3422,32 @@ function afficherProgression() {
 
     }
 
-}
 
+    //==============================================
+    // TEXTE
+    //==============================================
+
+    let progressText =
+        document.getElementById(
+            "progressText"
+        );
+
+
+    if (progressText) {
+
+        progressText.textContent =
+
+            resultat.nombreTerminees +
+
+            "/" +
+
+            resultat.total +
+
+            " cours terminés";
+
+    }
+
+}
 
 
 //==================================================
@@ -3095,12 +3456,10 @@ function afficherProgression() {
 
 function retourCours() {
 
-
     window.location.href =
         "entrepreneuriat.html";
 
 }
-
 
 
 //==================================================
@@ -3109,26 +3468,17 @@ function retourCours() {
 
 function leconSuivante() {
 
-
-    /*
-        Après Business Model,
-        retour vers la page principale
-        pour choisir la prochaine leçon.
-    */
-
     window.location.href =
         "entrepreneuriat.html";
 
 }
 
 
-
 //==================================================
-// DÉFILEMENT VERS LE HAUT
+// RETOUR EN HAUT
 //==================================================
 
 function retournerEnHaut() {
-
 
     window.scrollTo({
 
@@ -3141,53 +3491,15 @@ function retournerEnHaut() {
 }
 
 
-
 //==================================================
-// MENU MOBILE
-//==================================================
-
-let menuBtn =
-    document.getElementById(
-        "menuBtn"
-    );
-
-
-let menu =
-    document.getElementById(
-        "menu"
-    );
-
-
-if (menuBtn && menu) {
-
-
-    menuBtn.addEventListener(
-        "click",
-        function () {
-
-            menu.classList.toggle(
-                "active"
-            );
-
-        }
-    );
-
-}
-
-
-
-//==================================================
-// PROTECTION CONTRE LE RAFRAÎCHISSEMENT
+// ACTUALISATION SI LA PROGRESSION CHANGE
 //==================================================
 
 window.addEventListener(
-    "beforeunload",
+    "storage",
     function () {
 
-        /*
-            La progression est déjà sauvegardée
-            dans localStorage.
-        */
+        verifierProgression();
 
     }
 );
