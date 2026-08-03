@@ -2240,7 +2240,6 @@ body{
 
 
     </footer>
-
 <script>
 
 /*==================================================
@@ -2251,103 +2250,200 @@ body{
 
 
 //==================================================
+// IDENTIFIANT EXACT DU COURS
+//==================================================
+
+const COURS_ID =
+    "introduction_entrepreneuriat";
+
+
+
+//==================================================
+// NOM DU COURS
+//==================================================
+
+const COURS_NOM =
+    "Introduction à l'entrepreneuriat";
+
+
+
+//==================================================
 // CHARGEMENT DE LA PAGE
 //==================================================
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
 
-    //==============================================
-    // RÉCUPÉRER L'UTILISATEUR
-    //==============================================
+        //==========================================
+        // RÉCUPÉRER L'UTILISATEUR
+        //==========================================
 
-    let utilisateur = JSON.parse(
-
-        localStorage.getItem("bmj_current_user")
-
-    );
+        let utilisateur = null;
 
 
-    //==============================================
-    // VÉRIFIER LA CONNEXION
-    //==============================================
+        try {
 
-    if (!utilisateur) {
+            utilisateur = JSON.parse(
 
-        window.location.href = "connexion.html";
+                localStorage.getItem(
+                    "bmj_current_user"
+                )
 
-        return;
+            );
+
+        }
+
+        catch (erreur) {
+
+            utilisateur = null;
+
+        }
+
+
+
+        //==========================================
+        // VÉRIFIER LA CONNEXION
+        //==========================================
+
+        if (!utilisateur) {
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+
+        }
+
+
+
+        //==========================================
+        // AFFICHER LE NOM
+        //==========================================
+
+        let nomUtilisateur =
+            document.getElementById(
+                "nomUtilisateur"
+            );
+
+
+        if (nomUtilisateur) {
+
+            nomUtilisateur.textContent =
+                utilisateur.nom ||
+                "Apprenant";
+
+        }
+
+
+
+        //==========================================
+        // AFFICHER LA PHOTO
+        //==========================================
+
+        let photoUtilisateur =
+            document.getElementById(
+                "photoUtilisateur"
+            );
+
+
+        if (photoUtilisateur) {
+
+            photoUtilisateur.src =
+                utilisateur.photo ||
+                "images/user.png";
+
+        }
+
+
+
+        //==========================================
+        // AFFICHER LE DOMAINE
+        //==========================================
+
+        let domaineUtilisateur =
+            document.getElementById(
+                "domaineUtilisateur"
+            );
+
+
+        if (domaineUtilisateur) {
+
+            domaineUtilisateur.textContent =
+                utilisateur.domaine ||
+                "Entrepreneuriat";
+
+        }
+
+
+
+        //==========================================
+        // VÉRIFIER LA PROGRESSION
+        //==========================================
+
+        verifierProgression();
 
     }
-
-
-    //==============================================
-    // AFFICHER LE NOM
-    //==============================================
-
-    let nomUtilisateur = document.getElementById(
-        "nomUtilisateur"
-    );
-
-
-    if (nomUtilisateur) {
-
-        nomUtilisateur.textContent =
-            utilisateur.nom || "Apprenant";
-
-    }
-
-
-    //==============================================
-    // AFFICHER LA PHOTO
-    //==============================================
-
-    let photoUtilisateur = document.getElementById(
-        "photoUtilisateur"
-    );
-
-
-    if (photoUtilisateur) {
-
-        photoUtilisateur.src =
-            utilisateur.photo || "images/user.png";
-
-    }
-
-
-    //==============================================
-    // AFFICHER LE DOMAINE
-    //==============================================
-
-    let domaineUtilisateur = document.getElementById(
-        "domaineUtilisateur"
-    );
-
-
-    if (domaineUtilisateur) {
-
-        domaineUtilisateur.textContent =
-            utilisateur.domaine || "Entrepreneuriat";
-
-    }
-
-
-    //==============================================
-    // VÉRIFIER SI LA LEÇON EST DÉJÀ TERMINÉE
-    //==============================================
-
-    verifierProgression();
-
-
-});
+);
 
 
 
 //==================================================
-// IDENTIFIANT DE LA LEÇON
+// RÉCUPÉRER LA PROGRESSION
 //==================================================
 
-const LEcon_ID = "entrepreneuriat_lecon_1";
+function recupererProgression() {
+
+
+    let progression = [];
+
+
+    try {
+
+        progression = JSON.parse(
+
+            localStorage.getItem(
+                "entrepreneuriat_progression"
+            )
+
+        ) || [];
+
+    }
+
+    catch (erreur) {
+
+        progression = [];
+
+    }
+
+
+
+    //==============================================
+    // SÉCURITÉ
+    //==============================================
+
+    if (!Array.isArray(progression)) {
+
+        progression = [];
+
+    }
+
+
+
+    //==============================================
+    // SUPPRIMER LES DOUBLONS
+    //==============================================
+
+    progression = [
+        ...new Set(progression)
+    ];
+
+
+
+    return progression;
+
+}
 
 
 
@@ -2358,36 +2454,44 @@ const LEcon_ID = "entrepreneuriat_lecon_1";
 function verifierProgression() {
 
 
-    let progression = JSON.parse(
-
-        localStorage.getItem(
-            "entrepreneuriat_progression"
-        )
-
-    ) || [];
+    let progression =
+        recupererProgression();
 
 
-    //==============================================
-    // SI LA LEÇON EST DÉJÀ TERMINÉE
-    //==============================================
-
-    if (progression.includes(LEcon_ID)) {
-
-        let bouton = document.getElementById(
+    let bouton =
+        document.getElementById(
             "terminerLeconBtn"
         );
 
+
+    //==============================================
+    // COURS DÉJÀ TERMINÉ
+    //==============================================
+
+    if (
+        progression.includes(
+            COURS_ID
+        )
+    ) {
 
         if (bouton) {
 
             bouton.textContent =
                 "✓ Leçon déjà terminée";
 
-            bouton.classList.add("terminee");
+            bouton.classList.add(
+                "terminee"
+            );
 
             bouton.disabled = true;
 
         }
+
+
+        console.log(
+            "Cours déjà terminé :",
+            COURS_ID
+        );
 
     }
 
@@ -2406,20 +2510,43 @@ function terminerLecon() {
     // RÉCUPÉRER L'UTILISATEUR
     //==============================================
 
-    let utilisateur = JSON.parse(
+    let utilisateur = null;
 
-        localStorage.getItem(
-            "bmj_current_user"
-        )
 
-    );
+    try {
 
+        utilisateur = JSON.parse(
+
+            localStorage.getItem(
+                "bmj_current_user"
+            )
+
+        );
+
+    }
+
+    catch (erreur) {
+
+        utilisateur = null;
+
+    }
+
+
+
+    //==============================================
+    // VÉRIFICATION SESSION
+    //==============================================
 
     if (!utilisateur) {
 
         alert(
-            "⚠️ Votre session a expiré. Veuillez vous reconnecter."
+
+            "⚠️ Votre session a expiré." +
+
+            "\n\nVeuillez vous reconnecter."
+
         );
+
 
         window.location.href =
             "connexion.html";
@@ -2429,28 +2556,32 @@ function terminerLecon() {
     }
 
 
+
     //==============================================
     // RÉCUPÉRER LA PROGRESSION
     //==============================================
 
-    let progression = JSON.parse(
+    let progression =
+        recupererProgression();
 
-        localStorage.getItem(
-            "entrepreneuriat_progression"
+
+
+    //==============================================
+    // AJOUTER LE COURS
+    //==============================================
+
+    if (
+        !progression.includes(
+            COURS_ID
         )
+    ) {
 
-    ) || [];
-
-
-    //==============================================
-    // ÉVITER LES DOUBLONS
-    //==============================================
-
-    if (!progression.includes(LEcon_ID)) {
-
-        progression.push(LEcon_ID);
+        progression.push(
+            COURS_ID
+        );
 
     }
+
 
 
     //==============================================
@@ -2461,25 +2592,68 @@ function terminerLecon() {
 
         "entrepreneuriat_progression",
 
-        JSON.stringify(progression)
+        JSON.stringify(
+            progression
+        )
 
     );
 
 
+
     //==============================================
-    // CALCUL DE LA PROGRESSION
+    // CALCULER LA PROGRESSION GLOBALE
     //==============================================
 
-    const TOTAL_LECONS_CHAPITRE = 3;
+    const TOTAL_COURS =
+        4;
 
-    let nombreTerminees = progression.length;
 
-    let pourcentage = Math.round(
+    let coursTermines =
+        0;
 
-        (nombreTerminees / TOTAL_LECONS_CHAPITRE) * 100
+
+    const coursAutorises = [
+
+        "introduction_entrepreneuriat",
+
+        "idee_entreprise",
+
+        "business_model",
+
+        "lancer_entreprise"
+
+    ];
+
+
+    coursAutorises.forEach(
+
+        function (id) {
+
+            if (
+                progression.includes(id)
+            ) {
+
+                coursTermines++;
+
+            }
+
+        }
 
     );
 
+
+    let pourcentage =
+        Math.round(
+
+            (coursTermines / TOTAL_COURS) * 100
+
+        );
+
+
+
+    //==============================================
+    // SÉCURITÉ
+    //==============================================
 
     if (pourcentage > 100) {
 
@@ -2488,12 +2662,37 @@ function terminerLecon() {
     }
 
 
+    if (pourcentage < 0) {
+
+        pourcentage = 0;
+
+    }
+
+
+
     //==============================================
-    // ENREGISTRER LA PROGRESSION DANS L'UTILISATEUR
+    // SAUVEGARDER LE POURCENTAGE
     //==============================================
 
-    utilisateur.progressionEntrepreneuriat =
+    localStorage.setItem(
+
+        "entrepreneuriat_progression_pourcentage",
+
+        String(
+            pourcentage
+        )
+
+    );
+
+
+
+    //==============================================
+    // DONNÉES UTILISATEUR
+    //==============================================
+
+    utilisateur.entrepreneuriatProgression =
         pourcentage;
+
 
 
     //==============================================
@@ -2504,52 +2703,115 @@ function terminerLecon() {
 
         "bmj_current_user",
 
-        JSON.stringify(utilisateur)
+        JSON.stringify(
+            utilisateur
+        )
 
     );
+
 
 
     //==============================================
     // METTRE À JOUR BMJ UTILISATEURS
     //==============================================
 
-    let utilisateurs = JSON.parse(
-
-        localStorage.getItem(
-            "bmjUtilisateurs"
-        )
-
-    ) || [];
+    let utilisateurs = [];
 
 
-    let index = utilisateurs.findIndex(
+    try {
 
-        function (u) {
+        utilisateurs = JSON.parse(
 
-            return (
+            localStorage.getItem(
+                "bmjUtilisateurs"
+            )
 
-                u.id_bmj === utilisateur.id_bmj
+        ) || [];
 
-            );
+    }
 
-        }
+    catch (erreur) {
 
-    );
+        utilisateurs = [];
+
+    }
+
+
+
+    let index =
+        utilisateurs.findIndex(
+
+            function (u) {
+
+                return (
+
+                    u.id_bmj ===
+                    utilisateur.id_bmj
+
+                );
+
+            }
+
+        );
+
 
 
     if (index !== -1) {
 
-        utilisateurs[index] = utilisateur;
+        utilisateurs[index] =
+            utilisateur;
+
 
         localStorage.setItem(
 
             "bmjUtilisateurs",
 
-            JSON.stringify(utilisateurs)
+            JSON.stringify(
+                utilisateurs
+            )
 
         );
 
     }
+
+
+
+    //==============================================
+    // CONSOLE POUR VÉRIFICATION
+    //==============================================
+
+    console.log(
+        "================================="
+    );
+
+    console.log(
+        "COURS TERMINÉ"
+    );
+
+    console.log(
+        "Cours :",
+        COURS_ID
+    );
+
+    console.log(
+        "Progression :",
+        progression
+    );
+
+    console.log(
+        "Cours terminés :",
+        coursTermines + "/" + TOTAL_COURS
+    );
+
+    console.log(
+        "Progression globale :",
+        pourcentage + "%"
+    );
+
+    console.log(
+        "================================="
+    );
+
 
 
     //==============================================
@@ -2560,11 +2822,13 @@ function terminerLecon() {
 
         "🎉 Félicitations !\n\n" +
 
-        "Vous avez terminé la leçon : " +
+        "Vous avez terminé :\n" +
 
-        "Introduction à l'Entrepreneuriat.\n\n" +
+        COURS_NOM +
 
-        "Progression du chapitre : " +
+        "\n\n" +
+
+        "Progression de la formation : " +
 
         pourcentage +
 
@@ -2573,8 +2837,9 @@ function terminerLecon() {
     );
 
 
+
     //==============================================
-    // RETOUR AU COURS
+    // RETOUR À LA FORMATION
     //==============================================
 
     window.location.href =
@@ -2598,7 +2863,7 @@ function retourCours() {
 
 
 //==================================================
-// RETOUR EN HAUT DE PAGE
+// RETOUR EN HAUT
 //==================================================
 
 function remonter() {
@@ -2633,8 +2898,11 @@ document.addEventListener(
         if (bouton) {
 
             bouton.addEventListener(
+
                 "click",
+
                 terminerLecon
+
             );
 
         }

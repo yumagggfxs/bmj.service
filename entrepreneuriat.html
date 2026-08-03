@@ -1598,43 +1598,134 @@ header{
 
 
 //==================================================
+// CONFIGURATION DES COURS
+//==================================================
+
+const coursEntrepreneuriat = [
+
+    {
+        id: "introduction_entrepreneuriat",
+        nom: "Introduction à l'entrepreneuriat",
+        fichier: "introduction_entrepreneuriat.html"
+    },
+
+    {
+        id: "idee_entreprise",
+        nom: "Trouver une idée d'entreprise",
+        fichier: "idee_entreprise.html"
+    },
+
+    {
+        id: "business_model",
+        nom: "Construire son Business Model",
+        fichier: "business_model.html"
+    },
+
+    {
+        id: "lancer_entreprise",
+        nom: "Lancer son entreprise",
+        fichier: "lancer_entreprise.html"
+    }
+
+];
+
+
+
+//==================================================
 // CHARGEMENT DE LA PAGE
 //==================================================
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        //==========================================
+        // UTILISATEUR
+        //==========================================
+
+        let utilisateur = null;
 
 
-    //==============================================
-    // UTILISATEUR CONNECTÉ
-    //==============================================
+        try {
 
-    let utilisateur = JSON.parse(
+            utilisateur = JSON.parse(
 
-        localStorage.getItem("bmj_current_user")
+                localStorage.getItem(
+                    "bmj_current_user"
+                )
 
-    );
+            );
+
+        }
+
+        catch (erreur) {
+
+            utilisateur = null;
+
+        }
 
 
-    //==============================================
-    // VÉRIFICATION CONNEXION
-    //==============================================
 
-    if (!utilisateur) {
+        //==========================================
+        // VÉRIFICATION CONNEXION
+        //==========================================
 
-        window.location.href = "connexion.html";
+        if (!utilisateur) {
 
-        return;
+            window.location.href =
+                "connexion.html";
+
+            return;
+
+        }
+
+
+
+        //==========================================
+        // AFFICHAGE UTILISATEUR
+        //==========================================
+
+        afficherUtilisateur(
+            utilisateur
+        );
+
+
+
+        //==========================================
+        // AFFICHER PROGRESSION
+        //==========================================
+
+        afficherProgression();
+
+
+
+        //==========================================
+        // AFFICHER STATUT DES COURS
+        //==========================================
+
+        afficherStatutCours();
 
     }
 
+);
+
+
+
+//==================================================
+// AFFICHER UTILISATEUR
+//==================================================
+
+function afficherUtilisateur(utilisateur) {
+
 
     //==============================================
-    // AFFICHAGE DU NOM
+    // NOM
     //==============================================
 
-    let nomUtilisateur = document.getElementById(
-        "nomUtilisateur"
-    );
+    let nomUtilisateur =
+        document.getElementById(
+            "nomUtilisateur"
+        );
 
 
     if (nomUtilisateur) {
@@ -1648,13 +1739,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
+
     //==============================================
-    // AFFICHAGE DE LA PHOTO
+    // PHOTO
     //==============================================
 
-    let photoUtilisateur = document.getElementById(
-        "photoUtilisateur"
-    );
+    let photoUtilisateur =
+        document.getElementById(
+            "photoUtilisateur"
+        );
 
 
     if (photoUtilisateur) {
@@ -1667,85 +1760,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-
-    //==============================================
-    // AFFICHAGE DE LA PROGRESSION
-    //==============================================
-
-    afficherProgression();
-
-});
-
-
-
-//==================================================
-// CHAPITRES DU COURS
-//==================================================
-
-const chapitresEntrepreneuriat = [
-
-    {
-        id: "entrepreneuriat_chapitre_1",
-        fichier: "introduction_entrepreneuriat.html"
-    },
-
-    {
-        id: "entrepreneuriat_chapitre_2",
-        fichier: "idee_entreprise.html"
-    },
-
-    {
-        id: "entrepreneuriat_chapitre_3",
-        fichier: "business_model.html"
-    },
-
-    {
-        id: "entrepreneuriat_chapitre_4",
-        fichier: "creation_entreprise.html"
-    },
-
-    {
-        id: "entrepreneuriat_chapitre_5",
-        fichier: "gestion_entreprise.html"
-    }
-
-];
-
-
-
-//==================================================
-// OUVRIR UN COURS
-//==================================================
-
-function ouvrirCours(fichier) {
-
-    if (!fichier) {
-
-        alert(
-            "❌ Le cours demandé est introuvable."
-        );
-
-        return;
-
-    }
-
-
-    window.location.href = fichier;
-
-}
-
-
-
-//==================================================
-// COMMENCER LA FORMATION
-//==================================================
-
-function commencerFormation() {
-
-    ouvrirCours(
-        "introduction_entrepreneuriat.html"
-    );
-
 }
 
 
@@ -1756,14 +1770,33 @@ function commencerFormation() {
 
 function recupererProgression() {
 
-    let progression = JSON.parse(
 
-        localStorage.getItem(
-            "entrepreneuriat_progression"
-        )
+    let progression = [];
 
-    ) || [];
 
+    try {
+
+        progression = JSON.parse(
+
+            localStorage.getItem(
+                "entrepreneuriat_progression"
+            )
+
+        ) || [];
+
+    }
+
+    catch (erreur) {
+
+        progression = [];
+
+    }
+
+
+
+    //==============================================
+    // SÉCURITÉ
+    //==============================================
 
     if (!Array.isArray(progression)) {
 
@@ -1772,11 +1805,65 @@ function recupererProgression() {
     }
 
 
-    return [
 
+    //==============================================
+    // SUPPRIMER LES DOUBLONS
+    //==============================================
+
+    progression = [
         ...new Set(progression)
-
     ];
+
+
+
+    //==============================================
+    // NE GARDER QUE LES COURS VALIDES
+    //==============================================
+
+    progression =
+        progression.filter(
+            function (id) {
+
+                return coursEntrepreneuriat.some(
+
+                    function (cours) {
+
+                        return cours.id === id;
+
+                    }
+
+                );
+
+            }
+
+        );
+
+
+
+    return progression;
+
+}
+
+
+
+//==================================================
+// SAUVEGARDER LA PROGRESSION
+//==================================================
+
+function sauvegarderProgression(
+    progression
+) {
+
+
+    localStorage.setItem(
+
+        "entrepreneuriat_progression",
+
+        JSON.stringify(
+            progression
+        )
+
+    );
 
 }
 
@@ -1789,24 +1876,47 @@ function recupererProgression() {
 function afficherProgression() {
 
 
-    let progression = recupererProgression();
+    let progression =
+        recupererProgression();
 
 
-    let total = chapitresEntrepreneuriat.length;
+    let total =
+        coursEntrepreneuriat.length;
 
 
-    let termines = progression.length;
+    let termines =
+        progression.length;
+
 
 
     //==============================================
     // POURCENTAGE
     //==============================================
 
-    let pourcentage = Math.round(
+    let pourcentage = 0;
 
-        (termines / total) * 100
 
-    );
+    if (total > 0) {
+
+        pourcentage = Math.round(
+
+            (termines / total) * 100
+
+        );
+
+    }
+
+
+
+    //==============================================
+    // SÉCURITÉ 0-100
+    //==============================================
+
+    if (pourcentage < 0) {
+
+        pourcentage = 0;
+
+    }
 
 
     if (pourcentage > 100) {
@@ -1816,13 +1926,15 @@ function afficherProgression() {
     }
 
 
+
     //==============================================
     // BARRE
     //==============================================
 
-    let progressBar = document.getElementById(
-        "progressBar"
-    );
+    let progressBar =
+        document.getElementById(
+            "progressBar"
+        );
 
 
     if (progressBar) {
@@ -1833,13 +1945,15 @@ function afficherProgression() {
     }
 
 
+
     //==============================================
     // VALEUR
     //==============================================
 
-    let progressValue = document.getElementById(
-        "progressValue"
-    );
+    let progressValue =
+        document.getElementById(
+            "progressValue"
+        );
 
 
     if (progressValue) {
@@ -1849,55 +1963,176 @@ function afficherProgression() {
 
     }
 
+
+
+    //==============================================
+    // TEXTE OPTIONNEL
+    //==============================================
+
+    let progressText =
+        document.getElementById(
+            "progressText"
+        );
+
+
+    if (progressText) {
+
+        progressText.textContent =
+
+            termines +
+            "/" +
+            total +
+            " cours terminés";
+
+    }
+
+
+
+    //==============================================
+    // SAUVEGARDE DU POURCENTAGE
+    //==============================================
+
+    localStorage.setItem(
+
+        "entrepreneuriat_progression_pourcentage",
+
+        String(
+            pourcentage
+        )
+
+    );
+
 }
 
 
 
 //==================================================
-// MARQUER UN CHAPITRE TERMINÉ
+// MARQUER UN COURS TERMINÉ
 //==================================================
 
-function marquerChapitreTermine(idChapitre) {
+function marquerCoursTermine(
+    idCours
+) {
 
 
-    if (!idChapitre) {
+    //==============================================
+    // VÉRIFICATION ID
+    //==============================================
+
+    if (!idCours) {
+
+        console.error(
+            "ID du cours manquant."
+        );
 
         return;
 
     }
 
 
-    let progression =
-        recupererProgression();
+
+    //==============================================
+    // VÉRIFIER QUE LE COURS EXISTE
+    //==============================================
+
+    let coursExiste =
+        coursEntrepreneuriat.some(
+
+            function (cours) {
+
+                return cours.id === idCours;
+
+            }
+
+        );
 
 
-    if (!progression.includes(idChapitre)) {
+    if (!coursExiste) {
 
-        progression.push(idChapitre);
+        console.error(
+            "Cours inconnu :",
+            idCours
+        );
+
+        return;
 
     }
 
 
-    localStorage.setItem(
 
-        "entrepreneuriat_progression",
+    //==============================================
+    // RÉCUPÉRER PROGRESSION
+    //==============================================
 
-        JSON.stringify(progression)
+    let progression =
+        recupererProgression();
 
+
+
+    //==============================================
+    // AJOUTER LE COURS
+    //==============================================
+
+    if (
+        !progression.includes(
+            idCours
+        )
+    ) {
+
+        progression.push(
+            idCours
+        );
+
+    }
+
+
+
+    //==============================================
+    // SAUVEGARDER
+    //==============================================
+
+    sauvegarderProgression(
+        progression
     );
 
 
+
+    //==============================================
+    // ACTUALISER AFFICHAGE
+    //==============================================
+
     afficherProgression();
+
+    afficherStatutCours();
+
+
+
+    //==============================================
+    // INFORMATIONS DEBUG
+    //==============================================
+
+    console.log(
+        "Cours terminé :",
+        idCours
+    );
+
+
+    console.log(
+        "Progression :",
+        progression
+    );
 
 }
 
 
 
 //==================================================
-// VÉRIFIER SI UN CHAPITRE EST TERMINÉ
+// VÉRIFIER SI UN COURS EST TERMINÉ
 //==================================================
 
-function chapitreTermine(idChapitre) {
+function coursTermine(
+    idCours
+) {
 
 
     let progression =
@@ -1905,7 +2140,7 @@ function chapitreTermine(idChapitre) {
 
 
     return progression.includes(
-        idChapitre
+        idCours
     );
 
 }
@@ -1913,27 +2148,333 @@ function chapitreTermine(idChapitre) {
 
 
 //==================================================
-// ACTUALISATION DE LA PROGRESSION
+// AFFICHER STATUT DES COURS
 //==================================================
 
-window.addEventListener(
-    "storage",
-    function (event) {
+function afficherStatutCours() {
 
 
-        if (
+    let progression =
+        recupererProgression();
 
-            event.key ===
-            "entrepreneuriat_progression"
 
+
+    //==============================================
+    // CARTES DES COURS
+    //==============================================
+
+    let cartes =
+        document.querySelectorAll(
+            ".chapitre-card"
+        );
+
+
+
+    cartes.forEach(
+
+        function (
+            carte,
+            index
         ) {
 
-            afficherProgression();
+
+            let cours =
+                coursEntrepreneuriat[index];
+
+
+            if (!cours) {
+
+                return;
+
+            }
+
+
+
+            //======================================
+            // COURS TERMINÉ
+            //======================================
+
+            if (
+                progression.includes(
+                    cours.id
+                )
+            ) {
+
+
+                carte.classList.add(
+                    "termine"
+                );
+
+
+
+                let bouton =
+                    carte.querySelector(
+                        "button"
+                    );
+
+
+                if (bouton) {
+
+                    bouton.innerHTML =
+                        "✓ Terminé";
+
+                }
+
+            }
 
         }
 
+    );
+
+}
+
+
+
+//==================================================
+// OUVRIR UN COURS
+//==================================================
+
+function ouvrirCours(
+    fichier
+) {
+
+
+    if (!fichier) {
+
+        alert(
+            "❌ Le cours demandé est introuvable."
+        );
+
+        return;
+
     }
-);
+
+
+
+    window.location.href =
+        fichier;
+
+}
+
+
+
+//==================================================
+// COMMENCER LA FORMATION
+//==================================================
+
+function commencerFormation() {
+
+
+    ouvrirCours(
+
+        "introduction_entrepreneuriat.html"
+
+    );
+
+}
+
+
+
+//==================================================
+// ACCÉDER À UN COURS
+//==================================================
+
+function accederCours(
+    fichier,
+    idCours
+) {
+
+
+    if (!fichier) {
+
+        alert(
+            "❌ Cette leçon n'est pas disponible."
+        );
+
+        return;
+
+    }
+
+
+
+    //==============================================
+    // INFORMATIONS
+    //==============================================
+
+    console.log(
+        "Ouverture du cours :",
+        idCours
+    );
+
+
+
+    window.location.href =
+        fichier;
+
+}
+
+
+
+//==================================================
+// CERTIFICAT
+//==================================================
+
+function obtenirCertificat() {
+
+
+    let progression =
+        recupererProgression();
+
+
+    let total =
+        coursEntrepreneuriat.length;
+
+
+
+    //==============================================
+    // VÉRIFICATION
+    //==============================================
+
+    if (
+        progression.length <
+        total
+    ) {
+
+        alert(
+
+            "🔒 Vous devez terminer les " +
+
+            total +
+
+            " cours de la formation " +
+
+            "Entrepreneuriat avant de pouvoir " +
+
+            "obtenir votre certificat."
+
+        );
+
+        return;
+
+    }
+
+
+
+    //==============================================
+    // UTILISATEUR
+    //==============================================
+
+    let utilisateur = null;
+
+
+    try {
+
+        utilisateur = JSON.parse(
+
+            localStorage.getItem(
+                "bmj_current_user"
+            )
+
+        );
+
+    }
+
+    catch (erreur) {
+
+        utilisateur = null;
+
+    }
+
+
+
+    if (!utilisateur) {
+
+        alert(
+            "⚠️ Utilisateur introuvable."
+        );
+
+        window.location.href =
+            "connexion.html";
+
+        return;
+
+    }
+
+
+
+    //==============================================
+    // COURS SUIVIS
+    //==============================================
+
+    if (!utilisateur.coursSuivis) {
+
+        utilisateur.coursSuivis = [];
+
+    }
+
+
+
+    if (
+        !utilisateur.coursSuivis.includes(
+            "Entrepreneuriat"
+        )
+    ) {
+
+        utilisateur.coursSuivis.push(
+            "Entrepreneuriat"
+        );
+
+    }
+
+
+
+    //==============================================
+    // PROGRESSION
+    //==============================================
+
+    utilisateur.entrepreneuriatProgression =
+        100;
+
+
+
+    //==============================================
+    // SAUVEGARDE
+    //==============================================
+
+    localStorage.setItem(
+
+        "bmj_current_user",
+
+        JSON.stringify(
+            utilisateur
+        )
+
+    );
+
+
+
+    //==============================================
+    // REDIRECTION
+    //==============================================
+
+    window.location.href =
+        "certificat.html";
+
+}
+
+
+
+//==================================================
+// RETOUR DASHBOARD
+//==================================================
+
+function retourDashboard() {
+
+
+    window.location.href =
+        "dashboard.html";
+
+}
 
 
 
@@ -1946,9 +2487,10 @@ document.addEventListener(
     function () {
 
 
-        let bouton = document.querySelector(
-            ".hero-content button"
-        );
+        let bouton =
+            document.querySelector(
+                ".hero-content button"
+            );
 
 
         if (bouton) {
@@ -1961,12 +2503,13 @@ document.addEventListener(
         }
 
     }
+
 );
 
 
 
 //==================================================
-// ANIMATION DE LA BARRE
+// ANIMATION BARRE
 //==================================================
 
 document.addEventListener(
@@ -1988,202 +2531,35 @@ document.addEventListener(
         }
 
     }
+
 );
 
 
 
 //==================================================
-// PROTECTION DES CHAPITRES
+// ACTUALISATION AUTOMATIQUE
 //==================================================
 
-function accederChapitre(
-    fichier,
-    idChapitre
-) {
+window.addEventListener(
+    "storage",
+    function (event) {
 
 
-    if (!fichier) {
+        if (
 
-        alert(
-            "❌ Cette leçon n'est pas disponible."
-        );
+            event.key ===
+            "entrepreneuriat_progression"
 
-        return;
+        ) {
 
-    }
+            afficherProgression();
 
-
-    window.location.href = fichier;
-
-}
-
-
-
-//==================================================
-// CERTIFICAT
-//==================================================
-
-function obtenirCertificat() {
-
-
-    let progression =
-        recupererProgression();
-
-
-    if (
-        progression.length <
-        chapitresEntrepreneuriat.length
-    ) {
-
-        alert(
-
-            "🔒 Vous devez terminer les 5 chapitres " +
-
-            "avant de pouvoir obtenir votre certificat."
-
-        );
-
-        return;
-
-    }
-
-
-    let utilisateur = JSON.parse(
-
-        localStorage.getItem(
-            "bmj_current_user"
-        )
-
-    );
-
-
-    if (!utilisateur) {
-
-        alert(
-            "⚠️ Utilisateur introuvable."
-        );
-
-        window.location.href =
-            "connexion.html";
-
-        return;
-
-    }
-
-
-    //==============================================
-    // ENREGISTRER LE COURS TERMINÉ
-    //==============================================
-
-    if (!utilisateur.coursSuivis) {
-
-        utilisateur.coursSuivis = [];
-
-    }
-
-
-    if (
-        !utilisateur.coursSuivis.includes(
-            "Entrepreneuriat"
-        )
-    ) {
-
-        utilisateur.coursSuivis.push(
-            "Entrepreneuriat"
-        );
-
-    }
-
-
-    //==============================================
-    // SAUVEGARDE
-    //==============================================
-
-    localStorage.setItem(
-
-        "bmj_current_user",
-
-        JSON.stringify(utilisateur)
-
-    );
-
-
-    //==============================================
-    // PAGE CERTIFICAT
-    //==============================================
-
-    window.location.href =
-        "certificat.html";
-
-}
-
-
-
-//==================================================
-// RETOUR TABLEAU DE BORD
-//==================================================
-
-function retourDashboard() {
-
-    window.location.href =
-        "dashboard.html";
-
-}
-
-
-
-//==================================================
-// AFFICHER LE STATUT DES CHAPITRES
-//==================================================
-
-function afficherStatutChapitres() {
-
-
-    let progression =
-        recupererProgression();
-
-
-    let cartes =
-        document.querySelectorAll(
-            ".chapitre-card"
-        );
-
-
-    cartes.forEach(
-        function (carte, index) {
-
-
-            if (
-                progression.includes(
-                    chapitresEntrepreneuriat[index]?.id
-                )
-            ) {
-
-
-                carte.classList.add(
-                    "termine"
-                );
-
-
-                let bouton =
-                    carte.querySelector(
-                        "button"
-                    );
-
-
-                if (bouton) {
-
-                    bouton.innerHTML =
-                        "✓ Terminé";
-
-                }
-
-            }
+            afficherStatutCours();
 
         }
-    );
 
-}
+    }
+);
 
 
 
@@ -2197,7 +2573,7 @@ document.addEventListener(
 
         afficherProgression();
 
-        afficherStatutChapitres();
+        afficherStatutCours();
 
     }
 );
