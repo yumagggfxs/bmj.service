@@ -498,19 +498,129 @@
                 Créer un compte
 
             </h2>
-          <!--========================================
+          <form id="inscriptionForm">
+
+    <!--========================================
+        INFORMATIONS PERSONNELLES
+    =========================================-->
+    <div class="row">
+        <div class="form-group">
+            <label>Nom complet</label>
+            <input type="text" id="nom" placeholder="Votre nom complet" required>
+        </div>
+
+        <div class="form-group">
+            <label>Sexe</label>
+            <select id="sexe" required>
+                <option value="">Sélectionner</option>
+                <option value="Homme">Homme</option>
+                <option value="Femme">Femme</option>
+            </select>
+        </div>
+    </div>
+
+    <!--========================================
+        CONTACT
+    =========================================-->
+    <div class="row">
+        <div class="form-group">
+            <label>Téléphone</label>
+            <input type="tel" id="telephone" placeholder="+243..." required>
+        </div>
+
+        <div class="form-group">
+            <label>Adresse e-mail</label>
+            <input type="email" id="email" placeholder="email@gmail.com" required>
+        </div>
+    </div>
+
+    <!--========================================
+        LOCALISATION
+    =========================================-->
+    <div class="row">
+        <div class="form-group">
+            <label>Pays</label>
+            <input type="text" id="pays" placeholder="Votre pays" required>
+        </div>
+
+        <div class="form-group">
+            <label>Ville</label>
+            <input type="text" id="ville" placeholder="Votre ville" required>
+        </div>
+    </div>
+
+    <!--========================================
+        FORMATION
+    =========================================-->
+    <div class="row">
+        <div class="form-group">
+            <label>Domaine de formation</label>
+            <select id="domaine" required>
+                <option value="">Choisir un domaine</option>
+                <option value="Entrepreneuriat">Entrepreneuriat</option>
+                <option value="Leadership">Leadership</option>
+                <option value="Marketing Digital">Marketing Digital</option>
+                <option value="Santé et Environnement">Santé et Environnement</option>
+                <option value="Éducation">Éducation</option>
+                <option value="Informatique">Informatique</option>
+                <option value="Finance">Finance</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Niveau</label>
+            <select id="niveau" required>
+                <option value="">Choisir un niveau</option>
+                <option value="Débutant">Débutant</option>
+                <option value="Intermédiaire">Intermédiaire</option>
+                <option value="Avancé">Avancé</option>
+            </select>
+        </div>
+    </div>
+
+    <!--========================================
+        SECURITE
+    =========================================-->
+    <div class="row">
+        <div class="form-group">
+            <label>Mot de passe</label>
+            <input type="password" id="password" placeholder="********" required>
+        </div>
+
+        <div class="form-group">
+            <label>Confirmer le mot de passe</label>
+            <input type="password" id="confirmPassword" placeholder="********" required>
+        </div>
+    </div>
+
+    <!--========================================
+        PHOTO PROFIL
+    =========================================-->
+    <div class="form-group photo-section">
+        <label>Photo de profil</label>
+        <div class="photo-preview">
+            <img id="previewPhoto" src="images/user.png" alt="Profil">
+        </div>
+        <input type="file" id="photo" accept="image/*">
+        <small>Ajoutez une photo pour personnaliser votre profil.</small>
+    </div>
+
+    <!--========================================
+        CONDITIONS
+    =========================================-->
+    <div class="form-group">
+        <label>
+            <input type="checkbox" id="conditions" required>
+            J'accepte les conditions d'utilisation de BMJ SERVICE.
+        </label>
+    </div>
+
+    <!--========================================
         BOUTON INSCRIPTION
-=========================================-->
-
-<button 
-type="submit"
-id="btnInscription">
-
-<i class="fa-solid fa-user-plus"></i>
-
-Créer mon compte
-
-</button>
+    =========================================-->
+    <button type="submit" id="btnInscription">
+        <i class="fa-solid fa-user-plus"></i> Créer mon compte
+    </button>
 
 </form>
             <div class="login">
@@ -594,16 +704,13 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const { createClient } = supabase;
 const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-
 // ==========================================
 // SCRIPT D'INSCRIPTION BMJ SERVICE
 // ==========================================
-document.getElementById("inscriptionForm")
-.addEventListener("submit", async function(e){
-
+document.getElementById("inscriptionForm").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    // RECUPERATION DES INFORMATIONS
+    // 1. RECUPERATION DES INFORMATIONS
     let nom = document.getElementById("nom").value.trim();
     let sexe = document.getElementById("sexe").value;
     let telephone = document.getElementById("telephone").value.trim();
@@ -617,109 +724,122 @@ document.getElementById("inscriptionForm")
     let conditions = document.getElementById("conditions").checked;
     let fichierPhoto = document.getElementById("photo").files[0];
 
-    // VERIFICATION DES CHAMPS
-    if(nom === "" || sexe === "" || telephone === "" || email === "" || pays === "" || ville === "" || domaine === "" || niveau === "" || password === "" || confirmPassword === ""){
-        alert("Veuillez remplir tous les champs.");
+    // 2. VERIFICATION DES CHAMPS VIDES
+    if (nom === "" || sexe === "" || telephone === "" || email === "" || pays === "" || ville === "" || domaine === "" || niveau === "" || password === "" || confirmPassword === "") {
+        alert("Veuillez remplir tous les champs obligatoires.");
         return;
     }
 
-    // VERIFICATION CONDITIONS
-    if(!conditions){
+    // 3. VERIFICATION DE LA CASE DES CONDITIONS
+    if (!conditions) {
         alert("Vous devez accepter les conditions d'utilisation.");
         return;
     }
 
-    // VERIFICATION MOT DE PASSE
-    if(password !== confirmPassword){
+    // 4. VERIFICATION DES MOTS DE PASSE
+    if (password !== confirmPassword) {
         alert("Les mots de passe ne correspondent pas.");
         return;
     }
 
-    // VERIFICATION EMAIL EXISTANT DANS SUPABASE
-    let { data: utilisateurExiste, error: errCheck } = await _supabase
-        .from('utilisateurs')
-        .select('email')
-        .eq('email', email);
+    // Bouton de chargement (Optionnel mais recommandé pour l'UI)
+    let btnSubmit = document.getElementById("btnInscription");
+    btnSubmit.disabled = true;
+    btnSubmit.innerText = "Création en cours...";
 
-    if(errCheck) {
-        console.error("Erreur lors de la vérification de l'email :", errCheck.message);
-    }
-
-    if(utilisateurExiste && utilisateurExiste.length > 0){
-        alert("Cette adresse email existe déjà.");
-        return;
-    }
-
-    // EMAILS ADMINISTRATEURS BMJ
-    const emailsAdministrateurs = [
-        "direction@bmjservice.com",
-        "administration@bmjservice.com",
-        "contact@bmjservice.com",
-        "formation@bmjservice.com"
-    ];
-
-    let estAdministrateur = emailsAdministrateurs.includes(email);
-    let statutCompte = estAdministrateur ? "Administrateur" : "Actif";
-    let id_bmj = "BMJ" + Date.now();
-
-    // FONCTION DE CREATION ET ENREGISTREMENT
-    async function creerCompte(photoFinale) {
-        let utilisateurData = {
-            id_bmj: id_bmj,
-            nom: nom,
-            sexe: sexe,
-            telephone: telephone,
-            email: email,
-            pays: pays,
-            ville: ville,
-            domaine: domaine,
-            niveau: niveau,
-            password: password,
-            photo: photoFinale,
-            statut: statutCompte,
-            role: estAdministrateur ? "admin" : "apprenant",
-            premium: estAdministrateur,
-            progression: 0,
-            certificats: [],
-            chapitres_valides: [],
-            cours_suivis: []
-        };
-
-        // INSERTION DANS LA BASE SUPABASE
-        let { data, error } = await _supabase
+    try {
+        // 5. VERIFICATION EMAIL EXISTANT DANS SUPABASE
+        let { data: utilisateurExiste, error: errCheck } = await _supabase
             .from('utilisateurs')
-            .insert([utilisateurData])
-            .select();
+            .select('email')
+            .eq('email', email);
 
-        if (error) {
-            console.error("Erreur Supabase :", error.message);
-            alert("Erreur lors de l'inscription : " + error.message);
+        if (errCheck) {
+            throw new Error(errCheck.message);
+        }
+
+        if (utilisateurExiste && utilisateurExiste.length > 0) {
+            alert("Cette adresse email existe déjà.");
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = '<i class="fa-solid fa-user-plus"></i> Créer mon compte';
             return;
         }
 
-        // SAUVEGARDE DE LA SESSION COURANTE
-        let utilisateurEnregistre = data[0];
-        localStorage.setItem("bmj_current_user", JSON.stringify(utilisateurEnregistre));
+        // 6. GESTION DES ADMINISTRATEURS BMJ
+        const emailsAdministrateurs = [
+            "direction@bmjservice.com",
+            "administration@bmjservice.com",
+            "contact@bmjservice.com",
+            "formation@bmjservice.com"
+        ];
 
-        // MESSAGES ET REDIRECTION
-        if(estAdministrateur){
-            alert("👑 Compte administrateur BMJ SERVICE créé !\n\nIdentifiant BMJ : " + id_bmj + "\n\nStatut : Administrateur\nPremium : Activé automatiquement.");
-        } else {
-            alert("✅ Compte créé avec succès !\n\nVotre identifiant BMJ est : " + id_bmj);
+        let estAdministrateur = emailsAdministrateurs.includes(email);
+        let statutCompte = estAdministrateur ? "Administrateur" : "Actif";
+        let id_bmj = "BMJ" + Date.now();
+
+        // 7. FONCTION DE CREATION ET ENREGISTREMENT
+        async function creerCompte(photoFinale) {
+            let utilisateurData = {
+                id_bmj: id_bmj,
+                nom: nom,
+                sexe: sexe,
+                telephone: telephone,
+                email: email,
+                pays: pays,
+                ville: ville,
+                domaine: domaine,
+                niveau: niveau,
+                password: password,
+                photo: photoFinale,
+                statut: statutCompte,
+                role: estAdministrateur ? "admin" : "apprenant",
+                premium: estAdministrateur,
+                progression: 0,
+                certificats: [],
+                chapitres_valides: [],
+                cours_suivis: []
+            };
+
+            // INSERTION DANS LA BASE SUPABASE
+            let { data, error } = await _supabase
+                .from('utilisateurs')
+                .insert([utilisateurData])
+                .select();
+
+            if (error) {
+                throw new Error(error.message);
+            }
+
+            // SAUVEGARDE DE LA SESSION COURANTE
+            let utilisateurEnregistre = data[0];
+            localStorage.setItem("bmj_current_user", JSON.stringify(utilisateurEnregistre));
+
+            // MESSAGES ET REDIRECTION
+            if (estAdministrateur) {
+                alert("👑 Compte administrateur BMJ SERVICE créé !\n\nIdentifiant BMJ : " + id_bmj + "\n\nStatut : Administrateur\nPremium : Activé automatiquement.");
+            } else {
+                alert("✅ Compte créé avec succès !\n\nVotre identifiant BMJ est : " + id_bmj);
+            }
+
+            window.location.href = "dashboard.html";
         }
 
-        window.location.href = "dashboard.html";
-    }
+        // 8. GESTION DE LA PHOTO DE PROFIL
+        if (fichierPhoto) {
+            let lecteur = new FileReader();
+            lecteur.onload = function(e) {
+                creerCompte(e.target.result);
+            };
+            lecteur.readAsDataURL(fichierPhoto);
+        } else {
+            creerCompte("images/user.png");
+        }
 
-    // GESTION DE LA PHOTO DE PROFIL
-    if(fichierPhoto){
-        let lecteur = new FileReader();
-        lecteur.onload = function(e){
-            creerCompte(e.target.result);
-        };
-        lecteur.readAsDataURL(fichierPhoto);
-    } else {
-        creerCompte("images/user.png");
+    } catch (error) {
+        console.error("Erreur :", error.message);
+        alert("Une erreur est survenue : " + error.message);
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = '<i class="fa-solid fa-user-plus"></i> Créer mon compte';
     }
 });
 </script>
