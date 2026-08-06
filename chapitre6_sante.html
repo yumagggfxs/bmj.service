@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Chapitre 6 : Gestion des Déchets et Lutte Anti-Vectorielle</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & IMMERSIF
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* LAYOUT GLOBAL DE LA PAGE COURS */
+        .page-wrapper {
+            max-width: 1300px;
+            margin: 105px auto 50px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+
+        /* SOMMAIRE LATÉRAL (STICKY) */
+        .sidebar-sommaire {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            height: calc(100vh - 130px);
+            position: sticky;
+            top: 95px;
+            overflow-y: auto;
+        }
+
+        .sidebar-sommaire h3 {
+            color: #145A86;
+            font-size: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 12px;
+        }
+
+        .sommaire-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sommaire-list li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #555;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sommaire-list li a:hover, .sommaire-list li a.active {
+            background: #e8f1f8;
+            color: #145A86;
+            transform: translateX(5px);
+        }
+
+        .sommaire-list li a i {
+            color: #D4AF37;
+            font-size: 16px;
+        }
+
+        /* CONTENEUR PRINCIPAL DU COURS */
+        .course-main-content {
+            background: white;
+            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .breadcrumb {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+        }
+
+        .chapter-hero {
+            background: linear-gradient(135deg, #145A86, #0c3854);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(20,90,134,0.2);
+        }
+
+        .chapter-hero span {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chapter-hero h1 {
+            font-size: 30px;
+            margin: 15px 0 10px 0;
+            line-height: 1.3;
+        }
+
+        .chapter-hero p {
+            color: #d2e4f0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* STYLING DES 5 LEÇONS */
+        .lecon-section {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .lecon-section:hover {
+            box-shadow: 0 10px 30px rgba(20, 90, 134, 0.08);
+            border-color: #cbd5e1;
+        }
+
+        .lecon-header-title {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 20px;
+        }
+
+        .lecon-badge-num {
+            background: #145A86;
+            color: #D4AF37;
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 6px 15px rgba(20,90,134,0.2);
+            flex-shrink: 0;
+        }
+
+        .lecon-header-title h2 {
+            color: #145A86;
+            font-size: 22px;
+            line-height: 1.3;
+        }
+
+        .lecon-body p {
+            line-height: 1.8;
+            color: #475569;
+            margin-bottom: 20px;
+            font-size: 15px;
+            text-align: justify;
+        }
+
+        .lecon-body h4 {
+            color: #145A86;
+            font-size: 17px;
+            margin: 25px 0 12px 0;
+        }
+
+        .lecon-body ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: #475569;
+            line-height: 1.8;
+        }
+
+        .lecon-body li {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        /* ILLUSTRATIONS INTÉGRÉES */
+        .lecon-image-container {
+            margin: 25px 0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .lecon-image-container img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .lecon-image-container:hover img {
+            transform: scale(1.03);
+        }
+
+        .image-caption {
+            background: #f8fafc;
+            padding: 10px 15px;
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            font-style: italic;
+        }
+
+        /* ENCADRÉS EXPERT & EXEMPLES */
+        .box-expert {
+            background: #f8fafc;
+            border-left: 5px solid #145A86;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .box-expert h5 {
+            color: #145A86;
+            margin-bottom: 8px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .box-expert p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .box-warning {
+            background: #fef2f2;
+            border-left: 5px solid #ef4444;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .box-warning h5 {
+            color: #991b1b;
+            margin-bottom: 8px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .box-warning p {
+            margin: 0;
+            color: #7f1d1d;
+            font-size: 14px;
+        }
+
+        /* BOUTONS DE VALIDATION ET NAVIGATION */
+        .chapter-footer-actions {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-valider-chap {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.25);
+        }
+
+        .btn-valider-chap:hover {
+            background: #219653;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(39, 174, 96, 0.35);
+        }
+
+        .btn-suiv-chap {
+            background: #145A86;
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(20,90,134,0.25);
+        }
+
+        .btn-suiv-chap:hover {
+            background: #D4AF37;
+            color: #145A86;
+            transform: translateY(-3px);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 60px;
+            line-height: 2;
+        }
+
+        /* RESPONSIVE MOBILE */
+        @media(max-width: 1024px) {
+            .page-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-sommaire {
+                display: none;
+            }
+        }
+
+        @media(max-width: 600px) {
+            header { padding: 0 15px; }
+            .course-main-content { padding: 20px; }
+            .chapter-footer-actions { flex-direction: column; gap: 15px; }
+            .btn-valider-chap, .btn-suiv-chap { width: 100%; justify-content: center; }
+            .lecon-header-title { flex-direction: column; align-items: flex-start; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Santé & Environnement</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- WRAPPER GLOBAL -->
+    <div class="page-wrapper">
+
+        <!-- SOMMAIRE LATÉRAL STICKY -->
+        <aside class="sidebar-sommaire">
+            <h3><i class="fa-solid fa-list-check"></i> Sommaire du Chapitre</h3>
+            <ul class="sommaire-list">
+                <li><a href="#lecon61"><i class="fa-solid fa-circle-dot"></i> 6.1 Gestion des déchets solides</a></li>
+                <li><a href="#lecon62"><i class="fa-solid fa-circle-dot"></i> 6.2 Déchets dangereux et médicaux</a></li>
+                <li><a href="#lecon63"><i class="fa-solid fa-circle-dot"></i> 6.3 Écologie des vecteurs de maladies</a></li>
+                <li><a href="#lecon64"><i class="fa-solid fa-circle-dot"></i> 6.4 Lutte intégrée anti-vectorielle (LIV)</a></li>
+                <li><a href="#lecon65"><i class="fa-solid fa-circle-dot"></i> 6.5 Gestion des gîtes larvaires</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENU CENTRAL -->
+        <main class="course-main-content">
+            <div class="breadcrumb">
+                <a href="sante_environnement.html"><i class="fa-solid fa-arrow-left"></i> Retour au menu des modules</a>
+            </div>
+
+            <div class="chapter-hero">
+                <span>Module 1 - Chapitre 6 sur 7</span>
+                <h1>Gestion des Déchets et Lutte Anti-Vectorielle</h1>
+                <p>Découvrez les techniques rigoureuses de collecte, de traitement et de valorisation des déchets solides et dangereux, ainsi que les stratégies de prévention et de lutte contre les vecteurs de maladies transmissibles.</p>
+            </div>
+
+            <!-- LEÇON 6.1 -->
+            <section id="lecon61" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">6.1</div>
+                    <h2>Gestion des déchets solides : collecte, tri, recyclage et élimination</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>L'accroissement démographique et l'urbanisation rapide génèrent des volumes considérables de déchets solides municipaux. Une mauvaise gestion de ces rebuts engendre la prolifération de vecteurs pathogènes, l'obstruction des canaux d'évacuation des eaux pluviales (provoquant inondations et gîtes larvaires) et la pollution des sols et des nappes aquifères par les lixiviats.</p>
+                    <p>La hiérarchie moderne des modes de gestion repose sur le triptyque : <strong>Réduire, Réutiliser, Recycler (les 3 R)</strong>, complété par la valorisation organique (compostage) et l'enfouissement technique contrôlé pour les résidus ultimes.</p>
+
+                    <!-- Illustration 1 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1532996122724-e3c3fa4a0d55?auto=format&fit=crop&w=1200&q=80" alt="Gestion des déchets">
+                        <div class="image-caption">Figure 6.1 : Tri sélectif, valorisation des matières et gestion durable des déchets urbains.</div>
+                    </div>
+
+                    <div class="box-expert">
+                        <h5><i class="fa-solid fa-recycle" style="color: #145A86;"></i> Économie circulaire</h5>
+                        <p>Le recyclage des plastiques et le compostage des déchets organiques réduisent de plus de 50 % le volume des ordures enfouies tout en créant des opportunités économiques locales.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 6.2 -->
+            <section id="lecon62" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">6.2</div>
+                    <h2>Déchets dangereux et déchets de soins : risques sanitaires et filières spécifiques</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>Les déchets produits par les formations sanitaires (hôpitaux, centres de santé, laboratoires) ainsi que les déchets industriels spéciaux présentent des risques biologiques, chimiques et radioactifs accrus (risques infectieux, blessures par objets piquants ou tranchants, intoxications).</p>
+                    
+                    <h4>Les étapes clés de la gestion des déchets de soins :</h4>
+                    <ul>
+                        <li><strong>Le tri à la source :</strong> Séparation rigoureuse dès le point de production selon la nature du déchet (déchets mous infectieux, objets piquants/tranchants en conteneurs rigides, déchets anatomiques, déchets non infectieux assimilables aux ordures ménagères).</li>
+                        <li><strong>Le conditionnement sécurisé :</strong> Utilisation de sacs normés (souvent de couleur jaune avec le symbole du biohazard) et de boîtes de sécurité étanches et imperméables.</li>
+                        <li><strong>Le traitement final :</strong> Incinération à haute température dans des fours adaptés, stérilisation par autoclave ou enfouissement sanitaire sécurisé pour éviter toute contamination de l'environnement.</li>
+                    </ul>
+
+                    <!-- Illustration 2 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80" alt="Gestion des déchets médicaux">
+                        <div class="image-caption">Figure 6.2 : Sécurisation et traitement des déchets de soins à risques infectieux.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 6.3 -->
+            <section id="lecon63" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">6.3</div>
+                    <h2>Écologie et biologie des vecteurs de maladies (moustiques, rongeurs, mouches)</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>Un vecteur est un organisme vivant capable de transmettre un agent infectieux d'un animal ou d'un humain à un autre hôte. Les vecteurs les plus redoutés en santé publique comprennent les moustiques (vecteurs du paludisme, de la dengue, du Zika et du chikungunya), les rongeurs (vecteurs de la leptospirose et des hantavirus) et les mouches (vecteurs mécaniques de diarrhées et du trachome).</p>
+                    <p>Comprendre le cycle biologique des vecteurs (œuf, larve, nymphe, adulte) et leurs conditions de reproduction (zones d'eau stagnante, humidité, présence de matières organiques en décomposition) est indispensable pour cibler efficacement les interventions de contrôle.</p>
+
+                    <div class="box-warning">
+                        <h5><i class="fa-solid fa-triangle-exclamation"></i> Facteurs climatiques et démographiques</h5>
+                        <p>L'urbanisation non planifiée, combinée aux variations climatiques (pluies abondantes, températures élevées), favorise l'expansion rapide des aires de répartition des moustiques vecteurs.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 6.4 -->
+            <section id="lecon64" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">6.4</div>
+                    <h2>Lutte Intégrée Anti-Vectorielle (LIV) : méthodes environnementales, biologiques et chimiques</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>La <strong>Lutte Intégrée Anti-Vectorielle (LIV)</strong> est une approche rationnelle qui combine plusieurs méthodes de lutte de manière synergique afin d'optimiser l'efficacité du contrôle tout en minimisant les coûts et les impacts environnementaux (résistance aux insecticides et toxicité).</p>
+                    
+                    <h4>Les trois piliers de la LIV :</h4>
+                    <ul>
+                        <li><strong>La lutte environnementale :</strong> Aménagement de l'espace, drainage des eaux stagnantes, curage des caniveaux, gestion rigoureuse des déchets solides pour supprimer les gîtes potentiels.</li>
+                        <li><strong>La lutte biologique :</strong> Introduction de prédateurs naturels (poissons larvivores comme <i>Gambusia affinis</i>) ou utilisation de bio-larvicides (comme <i>Bacillus thuringiensis israelensis</i> - Bti).</li>
+                        <li><strong>La lutte chimique et physique :</strong> Utilisation ciblée d'insecticides à longue durée d'action, de moustiquaires imprégnées d'insecticide (MII) et de moustiquaires aux fenêtres.</li>
+                    </ul>
+
+                    <!-- Illustration 3 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1584483766114-2cea6facaf57?auto=format&fit=crop&w=1200&q=80" alt="Lutte anti-vectorielle">
+                        <div class="image-caption">Figure 6.3 : Actions préventives et mesures de protection contre les vecteurs de maladies.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 6.5 -->
+            <section id="lecon65" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">6.5</div>
+                    <h2>Gestion communautaire et suppression des gîtes larvaires</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>La majorité des moustiques vecteurs urbains (notamment <i>Aedes aegypti</i>, vecteur de la dengue) se développent dans des gîtes artificiels créés par l'activité humaine : vieux pneus, boîtes de conserve, seaux d'eau découverts, pots de fleurs et bâches en plastique mal tendues.</p>
+                    <p>L'engagement communautaire à travers des journées de salubrité publique, des opérations de ratissage et la couverture systématique des réserves d'eau domestiques constitue la ligne de défense la plus durable et la moins coûteuse pour abaisser durablement les densités vectorielles.</p>
+
+                    <div class="box-expert">
+                        <h5><i class="fa-solid fa-people-group" style="color: #145A86;"></i> Mobilisation sociale</h5>
+                        <p>« Vider, couvrir, jeter » : cette règle simple enseignée dans les ménages et les écoles permet d'éliminer plus de 80 % des gîtes larvaires de proximité sans recourir aux pesticides chimiques.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BOUTONS DE VALIDATION -->
+            <div class="chapter-footer-actions">
+                <button class="btn-valider-chap" id="btnValiderChapitre" onclick="validerChapitre6()">
+                    <i class="fa-solid fa-circle-check"></i> Valider le Chapitre 6
+                </button>
+                <a href="chapitre7_sante.html" class="btn-suiv-chap">
+                    Passer au Chapitre 7 <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel</p>
+    </footer>
+
+    <!-- SCRIPT DE GESTION DU PROFIL ET DU LOCALSTORAGE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            chargerDonneesUtilisateur();
+            verifierEtatValidation();
+        });
+
+        function chargerDonneesUtilisateur() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder aux cours.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        }
+
+        function validerChapitre6() {
+            let chapId = 6;
+            let raw = JSON.parse(localStorage.getItem("sante_env_progression")) || [];
+            if(!Array.isArray(raw)) raw = [];
+
+            let progression = [...new Set(raw.map(id => parseInt(id, 10)))];
+
+            if(!progression.includes(chapId)) {
+                progression.push(chapId);
+                localStorage.setItem("sante_env_progression", JSON.stringify(progression));
+                alert("🎉 Félicitations ! Chapitre 6 validé avec succès.");
+            } else {
+                alert("ℹ️ Ce chapitre est déjà validé !");
+            }
+            verifierEtatValidation();
+        }
+
+        function verifierEtatValidation() {
+            let chapId = 6;
+            let raw = JSON.parse(localStorage.getItem("sante_env_progression")) || [];
+            if(!Array.isArray(raw)) raw = [];
+            let progression = raw.map(id => parseInt(id, 10));
+
+            let btn = document.getElementById("btnValiderChapitre");
+            if(progression.includes(chapId)) {
+                btn.style.background = "#27ae60";
+                btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Chapitre 6 Validé';
+            }
+        }
+    </script>
+</body>
+</html>

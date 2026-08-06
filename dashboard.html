@@ -4801,8 +4801,8 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
                 SANTÉ ET ENVIRONNEMENT PREMIUM
         =====================================-->
 
-        <!--====================================
-        SANTE ET ENVIRONNEMENT PREMIUM
+<!--====================================
+        SANTE ET ENVIRONNEMENT
 =====================================-->
 
 <div class="domaine-card ia"
@@ -4812,46 +4812,35 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     <div class="sante-bg"></div>
 
 
-
-    
-
-
-
-
     <div class="domaine-content">
-
 
         <h3>
             Santé et Environnement
         </h3>
 
 
-
         <p>
             Découvrez les bonnes pratiques
             pour protéger votre santé,
-            prévenir les maladies et améliorer votre environnement.
+            prévenir les maladies et améliorer
+            votre environnement.
         </p>
 
 
-
-
-        <button>
+        <button type="button">
 
             Découvrir
 
         </button>
 
-
-
     </div>
-
-
 
 </div>
 
+
+
 <!--====================================
-        DEVELOPPEMENT PERSONNEL PREMIUM
+        DEVELOPPEMENT PERSONNEL
 =====================================-->
 
 <div class="domaine-card developpement"
@@ -4861,15 +4850,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     <!-- IMAGE DE FOND -->
 
     <div class="developpement-bg"></div>
-
-
-    <!-- PREMIUM -->
-
-    <div class="premium-lock">
-
-        🔒 PREMIUM
-
-    </div>
 
 
     <!-- ICONE -->
@@ -4885,7 +4865,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     <div class="domaine-content">
 
-
         <h3>
             Développement Personnel
         </h3>
@@ -4898,19 +4877,20 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </p>
 
 
-        <button>
+        <button type="button">
 
             Découvrir
 
         </button>
 
-
     </div>
 
-
 </div>
+
+
+
 <!--====================================
-        EDUCATION PREMIUM
+        EDUCATION
 =====================================-->
 
 <div class="domaine-card education"
@@ -4920,15 +4900,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     <!-- IMAGE DE FOND -->
 
     <div class="education-bg"></div>
-
-
-    <!-- PREMIUM -->
-
-    <div class="premium-lock">
-
-        🔒 PREMIUM
-
-    </div>
 
 
     <!-- ICONE -->
@@ -4944,7 +4915,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     <div class="domaine-content">
 
-
         <h3>
             Éducation
         </h3>
@@ -4957,19 +4927,17 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </p>
 
 
-        <button>
+        <button type="button">
 
             Découvrir
 
         </button>
 
-
     </div>
 
-
 </div>
-</section>
 
+</section>
         <!--====================================
               MES CERTIFICATS
         =====================================-->
@@ -5285,367 +5253,250 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 
     </footer>
- <script>
+<script>
 
 /*==================================================
         BMJ SERVICE
         SCRIPT TABLEAU DE BORD COMPLET
+        TOUS LES COURS ACCESSIBLES GRATUITEMENT
 ==================================================*/
-
 
 
 //==================================================
 // CHARGEMENT DU DASHBOARD
 //==================================================
 
-
 document.addEventListener("DOMContentLoaded", function(){
 
 
-
     //==================================
-    // RECUPERATION UTILISATEUR CONNECTE
+    // RECUPERATION UTILISATEUR
     //==================================
-
 
     let utilisateur = JSON.parse(
-
         localStorage.getItem("bmj_current_user")
-
     );
-
-
-
 
 
     //==================================
     // VERIFICATION CONNEXION
     //==================================
 
-
     if(!utilisateur){
 
-
-        window.location.href="connexion.html";
+        window.location.href = "connexion.html";
 
         return;
-
 
     }
 
 
-
-
-
-
-
     //==================================
-    // HEADER PROFIL
+    // HEADER : NOM UTILISATEUR
     //==================================
-
-
 
     let nomUtilisateur = document.getElementById(
         "nomUtilisateur"
     );
 
-
     if(nomUtilisateur){
 
-
         nomUtilisateur.innerHTML =
-
-        utilisateur.nom || "Utilisateur";
-
+            utilisateur.nom || "Utilisateur";
 
     }
 
 
-
-
-
-
+    //==================================
+    // HEADER : PHOTO
+    //==================================
 
     let photoUtilisateur = document.getElementById(
         "photoUtilisateur"
     );
 
-
-
     if(photoUtilisateur){
 
-
         photoUtilisateur.src =
-
-        utilisateur.photo ||
-
-        "images/user.png";
-
-
+            utilisateur.photo ||
+            "images/user.png";
 
     }
 
 
-
-
-
-
-
+    //==================================
+    // HEADER : DOMAINE / ROLE
+    //==================================
 
     let roleUtilisateur = document.getElementById(
         "roleUtilisateur"
     );
 
-
-
     if(roleUtilisateur){
 
-
         roleUtilisateur.innerHTML =
-
-        utilisateur.domaine ||
-
-        "Apprenant";
-
+            utilisateur.domaine ||
+            "Apprenant";
 
     }
-
-
-
-
-
-
-
-
 
 
     //==================================
     // CARTE APPRENANT
     //==================================
 
-
-
     let nomComplet = document.getElementById(
         "nomComplet"
     );
 
-
-
     if(nomComplet){
 
-
         nomComplet.innerHTML =
-
-
-        "Bienvenue " +
-
-        utilisateur.nom +
-
-        " 👋";
-
-
+            "Bienvenue " +
+            (utilisateur.nom || "Apprenant") +
+            " 👋";
 
     }
 
 
-
-
-
-
-
+    //==================================
+    // PHOTO PROFIL
+    //==================================
 
     let photoProfil = document.getElementById(
         "photoProfil"
     );
 
-
-
     if(photoProfil){
 
-
         photoProfil.src =
-
-        utilisateur.photo ||
-
-        "images/user.png";
-
-
+            utilisateur.photo ||
+            "images/user.png";
 
     }
 
 
-
-
-
-
-
-
+    //==================================
+    // DOMAINE DE FORMATION
+    //==================================
 
     let domaineFormation = document.getElementById(
         "domaineFormation"
     );
 
-
-
     if(domaineFormation){
 
-
         domaineFormation.innerHTML =
-
-        utilisateur.domaine ||
-
-        "Aucun domaine";
-
+            utilisateur.domaine ||
+            "Aucun domaine";
 
     }
 
 
-
-
-
-
-
-
-
     //==================================
-    // INFORMATIONS UTILISATEUR
+    // EMAIL
     //==================================
-
-
 
     let emailUtilisateur = document.getElementById(
         "emailUtilisateur"
     );
 
-
     if(emailUtilisateur){
 
-
         emailUtilisateur.innerHTML =
-
-        utilisateur.email || "";
-
-
+            utilisateur.email || "";
 
     }
 
 
-
-
-
-
-
+    //==================================
+    // TELEPHONE
+    //==================================
 
     let telephoneUtilisateur = document.getElementById(
         "telephoneUtilisateur"
     );
 
-
     if(telephoneUtilisateur){
 
-
         telephoneUtilisateur.innerHTML =
-
-        utilisateur.telephone || "";
-
-
+            utilisateur.telephone || "";
 
     }
 
 
-
-
-
-
-
+    //==================================
+    // ID BMJ
+    //==================================
 
     let idBMJ = document.getElementById(
         "idBMJ"
     );
 
-
     if(idBMJ){
 
-
         idBMJ.innerHTML =
-
-        utilisateur.id_bmj || "";
-
-
+            utilisateur.id_bmj || "";
 
     }
-
-
-
-
-
-
 
 
     //==================================
     // PROGRESSION
     //==================================
 
-
     let progression =
-
-    utilisateur.progression || 0;
-
+        Number(utilisateur.progression) || 0;
 
 
+    // Sécurité : minimum 0%
+    if(progression < 0){
 
+        progression = 0;
+
+    }
+
+
+    // Sécurité : maximum 100%
+    if(progression > 100){
+
+        progression = 100;
+
+    }
+
+
+    //==================================
+    // BARRE DE PROGRESSION
+    //==================================
 
     let progressBar = document.getElementById(
         "progressBar"
     );
 
-
-
     if(progressBar){
 
-
         progressBar.style.width =
-
-        progression + "%";
-
-
+            progression + "%";
 
     }
 
 
-
-
-
-
+    //==================================
+    // TEXTE PROGRESSION
+    //==================================
 
     let progressText = document.getElementById(
         "progressText"
     );
 
-
-
     if(progressText){
 
-
         progressText.innerHTML =
-
-        progression + "%";
-
-
+            progression + "%";
 
     }
 
-
-
-
-
 });
-
-
-
-
-
-
 
 
 
@@ -5653,15 +5504,13 @@ document.addEventListener("DOMContentLoaded", function(){
 // OUVERTURE DES FORMATIONS
 //==================================================
 
+function ouvrirDomaine(domaine){
 
-function ouvrirDomaine(domaine) {
-
-
-    switch (domaine) {
+    switch(domaine){
 
 
         //=========================================
-        // FORMATIONS GRATUITES
+        // MARKETING
         //=========================================
 
         case "marketing":
@@ -5672,12 +5521,21 @@ function ouvrirDomaine(domaine) {
             break;
 
 
+        //=========================================
+        // ENTREPRENEURIAT
+        //=========================================
+
         case "entrepreneuriat":
 
             window.location.href =
                 "entrepreneuriat.html";
 
             break;
+
+
+        //=========================================
+        // LEADERSHIP
+        //=========================================
 
         case "leadership":
 
@@ -5686,48 +5544,143 @@ function ouvrirDomaine(domaine) {
 
             break;
 
+
+        //=========================================
+        // INFORMATIQUE
+        //=========================================
+
         case "informatique":
-            window.location.href =
-                "investissement.html"
-
-            break
-
-         case "finance":
-            window.location.href =
-                "finance.html"
-
-            break
-        //=========================================
-        // FORMATIONS PREMIUM
-        //=========================================
-
-        
-
-        
-
-       
-
-        case "ia":
-
-        case "sante":
-
-        case "environnement":
 
             window.location.href =
-                "paiement_visapay.html";
+                "erreur.html";
 
             break;
 
 
         //=========================================
-        // PAR DÉFAUT
+        // FINANCE
+        //=========================================
+
+        case "finance":
+
+            window.location.href =
+                "finance.html";
+
+            break;
+
+
+        //=========================================
+        // SANTE ET ENVIRONNEMENT
+        //=========================================
+
+        case "sante":
+
+            window.location.href =
+                "sante_environnement.html";
+
+            break;
+
+
+        //=========================================
+        // DEVELOPPEMENT PERSONNEL
+        //=========================================
+
+        case "developpement":
+
+            window.location.href =
+                "developpement_personnel.html";
+
+            break;
+
+
+        //=========================================
+        // INTELLIGENCE ARTIFICIELLE
+        //=========================================
+
+        case "ia":
+
+            window.location.href =
+                "ia.html";
+
+            break;
+
+
+        //=========================================
+        // EDUCATION
+        //=========================================
+
+        case "education":
+
+            window.location.href =
+                "education.html";
+
+            break;
+
+
+        //=========================================
+        // COMMUNICATION
+        //=========================================
+
+        case "communication":
+
+            window.location.href =
+                "communication.html";
+
+            break;
+
+
+        //=========================================
+        // GESTION D'EQUIPE
+        //=========================================
+
+        case "gestion_equipe":
+
+            window.location.href =
+                "gestion_equipe.html";
+
+            break;
+
+
+        //=========================================
+        // CYBERSECURITE
+        //=========================================
+
+        case "cybersecurite":
+
+            window.location.href =
+                "cybersecurite.html";
+
+            break;
+
+
+        //=========================================
+        // AUTRES DOMAINES
+        //=========================================
+
+        case "communication_leadership":
+
+            window.location.href =
+                "communication_leadership.html";
+
+            break;
+
+
+        //=========================================
+        // DOMAINE INCONNU
         //=========================================
 
         default:
 
-            alert(
-                "Cette formation est indisponible."
+            console.error(
+                "Formation inconnue :",
+                domaine
             );
+
+            alert(
+                "Cette formation n'est pas encore disponible."
+            );
+
+            break;
 
     }
 
@@ -5739,52 +5692,92 @@ function ouvrirDomaine(domaine) {
 // CONTINUER LA FORMATION
 //==================================================
 
-function continuerFormation() {
+function continuerFormation(){
 
-    window.location.href =
-        "marketing.html";
+    let utilisateur = JSON.parse(
+        localStorage.getItem("bmj_current_user")
+    );
+
+
+    //==================================
+    // VERIFICATION UTILISATEUR
+    //==================================
+
+    if(!utilisateur){
+
+        window.location.href =
+            "connexion.html";
+
+        return;
+
+    }
+
+
+    //==================================
+    // RECUPERATION DU DOMAINE
+    //==================================
+
+    let domaine =
+        utilisateur.domaine;
+
+
+    //==================================
+    // OUVERTURE DU DOMAINE
+    //==================================
+
+    if(domaine){
+
+        ouvrirDomaine(
+            domaine.toLowerCase()
+        );
+
+    }else{
+
+        // Si aucun domaine n'est enregistré
+        window.location.href =
+            "formations.html";
+
+    }
 
 }
+
+
 
 //==================================================
 // CERTIFICAT
 //==================================================
 
-
 function ouvrirCertificat(){
 
+    /*
+        Les cours sont gratuits.
+        Le certificat est accessible
+        directement.
+    */
 
-    window.location.href="paiement_visapay.html";
-
+    window.location.href =
+        "certificat.html";
 
 }
 
 
 
-
-
-
-
-
-
 //==================================================
-// PREMIUM
+// ANCIEN BOUTON PREMIUM
 //==================================================
-
 
 function activerPremium(){
 
+    /*
+        Tous les cours sont maintenant gratuits.
+        Cette fonction reste présente pour éviter
+        les erreurs si un ancien bouton l'appelle.
+    */
 
-    window.location.href="paiement_visapay.html";
-
+    window.location.href =
+        "formations.html";
 
 }
-
-
-
-
-
-
 
 
 
@@ -5792,66 +5785,43 @@ function activerPremium(){
 // DECONNEXION
 //==================================================
 
-
 function deconnexion(){
 
-
-
     localStorage.removeItem(
-
         "bmj_current_user"
-
     );
 
 
-
-    window.location.href="connexion.html";
-
+    window.location.href =
+        "connexion.html";
 
 }
 
 
 
-
-
-
+//==================================================
+// BOUTON DECONNEXION
+//==================================================
 
 let logout = document.getElementById(
     "logout"
 );
 
 
-
 if(logout){
 
-
-
     logout.addEventListener(
-
         "click",
-
         function(e){
-
 
             e.preventDefault();
 
-
             deconnexion();
 
-
         }
-
-
     );
 
-
 }
-
-
-
-
-
-
 
 
 
@@ -5859,74 +5829,48 @@ if(logout){
 // MENU MOBILE
 //==================================================
 
-
-
 let menuBtn = document.getElementById(
     "menuBtn"
 );
-
-
 
 let sidebar = document.getElementById(
     "sidebar"
 );
 
 
-
-
 if(menuBtn && sidebar){
 
-
-
     menuBtn.addEventListener(
-
         "click",
-
         function(){
-
 
             sidebar.classList.toggle(
                 "active"
             );
 
-
         }
-
-
     );
-
 
 }
 
 
 
-
-
-
-
 //==================================================
-// ACTUALISATION PHOTO SI MODIFICATION
+// ACTUALISATION DES DONNEES UTILISATEUR
 //==================================================
-
-
 
 window.addEventListener(
-
     "storage",
-
     function(){
-
 
         location.reload();
 
-
     }
-
 );
 
 
-
 </script>
+
 </body>
 
 </html>

@@ -2587,169 +2587,386 @@ footer span{
 </footer>
 
 <script>
-
 /*==================================================
         BMJ SERVICE
-        LEÇON : GESTION DE L'ARGENT
+        FORMATION FINANCE
+        CHAPITRE 2
+        GESTION DE L'ARGENT
 ==================================================*/
 
 
-//==================================================
-// CONFIGURATION
-//==================================================
+/*==================================================
+        1. CONFIGURATION DU CHAPITRE
+==================================================*/
 
-const NOM_LECON = "Gestion de l'argent";
+/*
+    IMPORTANT :
 
-const CLE_PROGRESS = "finance_progression";
+    La formation Finance utilise les IDs :
 
-const IDENTIFIANT_LECON = "gestion_argent";
+        1 = Introduction à la Finance
+        2 = Gestion de l'argent
+        3 = Épargne et objectifs financiers
+        4 = Investissement
+        5 = Projet final & Évaluation
+
+    Le chapitre 2 doit donc enregistrer :
+
+        2
+
+    et NON :
+
+        "gestion_argent"
+*/
+
+const ID_CHAPITRE = 2;
+
+const NOM_CHAPITRE =
+    "Gestion de l'argent";
+
+const CLE_PROGRESS =
+    "finance_progression";
+
+const PAGE_SUIVANTE =
+    "epargne.html";
 
 
-//==================================================
-// CHARGEMENT DE LA PAGE
-//==================================================
+/*==================================================
+        2. CHARGEMENT DE LA PAGE
+==================================================*/
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    //==============================================
-    // UTILISATEUR CONNECTÉ
-    //==============================================
+        /*
+            Vérifier l'utilisateur
+        */
 
-    let utilisateur = JSON.parse(
-        localStorage.getItem("bmj_current_user")
-    );
+        const utilisateur =
+            obtenirUtilisateur();
 
 
-    //==============================================
-    // VÉRIFICATION UTILISATEUR
-    //==============================================
+        if (!utilisateur) {
+
+            alert(
+                "⚠️ Vous devez être connecté pour accéder à cette leçon."
+            );
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+        }
+
+
+        /*
+            Charger le profil
+        */
+
+        chargerUtilisateur();
+
+
+        /*
+            Vérifier la progression
+        */
+
+        verifierProgression();
+
+
+        /*
+            Initialiser les vidéos
+        */
+
+        initialiserVideos();
+
+    }
+);
+
+
+/*==================================================
+        3. RÉCUPÉRER L'UTILISATEUR
+==================================================*/
+
+function obtenirUtilisateur() {
+
+    try {
+
+        const donnees =
+            localStorage.getItem(
+                "bmj_current_user"
+            );
+
+
+        if (!donnees) {
+
+            return null;
+        }
+
+
+        const utilisateur =
+            JSON.parse(donnees);
+
+
+        if (
+            !utilisateur ||
+            typeof utilisateur !== "object"
+        ) {
+
+            return null;
+        }
+
+
+        return utilisateur;
+
+    } catch (erreur) {
+
+        console.error(
+            "Erreur utilisateur :",
+            erreur
+        );
+
+        return null;
+    }
+}
+
+
+/*==================================================
+        4. CHARGER LE PROFIL
+==================================================*/
+
+function chargerUtilisateur() {
+
+    const utilisateur =
+        obtenirUtilisateur();
+
 
     if (!utilisateur) {
 
-        alert(
-            "⚠️ Vous devez être connecté pour accéder à cette leçon."
-        );
-
-        window.location.href = "connexion.html";
+        window.location.href =
+            "connexion.html";
 
         return;
-
     }
 
 
-    //==============================================
-    // AFFICHAGE DU NOM
-    //==============================================
+    /*------------------------------------------
+            NOM
+    ------------------------------------------*/
 
-    let nomUtilisateur =
-        document.getElementById("nomUtilisateur");
+    const nomUtilisateur =
+        document.getElementById(
+            "nomUtilisateur"
+        );
 
 
     if (nomUtilisateur) {
 
         nomUtilisateur.textContent =
-            utilisateur.nom || "Apprenant";
-
+            utilisateur.nom ||
+            "Apprenant";
     }
 
 
-    //==============================================
-    // AFFICHAGE DU DOMAINE
-    //==============================================
+    /*------------------------------------------
+            DOMAINE
+    ------------------------------------------*/
 
-    let domaineUtilisateur =
-        document.getElementById("domaineUtilisateur");
+    const domaineUtilisateur =
+        document.getElementById(
+            "domaineUtilisateur"
+        );
 
 
     if (domaineUtilisateur) {
 
         domaineUtilisateur.textContent =
-            utilisateur.domaine || "Finance";
-
+            utilisateur.domaine ||
+            "Finance";
     }
 
 
-    //==============================================
-    // AFFICHAGE DE LA PHOTO
-    //==============================================
+    /*------------------------------------------
+            PHOTO
+    ------------------------------------------*/
 
-    let photoUtilisateur =
-        document.getElementById("photoUtilisateur");
+    const photoUtilisateur =
+        document.getElementById(
+            "photoUtilisateur"
+        );
 
 
     if (photoUtilisateur) {
 
         photoUtilisateur.src =
-            utilisateur.photo || "images/user.png";
+            utilisateur.photo ||
+            "images/user.png";
 
+
+        photoUtilisateur.onerror =
+            function () {
+
+                this.onerror = null;
+
+                this.src =
+                    "images/user.png";
+            };
+    }
+}
+
+
+/*==================================================
+        5. RÉCUPÉRER LA PROGRESSION FINANCE
+==================================================*/
+
+function obtenirProgressionFinance() {
+
+    let progression = [];
+
+
+    try {
+
+        const donnees =
+            localStorage.getItem(
+                CLE_PROGRESS
+            );
+
+
+        if (donnees) {
+
+            progression =
+                JSON.parse(donnees);
+        }
+
+    } catch (erreur) {
+
+        console.error(
+            "Erreur lors de la lecture de la progression Finance :",
+            erreur
+        );
+
+        progression = [];
     }
 
 
-    //==============================================
-    // VÉRIFIER SI LA LEÇON EST DÉJÀ TERMINÉE
-    //==============================================
-
-    verifierProgression();
-
-
-});
-
-
-//==================================================
-// RÉCUPÉRER LA PROGRESSION FINANCE
-//==================================================
-
-function obtenirProgression() {
-
-    let progression = JSON.parse(
-
-        localStorage.getItem(CLE_PROGRESS)
-
-    ) || [];
-
+    /*------------------------------------------
+            VÉRIFIER LE TYPE
+    ------------------------------------------*/
 
     if (!Array.isArray(progression)) {
 
         progression = [];
-
     }
 
 
-    return [...new Set(progression)];
+    /*------------------------------------------
+            CONVERTIR LES IDS EN NOMBRES
+    ------------------------------------------*/
 
+    progression =
+        progression
+            .map(
+                function (id) {
+
+                    return parseInt(
+                        id,
+                        10
+                    );
+
+                }
+            )
+            .filter(
+                function (id) {
+
+                    return !isNaN(id);
+
+                }
+            );
+
+
+    /*------------------------------------------
+            ACCEPTER UNIQUEMENT LES 5 CHAPITRES
+    ------------------------------------------*/
+
+    progression =
+        progression.filter(
+            function (id) {
+
+                return (
+                    id >= 1 &&
+                    id <= 5
+                );
+
+            }
+        );
+
+
+    /*------------------------------------------
+            SUPPRIMER LES DOUBLONS
+    ------------------------------------------*/
+
+    progression =
+        [...new Set(progression)];
+
+
+    /*------------------------------------------
+            TRIER
+    ------------------------------------------*/
+
+    progression.sort(
+        function (a, b) {
+
+            return a - b;
+
+        }
+    );
+
+
+    /*------------------------------------------
+            SAUVEGARDER
+    ------------------------------------------*/
+
+    localStorage.setItem(
+        CLE_PROGRESS,
+        JSON.stringify(progression)
+    );
+
+
+    return progression;
 }
 
 
-//==================================================
-// VÉRIFIER LA PROGRESSION
-//==================================================
+/*==================================================
+        6. VÉRIFIER LA PROGRESSION
+==================================================*/
 
 function verifierProgression() {
 
-    let progression =
-        obtenirProgression();
+    const progression =
+        obtenirProgressionFinance();
 
 
-    if (
+    const estTermine =
         progression.includes(
-            IDENTIFIANT_LECON
-        )
-    ) {
+            ID_CHAPITRE
+        );
+
+
+    if (estTermine) {
 
         afficherLeconTerminee();
 
     }
-
 }
 
 
-//==================================================
-// AFFICHER LE STATUT TERMINÉ
-//==================================================
+/*==================================================
+        7. AFFICHER LE CHAPITRE TERMINÉ
+==================================================*/
 
 function afficherLeconTerminee() {
 
-    let bouton =
+    const bouton =
         document.getElementById(
             "btnTerminer"
         );
@@ -2758,16 +2975,29 @@ function afficherLeconTerminee() {
     if (bouton) {
 
         bouton.innerHTML =
-            '<i class="fa-solid fa-circle-check"></i> Leçon terminée';
+            `
+            <i class="fa-solid fa-circle-check"></i>
+            Chapitre terminé
+            `;
 
-        bouton.classList.add("terminee");
 
-        bouton.disabled = true;
+        bouton.classList.add(
+            "terminee"
+        );
 
+
+        bouton.disabled =
+            true;
+
+
+        bouton.setAttribute(
+            "aria-disabled",
+            "true"
+        );
     }
 
 
-    let statut =
+    const statut =
         document.getElementById(
             "statutLecon"
         );
@@ -2776,32 +3006,28 @@ function afficherLeconTerminee() {
     if (statut) {
 
         statut.textContent =
-            "✓ Cette leçon a déjà été validée.";
+            "✓ Ce chapitre a déjà été validé.";
 
-        statut.classList.add("success");
 
+        statut.classList.add(
+            "success"
+        );
     }
-
 }
 
 
-//==================================================
-// TERMINER LA LEÇON
-//==================================================
+/*==================================================
+        8. TERMINER LE CHAPITRE 2
+==================================================*/
 
 function terminerLecon() {
 
-    //==============================================
-    // VÉRIFICATION UTILISATEUR
-    //==============================================
+    /*
+        Vérifier la session
+    */
 
-    let utilisateur = JSON.parse(
-
-        localStorage.getItem(
-            "bmj_current_user"
-        )
-
-    );
+    const utilisateur =
+        obtenirUtilisateur();
 
 
     if (!utilisateur) {
@@ -2810,55 +3036,86 @@ function terminerLecon() {
             "⚠️ Votre session a expiré. Veuillez vous reconnecter."
         );
 
+
         window.location.href =
             "connexion.html";
 
-        return;
 
+        return;
     }
 
 
-    //==============================================
-    // RÉCUPÉRER PROGRESSION
-    //==============================================
+    /*
+        Récupérer la progression
+    */
 
     let progression =
-        obtenirProgression();
+        obtenirProgressionFinance();
 
 
-    //==============================================
-    // ÉVITER LES DOUBLONS
-    //==============================================
+    /*
+        Vérifier si déjà terminé
+    */
 
     if (
-        !progression.includes(
-            IDENTIFIANT_LECON
+        progression.includes(
+            ID_CHAPITRE
         )
     ) {
 
-        progression.push(
-            IDENTIFIANT_LECON
+        afficherLeconTerminee();
+
+        alert(
+            "✓ Ce chapitre est déjà validé."
         );
 
+        return;
     }
 
 
-    //==============================================
-    // SAUVEGARDE PROGRESSION FINANCE
-    //==============================================
+    /*
+        Ajouter le chapitre 2
+    */
 
-    localStorage.setItem(
-
-        CLE_PROGRESS,
-
-        JSON.stringify(progression)
-
+    progression.push(
+        ID_CHAPITRE
     );
 
 
-    //==============================================
-    // PROGRESSION GÉNÉRALE DE L'UTILISATEUR
-    //==============================================
+    /*
+        Supprimer les doublons
+    */
+
+    progression =
+        [...new Set(progression)];
+
+
+    /*
+        Trier
+    */
+
+    progression.sort(
+        function (a, b) {
+
+            return a - b;
+
+        }
+    );
+
+
+    /*
+        Sauvegarder
+    */
+
+    localStorage.setItem(
+        CLE_PROGRESS,
+        JSON.stringify(progression)
+    );
+
+
+    /*
+        Mettre à jour le profil
+    */
 
     mettreAJourProgressionUtilisateur(
         utilisateur,
@@ -2866,128 +3123,199 @@ function terminerLecon() {
     );
 
 
-    //==============================================
-    // STATUT LOCAL DE LA LEÇON
-    //==============================================
+    /*
+        Statut local du chapitre
+    */
 
     localStorage.setItem(
-
-        "finance_" +
-        IDENTIFIANT_LECON,
-
+        "finance_chapitre_2",
         "termine"
-
     );
 
 
-    //==============================================
-    // MESSAGE
-    //==============================================
+    /*
+        Afficher le statut
+    */
 
     afficherLeconTerminee();
 
 
-    alert(
+    /*
+        Message
+    */
 
+    alert(
         "🎉 Félicitations !\n\n" +
 
-        "Vous avez terminé la leçon :\n" +
+        "Vous avez terminé le chapitre :\n" +
 
-        NOM_LECON +
+        NOM_CHAPITRE +
 
-        "\n\nVotre progression a été enregistrée."
+        "\n\n" +
 
+        "Votre progression Finance est maintenant de " +
+
+        calculerPourcentage(
+            progression
+        ) +
+
+        "%."
     );
 
 
+    /*
+        Retour à la formation
+    */
+
+    window.location.href =
+        "finance.html";
 }
 
 
-//==================================================
-// METTRE À JOUR LA PROGRESSION UTILISATEUR
-//==================================================
+/*==================================================
+        9. METTRE À JOUR LA PROGRESSION UTILISATEUR
+==================================================*/
 
 function mettreAJourProgressionUtilisateur(
     utilisateur,
     progression
 ) {
 
-    /*
-        Le domaine Finance comporte actuellement
-        5 leçons principales.
+    const TOTAL_CHAPITRES_FINANCE =
+        5;
 
-        1. Introduction à la finance
-        2. Gestion de l'argent
-        3. Épargne et budget
-        4. Investissement
-        5. Projet final
+
+    /*
+        Sécuriser la progression
     */
 
+    progression =
+        progression.filter(
+            function (id) {
 
-    const TOTAL_LECONS_FINANCE = 5;
+                return (
+                    id >= 1 &&
+                    id <= TOTAL_CHAPITRES_FINANCE
+                );
+
+            }
+        );
 
 
-    let pourcentage = Math.round(
+    progression =
+        [...new Set(progression)];
 
-        (
-            progression.length /
-            TOTAL_LECONS_FINANCE
-        ) * 100
 
-    );
+    /*
+        Calcul du pourcentage
+    */
+
+    let pourcentage =
+        Math.round(
+            (
+                progression.length /
+                TOTAL_CHAPITRES_FINANCE
+            ) * 100
+        );
 
 
     if (pourcentage > 100) {
 
         pourcentage = 100;
-
     }
 
 
-    //==============================================
-    // PROGRESSION GÉNÉRALE
-    //==============================================
+    if (pourcentage < 0) {
+
+        pourcentage = 0;
+    }
+
+
+    /*
+        Ancienne propriété
+        conservée pour compatibilité
+    */
+
+    utilisateur.financeProgression =
+        progression.length;
+
+
+    /*
+        Pourcentage Finance
+    */
 
     utilisateur.progressionFinance =
         pourcentage;
 
 
-    //==============================================
-    // SAUVEGARDE UTILISATEUR
-    //==============================================
+    /*
+        Liste exacte des chapitres
+    */
+
+    utilisateur.financeChapitres =
+        progression;
+
+
+    /*
+        Sauvegarder l'utilisateur actuel
+    */
 
     localStorage.setItem(
-
         "bmj_current_user",
-
-        JSON.stringify(utilisateur)
-
+        JSON.stringify(
+            utilisateur
+        )
     );
 
 
-    //==============================================
-    // MISE À JOUR DANS LA LISTE UTILISATEURS
-    //==============================================
+    /*==================================================
+            METTRE À JOUR BMJ UTILISATEURS
+    ==================================================*/
 
-    let utilisateurs = JSON.parse(
-
-        localStorage.getItem(
-            "bmjUtilisateurs"
-        )
-
-    ) || [];
+    let utilisateurs = [];
 
 
-    let index =
-        utilisateurs.findIndex(function (u) {
+    try {
 
-            return (
-                u.id_bmj ===
-                utilisateur.id_bmj
-            );
+        utilisateurs =
+            JSON.parse(
+                localStorage.getItem(
+                    "bmjUtilisateurs"
+                )
+            ) || [];
 
-        });
+    } catch (erreur) {
 
+        utilisateurs = [];
+    }
+
+
+    if (!Array.isArray(utilisateurs)) {
+
+        utilisateurs = [];
+    }
+
+
+    /*
+        Chercher l'utilisateur
+    */
+
+    const index =
+        utilisateurs.findIndex(
+            function (u) {
+
+                return (
+                    u.id_bmj ===
+                    utilisateur.id_bmj
+                );
+
+            }
+        );
+
+
+    /*
+        Mettre à jour
+    */
 
     if (index !== -1) {
 
@@ -2996,73 +3324,120 @@ function mettreAJourProgressionUtilisateur(
 
 
         localStorage.setItem(
-
             "bmjUtilisateurs",
-
             JSON.stringify(
                 utilisateurs
             )
-
         );
-
     }
-
-
 }
 
 
-//==================================================
-// BOUTON RETOUR
-//==================================================
+/*==================================================
+        10. CALCULER LE POURCENTAGE
+==================================================*/
+
+function calculerPourcentage(
+    progression
+) {
+
+    const TOTAL_CHAPITRES =
+        5;
+
+
+    const progressionPropre =
+        progression
+            .map(
+                function (id) {
+
+                    return parseInt(
+                        id,
+                        10
+                    );
+
+                }
+            )
+            .filter(
+                function (id) {
+
+                    return (
+                        id >= 1 &&
+                        id <= TOTAL_CHAPITRES
+                    );
+
+                }
+            );
+
+
+    const unique =
+        [
+            ...new Set(
+                progressionPropre
+            )
+        ];
+
+
+    return Math.round(
+        (
+            unique.length /
+            TOTAL_CHAPITRES
+        ) * 100
+    );
+}
+
+
+/*==================================================
+        11. PASSER AU CHAPITRE SUIVANT
+==================================================*/
+
+function chapitreSuivant() {
+
+    const progression =
+        obtenirProgressionFinance();
+
+
+    /*
+        Le chapitre 2 doit être validé
+        avant de continuer.
+    */
+
+    if (
+        !progression.includes(
+            ID_CHAPITRE
+        )
+    ) {
+
+        alert(
+            "⚠️ Veuillez terminer ce chapitre avant de continuer."
+        );
+
+        return;
+    }
+
+
+    /*
+        Chapitre 3
+    */
+
+    window.location.href =
+        PAGE_SUIVANTE;
+}
+
+
+/*==================================================
+        12. RETOUR À LA FORMATION
+==================================================*/
 
 function retourFinance() {
 
     window.location.href =
         "finance.html";
-
 }
 
 
-//==================================================
-// BOUTON CHAPITRE SUIVANT
-//==================================================
-
-function chapitreSuivant() {
-
-    let progression =
-        obtenirProgression();
-
-
-    //==============================================
-    // VÉRIFIER SI LA LEÇON EST TERMINÉE
-    //==============================================
-
-    if (
-        !progression.includes(
-            IDENTIFIANT_LECON
-        )
-    ) {
-
-        alert(
-
-            "⚠️ Veuillez terminer cette leçon avant de continuer."
-
-        );
-
-        return;
-
-    }
-
-
-    window.location.href =
-        "epargne_budget.html";
-
-}
-
-
-//==================================================
-// RETOUR EN HAUT DE LA PAGE
-//==================================================
+/*==================================================
+        13. RETOUR EN HAUT
+==================================================*/
 
 function retourEnHaut() {
 
@@ -3073,25 +3448,27 @@ function retourEnHaut() {
         behavior: "smooth"
 
     });
-
 }
 
 
-//==================================================
-// SUIVI DES VIDÉOS
-//==================================================
+/*==================================================
+        14. SUIVI DES VIDÉOS
+==================================================*/
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+function initialiserVideos() {
 
-        let videos =
-            document.querySelectorAll(
-                "video"
-            );
+    /*
+        Vidéos HTML5
+    */
+
+    const videos =
+        document.querySelectorAll(
+            "video"
+        );
 
 
-        videos.forEach(function (video) {
+    videos.forEach(
+        function (video) {
 
             video.addEventListener(
                 "ended",
@@ -3103,27 +3480,22 @@ document.addEventListener(
                 }
             );
 
-        });
-
-    }
-);
+        }
+    );
 
 
-//==================================================
-// LIENS YOUTUBE / IFRAMES
-//==================================================
+    /*
+        Iframes YouTube
+    */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        let videos =
-            document.querySelectorAll(
-                "iframe"
-            );
+    const iframes =
+        document.querySelectorAll(
+            "iframe"
+        );
 
 
-        videos.forEach(function (iframe) {
+    iframes.forEach(
+        function (iframe) {
 
             iframe.addEventListener(
                 "load",
@@ -3136,43 +3508,49 @@ document.addEventListener(
                 }
             );
 
-        });
+        }
+    );
+}
+
+
+/*==================================================
+        15. SURVEILLER LES CHANGEMENTS
+==================================================*/
+
+window.addEventListener(
+    "storage",
+    function (event) {
+
+        if (
+            event.key ===
+            CLE_PROGRESS
+        ) {
+
+            verifierProgression();
+        }
 
     }
 );
 
 
-//==================================================
-// PROTECTION CONTRE LE DOUBLE CLIC
-//==================================================
+/*==================================================
+        16. EXPOSITION DES FONCTIONS
+==================================================*/
 
-let boutonTerminer =
-    document.getElementById(
-        "btnTerminer"
-    );
+window.terminerLecon =
+    terminerLecon;
 
+window.retourFinance =
+    retourFinance;
 
-if (boutonTerminer) {
+window.chapitreSuivant =
+    chapitreSuivant;
 
-    boutonTerminer.addEventListener(
-        "click",
-        function () {
+window.retourEnHaut =
+    retourEnHaut;
 
-            if (boutonTerminer.disabled) {
+</script>
 
-                return;
-
-            }
-
-        }
-    );
-
-}
-
-
-//==================================================
-// FIN DU SCRIPT
-//==================================================
 
 </script>
 

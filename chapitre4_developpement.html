@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Chapitre 4 : Communication Efficace & Intelligence Émotionnelle</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & IMMERSIF (CHAPITRE 4)
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            color: #2c3e50;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(20, 90, 134, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(212, 175, 55, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 25px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* CONTENEUR PRINCIPAL */
+        .main-container {
+            max-width: 950px;
+            margin: 115px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+            transform: translateX(-3px);
+        }
+
+        /* HERO DU COURS */
+        .course-hero-card {
+            background: linear-gradient(135deg, #145A86 0%, #0c3854 100%);
+            color: white;
+            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(20, 90, 134, 0.2);
+            margin-bottom: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-hero-card::after {
+            content: "\f086";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -30px;
+            font-size: 160px;
+            color: rgba(255, 255, 255, 0.03);
+            pointer-events: none;
+        }
+
+        .course-badge {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .course-hero-card h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            line-height: 1.25;
+        }
+
+        .course-hero-card p {
+            font-size: 15.5px;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 750px;
+        }
+
+        /* CORPS DU CONTENU RICHE */
+        .course-body {
+            background: white;
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 35px;
+        }
+
+        .course-body h2 {
+            color: #145A86;
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 10px;
+        }
+
+        .course-body h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .course-body h3 {
+            color: #0c3854;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .course-body p {
+            color: #475569;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .course-body ul, .course-body ol {
+            margin-left: 20px;
+            margin-bottom: 25px;
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        .course-body li {
+            margin-bottom: 10px;
+        }
+
+        /* ILLUSTRATIONS ET IMAGES DANS LE COURS */
+        .course-image-container {
+            margin: 30px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .course-image-container img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .course-image-container:hover img {
+            transform: scale(1.03);
+        }
+
+        .image-caption {
+            background: #f8fafc;
+            padding: 12px 20px;
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            font-weight: 500;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* CITATION / FOCUS BOX */
+        .quote-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+            border-left: 5px solid #145A86;
+            padding: 25px;
+            border-radius: 0 16px 16px 0;
+            margin: 30px 0;
+            font-style: italic;
+            color: #1e293b;
+            font-size: 15.5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .quote-box span {
+            display: block;
+            margin-top: 10px;
+            font-style: normal;
+            font-weight: 600;
+            color: #D4AF37;
+            font-size: 13px;
+        }
+
+        /* CARTES DES PILIERS */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 25px;
+            border-radius: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            border-color: #D4AF37;
+            box-shadow: 0 10px 25px rgba(20,90,134,0.06);
+            background: white;
+        }
+
+        .info-card h4 {
+            color: #145A86;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card p {
+            font-size: 13.5px;
+            margin-bottom: 0;
+            color: #64748b;
+        }
+
+        /* SECTION VALIDATION ULTRA-STYLÉE */
+        .action-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #0c3854 0%, #145A86 100%);
+            padding: 40px;
+            border-radius: 25px;
+            color: white;
+            box-shadow: 0 15px 35px rgba(20,90,134,0.2);
+        }
+
+        .action-section h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .action-section p {
+            font-size: 14.5px;
+            opacity: 0.85;
+            max-width: 520px;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        .btn-validate {
+            background: #D4AF37;
+            color: #145A86;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-validate:hover {
+            background: #f1c40f;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 60px;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        @media(max-width: 768px) {
+            .action-section { flex-direction: column; align-items: flex-start; gap: 25px; padding: 30px; }
+            header { padding: 0 20px; }
+            .course-body { padding: 25px; }
+            .course-hero-card { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Développement Personnel</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEUR PRINCIPAL -->
+    <div class="main-container">
+        <div class="breadcrumb">
+            <a href="module_developpement.html"><i class="fa-solid fa-arrow-left"></i> Retour au sommaire du module</a>
+        </div>
+
+        <!-- HERO DU COURS -->
+        <div class="course-hero-card">
+            <span class="course-badge">Chapitre 4 sur 7 • Relations & Leadership</span>
+            <h1>Communication Efficace & Intelligence Émotionnelle</h1>
+            <p>Le succès professionnel et personnel dépend à 85% de nos compétences relationnelles. Maîtrisez l'art de l'écoute active, apprenez à décoder les émotions et désamçonnez les tensions avec brio.</p>
+        </div>
+
+        <!-- CORPS DU COURS RICHE EN TEXTES ET IMAGES -->
+        <div class="course-body">
+            
+            <h2><i class="fa-solid fa-brain" style="color: #D4AF37;"></i> Introduction : La puissance invisible de l'intelligence émotionnelle</h2>
+            <p>On mesure traditionnellement la réussite à l'aune du QI (Quotient Intellectuel) ou des diplômes accumulés. Pourtant, l'expérience démontre chaque jour qu'un brillant technicien aux compétences cognitives exceptionnelles peut échouer lamentablement s'il est incapable de collaborer, de communiquer ou de gérer ses propres frustrations.</p>
+            <p>C'est ici qu'intervient le <strong>QE (Quotient Émotionnel)</strong>. Popularisé par le psychologue Daniel Goleman, il englobe la capacité à identifier, comprendre et maîtriser ses propres émotions, tout en faisant preuve d'empathie face à celles d'autrui.</p>
+
+            <div class="course-image-container">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1200&auto=format&fit=crop" alt="Communication collaborative et intelligence émotionnelle">
+                <div class="image-caption">Une communication fluide repose sur l'écoute, le respect mutuel et la maîtrise des émotions en équipe.</div>
+            </div>
+
+            <div class="quote-box">
+                "Les gens oublieront ce que vous avez dit, ils oublieront ce que vous avez fait, mais ils n'oublieront jamais ce que vous leur avez fait ressentir."
+                <span>— Maya Angelou</span>
+            </div>
+
+            <h2><i class="fa-solid fa-cubes" style="color: #D4AF37;"></i> 1. Les 4 Piliers Fondamentaux de l'Intelligence Émotionnelle</h2>
+            <p>Pour développer votre agilité relationnelle, vous devez travailler activement sur ces quatre dimensions interdépendantes :</p>
+
+            <div class="grid-cards">
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-user" style="color: #145A86;"></i> 1. La Conscience de soi</h4>
+                    <p>Reconnaître vos propres états émotionnels et leur impact sur votre comportement et vos décisions au moment même où ils se manifestent.</p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-sliders" style="color: #27ae60;"></i> 2. La Maîtrise de soi</h4>
+                    <p>Savoir canaliser vos impulsions, garder son calme sous la pression et faire preuve de flexibilité face aux imprévus et aux critiques.</p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-heart-pulse" style="color: #e74c3c;"></i> 3. La Conscience sociale</h4>
+                    <p>Développer une empathie authentique pour capter les signaux non-verbaux, les besoins et le climat émotionnel d'un groupe ou d'un interlocuteur.</p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-handshake-angle" style="color: #D4AF37;"></i> 4. La Gestion des relations</h4>
+                    <p>Inspirer, influencer, résoudre les conflits avec tact et bâtir des liens de confiance durables et constructifs.</p>
+                </div>
+            </div>
+
+            <h2><i class="fa-solid fa-ear-listen" style="color: #D4AF37;"></i> 2. Maîtriser l'Art de l'Écoute Active</h2>
+            <p>La plupart des gens n'écoutent pas pour comprendre ; ils écoutent pour répondre. C'est l'une des sources majeures de malentendus en milieu professionnel.</p>
+            <p>Pratiquer <strong>l'écoute active</strong>, c'est offrir à votre interlocuteur toute votre attention, sans formuler de jugement prématuré ni préparer mentalement votre réplique pendant qu'il parle :</p>
+            
+            <ul>
+                <li><strong>Le silence attentif :</strong> Laissez des espaces de respiration. Ne coupez pas la parole.</li>
+                <li><strong>La reformulation :</strong> Validez votre compréhension en résumant ses propos avec vos propres mots (ex: « Si je comprends bien, ton principal point de friction concerne... »).</li>
+                <li><strong>L'attention non-verbale :</strong> Maintenez un contact visuel bienveillant, hochez la tête pour signifier que vous suivez le fil de la pensée.</li>
+            </ul>
+
+            <div class="course-image-container">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1200&auto=format&fit=crop" alt="Écoute active et échange professionnel constructif">
+                <div class="image-caption">Savoir écouter activement désamorce les tensions et favorise un climat de confiance mutuelle.</div>
+            </div>
+
+            <h3>3. Désamorcer les conflits avec la méthode CNV (Communication Non-Violente)</h3>
+            <p>Face à un désaccord ou un reproche, l'instinct pousse souvent à la riposte ou à la fuite. Le modèle de la CNV (fondé par Marshall Rosenberg) propose une structure limpide pour exprimer son désaccord sans agresser :</p>
+            <ul>
+                <li><strong>O (Observation) :</strong> Énoncer les faits de manière objective, sans jugement (ex: « Lors de la réunion de ce matin, le rapport a été remis avec 2 jours de retard » au lieu de « Tu es toujours en retard »).</li>
+                <li><strong>S (Sentiment) :</strong> Exprimer ce que l'on ressent (ex: « Cela me met en difficulté pour planifier la suite »).</li>
+                <li><strong>B (Besoin) :</strong> Identifier le besoin non satisfait (ex: « J'ai besoin de prévisibilité et de rigueur sur les délais »).</li>
+                <li><strong>D (Demande) :</strong> Formuler une demande claire et constructive (ex: « Serait-il possible de m'alerter 24h à l'avance en cas de imprévu ? »).</li>
+            </ul>
+
+            <div class="quote-box" style="border-left-color: #D4AF37;">
+                "Parler est un besoin, écouter est un art."
+                <span>— Goethe</span>
+            </div>
+
+            <p>En cultivant votre intelligence émotionnelle et en appliquant ces grilles de communication bienveillante, vous transformerez radicalement la qualité de vos interactions professionnelles et personnelles.</p>
+        </div>
+
+        <!-- SECTION DE VALIDATION -->
+        <div class="action-section">
+            <div>
+                <h3>Chapitre validé avec succès ?</h3>
+                <p>Enregistrez votre progression pour déverrouiller l'accès direct au Chapitre 5.</p>
+            </div>
+            <button class="btn-validate" onclick="validerChapitre4()">
+                Valider ce chapitre <i class="fa-solid fa-check-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel</p>
+    </footer>
+
+    <!-- SCRIPT DE GESTION -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder aux cours.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        });
+
+        function validerChapitre4() {
+            let progression = JSON.parse(localStorage.getItem("dev_pers_progression")) || [];
+            
+            // Si le chapitre 4 n'est pas encore validé, on l'ajoute
+            if (!progression.includes(4)) {
+                progression.push(4);
+                localStorage.setItem("dev_pers_progression", JSON.stringify(progression));
+            }
+
+            alert("🎉 Félicitations ! Le Chapitre 4 a été validé avec succès.");
+            window.location.href = "developpement_personnel.html";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Chapitre 2 : Gestion du Temps & Priorités</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & IMMERSIF (CHAPITRE 2)
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            color: #2c3e50;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(20, 90, 134, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(212, 175, 55, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 25px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* CONTENEUR PRINCIPAL */
+        .main-container {
+            max-width: 950px;
+            margin: 115px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+            transform: translateX(-3px);
+        }
+
+        /* HERO DU COURS */
+        .course-hero-card {
+            background: linear-gradient(135deg, #145A86 0%, #0c3854 100%);
+            color: white;
+            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(20, 90, 134, 0.2);
+            margin-bottom: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-hero-card::after {
+            content: "\f017";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -30px;
+            font-size: 160px;
+            color: rgba(255, 255, 255, 0.03);
+            pointer-events: none;
+        }
+
+        .course-badge {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .course-hero-card h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            line-height: 1.25;
+        }
+
+        .course-hero-card p {
+            font-size: 15.5px;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 750px;
+        }
+
+        /* CORPS DU CONTENU RICHE */
+        .course-body {
+            background: white;
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 35px;
+        }
+
+        .course-body h2 {
+            color: #145A86;
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 10px;
+        }
+
+        .course-body h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .course-body h3 {
+            color: #0c3854;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .course-body p {
+            color: #475569;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .course-body ul, .course-body ol {
+            margin-left: 20px;
+            margin-bottom: 25px;
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        .course-body li {
+            margin-bottom: 10px;
+        }
+
+        /* ILLUSTRATIONS ET IMAGES DANS LE COURS */
+        .course-image-container {
+            margin: 30px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .course-image-container img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .course-image-container:hover img {
+            transform: scale(1.03);
+        }
+
+        .image-caption {
+            background: #f8fafc;
+            padding: 12px 20px;
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            font-weight: 500;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* CITATION / FOCUS BOX */
+        .quote-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+            border-left: 5px solid #145A86;
+            padding: 25px;
+            border-radius: 0 16px 16px 0;
+            margin: 30px 0;
+            font-style: italic;
+            color: #1e293b;
+            font-size: 15.5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .quote-box span {
+            display: block;
+            margin-top: 10px;
+            font-style: normal;
+            font-weight: 600;
+            color: #D4AF37;
+            font-size: 13px;
+        }
+
+        /* CARTES MÉTHODES / MATRICE */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 25px;
+            border-radius: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            border-color: #D4AF37;
+            box-shadow: 0 10px 25px rgba(20,90,134,0.06);
+            background: white;
+        }
+
+        .info-card h4 {
+            color: #145A86;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card p {
+            font-size: 13.5px;
+            margin-bottom: 0;
+            color: #64748b;
+        }
+
+        /* SECTION VALIDATION ULTRA-STYLÉE */
+        .action-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #0c3854 0%, #145A86 100%);
+            padding: 40px;
+            border-radius: 25px;
+            color: white;
+            box-shadow: 0 15px 35px rgba(20,90,134,0.2);
+        }
+
+        .action-section h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .action-section p {
+            font-size: 14.5px;
+            opacity: 0.85;
+            max-width: 520px;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        .btn-validate {
+            background: #D4AF37;
+            color: #145A86;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-validate:hover {
+            background: #f1c40f;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 60px;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        @media(max-width: 768px) {
+            .action-section { flex-direction: column; align-items: flex-start; gap: 25px; padding: 30px; }
+            header { padding: 0 20px; }
+            .course-body { padding: 25px; }
+            .course-hero-card { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Développement Personnel</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEUR PRINCIPAL -->
+    <div class="main-container">
+        <div class="breadcrumb">
+            <a href="module_developpement.html"><i class="fa-solid fa-arrow-left"></i> Retour au sommaire du module</a>
+        </div>
+
+        <!-- HERO DU COURS -->
+        <div class="course-hero-card">
+            <span class="course-badge">Chapitre 2 sur 7 • Productivité & Efficacité</span>
+            <h1>Gestion du Temps & Priorités</h1>
+            <p>Le temps est la ressource la plus précieuse et irremplaçable qui soit. Maîtrisez l'art de prioriser, domptez la matrice d'Eisenhower et éliminez durablement les sources de dispersion.</p>
+        </div>
+
+        <!-- CORPS DU COURS RICHE EN TEXTES ET IMAGES -->
+        <div class="course-body">
+            
+            <h2><i class="fa-solid fa-hourglass-half" style="color: #D4AF37;"></i> Introduction : Le mythe du manque de temps</h2>
+            <p>Combien de fois avez-vous prononcé ou entendu la phrase : <em>« Je n'ai pas le temps »</em> ? En réalité, le problème n'est jamais le manque de temps — puisque nous disposons tous exactement des mêmes 24 heures par jour —, mais bien la gestion de nos priorités, de notre attention et de nos choix.</p>
+            <p>Une mauvaise gestion du temps engendre du stress chronique, un sentiment de submersion permanente et une baisse drastique de la qualité de travail. Apprendre à structurer ses journées permet non seulement de gagner en productivité professionnelle, mais surtout de libérer du temps pour soi, ses proches et ses projets profonds.</p>
+
+            <div class="course-image-container">
+                <img src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1200&auto=format&fit=crop" alt="Gestion du temps et planification efficace">
+                <div class="image-caption">Optimiser son temps de travail grâce à des méthodes structurées et une planification rigoureuse.</div>
+            </div>
+
+            <div class="quote-box">
+                "Ce qui est important est rarement urgent, et ce qui est urgent est rarement important."
+                <span>— Dwight D. Eisenhower</span>
+            </div>
+
+            <h2><i class="fa-solid fa-th-large" style="color: #D4AF37;"></i> 1. L'Outil Phare : La Matrice d'Eisenhower</h2>
+            <p>Pour cesser de réagir aux urgences des autres et reprendre le contrôle de votre agenda, la <strong>Matrice d'Eisenhower</strong> est l'outil ultime de prise de décision. Elle classe vos tâches selon deux critères fondamentaux : <strong>l'urgence</strong> et <strong>l'importance</strong>.</p>
+
+            <div class="grid-cards">
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-fire" style="color: #e74c3c;"></i> Quadrant 1 : Urgent & Important</h4>
+                    <p><strong>À FAIRE IMMÉDIATEMENT.</strong> Ce sont les crises, les échéances de dernière minute et les problèmes imprévus. <em>Exemple : Une urgence médicale ou un dossier critique pour demain.</em></p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-calendar-check" style="color: #27ae60;"></i> Quadrant 2 : Non Urgent & Important</h4>
+                    <p><strong>À PLANIFIER.</strong> C'est le cœur de la réussite à long terme : la formation, le sport, la planification stratégique, la prévention. <em>C'est le quadrant des leaders performants.</em></p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-share" style="color: #f39c12;"></i> Quadrant 3 : Urgent & Non Important</h4>
+                    <p><strong>À DÉLÉGUER.</strong> Les interruptions trompeuses : la plupart des e-mails, des coups de fil ou des réunions sans ordre du jour précis. Quelqu'un d'autre peut souvent s'en charger.</p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-trash-can" style="color: #7f8c8d;"></i> Quadrant 4 : Non Urgent & Non Important</h4>
+                    <p><strong>À ÉLIMINER.</strong> Les distracteurs de productivité : réseaux sociaux excessifs, navigation stérile sur le web, tâches inutiles. Ils ne vous apportent aucune valeur ajoutée.</p>
+                </div>
+            </div>
+
+            <h2><i class="fa-solid fa-stopwatch" style="color: #D4AF37;"></i> 2. Maintenir la concentration : La Technique Pomodoro</h2>
+            <p>Savoir quoi faire ne suffit pas ; encore faut-il réussir à maintenir son attention face aux innombrables distractions de notre époque (notifications, bruits de bureau, multitâche inefficace).</p>
+            <p>Imaginée par Francesco Cirillo dans les années 1980, la <strong>Technique Pomodoro</strong> repose sur le rythme naturel de la concentration humaine :</p>
+            
+            <ul>
+                <li><strong>Étape 1 :</strong> Choisissez une tâche unique à accomplir.</li>
+                <li><strong>Étape 2 :</strong> Programmez un minuteur sur <strong>25 minutes</strong> de travail intensif, sans aucune distraction ni consultation de smartphone.</li>
+                <li><strong>Étape 3 :</strong> Lorsque la sonnerie retentit, accordez-vous une <strong>pause courte de 5 minutes</strong> (marchez, étirez-vous, respirez).</li>
+                <li><strong>Étape 4 :</strong> Répétez ce cycle 4 fois, puis prenez une pause plus longue de 15 à 30 minutes.</li>
+            </ul>
+
+            <div class="course-image-container">
+                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=1200&auto=format&fit=crop" alt="Concentration et productivité au travail">
+                <div class="image-caption">Le travail par blocs de concentration (deep work) démultiplie l'efficacité et réduit la fatigue mentale.</div>
+            </div>
+
+            <h3>3. Chasser les "Voleurs de Temps"</h3>
+            <p>Pour optimiser votre agenda, apprenez à identifier et neutraliser vos parasites quotidiens :</p>
+            <ul>
+                <li><strong>Le multitâche (multitasking) :</strong> Des études prouvent que faire plusieurs choses à la fois réduit l'efficacité et augmente le taux d'erreur. Mieux vaut le mono-tâche séquentiel.</li>
+                <li><strong>L'hyper-connexion :</strong> Coupez les notifications instantanées de votre boîte mail et de vos applications pendant vos sessions de travail profond.</li>
+                <li><strong>L'incapacité à dire non :</strong> Apprenez à refuser poliment les sollicitations qui ne s'inscrivent pas dans vos priorités du moment.</li>
+            </ul>
+
+            <div class="quote-box" style="border-left-color: #D4AF37;">
+                "L'art d'être sage, c'est l'art de savoir quoi ignorer."
+                <span>— William James</span>
+            </div>
+
+            <p>En combinant une hiérarchisation rigoureuse via la matrice d'Eisenhower et une gestion active de votre attention par le Pomodoro, vous transformerez radicalement votre rapport au temps et obtiendrez des résultats spectaculaires sans vous épuiser.</p>
+        </div>
+
+        <!-- SECTION DE VALIDATION -->
+        <div class="action-section">
+            <div>
+                <h3>Chapitre terminé avec brio ?</h3>
+                <p>Validez votre progression pour enregistrer vos acquis et déverrouiller l'accès au Chapitre 3.</p>
+            </div>
+            <button class="btn-validate" onclick="validerChapitre2()">
+                Valider ce chapitre <i class="fa-solid fa-check-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel</p>
+    </footer>
+
+    <!-- SCRIPT DE GESTION -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder aux cours.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        });
+
+        function validerChapitre2() {
+            let progression = JSON.parse(localStorage.getItem("dev_pers_progression")) || [];
+            
+            // Si le chapitre 2 n'est pas encore validé, on l'ajoute
+            if (!progression.includes(2)) {
+                progression.push(2);
+                localStorage.setItem("dev_pers_progression", JSON.stringify(progression));
+            }
+
+            alert("🎉 Félicitations ! Le Chapitre 2 a été validé avec succès.");
+            window.location.href = "developpement_personnel.html";
+        }
+    </script>
+</body>
+</html>

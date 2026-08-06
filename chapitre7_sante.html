@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Chapitre 7 : Législation, Politiques Publiques et Évaluation d'Impact</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & IMMERSIF
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* LAYOUT GLOBAL DE LA PAGE COURS */
+        .page-wrapper {
+            max-width: 1300px;
+            margin: 105px auto 50px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+
+        /* SOMMAIRE LATÉRAL (STICKY) */
+        .sidebar-sommaire {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            height: calc(100vh - 130px);
+            position: sticky;
+            top: 95px;
+            overflow-y: auto;
+        }
+
+        .sidebar-sommaire h3 {
+            color: #145A86;
+            font-size: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 12px;
+        }
+
+        .sommaire-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sommaire-list li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #555;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sommaire-list li a:hover, .sommaire-list li a.active {
+            background: #e8f1f8;
+            color: #145A86;
+            transform: translateX(5px);
+        }
+
+        .sommaire-list li a i {
+            color: #D4AF37;
+            font-size: 16px;
+        }
+
+        /* CONTENEUR PRINCIPAL DU COURS */
+        .course-main-content {
+            background: white;
+            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .breadcrumb {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+        }
+
+        .chapter-hero {
+            background: linear-gradient(135deg, #145A86, #0c3854);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(20,90,134,0.2);
+        }
+
+        .chapter-hero span {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chapter-hero h1 {
+            font-size: 30px;
+            margin: 15px 0 10px 0;
+            line-height: 1.3;
+        }
+
+        .chapter-hero p {
+            color: #d2e4f0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* STYLING DES 5 LEÇONS */
+        .lecon-section {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .lecon-section:hover {
+            box-shadow: 0 10px 30px rgba(20, 90, 134, 0.08);
+            border-color: #cbd5e1;
+        }
+
+        .lecon-header-title {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 20px;
+        }
+
+        .lecon-badge-num {
+            background: #145A86;
+            color: #D4AF37;
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 6px 15px rgba(20,90,134,0.2);
+            flex-shrink: 0;
+        }
+
+        .lecon-header-title h2 {
+            color: #145A86;
+            font-size: 22px;
+            line-height: 1.3;
+        }
+
+        .lecon-body p {
+            line-height: 1.8;
+            color: #475569;
+            margin-bottom: 20px;
+            font-size: 15px;
+            text-align: justify;
+        }
+
+        .lecon-body h4 {
+            color: #145A86;
+            font-size: 17px;
+            margin: 25px 0 12px 0;
+        }
+
+        .lecon-body ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: #475569;
+            line-height: 1.8;
+        }
+
+        .lecon-body li {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        /* ILLUSTRATIONS INTÉGRÉES */
+        .lecon-image-container {
+            margin: 25px 0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .lecon-image-container img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .lecon-image-container:hover img {
+            transform: scale(1.03);
+        }
+
+        .image-caption {
+            background: #f8fafc;
+            padding: 10px 15px;
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            font-style: italic;
+        }
+
+        /* ENCADRÉS EXPERT & EXEMPLES */
+        .box-expert {
+            background: #f8fafc;
+            border-left: 5px solid #145A86;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .box-expert h5 {
+            color: #145A86;
+            margin-bottom: 8px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .box-expert p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .box-success {
+            background: #f0fdf4;
+            border-left: 5px solid #22c55e;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .box-success h5 {
+            color: #166534;
+            margin-bottom: 8px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .box-success p {
+            margin: 0;
+            color: #14532d;
+            font-size: 14px;
+        }
+
+        /* BOUTONS DE VALIDATION ET NAVIGATION */
+        .chapter-footer-actions {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-valider-chap {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.25);
+        }
+
+        .btn-valider-chap:hover {
+            background: #219653;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(39, 174, 96, 0.35);
+        }
+
+        .btn-suiv-chap {
+            background: #145A86;
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(20,90,134,0.25);
+        }
+
+        .btn-suiv-chap:hover {
+            background: #D4AF37;
+            color: #145A86;
+            transform: translateY(-3px);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 60px;
+            line-height: 2;
+        }
+
+        /* RESPONSIVE MOBILE */
+        @media(max-width: 1024px) {
+            .page-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-sommaire {
+                display: none;
+            }
+        }
+
+        @media(max-width: 600px) {
+            header { padding: 0 15px; }
+            .course-main-content { padding: 20px; }
+            .chapter-footer-actions { flex-direction: column; gap: 15px; }
+            .btn-valider-chap, .btn-suiv-chap { width: 100%; justify-content: center; }
+            .lecon-header-title { flex-direction: column; align-items: flex-start; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Santé & Environnement</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- WRAPPER GLOBAL -->
+    <div class="page-wrapper">
+
+        <!-- SOMMAIRE LATÉRAL STICKY -->
+        <aside class="sidebar-sommaire">
+            <h3><i class="fa-solid fa-list-check"></i> Sommaire du Chapitre</h3>
+            <ul class="sommaire-list">
+                <li><a href="#lecon71"><i class="fa-solid fa-circle-dot"></i> 7.1 Cadre juridique et réglementaire</a></li>
+                <li><a href="#lecon72"><i class="fa-solid fa-circle-dot"></i> 7.2 Politiques publiques et actions multisectorielles</a></li>
+                <li><a href="#lecon73"><i class="fa-solid fa-circle-dot"></i> 7.3 Évaluation d'Impact sur la Santé (EIS)</a></li>
+                <li><a href="#lecon74"><i class="fa-solid fa-circle-dot"></i> 7.4 Audits environnementaux et inspections</a></li>
+                <li><a href="#lecon75"><i class="fa-solid fa-circle-dot"></i> 7.5 Gouvernance, éthique et perspectives</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENEUR CENTRAL -->
+        <main class="course-main-content">
+            <div class="breadcrumb">
+                <a href="sante_environnement.html"><i class="fa-solid fa-arrow-left"></i> Retour au menu des modules</a>
+            </div>
+
+            <div class="chapter-hero">
+                <span>Module 1 - Chapitre 7 sur 7 (Final)</span>
+                <h1>Législation, Politiques Publiques et Évaluation d'Impact</h1>
+                <p>Maîtrisez les cadres juridiques nationaux et internationaux de la santé environnementale, les outils d'évaluation préventive des projets et la gouvernance participative pour un développement durable et protecteur des populations.</p>
+            </div>
+
+            <!-- LEÇON 7.1 -->
+            <section id="lecon71" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">7.1</div>
+                    <h2>Cadre juridique et réglementaire national et international</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>La protection de la santé publique et de l'environnement repose sur un socle normatif contraignant. Au niveau international, des accords majeurs (comme les conventions de Stockholm sur les polluants organiques persistants, de Bâle sur les déchets dangereux ou de Minamata sur le mercure) fixent les standards mondiaux à respecter.</p>
+                    <p>Au niveau national, les constitutions reconnaissent généralement le droit fondamental de chaque citoyen à un environnement sain. Les lois-cadres sur l'environnement, les codes de la santé publique et les arrêtés sectoriels définissent les normes d'émission, les seuils de tolérance des polluants et les sanctions pénales applicables aux contrevenants.</p>
+
+                    <!-- Illustration 1 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=1200&q=80" alt="Législation et justice environnementale">
+                        <div class="image-caption">Figure 7.1 : Le cadre juridique et réglementaire comme garant de la conformité et de la protection des populations.</div>
+                    </div>
+
+                    <div class="box-expert">
+                        <h5><i class="fa-solid fa-scale-balanced" style="color: #145A86;"></i> Le principe pollueur-payeur</h5>
+                        <p>Consacré par le droit international de l'environnement, ce principe impute aux auteurs de pollutions la charge financière des mesures de prévention, de réduction et de lutte contre la pollution ainsi que la réparation des dommages causés.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 7.2 -->
+            <section id="lecon72" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">7.2</div>
+                    <h2>Politiques publiques et approche multisectorielle ("Une Seule Santé")</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>Les défis complexes de la santé environnementale (changements climatiques, émergence de zoonoses, résistance aux antimicrobiens) ne peuvent être résolus par le seul secteur de la santé. Ils exigent une action concertée à travers l'approche <strong>"Une Seule Santé" (One Health)</strong>.</p>
+                    <p>Cette vision systémique intègre étroitement les politiques de santé humaine, de santé animale et de gestion environnementale, en mobilisant de concert les ministères de la Santé, de l'Environnement, de l'Agriculture, de l'Urbanisme et des Infrastructures.</p>
+
+                    <h4>Domaines d'action conjointe :</h4>
+                    <ul>
+                        <li><strong>Surveillance épidémiologique intégrée :</strong> Alerte précoce et partage de données entre vétérinaires et médecins cliniciens.</li>
+                        <li><strong>Urbanisme favorable à la santé :</strong> Conception de villes intégrant des espaces verts, des transports non motorisés et des réseaux d'assainissement performants.</li>
+                        <li><strong>Sécurité sanitaire des aliments :</strong> Contrôle rigoureux de la chaîne alimentaire de la ferme à la table.</li>
+                    </ul>
+
+                    <!-- Illustration 2 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1200&q=80" alt="Approche One Health">
+                        <div class="image-caption">Figure 7.2 : Synergie entre santé humaine, animale et environnementale dans le cadre de l'approche One Health.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 7.3 -->
+            <section id="lecon73" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">7.3</div>
+                    <h2>Évaluation d'Impact sur la Santé (EIS) et Études d'Impact Environnemental (EIE)</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>L'anticipation est la clé de voûte de la prévention moderne. Avant la réalisation de grands projets d'infrastructure (barrages, routes, industries, mines), la réalisation d'une <strong>Étude d'Impact Environnemental et Social (EIES)</strong> et d'une <strong>Évaluation d'Impact sur la Santé (EIS)</strong> est exigée par la loi.</p>
+                    <p>Ces procédures méthodologiques permettent d'analyser en amont les répercussions potentielles d'un projet sur la santé des riverains (qualité de l'air, exposition au bruit, risques de maladies hydriques, perte de moyens de subsistance) et de concevoir des plans de gestion et d'atténuation rigoureux.</p>
+
+                    <div class="box-success">
+                        <h5><i class="fa-solid fa-circle-check"></i> Efficacité préventive</h5>
+                        <p>L'intégration d'une EIS en phase de conception d'un projet permet d'éviter plus de 70 % des coûts de remédiation ultérieurs et protège durablement la santé des communautés hôtes.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 7.4 -->
+            <section id="lecon74" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">7.4</div>
+                    <h2>Audits environnementaux et inspections de conformité</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>L'audit environnemental et les inspections sanitaires constituent les instruments de contrôle ex-post indispensables pour vérifier si les entreprises, les hôpitaux et les collectivités respectent les normes en vigueur et appliquent les engagements pris lors de leurs autorisations d'exploitation.</p>
+                    
+                    <h4>Les phases d'un audit de conformité :</h4>
+                    <ul>
+                        <li><strong>L'examen documentaire :</strong> Vérification des autorisations, des registres de rejets, des rapports de maintenance des équipements de traitement.</li>
+                        <li><strong>L'inspection sur site :</strong> Visite technique des installations, prélèvements d'échantillons (eaux usées, fumées, sols) et mesures acoustiques.</li>
+                        <li><strong>Le plan d'actions correctives :</strong> Formulation de recommandations contraignantes avec échéancier de mise en conformité en cas d'écarts constatés.</li>
+                    </ul>
+
+                    <!-- Illustration 3 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=1200&q=80" alt="Inspection et audit environnemental">
+                        <div class="image-caption">Figure 7.3 : Contrôle de conformité et prélèvements d'échantillons sur site industriel.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 7.5 -->
+            <section id="lecon75" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">7.5</div>
+                    <h2>Gouvernance participative, éthique et perspectives d'avenir</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>La réussite des politiques de santé environnementale ne peut être l'apanage exclusif des experts et des administrations. Elle requiert une <strong>gouvernance ouverte et participative</strong>, impliquant activement les organisations de la société civile, les communautés locales et le secteur privé.</p>
+                    <p>L'accès à l'information environnementale, la transparence des décisions publiques et le renforcement des capacités locales d'action garantissent la durabilité des interventions et l'équité intergénérationnelle. Face aux défis inédits du XXIe siècle, la formation continue et l'innovation technologique (objets connectés pour la qualité de l'air, télédétection) ouvrent de nouvelles perspectives prometteuses.</p>
+
+                    <div class="box-expert">
+                        <h5><i class="fa-solid fa-lightbulb" style="color: #145A86;"></i> Vision d'avenir</h5>
+                        <p>« Agir localement, penser globalement » : chaque professionnel formé en santé environnementale devient un acteur clé de la transformation vers des cadres de vie résilients, sains et durables.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BOUTONS DE VALIDATION -->
+            <div class="chapter-footer-actions">
+                <button class="btn-valider-chap" id="btnValiderChapitre" onclick="validerChapitre7()">
+                    <i class="fa-solid fa-circle-check"></i> Valider le Chapitre 7 (Fin du Module)
+                </button>
+                <a href="sante_environnement.html" class="btn-suiv-chap">
+                    Retour au Menu Principal <i class="fa-solid fa-house"></i>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel</p>
+    </footer>
+
+    <!-- SCRIPT DE GESTION DU PROFIL ET DU LOCALSTORAGE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            chargerDonneesUtilisateur();
+            verifierEtatValidation();
+        });
+
+        function chargerDonneesUtilisateur() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder aux cours.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        }
+
+        function validerChapitre7() {
+            let chapId = 7;
+            let raw = JSON.parse(localStorage.getItem("sante_env_progression")) || [];
+            if(!Array.isArray(raw)) raw = [];
+
+            let progression = [...new Set(raw.map(id => parseInt(id, 10)))];
+
+            if(!progression.includes(chapId)) {
+                progression.push(chapId);
+                localStorage.setItem("sante_env_progression", JSON.stringify(progression));
+                alert("🎓 Félicitations exceptionnelles ! Vous avez validé le Chapitre 7 et complété avec succès tout le module de Santé & Environnement !");
+            } else {
+                alert("ℹ️ Ce chapitre est déjà validé !");
+            }
+            verifierEtatValidation();
+        }
+
+        function verifierEtatValidation() {
+            let chapId = 7;
+            let raw = JSON.parse(localStorage.getItem("sante_env_progression")) || [];
+            if(!Array.isArray(raw)) raw = [];
+            let progression = raw.map(id => parseInt(id, 10));
+
+            let btn = document.getElementById("btnValiderChapitre");
+            if(progression.includes(chapId)) {
+                btn.style.background = "#27ae60";
+                btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Module Entièrement Validé !';
+            }
+        }
+    </script>
+</body>
+</html>

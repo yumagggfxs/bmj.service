@@ -1402,7 +1402,7 @@ header{
                         <li><i class="fa-solid fa-check"></i> Étude de cas pratiques et situations réelles</li>
                         <li><i class="fa-solid fa-check"></i> Évaluation finale pour l'obtention du certificat</li>
                     </ul>
-                    <button onclick="ouvrirCours('investissement.html')">Commencer le projet final</button>
+                    <button onclick="ouvrirCours('verification_finance.html')">Commencer le projet final</button>
                 </div>
             </div>
 
@@ -1425,66 +1425,107 @@ header{
                 pour valoriser vos nouvelles aptitudes financières.
             </p>
         </div>
-        <button onclick="window.location.href='investissement.html'">Vérifier mon parcours</button>
+        <button onclick="window.location.href='verification.html'">Vérifier mon parcours</button>
     </section>
 
 </body>
-<script>
 
+<script>
 /*==================================================
         BMJ SERVICE
         FORMATION FINANCE
+        SCRIPT PRINCIPAL
+        GESTION CENTRALISÉE DE LA PROGRESSION
 ==================================================*/
 
 
-//==================================================
-// CONFIGURATION DES CHAPITRES
-//==================================================
+/*==================================================
+        1. CONFIGURATION DE LA FORMATION
+==================================================*/
 
 const FINANCE_CHAPITRES = [
 
     {
         id: 1,
-        nom: "Introduction à la Finance",
+        nom: "Chapitre 1 : Introduction à la Finance",
         page: "introduction_finance.html"
     },
 
     {
         id: 2,
-        nom: "Gestion de l'argent",
+        nom: "Chapitre 2 : Gestion de l'argent",
         page: "gestion_argent.html"
     },
 
     {
         id: 3,
-        nom: "Épargne et objectifs financiers",
+        nom: "Chapitre 3 : Épargne et objectifs financiers",
         page: "epargne.html"
     },
 
     {
         id: 4,
-        nom: "Investissement",
+        nom: "Chapitre 4 : Investissement",
         page: "investissement.html"
     },
 
     {
         id: 5,
-        nom: "Projet final Finance",
+        nom: "Chapitre 5 : Projet final & Évaluation",
         page: "projet_final_finance.html"
     }
 
 ];
 
 
-//==================================================
-// CHARGEMENT DE LA PAGE
-//==================================================
+/*==================================================
+        2. CLÉ DE STOCKAGE
+==================================================*/
+
+/*
+    Une seule clé est utilisée
+    pour toute la formation Finance.
+*/
+
+const FINANCE_PROGRESS_KEY =
+    "finance_progression";
+
+
+/*==================================================
+        3. INITIALISATION
+==================================================*/
 
 document.addEventListener(
     "DOMContentLoaded",
-    function(){
+    function () {
+
+        /*
+            Vérifier l'utilisateur
+        */
+
+        const utilisateur =
+            obtenirUtilisateur();
+
+
+        if (!utilisateur) {
+
+            redirigerConnexion();
+
+            return;
+        }
+
+
+        /*
+            Charger le profil
+        */
 
         chargerUtilisateur();
+
+
+        /*
+            Nettoyer et actualiser
+            la progression
+        */
 
         mettreAJourProgression();
 
@@ -1492,316 +1533,843 @@ document.addEventListener(
 );
 
 
-//==================================================
-// CHARGER LE PROFIL
-//==================================================
+/*==================================================
+        4. UTILISATEUR CONNECTÉ
+==================================================*/
 
-function chargerUtilisateur(){
+/*
+    Récupérer l'utilisateur actuel.
+*/
 
-    let utilisateur = JSON.parse(
+function obtenirUtilisateur() {
 
-        localStorage.getItem(
-            "bmj_current_user"
-        )
+    try {
 
-    );
+        const donnees =
+            localStorage.getItem(
+                "bmj_current_user"
+            );
 
 
-    //==============================================
-    // UTILISATEUR NON CONNECTÉ
-    //==============================================
+        if (!donnees) {
 
-    if(!utilisateur){
+            return null;
+        }
 
-        window.location.href =
-            "connexion.html";
+
+        const utilisateur =
+            JSON.parse(donnees);
+
+
+        if (
+            !utilisateur ||
+            typeof utilisateur !== "object"
+        ) {
+
+            return null;
+        }
+
+
+        return utilisateur;
+
+    } catch (erreur) {
+
+        console.error(
+            "Erreur lors de la récupération de l'utilisateur :",
+            erreur
+        );
+
+        return null;
+    }
+}
+
+
+/*
+    Redirection vers la connexion.
+*/
+
+function redirigerConnexion() {
+
+    window.location.href =
+        "connexion.html";
+}
+
+
+/*
+    Charger le nom et la photo
+    dans le header.
+*/
+
+function chargerUtilisateur() {
+
+    const utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
+
+        redirigerConnexion();
 
         return;
-
     }
 
 
-    //==============================================
-    // NOM
-    //==============================================
+    /*------------------------------------------
+            NOM DE L'APPRENANT
+    ------------------------------------------*/
 
-    let nom =
+    const nomUtilisateur =
         document.getElementById(
             "nomUtilisateur"
         );
 
 
-    if(nom){
+    if (nomUtilisateur) {
 
-        nom.textContent =
+        nomUtilisateur.textContent =
             utilisateur.nom ||
             "Apprenant";
-
     }
 
 
-    //==============================================
-    // PHOTO
-    //==============================================
+    /*------------------------------------------
+            PHOTO DE L'APPRENANT
+    ------------------------------------------*/
 
-    let photo =
+    const photoUtilisateur =
         document.getElementById(
             "photoUtilisateur"
         );
 
 
-    if(photo){
+    if (photoUtilisateur) {
 
-        photo.src =
+        photoUtilisateur.src =
             utilisateur.photo ||
             "images/user.png";
 
+
+        /*
+            Si l'image n'existe pas,
+            utiliser l'image par défaut.
+        */
+
+        photoUtilisateur.onerror =
+            function () {
+
+                this.onerror = null;
+
+                this.src =
+                    "images/user.png";
+            };
     }
 
 }
 
 
-//==================================================
-// RÉCUPÉRER L'UTILISATEUR
-//==================================================
+/*==================================================
+        5. RÉCUPÉRER LA PROGRESSION
+==================================================*/
 
-function obtenirUtilisateur(){
+/*
+    Cette fonction est la source unique
+    de vérité pour la progression Finance.
 
-    return JSON.parse(
+    Exemple accepté :
 
-        localStorage.getItem(
-            "bmj_current_user"
-        )
+        ["1", 2, "3", 3, 4]
 
-    );
+    Résultat :
 
-}
+        [1, 2, 3, 4]
+*/
 
+function obtenirProgressionFinance() {
 
-//==================================================
-// RÉCUPÉRER LA PROGRESSION
-//==================================================
-
-function obtenirProgression(){
-
-    let progression = JSON.parse(
-
-        localStorage.getItem(
-            "finance_progression"
-        )
-
-    ) || [];
+    let progression = [];
 
 
-    if(!Array.isArray(progression)){
+    /*------------------------------------------
+            LECTURE DU LOCALSTORAGE
+    ------------------------------------------*/
+
+    try {
+
+        const donnees =
+            localStorage.getItem(
+                FINANCE_PROGRESS_KEY
+            );
+
+
+        if (donnees) {
+
+            progression =
+                JSON.parse(donnees);
+        }
+
+    } catch (erreur) {
+
+        console.error(
+            "Erreur lors de la lecture de la progression Finance :",
+            erreur
+        );
 
         progression = [];
-
     }
 
 
-    //==============================================
-    // SUPPRIMER LES DOUBLONS
-    //==============================================
+    /*------------------------------------------
+            VÉRIFIER LE TYPE
+    ------------------------------------------*/
 
-    progression = [
-        ...new Set(progression)
-    ];
+    if (!Array.isArray(progression)) {
 
-
-    return progression;
-
-}
+        progression = [];
+    }
 
 
-//==================================================
-// METTRE À JOUR LA PROGRESSION
-//==================================================
+    /*------------------------------------------
+            CONVERTIR LES IDS EN NOMBRES
+    ------------------------------------------*/
 
-function mettreAJourProgression(){
+    progression =
+        progression
+            .map(
+                function (id) {
 
-    let progression =
-        obtenirProgression();
+                    return parseInt(
+                        id,
+                        10
+                    );
+
+                }
+            )
+            .filter(
+                function (id) {
+
+                    return !isNaN(id);
+
+                }
+            );
 
 
-    let total =
-        FINANCE_CHAPITRES.length;
+    /*------------------------------------------
+            RÉCUPÉRER LES IDS VALIDES
+            DES 5 CHAPITRES
+    ------------------------------------------*/
 
+    const idsValides =
+        FINANCE_CHAPITRES.map(
+            function (chapitre) {
 
-    let termines =
-        progression.length;
+                return chapitre.id;
 
-
-    let pourcentage =
-        Math.round(
-            (termines / total) * 100
+            }
         );
 
 
-    if(pourcentage > 100){
+    /*------------------------------------------
+            SUPPRIMER LES IDS INEXISTANTS
+    ------------------------------------------*/
 
-        pourcentage = 100;
+    progression =
+        progression.filter(
+            function (id) {
 
+                return idsValides.includes(id);
+
+            }
+        );
+
+
+    /*------------------------------------------
+            SUPPRIMER LES DOUBLONS
+    ------------------------------------------*/
+
+    progression =
+        [...new Set(progression)];
+
+
+    /*------------------------------------------
+            TRIER DANS L'ORDRE
+            1 → 2 → 3 → 4 → 5
+    ------------------------------------------*/
+
+    progression.sort(
+        function (a, b) {
+
+            return a - b;
+
+        }
+    );
+
+
+    /*------------------------------------------
+            SAUVEGARDER LA VERSION NETTOYÉE
+    ------------------------------------------*/
+
+    localStorage.setItem(
+        FINANCE_PROGRESS_KEY,
+        JSON.stringify(progression)
+    );
+
+
+    return progression;
+}
+
+
+/*==================================================
+        6. ENREGISTRER UN CHAPITRE VALIDÉ
+==================================================*/
+
+/*
+    Cette fonction sera utilisée
+    par les pages des chapitres.
+
+    Exemple :
+
+        enregistrerChapitreFinance(1);
+
+        enregistrerChapitreFinance(2);
+
+        enregistrerChapitreFinance(3);
+
+        enregistrerChapitreFinance(4);
+
+        enregistrerChapitreFinance(5);
+*/
+
+function enregistrerChapitreFinance(id) {
+
+    id =
+        parseInt(
+            id,
+            10
+        );
+
+
+    /*------------------------------------------
+            VÉRIFIER L'ID
+    ------------------------------------------*/
+
+    const chapitreExiste =
+        FINANCE_CHAPITRES.some(
+            function (chapitre) {
+
+                return chapitre.id === id;
+
+            }
+        );
+
+
+    if (!chapitreExiste) {
+
+        console.warn(
+            "ID de chapitre Finance invalide :",
+            id
+        );
+
+        return false;
     }
 
 
-    //==============================================
-    // BARRE DE PROGRESSION
-    //==============================================
+    /*------------------------------------------
+            RÉCUPÉRER PROGRESSION
+    ------------------------------------------*/
 
-    let progressBar =
+    let progression =
+        obtenirProgressionFinance();
+
+
+    /*------------------------------------------
+            AJOUTER LE CHAPITRE
+            S'IL N'EXISTE PAS
+    ------------------------------------------*/
+
+    if (!progression.includes(id)) {
+
+        progression.push(id);
+    }
+
+
+    /*------------------------------------------
+            TRIER
+    ------------------------------------------*/
+
+    progression.sort(
+        function (a, b) {
+
+            return a - b;
+
+        }
+    );
+
+
+    /*------------------------------------------
+            SAUVEGARDER
+    ------------------------------------------*/
+
+    localStorage.setItem(
+        FINANCE_PROGRESS_KEY,
+        JSON.stringify(progression)
+    );
+
+
+    /*
+        Actualiser immédiatement
+        l'affichage si la fonction
+        existe sur la page.
+    */
+
+    mettreAJourProgression();
+
+
+    return true;
+}
+
+
+/*==================================================
+        7. RETIRER UN CHAPITRE
+==================================================*/
+
+/*
+    Fonction principalement utile
+    pour les tests ou l'administration.
+
+    Exemple :
+
+        retirerChapitreFinance(5);
+*/
+
+function retirerChapitreFinance(id) {
+
+    id =
+        parseInt(
+            id,
+            10
+        );
+
+
+    let progression =
+        obtenirProgressionFinance();
+
+
+    progression =
+        progression.filter(
+            function (chapitreId) {
+
+                return chapitreId !== id;
+
+            }
+        );
+
+
+    localStorage.setItem(
+        FINANCE_PROGRESS_KEY,
+        JSON.stringify(progression)
+    );
+
+
+    mettreAJourProgression();
+}
+
+
+/*==================================================
+        8. CALCUL DES STATISTIQUES
+==================================================*/
+
+function obtenirStatistiquesFinance() {
+
+    const progression =
+        obtenirProgressionFinance();
+
+
+    const total =
+        FINANCE_CHAPITRES.length;
+
+
+    /*
+        Compter uniquement les chapitres
+        réellement présents dans la liste.
+    */
+
+    const termines =
+        FINANCE_CHAPITRES.filter(
+            function (chapitre) {
+
+                return progression.includes(
+                    chapitre.id
+                );
+
+            }
+        ).length;
+
+
+    let pourcentage = 0;
+
+
+    if (total > 0) {
+
+        pourcentage =
+            Math.round(
+                (termines / total) * 100
+            );
+    }
+
+
+    /*
+        Sécurité
+    */
+
+    if (pourcentage < 0) {
+
+        pourcentage = 0;
+    }
+
+
+    if (pourcentage > 100) {
+
+        pourcentage = 100;
+    }
+
+
+    return {
+
+        progression: progression,
+
+        total: total,
+
+        termines: termines,
+
+        pourcentage: pourcentage,
+
+        termineTout:
+            termines === total
+
+    };
+}
+
+
+/*==================================================
+        9. METTRE À JOUR LA BARRE DE PROGRESSION
+==================================================*/
+
+function mettreAJourProgression() {
+
+    const statistiques =
+        obtenirStatistiquesFinance();
+
+
+    /*------------------------------------------
+            BARRE
+    ------------------------------------------*/
+
+    const progressBar =
         document.getElementById(
             "progressBar"
         );
 
 
-    if(progressBar){
+    if (progressBar) {
 
         progressBar.style.width =
-            pourcentage + "%";
+            statistiques.pourcentage +
+            "%";
 
+
+        /*
+            Accessibilité
+        */
+
+        progressBar.setAttribute(
+            "aria-valuenow",
+            statistiques.pourcentage
+        );
     }
 
 
-    //==============================================
-    // POURCENTAGE
-    //==============================================
+    /*------------------------------------------
+            POURCENTAGE
+    ------------------------------------------*/
 
-    let progressValue =
+    const progressValue =
         document.getElementById(
             "progressValue"
         );
 
 
-    if(progressValue){
+    if (progressValue) {
 
         progressValue.textContent =
-            pourcentage;
-
+            statistiques.pourcentage +
+            "%";
     }
 
+
+    /*------------------------------------------
+            NOMBRE DE CHAPITRES
+    ------------------------------------------*/
+
+    const progressText =
+        document.getElementById(
+            "progressText"
+        );
+
+
+    if (progressText) {
+
+        progressText.textContent =
+            statistiques.termines +
+            "/" +
+            statistiques.total;
+    }
+
+
+    /*------------------------------------------
+            AUTRES ÉLÉMENTS ÉVENTUELS
+    ------------------------------------------*/
+
+    const progressCount =
+        document.getElementById(
+            "progressCount"
+        );
+
+
+    if (progressCount) {
+
+        progressCount.textContent =
+            `${statistiques.termines} chapitre(s) terminé(s)`;
+    }
+
+
+    /*
+        Retourner les statistiques
+        peut être utile ailleurs.
+    */
+
+    return statistiques;
 }
 
 
-//==================================================
-// OUVRIR UN CHAPITRE
-//==================================================
-// IMPORTANT :
-// Les chapitres sont accessibles gratuitement.
-// AUCUNE vérification Premium ici.
-//==================================================
+/*==================================================
+        10. VÉRIFIER UN CHAPITRE
+==================================================*/
 
-function ouvrirCours(page){
+function chapitreFinanceTermine(id) {
 
-    let utilisateur =
-        obtenirUtilisateur();
-
-
-    //==============================================
-    // VÉRIFIER LA CONNEXION
-    //==============================================
-
-    if(!utilisateur){
-
-        alert(
-            "⚠️ Vous devez être connecté."
+    id =
+        parseInt(
+            id,
+            10
         );
 
-        window.location.href =
-            "connexion.html";
 
-        return;
-
-    }
+    const progression =
+        obtenirProgressionFinance();
 
 
-    //==============================================
-    // ACCÈS DIRECT AU COURS
-    //==============================================
-
-    window.location.href = page;
-
+    return progression.includes(id);
 }
 
 
-//==================================================
-// COMMENCER LA FORMATION
-//==================================================
+/*==================================================
+        11. VÉRIFIER TOUTE LA FORMATION
+==================================================*/
 
-function commencerFormation(){
+function formationFinanceTerminee() {
 
-    let utilisateur =
+    const statistiques =
+        obtenirStatistiquesFinance();
+
+
+    return statistiques.termineTout;
+}
+
+
+/*==================================================
+        12. NOMBRE DE CHAPITRES TERMINÉS
+==================================================*/
+
+function nombreChapitresFinanceTermines() {
+
+    const statistiques =
+        obtenirStatistiquesFinance();
+
+
+    return statistiques.termines;
+}
+
+
+/*==================================================
+        13. POURCENTAGE DE PROGRESSION
+==================================================*/
+
+function pourcentageFinance() {
+
+    const statistiques =
+        obtenirStatistiquesFinance();
+
+
+    return statistiques.pourcentage;
+}
+
+
+/*==================================================
+        14. OBTENIR LE PROCHAIN CHAPITRE
+==================================================*/
+
+function obtenirProchainChapitreFinance() {
+
+    const progression =
+        obtenirProgressionFinance();
+
+
+    const prochain =
+        FINANCE_CHAPITRES.find(
+            function (chapitre) {
+
+                return !progression.includes(
+                    chapitre.id
+                );
+
+            }
+        );
+
+
+    return prochain || null;
+}
+
+
+/*==================================================
+        15. OUVRIR UN COURS
+==================================================*/
+
+function ouvrirCours(page) {
+
+    const utilisateur =
         obtenirUtilisateur();
 
 
-    //==============================================
-    // VÉRIFIER LA CONNEXION
-    //==============================================
-
-    if(!utilisateur){
+    if (!utilisateur) {
 
         alert(
-            "⚠️ Vous devez être connecté."
+            "⚠️ Vous devez être connecté pour accéder à la formation."
         );
 
-        window.location.href =
-            "connexion.html";
+
+        redirigerConnexion();
+
 
         return;
-
     }
 
 
-    //==============================================
-    // ACCÈS DIRECT AU PREMIER CHAPITRE
-    //==============================================
+    if (!page) {
+
+        console.error(
+            "Aucune page de cours n'a été définie."
+        );
+
+
+        return;
+    }
+
+
+    window.location.href =
+        page;
+}
+
+
+/*==================================================
+        16. OUVRIR UN CHAPITRE PAR SON ID
+==================================================*/
+
+/*
+    Exemple :
+
+        ouvrirChapitreFinance(1);
+
+*/
+
+function ouvrirChapitreFinance(id) {
+
+    id =
+        parseInt(
+            id,
+            10
+        );
+
+
+    const chapitre =
+        FINANCE_CHAPITRES.find(
+            function (element) {
+
+                return element.id === id;
+
+            }
+        );
+
+
+    if (!chapitre) {
+
+        console.error(
+            "Chapitre Finance introuvable :",
+            id
+        );
+
+
+        return;
+    }
+
+
+    ouvrirCours(
+        chapitre.page
+    );
+}
+
+
+/*==================================================
+        17. COMMENCER LA FORMATION
+==================================================*/
+
+function commencerFormation() {
+
+    const utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
+
+        alert(
+            "⚠️ Vous devez être connecté pour commencer la formation."
+        );
+
+
+        redirigerConnexion();
+
+
+        return;
+    }
+
 
     window.location.href =
         "introduction_finance.html";
-
 }
 
 
-//==================================================
-// VÉRIFIER SI UN CHAPITRE EST TERMINÉ
-//==================================================
+/*==================================================
+        18. RETOUR SUR LA PAGE
+==================================================*/
 
-function chapitreTermine(numero){
-
-    let progression =
-        obtenirProgression();
-
-
-    return progression.includes(numero);
-
-}
-
-
-//==================================================
-// VÉRIFIER SI TOUS LES CHAPITRES SONT TERMINÉS
-//==================================================
-
-function formationFinanceTerminee(){
-
-    let progression =
-        obtenirProgression();
-
-
-    return (
-        progression.length >=
-        FINANCE_CHAPITRES.length
-    );
-
-}
-
-
-//==================================================
-// ACTUALISATION DE LA PROGRESSION
-//==================================================
+/*
+    Lorsque l'utilisateur revient
+    sur finance.html depuis un chapitre,
+    on recalcule la progression.
+*/
 
 window.addEventListener(
     "pageshow",
-    function(){
+    function () {
 
         mettreAJourProgression();
 
@@ -1809,23 +2377,96 @@ window.addEventListener(
 );
 
 
-//==================================================
-// ACTUALISATION AUTOMATIQUE
-//==================================================
+/*==================================================
+        19. MODIFICATION DU LOCALSTORAGE
+==================================================*/
 
-setInterval(
+/*
+    Si une autre page modifie :
 
-    function(){
+        finance_progression
 
-        mettreAJourProgression();
+    la page Finance actualise
+    automatiquement son affichage.
+*/
 
-    },
+window.addEventListener(
+    "storage",
+    function (event) {
 
-    1000
+        if (
+            event.key ===
+            FINANCE_PROGRESS_KEY
+        ) {
 
+            mettreAJourProgression();
+        }
+
+
+        if (
+            event.key ===
+            "bmj_current_user"
+        ) {
+
+            chargerUtilisateur();
+        }
+
+    }
 );
 
+
+/*==================================================
+        20. EXPOSITION DES FONCTIONS
+        POUR LES BOUTONS HTML
+==================================================*/
+
+/*
+    Les fonctions sont volontairement
+    globales afin de pouvoir utiliser :
+
+        onclick="commencerFormation()"
+
+        onclick="ouvrirCours(...)"
+
+        onclick="ouvrirChapitreFinance(1)"
+*/
+
+window.FINANCE_CHAPITRES =
+    FINANCE_CHAPITRES;
+
+window.obtenirProgressionFinance =
+    obtenirProgressionFinance;
+
+window.enregistrerChapitreFinance =
+    enregistrerChapitreFinance;
+
+window.chapitreFinanceTermine =
+    chapitreFinanceTermine;
+
+window.formationFinanceTerminee =
+    formationFinanceTerminee;
+
+window.nombreChapitresFinanceTermines =
+    nombreChapitresFinanceTermines;
+
+window.pourcentageFinance =
+    pourcentageFinance;
+
+window.obtenirProchainChapitreFinance =
+    obtenirProchainChapitreFinance;
+
+window.ouvrirCours =
+    ouvrirCours;
+
+window.ouvrirChapitreFinance =
+    ouvrirChapitreFinance;
+
+window.commencerFormation =
+    commencerFormation;
+
+</script>
 </script>
 
+</script>
 </body>
 </html>

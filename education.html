@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Domaine : Éducation & Savoirs Fondamentaux</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & IMMERSIF
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* LAYOUT GLOBAL */
+        .page-wrapper {
+            max-width: 1100px;
+            margin: 105px auto 50px auto;
+            padding: 0 20px;
+        }
+
+        .domain-container {
+            background: white;
+            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .breadcrumb {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+        }
+
+        /* HERO SECTION DU DOMAINE */
+        .domain-hero {
+            background: linear-gradient(135deg, #145A86, #0c3854);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            box-shadow: 0 10px 25px rgba(20,90,134,0.2);
+        }
+
+        .domain-hero-content span {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .domain-hero-content h1 {
+            font-size: 28px;
+            margin: 15px 0 10px 0;
+        }
+
+        .domain-hero-content p {
+            color: #d2e4f0;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .progress-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            min-width: 240px;
+        }
+
+        .progress-box p {
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: #27ae60;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* LISTE DES CHAPITRES / COURS */
+        .section-title {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .chapter-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-3px);
+            border-color: #145A86;
+            box-shadow: 0 8px 25px rgba(20,90,134,0.08);
+        }
+
+        .chapter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .chapter-number {
+            background: #145A86;
+            color: #D4AF37;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .chapter-status {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-done {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .chapter-card h3 {
+            color: #145A86;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .chapter-card p {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .btn-chapter {
+            background: #145A86;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-chapter:hover {
+            background: #0c3854;
+        }
+
+        /* SECTION EXAMEN FINAL */
+        .exam-banner {
+            background: linear-gradient(135deg, #f8fafc, #edf2f7);
+            border: 2px dashed #145A86;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .exam-banner h3 {
+            color: #145A86;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .exam-banner p {
+            color: #475569;
+            font-size: 14px;
+            max-width: 650px;
+            margin: 0 auto 20px auto;
+            line-height: 1.6;
+        }
+
+        .btn-exam {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.25);
+        }
+
+        .btn-exam:hover {
+            background: #219653;
+            transform: translateY(-2px);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 60px;
+            line-height: 2;
+        }
+
+        @media(max-width: 768px) {
+            .domain-hero { flex-direction: column; align-items: flex-start; }
+            header { padding: 0 15px; }
+            .domain-container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </a>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Espace Éducation</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- WRAPPER GLOBAL -->
+    <div class="page-wrapper">
+        <div class="domain-container">
+            
+            <div class="breadcrumb">
+                <a href="dashboard_education.html"><i class="fa-solid fa-arrow-left"></i> Retour au catalogue des formations</a>
+            </div>
+
+            <!-- HERO BANNER -->
+            <div class="domain-hero">
+                <div class="domain-hero-content">
+                    <span>Domaine Éducation & Savoirs</span>
+                    <h1>Cursus Éducatif Général & Méthodes d'Étude</h1>
+                    <p>Renforcez vos bases académiques à travers des modules complets axés sur la méthodologie de travail, la logique mathématique, la culture générale, l'expression écrite et la résolution de problèmes.</p>
+                </div>
+                <div class="progress-box">
+                    <p><span>Progression globale</span><span id="textePourcentage">0%</span></p>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" id="barreProgression"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LISTE DES CHAPITRES -->
+            <h2 class="section-title"><i class="fa-solid fa-book-open"></i> Modules d'Apprentissage</h2>
+            
+            <div class="chapters-grid">
+                
+                <!-- Chapitre 1 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <span class="chapter-number">1</span>
+                            <span class="chapter-status status-pending" id="status-edu-1">À lire</span>
+                        </div>
+                        <h3>Techniques de Mémorisation & Apprentissage Actif</h3>
+                        <p>Maîtrisez la répétition espacée, la prise de notes structurée et les cartes mentales pour assimiler durablement toute matière.</p>
+                    </div>
+                    <a href="cours_education_generale.html?chap=1" class="btn-chapter"><i class="fa-solid fa-book-reader"></i> Lire le cours</a>
+                </div>
+
+                <!-- Chapitre 2 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <span class="chapter-number">2</span>
+                            <span class="chapter-status status-pending" id="status-edu-2">À lire</span>
+                        </div>
+                        <h3>Logique Mathématique & Résolution de Problèmes</h3>
+                        <p>Développez un esprit analytique rigoureux à travers des exercices de raisonnement déductif et d'application pratique.</p>
+                    </div>
+                    <a href="cours_education_generale.html?chap=2" class="btn-chapter"><i class="fa-solid fa-book-reader"></i> Lire le cours</a>
+                </div>
+
+                <!-- Chapitre 3 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <span class="chapter-number">3</span>
+                            <span class="chapter-status status-pending" id="status-edu-3">À lire</span>
+                        </div>
+                        <h3>Maîtrise de l'Expression Écrite & Rédaction</h3>
+                        <p>Améliorez votre syntaxe, évitez les fautes courantes et apprenez à structurer une dissertation ou un rapport professionnel clair.</p>
+                    </div>
+                    <a href="cours_education_generale.html?chap=3" class="btn-chapter"><i class="fa-solid fa-book-reader"></i> Lire le cours</a>
+                </div>
+
+                <!-- Chapitre 4 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <span class="chapter-number">4</span>
+                            <span class="chapter-status status-pending" id="status-edu-4">À lire</span>
+                        </div>
+                        <h3>Culture Générale & Enjeux Contemporains</h3>
+                        <p>Explorez les grands repères historiques, scientifiques et économiques indispensables pour comprendre le monde moderne.</p>
+                    </div>
+                    <a href="cours_education_generale.html?chap=4" class="btn-chapter"><i class="fa-solid fa-book-reader"></i> Lire le cours</a>
+                </div>
+
+                <!-- Chapitre 5 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <span class="chapter-number">5</span>
+                            <span class="chapter-status status-pending" id="status-edu-5">À lire</span>
+                        </div>
+                        <h3>Anglais Fondamental & Communication</h3>
+                        <p>Acquérez les structures grammaticales essentielles et le vocabulaire courant indispensable pour s'exprimer et lire des ressources globales.</p>
+                    </div>
+                    <a href="cours_education_generale.html?chap=5" class="btn-chapter"><i class="fa-solid fa-book-reader"></i> Lire le cours</a>
+                </div>
+
+            </div>
+
+            <!-- EXAMEN FINAL BANNER -->
+            <div class="exam-banner">
+                <h3><i class="fa-solid fa-award" style="color: #D4AF37;"></i> Évaluation & Certification Générale</h3>
+                <p>Après avoir consulté et validé l'ensemble de vos modules pédagogiques depuis les pages de cours, présentez l'examen final pour obtenir votre attestation de réussite BMJ Service.</p>
+                <a href="evaluation_education_generale.html" class="btn-exam">
+                    <i class="fa-solid fa-file-lines"></i> Passer l'Évaluation Finale
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Domaine Éducation - Savoirs Fondamentaux & Réussite Académique</p>
+    </footer>
+
+    <!-- SCRIPT DE SYNCHRONISATION DE LA PROGRESSION -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            chargerInfosUtilisateur();
+            mettreAJourProgressionEducation();
+        });
+
+        function chargerInfosUtilisateur() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        }
+
+        function mettreAJourProgressionEducation() {
+            // Lecture exclusive de la progression enregistrée par les pages de cours généraux
+            let progression = JSON.parse(localStorage.getItem("education_ generale_progression")) || [];
+            let totalChapitres = 5;
+
+            let lus = progression.length;
+            let pourcentage = Math.round((lus / totalChapitres) * 100);
+
+            // Mise à jour de la barre visuelle
+            document.getElementById("textePourcentage").textContent = pourcentage + "%";
+            document.getElementById("barreProgression").style.width = pourcentage + "%";
+
+            // Mise à jour des badges de chaque carte
+            for(let i = 1; i <= totalChapitres; i++) {
+                let badge = document.getElementById("status-edu-" + i);
+                if(progression.includes(i)) {
+                    badge.textContent = "Validé";
+                    badge.className = "chapter-status status-done";
+                } else {
+                    badge.textContent = "À lire";
+                    badge.className = "chapter-status status-pending";
+                }
+            }
+        }
+    </script>
+</body>
+</html>

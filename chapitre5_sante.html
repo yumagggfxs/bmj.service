@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Chapitre 5 : Eau, Hygiène et Assainissement (EAH)</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & IMMERSIF
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* LAYOUT GLOBAL DE LA PAGE COURS */
+        .page-wrapper {
+            max-width: 1300px;
+            margin: 105px auto 50px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+
+        /* SOMMAIRE LATÉRAL (STICKY) */
+        .sidebar-sommaire {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            height: calc(100vh - 130px);
+            position: sticky;
+            top: 95px;
+            overflow-y: auto;
+        }
+
+        .sidebar-sommaire h3 {
+            color: #145A86;
+            font-size: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 12px;
+        }
+
+        .sommaire-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sommaire-list li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #555;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sommaire-list li a:hover, .sommaire-list li a.active {
+            background: #e8f1f8;
+            color: #145A86;
+            transform: translateX(5px);
+        }
+
+        .sommaire-list li a i {
+            color: #D4AF37;
+            font-size: 16px;
+        }
+
+        /* CONTENEUR PRINCIPAL DU COURS */
+        .course-main-content {
+            background: white;
+            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .breadcrumb {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+        }
+
+        .chapter-hero {
+            background: linear-gradient(135deg, #145A86, #0c3854);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(20,90,134,0.2);
+        }
+
+        .chapter-hero span {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chapter-hero h1 {
+            font-size: 30px;
+            margin: 15px 0 10px 0;
+            line-height: 1.3;
+        }
+
+        .chapter-hero p {
+            color: #d2e4f0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* STYLING DES 5 LEÇONS */
+        .lecon-section {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .lecon-section:hover {
+            box-shadow: 0 10px 30px rgba(20, 90, 134, 0.08);
+            border-color: #cbd5e1;
+        }
+
+        .lecon-header-title {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 20px;
+        }
+
+        .lecon-badge-num {
+            background: #145A86;
+            color: #D4AF37;
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 6px 15px rgba(20,90,134,0.2);
+            flex-shrink: 0;
+        }
+
+        .lecon-header-title h2 {
+            color: #145A86;
+            font-size: 22px;
+            line-height: 1.3;
+        }
+
+        .lecon-body p {
+            line-height: 1.8;
+            color: #475569;
+            margin-bottom: 20px;
+            font-size: 15px;
+            text-align: justify;
+        }
+
+        .lecon-body h4 {
+            color: #145A86;
+            font-size: 17px;
+            margin: 25px 0 12px 0;
+        }
+
+        .lecon-body ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: #475569;
+            line-height: 1.8;
+        }
+
+        .lecon-body li {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        /* ILLUSTRATIONS INTÉGRÉES */
+        .lecon-image-container {
+            margin: 25px 0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .lecon-image-container img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .lecon-image-container:hover img {
+            transform: scale(1.03);
+        }
+
+        .image-caption {
+            background: #f8fafc;
+            padding: 10px 15px;
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            font-style: italic;
+        }
+
+        /* ENCADRÉS EXPERT & EXEMPLES */
+        .box-expert {
+            background: #f8fafc;
+            border-left: 5px solid #145A86;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .box-expert h5 {
+            color: #145A86;
+            margin-bottom: 8px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .box-expert p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .box-warning {
+            background: #fef2f2;
+            border-left: 5px solid #ef4444;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .box-warning h5 {
+            color: #991b1b;
+            margin-bottom: 8px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .box-warning p {
+            margin: 0;
+            color: #7f1d1d;
+            font-size: 14px;
+        }
+
+        /* BOUTONS DE VALIDATION ET NAVIGATION */
+        .chapter-footer-actions {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-valider-chap {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.25);
+        }
+
+        .btn-valider-chap:hover {
+            background: #219653;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(39, 174, 96, 0.35);
+        }
+
+        .btn-suiv-chap {
+            background: #145A86;
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(20,90,134,0.25);
+        }
+
+        .btn-suiv-chap:hover {
+            background: #D4AF37;
+            color: #145A86;
+            transform: translateY(-3px);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 60px;
+            line-height: 2;
+        }
+
+        /* RESPONSIVE MOBILE */
+        @media(max-width: 1024px) {
+            .page-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-sommaire {
+                display: none;
+            }
+        }
+
+        @media(max-width: 600px) {
+            header { padding: 0 15px; }
+            .course-main-content { padding: 20px; }
+            .chapter-footer-actions { flex-direction: column; gap: 15px; }
+            .btn-valider-chap, .btn-suiv-chap { width: 100%; justify-content: center; }
+            .lecon-header-title { flex-direction: column; align-items: flex-start; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Santé & Environnement</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- WRAPPER GLOBAL -->
+    <div class="page-wrapper">
+
+        <!-- SOMMAIRE LATÉRAL STICKY -->
+        <aside class="sidebar-sommaire">
+            <h3><i class="fa-solid fa-list-check"></i> Sommaire du Chapitre</h3>
+            <ul class="sommaire-list">
+                <li><a href="#lecon51"><i class="fa-solid fa-circle-dot"></i> 5.1 Accès à l'eau potable</a></li>
+                <li><a href="#lecon52"><i class="fa-solid fa-circle-dot"></i> 5.2 Traitement domestique de l'eau</a></li>
+                <li><a href="#lecon53"><i class="fa-solid fa-circle-dot"></i> 5.3 Assainissement de base</a></li>
+                <li><a href="#lecon54"><i class="fa-solid fa-circle-dot"></i> 5.4 Approche PHAST & sensibilisation</a></li>
+                <li><a href="#lecon55"><i class="fa-solid fa-circle-dot"></i> 5.5 Hygiène menstruelle (GHM)</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENU CENTRAL -->
+        <main class="course-main-content">
+            <div class="breadcrumb">
+                <a href="sante_environnement.html"><i class="fa-solid fa-arrow-left"></i> Retour au menu des modules</a>
+            </div>
+
+            <div class="chapter-hero">
+                <span>Module 1 - Chapitre 5 sur 7</span>
+                <h1>Eau, Hygiène et Assainissement (EAH)</h1>
+                <p>Maîtrisez les fondements de l'accès à l'eau saine, les techniques de potabilisation de l'eau à domicile, les solutions d'assainissement durable et la gestion de l'hygiène au sein des communautés.</p>
+            </div>
+
+            <!-- LEÇON 5.1 -->
+            <section id="lecon51" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">5.1</div>
+                    <h2>Accès à l'eau potable : enjeux de santé publique et ressources en eau</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>L'eau est une ressource vitale, mais sa disponibilité et sa qualité inégales constituent l'un des plus grands défis de santé publique dans le monde. L'accès insuffisant à une eau de boisson salubre et le manque d'infrastructures d'hygiène favorisent la persistance de maladies hydriques dévastatrices telles que le choléra, la fièvre typhoïde, la dysenterie et les parasitoses intestinales.</p>
+                    <p>Protéger les sources d'approvisionnement (forages, sources aménagées, réseaux de distribution) contre les pollutions d'origine humaine et animale est la première barrière de protection sanitaire.</p>
+
+                    <!-- Illustration 1 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1548839140-29a749e1cf4d?auto=format&fit=crop&w=1200&q=80" alt="Accès à l'eau potable">
+                        <div class="image-caption">Figure 5.1 : Infrastructures d'eau potable et sécurisation des points d'approvisionnement communautaires.</div>
+                    </div>
+
+                    <div class="box-expert">
+                        <h5><i class="fa-solid fa-droplet" style="color: #145A86;"></i> Indicateur clé de développement</h5>
+                        <p>Selon l'OMS, l'accès universel à l'eau potable et à des services d'assainissement gérés en toute sécurité réduirait de près de 10 % la charge mondiale de morbidité.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 5.2 -->
+            <section id="lecon52" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">5.2</div>
+                    <h2>Techniques de traitement domestique de l'eau (filtration, chloration, ébullition, SODIS)</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>Lorsque l'eau du réseau ou des sources locales n'est pas garantie potable, des méthodes de traitement au niveau du ménage (Traitement et Stockage Sécurisé de l'Eau - TSSE) s'avèrent indispensables pour éliminer les micro-organismes pathogènes avant la consommation.</p>
+                    
+                    <h4>Principales méthodes de potabilisation à domicile :</h4>
+                    <ul>
+                        <li><strong>L'ébullition :</strong> Porter l'eau à pleine ébullition pendant au moins 1 minute tue efficacement bactéries, virus et parasites.</li>
+                        <li><strong>La chloration :</strong> Utilisation de solutions de hypochlorite de sodium ou de pastilles de chlore en respectant les dosages et le temps de contact (généralement 30 minutes).</li>
+                        <li><strong>La filtration :</strong> Utilisation de filtres à céramique, à sable lent ou de membranes à ultrafiltration pour retenir les particules en suspension et les germes.</li>
+                        <li><strong>La méthode SODIS (Désinfection solaire) :</strong> Exposition d'eau claire dans des bouteilles en plastique transparent au rayonnement solaire direct pendant au moins 6 heures (ou 2 jours par temps couvert).</li>
+                    </ul>
+
+                    <!-- Illustration 2 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80" alt="Traitement de l'eau">
+                        <div class="image-caption">Figure 5.2 : Solutions pratiques de potabilisation et de stockage sécurisé de l'eau au foyer.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 5.3 -->
+            <section id="lecon53" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">5.3</div>
+                    <h2>Assainissement de base : latrines hygiéniques, gestion des eaux usées</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>L'assainissement de base englobe la gestion sécurisée des excrétats humains (urines et fèces) et des eaux usées domestiques (eaux de vaisselle, de lessive, de douche). L'absence de latrines adéquates conduit à la défécation à l'air libre, principale source de contamination fécale de l'environnement et des nappes phréatiques superficielles.</p>
+                    <p>La conception des latrines (fosse améliorée ventilée - VIP, latrines à chasse d'eau raccordées à des fosses septiques étanches ou à des réseaux d'égouts) doit empêcher l'accès des vecteurs (mouches, rongeurs) et éliminer les odeurs et les risques de contact direct.</p>
+
+                    <div class="box-warning">
+                        <h5><i class="fa-solid fa-triangle-exclamation"></i> Règle d'implantation hydraulique</h5>
+                        <p>Une latrine ou fosse septique doit toujours être construite en aval et à une distance minimale de 30 mètres de tout puits ou forage d'eau souterraine pour éviter toute contamination microbienne.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 5.4 -->
+            <section id="lecon54" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">5.4</div>
+                    <h2>Approche PHAST et stratégies de changement de comportement en hygiène</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>L'installation d'ouvrages hydrauliques et sanitaires ne suffit pas à garantir leur bon usage ; les populations doivent s'approprier les pratiques d'hygiène préventive. L'approche <strong>PHAST</strong> (<i>Participatory Hygiene and Sanitation Transformation</i> soit Transformation Participative de l'Hygiène et de l'Assainissement) est une méthodologie éprouvée.</p>
+                    <p>Basée sur des outils participatifs visuels, elle permet aux communautés d'analyser leurs propres pratiques sanitaires, de comprendre la voie de transmission des maladies (le schéma des "cinq F" : Fèces, Fluides, Doigts, Champs, Mouches - <i>Feces, Fingers, Flies, Fields, Floods</i>) et de concevoir collectivement des plans d'action pour modifier durablement leurs comportements.</p>
+
+                    <!-- Illustration 3 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=1200&q=80" alt="Sensibilisation communautaire EAH">
+                        <div class="image-caption">Figure 5.3 : Sessions de sensibilisation communautaire et adoption des bonnes pratiques d'hygiène des mains.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 5.5 -->
+            <section id="lecon55" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">5.5</div>
+                    <h2>Gestion de l'Hygiène Menstruelle (GHM) et inclusion dans les structures</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>La Gestion de l'Hygiène Menstruelle (GHM) est un volet crucial et longtemps négligé de l'eau, de l'hygiène et de l'assainissement. Elle implique que les femmes et les jeunes filles disposent d'un accès à des produits de protection absorbants propres, à de l'eau en quantité suffisante, à des espaces d'intimité pour se laver et changer, ainsi qu'à des dispositifs d'élimination sécurisée des déchets menstruels.</p>
+                    <p>Le manque d'installations GHM adaptées dans les écoles et les lieux de travail engendre l'absentéisme, le décrochage et des répercussions psychologiques et sanitaires importantes (infections uro-génitales dues au port prolongé de protections de fortune).</p>
+
+                    <div class="box-expert">
+                        <h5><i class="fa-solid fa-hands-holding-child" style="color: #145A86;"></i> Approche inclusive</h5>
+                        <p>Intégrer des cabines sanitaires verrouillables, équipées de points d'eau et de poubelles étanches dans les institutions publiques garantit la dignité, l'égalité des genres et le bien-être de toutes et tous.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BOUTONS DE VALIDATION -->
+            <div class="chapter-footer-actions">
+                <button class="btn-valider-chap" id="btnValiderChapitre" onclick="validerChapitre5()">
+                    <i class="fa-solid fa-circle-check"></i> Valider le Chapitre 5
+                </button>
+                <a href="chapitre6_sante.html" class="btn-suiv-chap">
+                    Passer au Chapitre 6 <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel</p>
+    </footer>
+
+    <!-- SCRIPT DE GESTION DU PROFIL ET DU LOCALSTORAGE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            chargerDonneesUtilisateur();
+            verifierEtatValidation();
+        });
+
+        function chargerDonneesUtilisateur() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder aux cours.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        }
+
+        function validerChapitre5() {
+            let chapId = 5;
+            let raw = JSON.parse(localStorage.getItem("sante_env_progression")) || [];
+            if(!Array.isArray(raw)) raw = [];
+
+            let progression = [...new Set(raw.map(id => parseInt(id, 10)))];
+
+            if(!progression.includes(chapId)) {
+                progression.push(chapId);
+                localStorage.setItem("sante_env_progression", JSON.stringify(progression));
+                alert("🎉 Félicitations ! Chapitre 5 validé avec succès.");
+            } else {
+                alert("ℹ️ Ce chapitre est déjà validé !");
+            }
+            verifierEtatValidation();
+        }
+
+        function verifierEtatValidation() {
+            let chapId = 5;
+            let raw = JSON.parse(localStorage.getItem("sante_env_progression")) || [];
+            if(!Array.isArray(raw)) raw = [];
+            let progression = raw.map(id => parseInt(id, 10));
+
+            let btn = document.getElementById("btnValiderChapitre");
+            if(progression.includes(chapId)) {
+                btn.style.background = "#27ae60";
+                btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Chapitre 5 Validé';
+            }
+        }
+    </script>
+</body>
+</html>

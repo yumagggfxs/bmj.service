@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Cours Magistral : Logique Mathématique Avancée</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & LONG FORMAT ILLUSTRÉ
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f4f7fa;
+            color: #1e293b;
+            overflow-x: hidden;
+            line-height: 1.8;
+        }
+
+        /* HEADER FIXE SOPHISTIQUÉ */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 50px;
+            box-shadow: 0 4px 30px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #f8fafc;
+            padding: 6px 16px 6px 6px;
+            border-radius: 50px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .course-user small {
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+
+        /* WRAPPER GLOBAL */
+        .page-wrapper {
+            max-width: 1020px;
+            margin: 115px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        .course-container {
+            background: #ffffff;
+            padding: 65px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(20, 90, 134, 0.07);
+            border: 1px solid #edf2f7;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #145A86, #D4AF37, #27ae60);
+        }
+
+        .breadcrumb {
+            margin-bottom: 30px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+        }
+
+        /* EN-TÊTE DU COURS */
+        .course-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+        }
+
+        .badge-chapitre {
+            background: linear-gradient(135deg, #145A86, #0c3854);
+            color: #D4AF37;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(20, 90, 134, 0.2);
+        }
+
+        .course-title {
+            color: #0f172a;
+            font-size: 34px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.25;
+            letter-spacing: -0.5px;
+        }
+
+        .course-divider {
+            height: 5px;
+            width: 80px;
+            background: #D4AF37;
+            border-radius: 3px;
+            margin-bottom: 40px;
+        }
+
+        /* CONTENEUR D'IMAGE ILLUSTRATIVE STYLÉ */
+        .image-container {
+            margin: 35px 0;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+        }
+
+        .image-container img {
+            width: 100%;
+            max-height: 420px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+
+        .image-caption {
+            color: #64748b;
+            font-size: 13px;
+            font-style: italic;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* TYPOGRAPHIE ET CORPS DE COURS RICHE */
+        .course-body h2 {
+            color: #145A86;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 45px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-body h3 {
+            color: #334155;
+            font-size: 18px;
+            font-weight: 600;
+            margin: 30px 0 12px 0;
+        }
+
+        .course-body p {
+            color: #475569;
+            font-size: 16px;
+            line-height: 1.85;
+            margin-bottom: 22px;
+            text-align: justify;
+        }
+
+        .course-body ul, .course-body ol {
+            margin: 20px 0 25px 30px;
+            color: #475569;
+        }
+
+        .course-body li {
+            margin-bottom: 12px;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .course-body strong {
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        /* BLOCS DESIGN STYLÉS */
+        .callout-box {
+            background: linear-gradient(135deg, #f8fafc, #edf2f7);
+            border-left: 5px solid #145A86;
+            padding: 25px 30px;
+            border-radius: 0 16px 16px 0;
+            margin: 35px 0;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.02);
+        }
+
+        .callout-box.gold {
+            border-left-color: #D4AF37;
+            background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        }
+
+        .callout-box.gold h4 {
+            color: #92400e;
+        }
+
+        .callout-box h4 {
+            color: #145A86;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .callout-box p {
+            margin-bottom: 0;
+            color: #334155;
+            font-size: 15px;
+        }
+
+        /* TABLEAUX COMPARATIFS STYLÉS */
+        .table-container {
+            overflow-x: auto;
+            margin: 35px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            background: white;
+        }
+
+        th {
+            background: #145A86;
+            color: white;
+            padding: 15px 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
+            font-size: 14px;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ACTIONS DE FIN DE COURS */
+        .course-footer-actions {
+            margin-top: 60px;
+            padding-top: 35px;
+            border-top: 2px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-validate {
+            background: linear-gradient(135deg, #27ae60, #219653);
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3);
+            text-decoration: none;
+        }
+
+        .btn-validate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn-back-menu {
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.2s;
+        }
+
+        .btn-back-menu:hover {
+            color: #145A86;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 40px;
+            margin-top: 80px;
+            line-height: 2;
+        }
+
+        @media(max-width: 768px) {
+            .course-container { padding: 30px 20px; }
+            .course-footer-actions { flex-direction: column-reverse; gap: 20px; align-items: stretch; text-align: center; }
+            header { padding: 0 20px; }
+            .course-title { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </a>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Espace Éducation Avancé</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- WRAPPER GLOBAL -->
+    <div class="page-wrapper">
+        <div class="course-container">
+            
+            <div class="breadcrumb">
+                <a href="domaine_education_generale.html"><i class="fa-solid fa-arrow-left"></i> Retour au sommaire du domaine académique</a>
+            </div>
+
+            <!-- CONTENU DYNAMIQUE DU COURS MAGISTRAL -->
+            <div id="contenuCours">
+                <!-- Injecté dynamiquement par JavaScript selon le paramètre ?chap=X -->
+            </div>
+
+            <!-- ACTIONS DE FIN DE COURS -->
+            <div class="course-footer-actions">
+                <a href="domaine_education_generale.html" class="btn-back-menu"><i class="fa-solid fa-arrow-left"></i> Revenir plus tard au menu</a>
+                <button class="btn-validate" onclick="validerEtQuitter()"><i class="fa-solid fa-check-circle"></i> Marquer comme lu et validé</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme Professionnelle d'Éducation & de Développement des Compétences</p>
+    </footer>
+
+    <!-- SCRIPT DE CHARGEMENT ET DE BASE DE DONNÉES LONG FORMAT ILLUSTRÉE -->
+    <script>
+        let numeroChapitre = 2; // Par défaut sur 2 pour ?chap=2
+
+        document.addEventListener("DOMContentLoaded", function() {
+            chargerInfosUtilisateur();
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const chapParam = urlParams.get('chap');
+            if(chapParam) {
+                numeroChapitre = parseInt(chapParam);
+            }
+
+            afficherContenuCours(numeroChapitre);
+        });
+
+        function chargerInfosUtilisateur() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                window.location.href = "connexion.html";
+                return;
+            }
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        }
+
+        // BASE DE DONNÉES DES COURS EXTRÊMEMENT DÉVELOPPÉE, RICHE ET ILLUSTRÉE
+        const donneesCours = {
+            1: {
+                titreBadge: "Module Magistral 01",
+                titre: "Techniques Avancées de Mémorisation & Architecture de l'Apprentissage Actif",
+                corps: `
+                    <p>Bienvenue dans ce cours magistral et exhaustif consacré à l'ingénierie cognitive et aux méthodes d'optimisation de la mémoire. Dans un monde saturé d'informations, la réussite académique et professionnelle ne dépend plus de la simple accumulation passive de données, mais de la maîtrise rigoureuse des mécanismes psychologiques qui régissent l'encodage, la consolidation et la restitution des connaissances à long terme.</p>
+                    
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80" alt="Illustration apprentissage et neurosciences">
+                        <div class="image-caption"><i class="fa-solid fa-image"></i> Schématisation des connexions synaptiques lors d'un apprentissage actif et structuré.</div>
+                    </div>
+
+                    <h2><i class="fa-solid fa-brain" style="color: #145A86;"></i> 1. Comprendre la Neurobiologie de l'Apprentissage</h2>
+                    <p>Le cerveau humain n'est pas un disque dur passif : c'est un réseau neuronal plastique en perpétuelle reconfiguration. Lorsque nous découvrons une notion inédite, des synapses se créent, mais sans stimuli répétés, l'élagage synaptique s'enclenche, provoquant l'oubli. Hermann Ebbinghaus a mis en évidence dès 1885 la célèbre <strong>courbe de l'oubli</strong>, démontrant que sans intervention, plus de 70 % d'une information nouvelle est perdue en moins de 48 heures.</p>
+                    <p>Pour déjouer cette fatalité biologique, la stratégie la plus redoutable consiste à structurer l'apprentissage autour de piliers scientifiques incontournables : l'attention sélective, la rétroaction corrective immédiate et, par-dessus tout, la répartition temporelle intelligente des révisions.</p>
+                    <p>En outre, l'état émotionnel joue un rôle de catalyseur chimique. La sécrétion de dopamine lors de la résolution d'un problème complexe renforce l'ancrage mnésique, transformant une contrainte d'étude en une réelle dynamique de progression gratifiante.</p>
+
+                    <div class="callout-box gold">
+                        <h4><i class="fa-solid fa-medal"></i> Le Secret des Apprenants d'Excellence</h4>
+                        <p>Ne lisez jamais un cours d'une seule traite en espérant qu'il s'imprime magiquement. Pratiquez l'auto-évaluation active (le "testing effect") : fermez votre manuel après une section et forcez votre esprit à restituer les idées maîtresses de mémoire.</p>
+                    </div>
+
+                    <h2><i class="fa-solid fa-calendar-days" style="color: #145A86;"></i> 2. La Méthode de la Répétition Espacée (Spaced Repetition)</h2>
+                    <p>La répétition espacée consiste à espacer les sessions de révision selon un calendrier mathématique précis. Plutôt que de passer 5 heures d'affilée la veille d'un examen, il est infiniment plus efficace de répartir ce temps sur plusieurs semaines pour tromper la courbe naturelle de l'oubli.</p>
+                    
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80" alt="Planification et organisation des révisions">
+                        <div class="image-caption"><i class="fa-solid fa-image"></i> Planification rigoureuse des sessions de mémorisation à intervalles croissants.</div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Session de Révision</th>
+                                    <th>Moment Idéal</th>
+                                    <th>Objectif Cognitif</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1ère révision</strong></td>
+                                    <td>24 heures après le premier apprentissage</td>
+                                    <td>Contrer la chute rapide de la courbe de l'oubli initiale.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2ème révision</strong></td>
+                                    <td>3 à 5 jours plus tard</td>
+                                    <td>Transférer l'information de l'hippocampe vers le cortex.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3ème révision</strong></td>
+                                    <td>2 semaines plus tard</td>
+                                    <td>Ancrer durablement la notion dans la mémoire à long terme.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4ème révision</strong></td>
+                                    <td>1 mois à 2 mois plus tard</td>
+                                    <td>Automatiser la restitution sans effort conscient.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h2><i class="fa-solid fa-chalkboard-user" style="color: #145A86;"></i> 3. La Technique de Feynman et la Restitution Simple</h2>
+                    <p>Richard Feynman, physicien nobélisé, a développé une méthode d'apprentissage universelle basée sur un principe implacable : <em>« Si vous ne pouvez pas expliquer un concept simplement, c'est que vous ne le comprenez pas assez bien. »</em></p>
+                    <p>La mise en application de cette méthode s'articule en quatre étapes strictes :</p>
+                    <ol>
+                        <li><strong>Sélectionner un concept complexe :</strong> Isoler précisément la notion que l'on souhaite maîtriser sans tricher.</li>
+                        <li><strong>L'enseigner à un néophyte fictif :</strong> Rédiger ou formuler l'explication en bannissant tout jargon technique abstrait, en privilégiant des métaphores tirées du quotidien.</li>
+                        <li><strong>Identifier les failles de raisonnement :</strong> Observer les moments d'hésitation ou de confusion dans son propre discours. Ce sont précisément ces zones d'ombre qu'il faut retourner approfondir dans les sources bibliographiques.</li>
+                        <li><strong>Simplifier et affiner :</strong> Épurer le vocabulaire pour obtenir une clarté absolue, élégante et percutante.</li>
+                    </ol>
+
+                    <div class="callout-box">
+                        <h4><i class="fa-solid fa-lightbulb"></i> Astuce Pratique BMJ Service</h4>
+                        <p>Combinez l'écriture manuscrite et la cartographie mentale (Mind Mapping). L'engagement moteur de la main sur le papier stimule des zones corticales profondes bien supérieures à la simple frappe passive sur un clavier.</p>
+                    </div>
+                `
+            },
+            2: {
+                titreBadge: "Module Magistral 02",
+                titre: "Logique Mathématique Avancée & Ingénierie de Résolution de Problèmes",
+                corps: `
+                    <p>La logique mathématique constitue le langage universel de la rationalité. Loin de se cantonner aux calculs arithmétiques scolaires, elle forge une structure mentale hautement performante capable de disséquer, d'analyser et de résoudre des problématiques complexes dans tous les domaines scientifiques et technologiques.</p>
+
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1200&q=80" alt="Logique et mathématiques">
+                        <div class="image-caption"><i class="fa-solid fa-image"></i> Représentation de la rigueur analytique et de la déduction logique formelle.</div>
+                    </div>
+
+                    <h2><i class="fa-solid fa-puzzle-piece" style="color: #145A86;"></i> 1. L'Art de la Décomposition Systémique (Divide et Impera)</h2>
+                    <p>Face à un problème d'apparence insurmontable, la réaction psychologique spontanée est souvent la sidération ou l'abandon prématuré. L'ingénieur en logique applique le principe fondamental du <strong>Diviser pour régner</strong>. Un problème complexe n'est jamais qu'une agglomération de sous-problèmes élémentaires interconnectés.</p>
+                    <p>L'exercice consiste à lister chaque composante de l'énoncé, à isoler les données connues des variables inconnues, et à cartographier les dépendances logiques unissant les différentes étapes de la démonstration.</p>
+
+                    <div class="callout-box gold">
+                        <h4><i class="fa-solid fa-shield-halved"></i> La Rigueur de l'Hypothèse</h4>
+                        <p>En logique formelle, une affirmation non démontrée reste une simple supposition. Apprenez à valider chaque étape intermédiaire avant d'autoriser votre raisonnement à passer à la suivante.</p>
+                    </div>
+
+                    <h2><i class="fa-solid fa-scale-balanced" style="color: #145A86;"></i> 2. Deduction vs Induction : Les Deux Piliers du Raisonnement</h2>
+                    <p>La construction intellectuelle s'appuie principalement sur deux grands mouvements de pensée complémentaires :</p>
+                    <ul>
+                        <li><strong>Le Raisonnement Déductif :</strong> Part de prémisses générales universellement admises pour aboutir à une conclusion logique et irréfutable dans un cas particulier. <em>Exemple classique : Tous les hommes sont mortels (Règle) ; Socrate est un homme (Cas) ; Donc Socrate est mortel (Conclusion certaine).</em></li>
+                        <li><strong>Le Raisonnement Inductif :</strong> Observe des occurrences particulières et récurrentes pour en extraire une loi générale ou une tendance statistique prédictive. C'est la base absolue de la démarche scientifique expérimentale.</li>
+                    </ul>
+
+                    <h2><i class="fa-solid fa-code-branch" style="color: #145A86;"></i> 3. Structures Conditionnelles et Arbres de Décision</h2>
+                    <p>Pour modéliser des situations complexes, l'utilisation d'arbres de décision et d'opérateurs logiques (ET, OU, NON, IMPLIQUE) permet d'éliminer les biais cognitifs. En schématisant les flux d'hypothèses sous forme de diagrammes de flux, l'esprit humain gagne une visibilité instantanée sur les embranchements critiques d'un problème.</p>
+                `
+            },
+            3: {
+                titreBadge: "Module Magistral 03",
+                titre: "Maîtrise Absolue de l'Expression Écrite, Stylistique & Rhétorique",
+                corps: `
+                    <p>L'écrit est le reflet direct de la clarté de la pensée. Qu'il s'agisse de rédiger un mémoire de fin d'études, un rapport stratégique d'entreprise ou une dissertation argumentée, la maîtrise de la syntaxe, du vocabulaire et de la structure textuelle est l'instrument le plus puissant d'influence et de persuasion.</p>
+
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&w=1200&q=80" alt="Rédaction et expression écrite">
+                        <div class="image-caption"><i class="fa-solid fa-image"></i> L'art de la rédaction structurée, de la grammaire et de la précision stylistique.</div>
+                    </div>
+
+                    <h2><i class="fa-solid fa-feather" style="color: #145A86;"></i> 1. L'Architecture Tripartite : Introduction, Développement, Conclusion</h2>
+                    <p>Toute production textuelle d'excellence obéit à une architecture canonique rigoureuse qui guide le lecteur sans jamais le perdre :</p>
+                    <ul>
+                        <li><strong>L'Introduction (Le Portique) :</strong> Elle s'ouvre par une accroche contextuelle, amène la problématique fondamentale du sujet, et s'achève par l'annonce explicite du plan du développement.</li>
+                        <li><strong>Le Développement (Le Corps) :</strong> Divisé en parties équilibrées. Chaque paragraphe commence par une idée directrice claire, s'appuie sur une démonstration logique, et s'illustre par un exemple factuel précis.</li>
+                        <li><strong>La Conclusion (L'Aboutissement) :</strong> Elle dresse le bilan synthétique des arguments développés et s'ouvre sur une perspective d'avenir ou une question élargie.</li>
+                    </ul>
+
+                    <div class="callout-box">
+                        <h4><i class="fa-solid fa-pen-nib"></i> Règle d'Or de la Concision</h4>
+                        <p>Chassez les pléonasmes, les périphrases alambiquées et les subordonnées en cascade. Une phrase percutante est une phrase courte, active et porteuse d'une seule idée forte à la fois.</p>
+                    </div>
+
+                    <h2><i class="fa-solid fa-triangle-exclamation" style="color: #c0392b;"></i> 2. Pièges Grammaticaux et Accords Complexes</h2>
+                    <p>La crédibilité d'un texte s'effondre instantanément face aux fautes d'orthographe récurrentes. Une attention chirurgicale doit être portée sur :</p>
+                    <ul>
+                        <li>L'accord du participe passé avec l'auxiliaire <em>avoir</em> (qui ne s'accorde que si le complément d'objet direct est placé avant).</li>
+                        <li>L'utilisation rigoureuse des modes subjonctif et conditionnel après les subordonnées de doute ou de condition.</li>
+                        <li>La distinction subtile entre les homophones grammaticaux fréquents (ces/ses, ou/où, leur/leurs).</li>
+                    </ul>
+                `
+            },
+            4: {
+                titreBadge: "Module Magistral 04",
+                titre: "Culture Générale Étendue & Compréhension des Enjeux Contemporains",
+                corps: `
+                    <p>La culture générale n'est pas une simple collection d'anecdotes érudites : c'est la grille de lecture globale qui permet de décoder les mutations technologiques, politiques, économiques et sociétales du monde contemporain.</p>
+
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80" alt="Culture générale et enjeux mondiaux">
+                        <div class="image-caption"><i class="fa-solid fa-image"></i> Synthèse globale des savoirs historiques, philosophiques et géopolitiques modernes.</div>
+                    </div>
+
+                    <h2><i class="fa-solid fa-globe" style="color: #145A86;"></i> 1. Les Piliers Historiques et Philosophiques</h2>
+                    <p>Comprendre le présent exige l'étude des grandes bascules civilisationnelles du passé : des cités-états grecques et de l'humanisme des Lumières jusqu'aux révolutions industrielles et aux bouleversements géopolitiques du XXe siècle. Chaque concept philosophique (l'éthique kantienne, le pragmatisme, l'existentialisme) fournit des outils conceptuels indispensables pour analyser les dilemmes moraux et sociétaux actuels.</p>
+
+                    <div class="callout-box gold">
+                        <h4><i class="fa-solid fa-book-bookmark"></i> Veille Culturelle et Esprit Critique</h4>
+                        <p>Diversifiez vos sources documentaires. Alternez la lecture d'essais historiques de référence, d'ouvrages scientifiques de vulgarisation rigoureuse et d'analyses géopolitiques internationales pour échapper aux bulles de filtres des réseaux sociaux.</p>
+                    </div>
+
+                    <h2><i class="fa-solid fa-microchip" style="color: #145A86;"></i> 2. Les Grands Défis Technologiques du XXIe Siècle</h2>
+                    <p>L'ère moderne est marquée par l'accélération fulgurante de la transition numérique, l'émergence des intelligences artificielles génératives, les crises écosystémiques et la redéfinition des équilibres économiques mondiaux. Disposer d'une culture générale solide permet d'aborder ces transformations avec discernement, recul et sens critique.</p>
+                `
+            },
+            5: {
+                titreBadge: "Module Magistral 05",
+                titre: "Anglais Fondamental & Stratégies de Communication Internationale",
+                corps: `
+                    <p>L'anglais est aujourd'hui le vecteur universel de la recherche scientifique, du commerce international, de la programmation informatique et des flux d'information globaux. Maîtriser ses structures fondamentales est un accélérateur décisif de carrière.</p>
+
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=80" alt="Communication internationale et anglais">
+                        <div class="image-caption"><i class="fa-solid fa-image"></i> Maîtrise des structures linguistiques et ouverture aux standards internationaux.</div>
+                    </div>
+
+                    <h2><i class="fa-solid fa-language" style="color: #145A86;"></i> 1. Maîtrise des Temps et des Structures Actives</h2>
+                    <p>La grammaire anglaise repose sur une logique temporelle d'aspect très précise qu'il convient d'automatiser :</p>
+                    <ul>
+                        <li><strong>Present Simple & Continuous :</strong> Distinguer l'action habituelle de l'action en cours de réalisation immédiate.</li>
+                        <li><strong>Present Perfect :</strong> Comprendre le pont temporel entre une action passée et ses répercussions directes sur le moment présent.</li>
+                        <li><strong>Modal Verbs :</strong> Maîtriser l'usage nuancé de <em>must, should, could, might</em> pour exprimer l'obligation, le conseil ou la probabilité.</li>
+                    </ul>
+
+                    <div class="callout-box">
+                        <h4><i class="fa-solid fa-headphones"></i> Immersion Active Quotidienne</h4>
+                        <p>Cessez d'étudier l'anglais comme une matière scolaire morte. Consommez activement des documentaires techniques, lisez la documentation originale des technologies que vous apprenez, et écoutez des podcasts anglophones pour fluidifier votre oreille et votre expression spontanée.</p>
+                    </div>
+                `
+            }
+        };
+
+        function afficherContenuCours(num) {
+            const container = document.getElementById("contenuCours");
+            const cours = donneesCours[num] || donneesCours[2];
+
+            container.innerHTML = `
+                <div class="course-meta">
+                    <span class="badge-chapitre">${cours.titreBadge}</span>
+                    <small style="color: #64748b; font-weight: 500;"><i class="fa-regular fa-clock"></i> Temps de lecture estimé : 20 à 25 min d'étude magistrale approfondie</small>
+                </div>
+                <h1 class="course-title">${cours.titre}</h1>
+                <div class="course-divider"></div>
+                <div class="course-body">
+                    ${cours.corps}
+                </div>
+            `;
+        }
+
+        // Fonction de validation enregistrant la progression
+        function validerEtQuitter() {
+            let progression = JSON.parse(localStorage.getItem("education_generale_progression")) || [];
+            
+            if(!progression.includes(numeroChapitre)) {
+                progression.push(numeroChapitre);
+                localStorage.setItem("education_generale_progression", JSON.stringify(progression));
+            }
+
+            alert("🎉 Excellent travail ! Module magistral " + numeroChapitre + " validé et enregistré avec succès.");
+            window.location.href = "domaine_education_generale.html";
+        }
+    </script>
+</body>
+</html>

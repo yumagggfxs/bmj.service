@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ SERVICE - Projet Final & Évaluation Finance</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /*==================================================
+            BMJ SERVICE
+            PROJET FINAL & ÉVALUATION FINANCE
+        ==================================================*/
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+        }
+
+        html{
+            scroll-behavior:smooth;
+        }
+
+        body{
+            font-family: "Segoe UI", Arial, sans-serif;
+            background:#f4f7fb;
+            color:#17212b;
+            line-height:1.6;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+        }
+
+        /* HEADER */
+        header{
+            width:100%;
+            height:78px;
+            background:#ffffff;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            padding:0 6%;
+            box-shadow: 0 3px 18px rgba(0,0,0,0.08);
+            position:sticky;
+            top:0;
+            z-index:1000;
+        }
+
+        .logo{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            text-decoration:none;
+        }
+
+        .logo img{
+            width:46px;
+            height:46px;
+            object-fit:cover;
+            border-radius:50%;
+        }
+
+        .logo h2{
+            font-size:21px;
+            font-weight:800;
+            color:#145a86;
+            letter-spacing:.5px;
+        }
+
+        .logo h2 span{
+            color:#f5b700;
+        }
+
+        .course-user{
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
+
+        .course-user img{
+            width:45px;
+            height:45px;
+            border-radius:50%;
+            object-fit:cover;
+            border:3px solid #f5b700;
+        }
+
+        .course-user h4{
+            color:#16384f;
+            font-size:15px;
+            margin-bottom:1px;
+        }
+
+        .course-user small{
+            color:#777;
+            font-size:12px;
+        }
+
+        /* CONTAINER PRINCIPAL */
+        .evaluation-container{
+            width:90%;
+            max-width:900px;
+            margin:40px auto;
+            background:#ffffff;
+            padding:40px;
+            border-radius:22px;
+            box-shadow: 0 15px 35px rgba(15,45,65,.08);
+            border:1px solid #e7edf2;
+        }
+
+        .evaluation-header{
+            text-align:center;
+            margin-bottom:35px;
+            border-bottom:2px solid #f0f4f8;
+            padding-bottom:25px;
+        }
+
+        .evaluation-header i{
+            font-size:45px;
+            color:#f5b700;
+            margin-bottom:12px;
+        }
+
+        .evaluation-header h1{
+            font-size:28px;
+            color:#173c55;
+            margin-bottom:8px;
+        }
+
+        .evaluation-header p{
+            color:#687984;
+            font-size:15px;
+            max-width:700px;
+            margin:0 auto;
+        }
+
+        /* QUESTIONS SECTION */
+        .quiz-form{
+            display:flex;
+            flex-direction:column;
+            gap:30px;
+        }
+
+        .question-card{
+            background:#f8fafc;
+            border:1px solid #e2e8f0;
+            border-radius:16px;
+            padding:25px;
+            transition:.3s;
+        }
+
+        .question-card:hover{
+            border-color:#145a86;
+            box-shadow: 0 6px 20px rgba(20,90,134,.06);
+        }
+
+        .question-card h3{
+            font-size:17px;
+            color:#1a365d;
+            margin-bottom:15px;
+            display:flex;
+            gap:10px;
+        }
+
+        .question-card h3 span{
+            color:#145a86;
+        }
+
+        .options-list{
+            display:flex;
+            flex-direction:column;
+            gap:10px;
+        }
+
+        .option-label{
+            display:flex;
+            align-items:center;
+            gap:12px;
+            padding:12px 16px;
+            background:#ffffff;
+            border:1px solid #cbd5e1;
+            border-radius:10px;
+            cursor:pointer;
+            font-size:14px;
+            color:#334155;
+            transition:.2s;
+        }
+
+        .option-label:hover{
+            background:#f1f5f9;
+            border-color:#94a3b8;
+        }
+
+        .option-label input{
+            accent-color:#145a86;
+            width:16px;
+            height:16px;
+        }
+
+        /* BOUTON SOUMISSION */
+        .submit-section{
+            text-align:center;
+            margin-top:20px;
+        }
+
+        .btn-submit{
+            border:none;
+            background:#145a86;
+            color:#ffffff;
+            padding:15px 35px;
+            border-radius:30px;
+            font-size:16px;
+            font-weight:800;
+            cursor:pointer;
+            transition:.3s;
+            box-shadow: 0 8px 20px rgba(20,90,134,.2);
+        }
+
+        .btn-submit:hover{
+            background:#0d3b5c;
+            transform:translateY(-3px);
+            box-shadow: 0 12px 25px rgba(20,90,134,.3);
+        }
+
+        /* RÉSULTAT ÉVALUATION */
+        .result-box{
+            margin-top:30px;
+            padding:25px;
+            border-radius:16px;
+            text-align:center;
+            display:none;
+        }
+
+        .result-box.success{
+            background:#dcfce7;
+            border:1px solid #bbf7d0;
+            color:#166534;
+        }
+
+        .result-box.error{
+            background:#fee2e2;
+            border:1px solid #fecaca;
+            color:#991b1b;
+        }
+
+        .result-box h3{
+            font-size:22px;
+            margin-bottom:10px;
+        }
+
+        .result-box p{
+            font-size:15px;
+            margin-bottom:20px;
+        }
+
+        .btn-action{
+            border:none;
+            background:#f5b700;
+            color:#151515;
+            padding:12px 24px;
+            border-radius:25px;
+            font-weight:800;
+            cursor:pointer;
+            text-decoration:none;
+            display:inline-block;
+            transition:.3s;
+        }
+
+        .btn-action:hover{
+            background:#ffc928;
+            transform:translateY(-2px);
+        }
+
+        /* FOOTER */
+        footer{
+            text-align:center;
+            padding:20px;
+            color:#64748b;
+            font-size:13px;
+            background:#ffffff;
+            border-top:1px solid #e7edf2;
+        }
+
+        @media(max-width:600px){
+            .evaluation-container{
+                width:95%;
+                padding:20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <a href="finance.html" class="logo">
+            <img src="images/logo.png" alt="BMJ SERVICE">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </a>
+
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Photo utilisateur">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Projet Final - Finance</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTAINER DE L'ÉVALUATION -->
+    <div class="evaluation-container">
+        <div class="evaluation-header">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <h1>Évaluation & Projet Final - Finance</h1>
+            <p>Répondez aux questions ci-dessous pour valider vos connaissances en finance et obtenir votre certificat gratuit.</p>
+        </div>
+
+        <form id="quizForm" class="quiz-form" onsubmit="soumettreEvaluation(event)">
+            
+            <!-- Question 1 -->
+            <div class="question-card">
+                <h3><span>1.</span> Qu'est-ce que la règle budgétaire 50/30/20 enseignée dans le domaine ?</h3>
+                <div class="options-list">
+                    <label class="option-label"><input type="radio" name="q1" value="a"> A) 50% épargne, 30% loisirs, 20% besoins</label>
+                    <label class="option-label"><input type="radio" name="q1" value="b"> B) 50% besoins essentiels, 30% envies/loisirs, 20% épargne/dettes</label>
+                    <label class="option-label"><input type="radio" name="q1" value="c"> C) 50% investissements, 30% taxes, 20% dépenses courantes</label>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-card">
+                <h3><span>2.</span> Quel est le rôle principal d'un fonds d'urgence (matelas de sécurité) ?</h3>
+                <div class="options-list">
+                    <label class="option-label"><input type="radio" name="q2" value="a"> A) Acheter des actions en bourse à haut risque</label>
+                    <label class="option-label"><input type="radio" name="q2" value="b"> B) Financer des vacances de luxe</label>
+                    <label class="option-label"><input type="radio" name="q2" value="c"> C) Faire face aux imprévus financiers majeurs (perte d'emploi, urgence médicale)</label>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="question-card">
+                <h3><span>3.</span> Quelle est la différence fondamentale entre un actif et un passif ?</h3>
+                <div class="options-list">
+                    <label class="option-label"><input type="radio" name="q3" value="a"> A) L'actif met de l'argent dans votre poche, le passif en retire</label>
+                    <label class="option-label"><input type="radio" name="q3" value="b"> B) L'actif est numérique, le passif est physique</label>
+                    <label class="option-label"><input type="radio" name="q3" value="c"> C) Il n'y a aucune différence comptable</label>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="question-card">
+                <h3><span>4.</span> Que démontre le concept des "intérêts composés" en investissement ?</h3>
+                <div class="options-list">
+                    <label class="option-label"><input type="radio" name="q4" value="a"> A) Que l'argent perd de la valeur instantanément</label>
+                    <label class="option-label"><input type="radio" name="q4" value="b"> B) Que les intérêts génèrent eux-mêmes des intérêts au fil du temps, accélérant la croissance du capital</label>
+                    <label class="option-label"><input type="radio" name="q4" value="c"> C) Qu'il ne faut jamais réinvestir ses gains</label>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="question-card">
+                <h3><span>5.</span> Quelle est la première étape indispensable avant de commencer à investir ?</h3>
+                <div class="options-list">
+                    <label class="option-label"><input type="radio" name="q5" value="a"> A) Emprunter de l'argent à la banque</label>
+                    <label class="option-label"><input type="radio" name="q5" value="b"> B) Comprendre sa psychologie de l'argent, structurer son budget et sécuriser une épargne d'urgence</label>
+                    <label class="option-label"><input type="radio" name="q5" value="c"> C) Dépenser tous ses revenus pour stimuler l'économie</label>
+                </div>
+            </div>
+
+            <div class="submit-section">
+                <button type="submit" class="btn-submit">Soumettre mon évaluation</button>
+            </div>
+        </form>
+
+        <!-- Résultat affiché après soumission -->
+        <div id="resultBox" class="result-box">
+            <h3 id="resultTitle"></h3>
+            <p id="resultText"></p>
+            <div id="resultAction"></div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        &copy; 2026 BMJ SERVICE - Tous droits réservés.
+    </footer>
+
+    <script>
+/*==================================================
+        BMJ SERVICE
+        FORMATION FINANCE
+        CHAPITRE 5 — ÉVALUATION FINALE
+==================================================*/
+
+
+/*==================================================
+        1. CONFIGURATION UNIQUE
+==================================================*/
+
+const FINANCE_CHAPITRES = [
+
+    {
+        id: 1,
+        nom: "Chapitre 1 : Introduction à la Finance",
+        page: "introduction_finance.html"
+    },
+
+    {
+        id: 2,
+        nom: "Chapitre 2 : Gestion de l'argent",
+        page: "gestion_argent.html"
+    },
+
+    {
+        id: 3,
+        nom: "Chapitre 3 : Épargne et objectifs financiers",
+        page: "epargne.html"
+    },
+
+    {
+        id: 4,
+        nom: "Chapitre 4 : Investissement",
+        page: "investissement.html"
+    },
+
+    {
+        id: 5,
+        nom: "Chapitre 5 : Projet final & Évaluation",
+        page: "projet_final_finance.html"
+    }
+
+];
+
+
+/*==================================================
+        2. PARAMÈTRES ÉVALUATION
+==================================================*/
+
+const CLE_PROGRESS =
+    "finance_progression";
+
+const CLE_SCORE =
+    "finance_score_final";
+
+const SCORE_MAXIMUM =
+    5;
+
+const SCORE_MINIMUM =
+    4;
+
+const CHAPITRE_FINAL_ID =
+    5;
+
+const TOTAL_CHAPITRES =
+    FINANCE_CHAPITRES.length;
+
+
+/*==================================================
+        3. INITIALISATION
+==================================================*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const utilisateur =
+            obtenirUtilisateur();
+
+
+        if (!utilisateur) {
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+        }
+
+
+        chargerUtilisateur();
+
+
+        /*
+            Vérifier que les chapitres 1 à 4
+            sont terminés avant d'autoriser
+            l'évaluation finale.
+        */
+
+        verifierAccesProjetFinal();
+
+
+        /*
+            Afficher éventuellement
+            le dernier score.
+        */
+
+        afficherScorePrecedent();
+
+    }
+);
+
+
+/*==================================================
+        4. UTILISATEUR
+==================================================*/
+
+function obtenirUtilisateur() {
+
+    try {
+
+        const donnees =
+            localStorage.getItem(
+                "bmj_current_user"
+            );
+
+
+        if (!donnees) {
+
+            return null;
+        }
+
+
+        const utilisateur =
+            JSON.parse(donnees);
+
+
+        if (
+            !utilisateur ||
+            typeof utilisateur !== "object"
+        ) {
+
+            return null;
+        }
+
+
+        return utilisateur;
+
+    } catch (erreur) {
+
+        console.error(
+            "Erreur lors de la lecture de l'utilisateur :",
+            erreur
+        );
+
+        return null;
+    }
+}
+
+
+/*==================================================
+        5. CHARGER LE PROFIL
+==================================================*/
+
+function chargerUtilisateur() {
+
+    const utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
+
+        window.location.href =
+            "connexion.html";
+
+        return;
+    }
+
+
+    /*
+        NOM
+    */
+
+    const nom =
+        document.getElementById(
+            "nomUtilisateur"
+        );
+
+
+    if (nom) {
+
+        nom.textContent =
+            utilisateur.nom ||
+            "Apprenant";
+    }
+
+
+    /*
+        PHOTO
+    */
+
+    const photo =
+        document.getElementById(
+            "photoUtilisateur"
+        );
+
+
+    if (photo) {
+
+        photo.src =
+            utilisateur.photo ||
+            "images/user.png";
+
+
+        photo.onerror =
+            function () {
+
+                this.onerror = null;
+
+                this.src =
+                    "images/user.png";
+
+            };
+    }
+
+
+    /*
+        DOMAINE
+    */
+
+    const domaine =
+        document.getElementById(
+            "domaineUtilisateur"
+        );
+
+
+    if (domaine) {
+
+        domaine.textContent =
+            utilisateur.domaine ||
+            "Finance";
+    }
+}
+
+
+/*==================================================
+        6. RÉCUPÉRER LA PROGRESSION FINANCE
+==================================================*/
+
+function obtenirProgressionFinance() {
+
+    let progression = [];
+
+
+    try {
+
+        const donnees =
+            localStorage.getItem(
+                CLE_PROGRESS
+            );
+
+
+        if (donnees) {
+
+            progression =
+                JSON.parse(donnees);
+        }
+
+    } catch (erreur) {
+
+        console.error(
+            "Erreur lors de la lecture de finance_progression :",
+            erreur
+        );
+
+        progression = [];
+    }
+
+
+    /*
+        Toujours un tableau
+    */
+
+    if (!Array.isArray(progression)) {
+
+        progression = [];
+    }
+
+
+    /*
+        Conversion des IDs
+        en nombres.
+    */
+
+    progression =
+        progression
+            .map(
+                function (id) {
+
+                    return parseInt(
+                        id,
+                        10
+                    );
+
+                }
+            )
+            .filter(
+                function (id) {
+
+                    return !isNaN(id);
+
+                }
+            );
+
+
+    /*
+        Récupérer les IDs valides
+        depuis la liste officielle.
+    */
+
+    const idsValides =
+        FINANCE_CHAPITRES.map(
+            function (chapitre) {
+
+                return chapitre.id;
+
+            }
+        );
+
+
+    /*
+        Supprimer les IDs inconnus.
+    */
+
+    progression =
+        progression.filter(
+            function (id) {
+
+                return idsValides.includes(id);
+
+            }
+        );
+
+
+    /*
+        Supprimer les doublons.
+    */
+
+    progression =
+        [...new Set(progression)];
+
+
+    /*
+        Trier :
+
+        1, 2, 3, 4, 5
+    */
+
+    progression.sort(
+        function (a, b) {
+
+            return a - b;
+
+        }
+    );
+
+
+    /*
+        Sauvegarder la progression
+        propre.
+    */
+
+    localStorage.setItem(
+        CLE_PROGRESS,
+        JSON.stringify(
+            progression
+        )
+    );
+
+
+    return progression;
+}
+
+
+/*==================================================
+        7. VÉRIFIER UN CHAPITRE
+==================================================*/
+
+function chapitreFinanceTermine(id) {
+
+    const progression =
+        obtenirProgressionFinance();
+
+
+    return progression.includes(
+        parseInt(
+            id,
+            10
+        )
+    );
+}
+
+
+/*==================================================
+        8. VÉRIFIER SI TOUT EST TERMINÉ
+==================================================*/
+
+function formationFinanceTerminee() {
+
+    const progression =
+        obtenirProgressionFinance();
+
+
+    return FINANCE_CHAPITRES.every(
+        function (chapitre) {
+
+            return progression.includes(
+                chapitre.id
+            );
+
+        }
+    );
+}
+
+
+/*==================================================
+        9. CALCULER LA PROGRESSION
+==================================================*/
+
+function obtenirPourcentageFinance() {
+
+    const progression =
+        obtenirProgressionFinance();
+
+
+    const chapitresTermines =
+        FINANCE_CHAPITRES.filter(
+            function (chapitre) {
+
+                return progression.includes(
+                    chapitre.id
+                );
+
+            }
+        ).length;
+
+
+    let pourcentage =
+        Math.round(
+            (
+                chapitresTermines /
+                TOTAL_CHAPITRES
+            ) * 100
+        );
+
+
+    if (pourcentage > 100) {
+
+        pourcentage = 100;
+    }
+
+
+    if (pourcentage < 0) {
+
+        pourcentage = 0;
+    }
+
+
+    return pourcentage;
+}
+
+
+/*==================================================
+        10. VÉRIFIER L'ACCÈS AU CHAPITRE 5
+==================================================*/
+
+function verifierAccesProjetFinal() {
+
+    const utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
+
+        window.location.href =
+            "connexion.html";
+
+        return;
+    }
+
+
+    const progression =
+        obtenirProgressionFinance();
+
+
+    /*
+        Les chapitres 1 à 4
+        doivent être terminés.
+    */
+
+    const chapitresPrecedents = [
+        1,
+        2,
+        3,
+        4
+    ];
+
+
+    const chapitresManquants =
+        chapitresPrecedents.filter(
+            function (id) {
+
+                return !progression.includes(
+                    id
+                );
+
+            }
+        );
+
+
+    /*
+        Si des chapitres sont manquants,
+        on bloque l'évaluation.
+    */
+
+    if (
+        chapitresManquants.length > 0
+    ) {
+
+        console.warn(
+            "Chapitres manquants :",
+            chapitresManquants
+        );
+
+
+        /*
+            Construire les noms des chapitres
+            manquants.
+        */
+
+        const nomsManquants =
+            chapitresManquants.map(
+                function (id) {
+
+                    const chapitre =
+                        FINANCE_CHAPITRES.find(
+                            function (item) {
+
+                                return item.id === id;
+
+                            }
+                        );
+
+
+                    return chapitre
+                        ? chapitre.nom
+                        : "Chapitre " + id;
+
+                }
+            );
+
+
+        alert(
+            "⚠️ Vous devez terminer les chapitres 1 à 4 avant de passer l'évaluation finale.\n\n" +
+            "Chapitre(s) restant(s) :\n\n" +
+            nomsManquants.join("\n")
+        );
+
+
+        window.location.href =
+            "finance.html";
+
+
+        return false;
+    }
+
+
+    return true;
+}
+
+
+/*==================================================
+        11. VALIDER LE CHAPITRE 5
+==================================================*/
+
+function validerChapitreFinal(
+    score
+) {
+
+    score =
+        parseInt(
+            score,
+            10
+        );
+
+
+    /*
+        Vérification du score
+    */
+
+    if (
+        isNaN(score) ||
+        score < SCORE_MINIMUM
+    ) {
+
+        return false;
+    }
+
+
+    /*
+        Vérifier les chapitres précédents
+    */
+
+    const progressionActuelle =
+        obtenirProgressionFinance();
+
+
+    const chapitresPrecedents = [
+        1,
+        2,
+        3,
+        4
+    ];
+
+
+    const tousPrecedentsTermines =
+        chapitresPrecedents.every(
+            function (id) {
+
+                return progressionActuelle.includes(
+                    id
+                );
+
+            }
+        );
+
+
+    if (!tousPrecedentsTermines) {
+
+        alert(
+            "⚠️ Les chapitres 1 à 4 doivent être terminés avant de valider le projet final."
+        );
+
+        return false;
+    }
+
+
+    /*
+        Ajouter le chapitre 5
+    */
+
+    let progression =
+        [...progressionActuelle];
+
+
+    if (
+        !progression.includes(
+            CHAPITRE_FINAL_ID
+        )
+    ) {
+
+        progression.push(
+            CHAPITRE_FINAL_ID
+        );
+    }
+
+
+    /*
+        Nettoyage
+    */
+
+    progression =
+        [...new Set(progression)];
+
+
+    progression.sort(
+        function (a, b) {
+
+            return a - b;
+
+        }
+    );
+
+
+    /*
+        Sauvegarder progression
+    */
+
+    localStorage.setItem(
+        CLE_PROGRESS,
+        JSON.stringify(
+            progression
+        )
+    );
+
+
+    /*
+        Sauvegarder le score
+    */
+
+    localStorage.setItem(
+        CLE_SCORE,
+        JSON.stringify({
+
+            score:
+                score,
+
+            maximum:
+                SCORE_MAXIMUM,
+
+            date:
+                new Date().toISOString(),
+
+            valide:
+                true
+
+        })
+    );
+
+
+    /*
+        Mettre à jour le profil
+    */
+
+    mettreAJourUtilisateurFinance(
+        progression
+    );
+
+
+    return true;
+}
+
+
+/*==================================================
+        12. ENREGISTRER UN ÉCHEC
+==================================================*/
+
+function enregistrerEchec(
+    score
+) {
+
+    score =
+        parseInt(
+            score,
+            10
+        );
+
+
+    if (isNaN(score)) {
+
+        return;
+    }
+
+
+    /*
+        IMPORTANT :
+
+        On ne modifie PAS
+        finance_progression.
+
+        Le chapitre 5 reste donc
+        non validé.
+    */
+
+    localStorage.setItem(
+        CLE_SCORE,
+        JSON.stringify({
+
+            score:
+                score,
+
+            maximum:
+                SCORE_MAXIMUM,
+
+            date:
+                new Date().toISOString(),
+
+            valide:
+                false
+
+        })
+    );
+}
+
+
+/*==================================================
+        13. METTRE À JOUR LE PROFIL UTILISATEUR
+==================================================*/
+
+function mettreAJourUtilisateurFinance(
+    progression
+) {
+
+    const utilisateur =
+        obtenirUtilisateur();
+
+
+    if (!utilisateur) {
+
+        return;
+    }
+
+
+    /*
+        Nettoyer la progression
+    */
+
+    progression =
+        progression
+            .map(
+                function (id) {
+
+                    return parseInt(
+                        id,
+                        10
+                    );
+
+                }
+            )
+            .filter(
+                function (id) {
+
+                    return FINANCE_CHAPITRES.some(
+                        function (chapitre) {
+
+                            return chapitre.id === id;
+
+                        }
+                    );
+
+                }
+            );
+
+
+    progression =
+        [...new Set(progression)];
+
+
+    progression.sort(
+        function (a, b) {
+
+            return a - b;
+
+        }
+    );
+
+
+    /*
+        Calcul du pourcentage
+    */
+
+    const nombreTermines =
+        progression.length;
+
+
+    let pourcentage =
+        Math.round(
+            (
+                nombreTermines /
+                TOTAL_CHAPITRES
+            ) * 100
+        );
+
+
+    if (pourcentage > 100) {
+
+        pourcentage = 100;
+    }
+
+
+    /*
+        Informations Finance
+    */
+
+    utilisateur.financeProgression =
+        nombreTermines;
+
+
+    utilisateur.progressionFinance =
+        pourcentage;
+
+
+    utilisateur.progressionFinancePourcentage =
+        pourcentage;
+
+
+    utilisateur.financeChapitres =
+        progression;
+
+
+    /*
+        Indiquer si toute la formation
+        est terminée.
+    */
+
+    utilisateur.financeFormationTerminee =
+        progression.length ===
+        TOTAL_CHAPITRES;
+
+
+    /*
+        Sauvegarder l'utilisateur actuel
+    */
+
+    localStorage.setItem(
+        "bmj_current_user",
+        JSON.stringify(
+            utilisateur
+        )
+    );
+
+
+    /*==================================================
+            METTRE À JOUR BMJ UTILISATEURS
+    ==================================================*/
+
+    let utilisateurs = [];
+
+
+    try {
+
+        utilisateurs =
+            JSON.parse(
+                localStorage.getItem(
+                    "bmjUtilisateurs"
+                )
+            ) || [];
+
+    } catch (erreur) {
+
+        utilisateurs = [];
+    }
+
+
+    if (!Array.isArray(utilisateurs)) {
+
+        utilisateurs = [];
+    }
+
+
+    /*
+        Rechercher l'utilisateur
+    */
+
+    const index =
+        utilisateurs.findIndex(
+            function (user) {
+
+                return (
+                    user.id_bmj ===
+                    utilisateur.id_bmj
+                );
+
+            }
+        );
+
+
+    /*
+        Mettre à jour
+    */
+
+    if (index !== -1) {
+
+        utilisateurs[index] =
+            utilisateur;
+
+
+        localStorage.setItem(
+            "bmjUtilisateurs",
+            JSON.stringify(
+                utilisateurs
+            )
+        );
+    }
+}
+
+
+/*==================================================
+        14. AFFICHER L'ANCIEN SCORE
+==================================================*/
+
+function afficherScorePrecedent() {
+
+    let ancienScore = null;
+
+
+    try {
+
+        ancienScore =
+            JSON.parse(
+                localStorage.getItem(
+                    CLE_SCORE
+                )
+            );
+
+    } catch (erreur) {
+
+        ancienScore = null;
+    }
+
+
+    if (!ancienScore) {
+
+        return;
+    }
+
+
+    console.log(
+        "Dernier score Finance :",
+        ancienScore.score +
+        "/" +
+        ancienScore.maximum
+    );
+
+
+    /*
+        Si un élément existe dans la page
+        pour afficher le dernier score.
+    */
+
+    const scoreElement =
+        document.getElementById(
+            "ancienScore"
+        );
+
+
+    if (scoreElement) {
+
+        scoreElement.textContent =
+            ancienScore.score +
+            "/" +
+            ancienScore.maximum;
+    }
+}
+
+
+/*==================================================
+        15. SOUMETTRE L'ÉVALUATION
+==================================================*/
+
+function soumettreEvaluation(
+    event
+) {
+
+    if (event) {
+
+        event.preventDefault();
+    }
+
+
+    /*
+        Vérifier l'accès
+    */
+
+    if (
+        !verifierAccesProjetFinal()
+    ) {
+
+        return;
+    }
+
+
+    /*==================================================
+            RÉCUPÉRER LES RÉPONSES
+    ==================================================*/
+
+    const reponses = {
+
+        q1:
+            document.querySelector(
+                'input[name="q1"]:checked'
+            ),
+
+        q2:
+            document.querySelector(
+                'input[name="q2"]:checked'
+            ),
+
+        q3:
+            document.querySelector(
+                'input[name="q3"]:checked'
+            ),
+
+        q4:
+            document.querySelector(
+                'input[name="q4"]:checked'
+            ),
+
+        q5:
+            document.querySelector(
+                'input[name="q5"]:checked'
+            )
+
+    };
+
+
+    /*==================================================
+            VÉRIFIER LES RÉPONSES
+    ==================================================*/
+
+    const questionNonRepondue =
+        Object.values(
+            reponses
+        ).some(
+            function (reponse) {
+
+                return !reponse;
+
+            }
+        );
+
+
+    if (questionNonRepondue) {
+
+        alert(
+            "⚠️ Veuillez répondre à toutes les questions avant de soumettre."
+        );
+
+        return;
+    }
+
+
+    /*==================================================
+            BONNES RÉPONSES
+    ==================================================*/
+
+    const bonnesReponses = {
+
+        q1: "b",
+
+        q2: "c",
+
+        q3: "a",
+
+        q4: "b",
+
+        q5: "b"
+
+    };
+
+
+    /*==================================================
+            CALCUL DU SCORE
+    ==================================================*/
+
+    let score = 0;
+
+
+    Object.keys(
+        bonnesReponses
+    ).forEach(
+        function (question) {
+
+            if (
+                reponses[question].value ===
+                bonnesReponses[question]
+            ) {
+
+                score++;
+
+            }
+
+        }
+    );
+
+
+    /*==================================================
+            ÉLÉMENTS DU RÉSULTAT
+    ==================================================*/
+
+    const resultBox =
+        document.getElementById(
+            "resultBox"
+        );
+
+    const resultTitle =
+        document.getElementById(
+            "resultTitle"
+        );
+
+    const resultText =
+        document.getElementById(
+            "resultText"
+        );
+
+    const resultAction =
+        document.getElementById(
+            "resultAction"
+        );
+
+
+    if (!resultBox) {
+
+        console.error(
+            "❌ resultBox introuvable."
+        );
+
+        return;
+    }
+
+
+    resultBox.style.display =
+        "block";
+
+
+    if (resultAction) {
+
+        resultAction.innerHTML =
+            "";
+    }
+
+
+    /*==================================================
+            RÉUSSITE
+    ==================================================*/
+
+    if (
+        score >= SCORE_MINIMUM
+    ) {
+
+
+        /*
+            Valider le chapitre 5
+        */
+
+        const validation =
+            validerChapitreFinal(
+                score
+            );
+
+
+        if (!validation) {
+
+            return;
+        }
+
+
+        /*
+            Affichage succès
+        */
+
+        resultBox.className =
+            "result-box success";
+
+
+        if (resultTitle) {
+
+            resultTitle.innerHTML =
+                `
+                🎉 Félicitations !
+                Score : ${score}/${SCORE_MAXIMUM}
+                `;
+        }
+
+
+        if (resultText) {
+
+            resultText.innerHTML =
+                `
+                Vous avez réussi l'évaluation finale
+                avec <strong>${score}/${SCORE_MAXIMUM}</strong>.
+                
+                <br><br>
+                
+                <strong>✓ Chapitre 5 validé !</strong>
+                
+                <br><br>
+                
+                Vous avez maintenant terminé
+                l'ensemble de la formation Finance.
+                
+                <br><br>
+                
+                Votre progression est de
+                <strong>100 %</strong>.
+                `;
+        }
+
+
+        /*
+            Bouton vérification
+        */
+
+        if (resultAction) {
+
+            const bouton =
+                document.createElement(
+                    "a"
+                );
+
+
+            bouton.href =
+                "Verification.html";
+
+
+            bouton.className =
+                "btn-action";
+
+
+            bouton.innerHTML =
+                `
+                <i class="fa-solid fa-award"></i>
+                Vérifier ma formation
+                `;
+
+
+            resultAction.appendChild(
+                bouton
+            );
+        }
+
+    }
+
+
+    /*==================================================
+            ÉCHEC
+    ==================================================*/
+
+    else {
+
+
+        /*
+            Ne PAS ajouter le chapitre 5.
+        */
+
+        enregistrerEchec(
+            score
+        );
+
+
+        /*
+            Affichage
+        */
+
+        resultBox.className =
+            "result-box error";
+
+
+        if (resultTitle) {
+
+            resultTitle.innerHTML =
+                `
+                ❌ Score insuffisant :
+                ${score}/${SCORE_MAXIMUM}
+                `;
+        }
+
+
+        if (resultText) {
+
+            resultText.innerHTML =
+                `
+                Vous avez obtenu
+                <strong>${score}/${SCORE_MAXIMUM}</strong>.
+                
+                <br><br>
+                
+                Le score minimum requis est
+                <strong>${SCORE_MINIMUM}/${SCORE_MAXIMUM}</strong>.
+                
+                <br><br>
+                
+                <strong>
+                Le chapitre 5 n'est pas encore validé.
+                </strong>
+                
+                <br><br>
+                
+                Révisez les modules de formation
+                puis réessayez l'évaluation.
+                `;
+        }
+
+
+        /*
+            Bouton recommencer
+        */
+
+        if (resultAction) {
+
+            const bouton =
+                document.createElement(
+                    "button"
+                );
+
+
+            bouton.type =
+                "button";
+
+
+            bouton.className =
+                "btn-action";
+
+
+            bouton.innerHTML =
+                `
+                <i class="fa-solid fa-rotate-right"></i>
+                Réessayer l'évaluation
+                `;
+
+
+            bouton.onclick =
+                function () {
+
+                    location.reload();
+
+                };
+
+
+            resultAction.appendChild(
+                bouton
+            );
+        }
+    }
+
+
+    /*==================================================
+            SCROLL VERS LE RÉSULTAT
+    ==================================================*/
+
+    resultBox.scrollIntoView({
+
+        behavior: "smooth",
+
+        block: "center"
+
+    });
+}
+
+
+/*==================================================
+        16. RAFRAÎCHISSEMENT
+==================================================*/
+
+window.addEventListener(
+    "pageshow",
+    function () {
+
+        obtenirProgressionFinance();
+
+    }
+);
+
+
+/*==================================================
+        17. SURVEILLER LOCALSTORAGE
+==================================================*/
+
+window.addEventListener(
+    "storage",
+    function (event) {
+
+        if (
+            event.key ===
+            CLE_PROGRESS
+        ) {
+
+            obtenirProgressionFinance();
+
+        }
+
+    }
+);
+
+
+/*==================================================
+        18. EXPOSER LES FONCTIONS
+==================================================*/
+
+window.soumettreEvaluation =
+    soumettreEvaluation;
+
+window.validerChapitreFinal =
+    validerChapitreFinal;
+
+window.chapitreFinanceTermine =
+    chapitreFinanceTermine;
+
+window.formationFinanceTerminee =
+    formationFinanceTerminee;
+
+</script>
+</body>
+</html>

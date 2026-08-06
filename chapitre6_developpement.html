@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Chapitre 6 : Leadership & Prise de Décision</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & IMMERSIF (CHAPITRE 6)
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            color: #2c3e50;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(20, 90, 134, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(212, 175, 55, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 25px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* CONTENEUR PRINCIPAL */
+        .main-container {
+            max-width: 950px;
+            margin: 115px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+            transform: translateX(-3px);
+        }
+
+        /* HERO DU COURS */
+        .course-hero-card {
+            background: linear-gradient(135deg, #145A86 0%, #0c3854 100%);
+            color: white;
+            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(20, 90, 134, 0.2);
+            margin-bottom: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-hero-card::after {
+            content: "\f6d5";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -30px;
+            font-size: 160px;
+            color: rgba(255, 255, 255, 0.03);
+            pointer-events: none;
+        }
+
+        .course-badge {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .course-hero-card h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            line-height: 1.25;
+        }
+
+        .course-hero-card p {
+            font-size: 15.5px;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 750px;
+        }
+
+        /* CORPS DU CONTENU RICHE */
+        .course-body {
+            background: white;
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 35px;
+        }
+
+        .course-body h2 {
+            color: #145A86;
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 10px;
+        }
+
+        .course-body h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .course-body h3 {
+            color: #0c3854;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .course-body p {
+            color: #475569;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .course-body ul, .course-body ol {
+            margin-left: 20px;
+            margin-bottom: 25px;
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        .course-body li {
+            margin-bottom: 10px;
+        }
+
+        /* ILLUSTRATIONS ET IMAGES DANS LE COURS */
+        .course-image-container {
+            margin: 30px 0;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .course-image-container img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .course-image-container:hover img {
+            transform: scale(1.03);
+        }
+
+        .image-caption {
+            background: #f8fafc;
+            padding: 12px 20px;
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            font-weight: 500;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* CITATION / FOCUS BOX */
+        .quote-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+            border-left: 5px solid #145A86;
+            padding: 25px;
+            border-radius: 0 16px 16px 0;
+            margin: 30px 0;
+            font-style: italic;
+            color: #1e293b;
+            font-size: 15.5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .quote-box span {
+            display: block;
+            margin-top: 10px;
+            font-style: normal;
+            font-weight: 600;
+            color: #D4AF37;
+            font-size: 13px;
+        }
+
+        /* CARTES DES STYLES DE LEADERSHIP */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 25px;
+            border-radius: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            border-color: #D4AF37;
+            box-shadow: 0 10px 25px rgba(20,90,134,0.06);
+            background: white;
+        }
+
+        .info-card h4 {
+            color: #145A86;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card p {
+            font-size: 13.5px;
+            margin-bottom: 0;
+            color: #64748b;
+        }
+
+        /* SECTION VALIDATION ULTRA-STYLÉE */
+        .action-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #0c3854 0%, #145A86 100%);
+            padding: 40px;
+            border-radius: 25px;
+            color: white;
+            box-shadow: 0 15px 35px rgba(20,90,134,0.2);
+        }
+
+        .action-section h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .action-section p {
+            font-size: 14.5px;
+            opacity: 0.85;
+            max-width: 520px;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        .btn-validate {
+            background: #D4AF37;
+            color: #145A86;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-validate:hover {
+            background: #f1c40f;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 60px;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        @media(max-width: 768px) {
+            .action-section { flex-direction: column; align-items: flex-start; gap: 25px; padding: 30px; }
+            header { padding: 0 20px; }
+            .course-body { padding: 25px; }
+            .course-hero-card { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Développement Personnel</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEUR PRINCIPAL -->
+    <div class="main-container">
+        <div class="breadcrumb">
+            <a href="module_developpement.html"><i class="fa-solid fa-arrow-left"></i> Retour au sommaire du module</a>
+        </div>
+
+        <!-- HERO DU COURS -->
+        <div class="course-hero-card">
+            <span class="course-badge">Chapitre 6 sur 7 • Vision & Stratégie</span>
+            <h1>Leadership & Prise de Décision</h1>
+            <p>Le véritable leader ne crée pas des suiveurs, il crée d'autres leaders. Apprenez à incarner une autorité inspirante, à trancher avec discernement dans l'incertitude et à conduire vos équipes vers l'excellence collective.</p>
+        </div>
+
+        <!-- CORPS DU COURS RICHE EN TEXTES ET IMAGES -->
+        <div class="course-body">
+            
+            <h2><i class="fa-solid fa-chess-queen" style="color: #D4AF37;"></i> Introduction : Redéfinir le leadership à l'ère moderne</h2>
+            <p>Pendant longtemps, le management a été confondu avec l'exercice hiérarchique pur : commander, contrôler, sanctionner ou récompenser. Aujourd'hui, les organisations performantes et les équipes engagées ne répondent plus à la simple autorité formelle. Le véritable <strong>leadership</strong> s'appuie sur l'influence, la vision inspirante et la capacité à révéler le potentiel de chaque collaborateur.</p>
+            <p>Être un leader, ce n'est pas tout savoir ou détenir toutes les réponses ; c'est savoir poser les bonnes questions, créer un espace de sécurité psychologique où l'innovation peut prospérer, et endosser la responsabilité des choix stratégiques, en particulier dans les moments de crise ou d'ambiguïté.</p>
+
+            <div class="course-image-container">
+                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1200&auto=format&fit=crop" alt="Leadership d'équipe, vision stratégique et collaboration">
+                <div class="image-caption">Le leadership moderne repose sur l'alignement d'une vision claire et la co-construction de solutions en équipe.</div>
+            </div>
+
+            <div class="quote-box">
+                "Si vos actions inspirent les autres à rêver plus grand, à apprendre plus, à faire plus et à devenir davantage, vous êtes un leader."
+                <span>— John Quincy Adams</span>
+            </div>
+
+            <h2><i class="fa-solid fa-network-wired" style="color: #D4AF37;"></i> 1. Les 4 Styles de Leadership Clés</h2>
+            <p>Le leadership situationnel enseigne qu'il n'existe pas un style de management unique et universel, mais qu'un bon leader sait adapter sa posture en fonction du niveau de maturité et d'autonomie de son équipe :</p>
+
+            <div class="grid-cards">
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-bullseye" style="color: #145A86;"></i> 1. Le Dirigeant (Directif)</h4>
+                    <p>Idéal face à l'urgence ou avec un collaborateur débutant. Il fixe précisément les règles, les étapes et contrôle étroitement l'exécution.</p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-comments" style="color: #27ae60;"></i> 2. Le Persuasif (Coach)</h4>
+                    <p>Accompagne les collaborateurs en expliquant le « pourquoi » des décisions, écoute leurs retours et cherche à emporter leur adhésion.</p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-people-arrows" style="color: #f39c12;"></i> 3. Le Participatif (Soutien)</h4>
+                    <p>Implique l'équipe dans la co-création des solutions et la prise de décision. Valorise l'autonomie et l'intelligence collective.</p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-feather" style="color: #8e44ad;"></i> 4. Le Délégateur</h4>
+                    <p>Confie la pleine responsabilité d'un projet de A à Z à un expert de confiance en restant disponible en appui si nécessaire.</p>
+                </div>
+            </div>
+
+            <h2><i class="fa-solid fa-compass" style="color: #D4AF37;"></i> 2. L'Art de la Prise de Décision Éclairée</h2>
+            <p>La prise de décision est l'épreuve de vérité de tout leader. Hésiter trop longtemps par peur de l'erreur paralyse une organisation, tandis que décider trop hâtivement sans analyse conduit à des catastrophes. Pour trancher efficacement :</p>
+            
+            <ul>
+                <li><strong>Définir l'irréversibilité du choix :</strong> S'agit-il d'une décision à sens unique (difficilement modifiable, nécessitant une analyse approfondie) ou d'une porte à double sens (facilement testable et réversible, où il vaut mieux agir vite) ?</li>
+                <li><strong>Éviter le piège des biais cognitifs :</strong> Méfiez-vous du <em>biais de confirmation</em> (chercher uniquement les faits qui valident votre intuition initiale) et de l'<em>escalade d'engagement</em> (s'obstiner dans une mauvaise voie uniquement parce qu'on y a déjà investi du temps).</li>
+                <li><strong>Impliquer les bonnes parties prenantes :</strong> Décidez seul quand l'urgence l'exige, mais consultez largement quand vous avez besoin d'adhésion et d'expertise technique transversale.</li>
+            </ul>
+
+            <div class="course-image-container">
+                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&auto=format&fit=crop" alt="Prise de décision stratégique et analyse professionnelle">
+                <div class="image-caption">Trancher avec discernement implique d'équilibrer rigueur analytique et intuition stratégique.</div>
+            </div>
+
+            <h3>3. Transformer l'erreur en levier d'apprentissage</h3>
+            <p>Un leader charismatique et respecté n'est pas celui qui ne commet jamais d'erreurs, mais celui qui assume l'échec avec intégrité et en extrait des leçons pérennes :</p>
+            <ul>
+                <li><strong>Responsabilité inconditionnelle :</strong> En cas de succès, le leader met en avant son équipe. En cas d'échec, il assume la responsabilité première face aux instances supérieures.</li>
+                <li><strong>Le débriefing constructif (« Post-mortem ») :</strong> Plutôt que de chercher des coupables, organisez des retours d'expérience factuels : <em>« Qu'est-ce qui n'a pas fonctionné dans notre processus ? Que ferons-nous différemment la prochaine fois ? »</em></li>
+            </ul>
+
+            <div class="quote-box" style="border-left-color: #D4AF37;">
+                "Un leader est un marchand d'espoir."
+                <span>— Napoléon Bonaparte</span>
+            </div>
+
+            <p>En cultivant un leadership fondé sur l'exemplarité, l'écoute active et une prise de décision structurée, vous transformerez durablement votre impact professionnel au sein de BMJ Service.</p>
+        </div>
+
+        <!-- SECTION DE VALIDATION -->
+        <div class="action-section">
+            <div>
+                <h3>Chapitre validé avec succès ?</h3>
+                <p>Enregistrez votre progression pour déverrouiller l'accès direct au dernier chapitre du module.</p>
+            </div>
+            <button class="btn-validate" onclick="validerChapitre6()">
+                Valider ce chapitre <i class="fa-solid fa-check-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel</p>
+    </footer>
+
+    <!-- SCRIPT DE GESTION -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder aux cours.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        });
+
+        function validerChapitre6() {
+            let progression = JSON.parse(localStorage.getItem("dev_pers_progression")) || [];
+            
+            // Si le chapitre 6 n'est pas encore validé, on l'ajoute
+            if (!progression.includes(6)) {
+                progression.push(6);
+                localStorage.setItem("dev_pers_progression", JSON.stringify(progression));
+            }
+
+            alert("🎉 Félicitations ! Le Chapitre 6 a été validé avec succès.");
+            window.location.href = "developpement_personnel.html";
+        }
+    </script>
+</body>
+</html>

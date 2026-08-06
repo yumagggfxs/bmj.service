@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Santé et Environnement</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - SANTÉ ET ENVIRONNEMENT
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /*==================================================
+                HEADER
+        ==================================================*/
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .1);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .logo h2 {
+            color: #145A86;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 3px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+        }
+
+        .course-user small {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        /*==================================================
+                HERO SECTION
+        ==================================================*/
+        .marketing-hero {
+            margin-top: 75px;
+            height: 480px;
+            background: linear-gradient(rgba(20, 90, 134, .85), rgba(0, 0, 0, .65)), url('images/marketing-banner.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            padding: 70px;
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 700px;
+        }
+
+        .hero-content span {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            margin: 20px 0 15px;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /*==================================================
+                PROGRESSION
+        ==================================================*/
+        .progress-section {
+            background: white;
+            margin: 30px 50px;
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+        }
+
+        .progress-section h2 {
+            color: #145A86;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .progress-container {
+            height: 16px;
+            background: #ddd;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #145A86, #D4AF37);
+            transition: .5s;
+        }
+
+        .progress-section p {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        /*==================================================
+                CHAPITRES (7 MODULES)
+        ==================================================*/
+        .chapitres {
+            padding: 0 50px 50px 50px;
+        }
+
+        .chapitres h2 {
+            text-align: center;
+            font-size: 35px;
+            color: #145A86;
+            margin-bottom: 40px;
+        }
+
+        .chapitre-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .chapitre-card {
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+            transition: .4s;
+        }
+
+        .chapitre-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 20px 40px rgba(20, 90, 134, .15);
+        }
+
+        .chapitre-info-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .chapitre-icon {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            background: #145A86;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .chapitre-icon i {
+            font-size: 30px;
+            color: #D4AF37;
+        }
+
+        .chapitre-card h3 {
+            color: #145A86;
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+
+        .chapitre-card p {
+            line-height: 1.6;
+            color: #666;
+            font-size: 15px;
+        }
+
+        .chapitre-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .status-badge {
+            font-size: 0.85rem;
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 20px;
+        }
+
+        .status-ok { background: #e8f8f5; color: #27ae60; }
+        .status-ko { background: #fdf2e9; color: #e67e22; }
+
+        .chapitre-card a {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            background: #145A86;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: .3s;
+            display: inline-block;
+        }
+
+        .chapitre-card a:hover {
+            background: #D4AF37;
+            color: #145A86;
+        }
+
+        .final {
+            border: 3px solid #D4AF37;
+        }
+
+        /*==================================================
+                ACTION DE VÉRIFICATION GLOBALE
+        ==================================================*/
+        .verification-zone {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .btn-verifier {
+            background: #145A86;
+            color: white;
+            padding: 16px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(20,90,134,0.2);
+            transition: .3s;
+        }
+
+        .btn-verifier:hover {
+            background: #D4AF37;
+            color: #145A86;
+            transform: translateY(-3px);
+        }
+
+        /*==================================================
+                FOOTER
+        ==================================================*/
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 50px;
+            line-height: 2;
+        }
+
+        /*==================================================
+                RESPONSIVE MOBILE
+        ==================================================*/
+        @media(max-width:900px) {
+            .hero-content h1 { font-size: 36px; }
+            .marketing-hero { padding: 40px; height: 420px; }
+        }
+
+        @media(max-width:600px) {
+            header { padding: 0 15px; }
+            .logo h2 { font-size: 18px; }
+            .course-user small { display: none; }
+            .marketing-hero { height: 450px; padding: 20px; }
+            .hero-content h1 { font-size: 28px; }
+            .progress-section, .chapitres { margin: 15px; padding: 20px; }
+            .chapitre-card { flex-direction: column; align-items: flex-start; }
+            .chapitre-right { align-items: flex-start; width: 100%; }
+            .chapitre-card a { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Santé & Environnement</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="marketing-hero">
+        <div class="hero-content">
+            <span>FORMATION CERTIFIANTE</span>
+            <h1>Santé et Environnement</h1>
+            <p>Comprenez les interactions majeures entre les écosystèmes naturels, l'hygiène publique, la gestion des ressources et la protection de la santé humaine.</p>
+        </div>
+    </section>
+
+    <!-- SECTION PROGRESSION -->
+    <section class="progress-section">
+        <h2>Votre progression globale</h2>
+        <div class="progress-container">
+            <div id="progressBar"></div>
+        </div>
+        <p id="progressText">0% complété (0 sur 7 chapitres)</p>
+    </section>
+
+    <!-- CHAPITRES -->
+    <section class="chapitres">
+        <h2>Les 7 Chapitres de la Formation</h2>
+        <div class="chapitre-list" id="chapitreListContainer">
+            <!-- Injecté dynamiquement par JS -->
+        </div>
+
+        <div class="verification-zone">
+            <a href="verification_sante.html" class="btn-verifier">
+                <i class="fa-solid fa-clipboard-check"></i> Valider mon parcours & Certificat
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel</p>
+    </footer>
+
+    <!-- SCRIPT DE GESTION DES 7 CHAPITRES ET LOCALSTORAGE -->
+    <script>
+        const SANTE_ENV_CHAPITRES = [
+            { 
+                id: 1, 
+                titre: "Chapitre 1 : Introduction à la Santé Environnementale", 
+                desc: "Définition des concepts clés et liens fondamentaux entre les écosystèmes et la santé humaine.",
+                page: "chapitre1_sante.html",
+                icon: "fa-leaf"
+            },
+            { 
+                id: 2, 
+                titre: "Chapitre 2 : Pollution de l'Air et Impact Sanitaire", 
+                desc: "Analyse des particules fines, des gaz polluants et de leurs répercussions sur les voies respiratoires.",
+                page: "chapitre2_sante.html",
+                icon: "fa-wind"
+            },
+            { 
+                id: 3, 
+                titre: "Chapitre 3 : Gestion de l'Eau et Hygiène Publique", 
+                desc: "Accès à l'eau potable, traitement des eaux usées et prévention des maladies hydriques.",
+                page: "chapitre3_sante.html",
+                icon: "fa-droplet"
+            },
+            { 
+                id: 4, 
+                titre: "Chapitre 4 : Gestion et Traitement des Déchets", 
+                desc: "Enjeux des déchets solides et plastiques, stratégies de tri, recyclage et économie circulaire.",
+                page: "chapitre4_sante.html",
+                icon: "fa-recycle"
+            },
+            { 
+                id: 5, 
+                titre: "Chapitre 5 : Changement Climatique et Santé", 
+                desc: "Conséquences du réchauffement global, vagues de chaleur et prolifération des vecteurs de maladies.",
+                page: "chapitre5_sante.html",
+                icon: "fa-temperature-high"
+            },
+            { 
+                id: 6, 
+                titre: "Chapitre 6 : Sécurité Alimentaire et Agriculture Durable", 
+                desc: "Impact des pesticides, OGM et engrais chimiques sur la santé et promotion d'une agriculture propre.",
+                page: "chapitre6_sante.html",
+                icon: "fa-seedling"
+            },
+            { 
+                id: 7, 
+                titre: "Chapitre 7 : Projet final & Plan Communautaire", 
+                desc: "Étude de cas pratique pour concevoir et présenter un projet d'assainissement local.",
+                page: "chapitre7_sante.html",
+                icon: "fa-award",
+                final: true
+            }
+        ];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            chargerDonneesUtilisateur();
+            afficherChapitres();
+            mettreAJourProgressionUI();
+        });
+
+        function chargerDonneesUtilisateur() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder aux cours.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        }
+
+        function obtenirProgression() {
+            let raw = JSON.parse(localStorage.getItem("sante_env_progression")) || [];
+            if(!Array.isArray(raw)) raw = [];
+            return [...new Set(raw.map(id => parseInt(id, 10)))];
+        }
+
+        function afficherChapitres() {
+            let container = document.getElementById("chapitreListContainer");
+            let progression = obtenirProgression();
+            container.innerHTML = "";
+
+            SANTE_ENV_CHAPITRES.forEach(chap => {
+                let estFini = progression.includes(chap.id);
+
+                let card = document.createElement("div");
+                card.className = `chapitre-card ${chap.final ? 'final' : ''}`;
+                card.innerHTML = `
+                    <div class="chapitre-info-wrapper">
+                        <div class="chapitre-icon">
+                            <i class="fa-solid ${chap.icon}"></i>
+                        </div>
+                        <div>
+                            <h3>${chap.titre}</h3>
+                            <p>${chap.desc}</p>
+                        </div>
+                    </div>
+                    <div class="chapitre-right">
+                        <span class="status-badge ${estFini ? 'status-ok' : 'status-ko'}">
+                            <i class="fa-solid ${estFini ? 'fa-circle-check' : 'fa-clock'}"></i> ${estFini ? 'Validé' : 'À faire'}
+                        </span>
+                        <a href="${chap.page}">
+                            <i class="fa-solid fa-book-open"></i> Ouvrir le cours
+                        </a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function mettreAJourProgressionUI() {
+            let progression = obtenirProgression();
+            let total = SANTE_ENV_CHAPITRES.length;
+            let termines = progression.length;
+
+            let pourcentage = Math.round((termines / total) * 100);
+            if(pourcentage > 100) pourcentage = 100;
+
+            let bar = document.getElementById("progressBar");
+            if(bar) bar.style.width = pourcentage + "%";
+
+            let text = document.getElementById("progressText");
+            if(text) text.textContent = `${pourcentage}% complété (${termines} sur ${total} chapitres)`;
+        }
+
+        window.addEventListener("pageshow", function() {
+            afficherChapitres();
+            mettreAJourProgressionUI();
+        });
+    </script>
+</body>
+</html>

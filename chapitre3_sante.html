@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Chapitre 3 : Eau, Assainissement et Maladies Hydriques</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & IMMERSIF
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* LAYOUT GLOBAL DE LA PAGE COURS */
+        .page-wrapper {
+            max-width: 1300px;
+            margin: 105px auto 50px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 30px;
+        }
+
+        /* SOMMAIRE LATÉRAL (STICKY) */
+        .sidebar-sommaire {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            height: calc(100vh - 130px);
+            position: sticky;
+            top: 95px;
+            overflow-y: auto;
+        }
+
+        .sidebar-sommaire h3 {
+            color: #145A86;
+            font-size: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 12px;
+        }
+
+        .sommaire-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sommaire-list li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #555;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .sommaire-list li a:hover, .sommaire-list li a.active {
+            background: #e8f1f8;
+            color: #145A86;
+            transform: translateX(5px);
+        }
+
+        .sommaire-list li a i {
+            color: #D4AF37;
+            font-size: 16px;
+        }
+
+        /* CONTENEUR PRINCIPAL DU COURS */
+        .course-main-content {
+            background: white;
+            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .breadcrumb {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+        }
+
+        .chapter-hero {
+            background: linear-gradient(135deg, #145A86, #0c3854);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(20,90,134,0.2);
+        }
+
+        .chapter-hero span {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .chapter-hero h1 {
+            font-size: 30px;
+            margin: 15px 0 10px 0;
+            line-height: 1.3;
+        }
+
+        .chapter-hero p {
+            color: #d2e4f0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        /* STYLING DES 5 LEÇONS */
+        .lecon-section {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .lecon-section:hover {
+            box-shadow: 0 10px 30px rgba(20, 90, 134, 0.08);
+            border-color: #cbd5e1;
+        }
+
+        .lecon-header-title {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 20px;
+        }
+
+        .lecon-badge-num {
+            background: #145A86;
+            color: #D4AF37;
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 6px 15px rgba(20,90,134,0.2);
+            flex-shrink: 0;
+        }
+
+        .lecon-header-title h2 {
+            color: #145A86;
+            font-size: 22px;
+            line-height: 1.3;
+        }
+
+        .lecon-body p {
+            line-height: 1.8;
+            color: #475569;
+            margin-bottom: 20px;
+            font-size: 15px;
+            text-align: justify;
+        }
+
+        .lecon-body h4 {
+            color: #145A86;
+            font-size: 17px;
+            margin: 25px 0 12px 0;
+        }
+
+        .lecon-body ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: #475569;
+            line-height: 1.8;
+        }
+
+        .lecon-body li {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        /* ILLUSTRATIONS INTÉGRÉES */
+        .lecon-image-container {
+            margin: 25px 0;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .lecon-image-container img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .lecon-image-container:hover img {
+            transform: scale(1.03);
+        }
+
+        .image-caption {
+            background: #f8fafc;
+            padding: 10px 15px;
+            font-size: 13px;
+            color: #64748b;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            font-style: italic;
+        }
+
+        /* ENCADRÉS EXPERT & EXEMPLES */
+        .box-expert {
+            background: #f8fafc;
+            border-left: 5px solid #145A86;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .box-expert h5 {
+            color: #145A86;
+            margin-bottom: 8px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .box-expert p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .box-warning {
+            background: #fef2f2;
+            border-left: 5px solid #ef4444;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .box-warning h5 {
+            color: #991b1b;
+            margin-bottom: 8px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .box-warning p {
+            margin: 0;
+            color: #7f1d1d;
+            font-size: 14px;
+        }
+
+        /* BOUTONS DE VALIDATION ET NAVIGATION */
+        .chapter-footer-actions {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-valider-chap {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.25);
+        }
+
+        .btn-valider-chap:hover {
+            background: #219653;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(39, 174, 96, 0.35);
+        }
+
+        .btn-suiv-chap {
+            background: #145A86;
+            color: white;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(20,90,134,0.25);
+        }
+
+        .btn-suiv-chap:hover {
+            background: #D4AF37;
+            color: #145A86;
+            transform: translateY(-3px);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 60px;
+            line-height: 2;
+        }
+
+        /* RESPONSIVE MOBILE */
+        @media(max-width: 1024px) {
+            .page-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-sommaire {
+                display: none;
+            }
+        }
+
+        @media(max-width: 600px) {
+            header { padding: 0 15px; }
+            .course-main-content { padding: 20px; }
+            .chapter-footer-actions { flex-direction: column; gap: 15px; }
+            .btn-valider-chap, .btn-suiv-chap { width: 100%; justify-content: center; }
+            .lecon-header-title { flex-direction: column; align-items: flex-start; gap: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Santé & Environnement</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- WRAPPER GLOBAL -->
+    <div class="page-wrapper">
+
+        <!-- SOMMAIRE LATÉRAL STICKY -->
+        <aside class="sidebar-sommaire">
+            <h3><i class="fa-solid fa-list-check"></i> Sommaire du Chapitre</h3>
+            <ul class="sommaire-list">
+                <li><a href="#lecon31"><i class="fa-solid fa-circle-dot"></i> 3.1 Cycle & Accès à l'eau</a></li>
+                <li><a href="#lecon32"><i class="fa-solid fa-circle-dot"></i> 3.2 Contaminations</a></li>
+                <li><a href="#lecon33"><i class="fa-solid fa-circle-dot"></i> 3.3 Maladies hydriques</a></li>
+                <li><a href="#lecon34"><i class="fa-solid fa-circle-dot"></i> 3.4 Techniques de potabilisation</a></li>
+                <li><a href="#lecon35"><i class="fa-solid fa-circle-dot"></i> 3.5 Assainissement urbain</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTENU CENTRAL -->
+        <main class="course-main-content">
+            <div class="breadcrumb">
+                <a href="sante_environnement.html"><i class="fa-solid fa-arrow-left"></i> Retour au menu des modules</a>
+            </div>
+
+            <div class="chapter-hero">
+                <span>Module 1 - Chapitre 3 sur 7</span>
+                <h1>Eau, Assainissement et Maladies Hydriques</h1>
+                <p>Analysez l'accès critique aux ressources en eau potable, les risques majeurs de contamination biologique et chimique, ainsi que les stratégies d'assainissement vitales.</p>
+            </div>
+
+            <!-- LEÇON 3.1 -->
+            <section id="lecon31" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">3.1</div>
+                    <h2>Le cycle de l'eau et l'accès à l'eau potable dans le monde</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>Bien que la Terre soit recouverte à plus de 70 % d'eau, moins de 3 % de cette ressource est de l'eau douce, et une infime fraction (environ 0,5 %) est directement accessible et propre à la consommation humaine. Le cycle hydrologique mondial assure une redistribution constante, mais les déséquilibres climatiques et démographiques accentuent les tensions.</p>
+                    <p>L'accès à l'eau potable et à des services d'hygiène de base demeure un défi de développement primordial, particulièrement dans les zones périurbaines et rurales des pays en développement, où des millions de personnes dépendent de sources non sécurisées.</p>
+
+                    <!-- Illustration 1 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1541675154750-04e4c753248f?auto=format&fit=crop&w=1200&q=80" alt="Ressource en eau douce">
+                        <div class="image-caption">Figure 3.1 : Préservation et gestion durable des ressources en eau douce face aux pressions climatiques.</div>
+                    </div>
+
+                    <div class="box-expert">
+                        <h5><i class="fa-solid fa-droplet" style="color: #145A86;"></i> Objectif de développement durable (ODD 6)</h5>
+                        <p>Garantir l'accès de tous à l'eau et à l'assainissement et assurer une gestion durable des ressources en eau est l'un des piliers incontournables de la santé publique mondiale.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- LEÇON 3.2 -->
+            <section id="lecon32" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">3.2</div>
+                    <h2>Les contaminations microbiologiques et chimiques des ressources en eau</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>Les sources d'eau douce sont exposées à de multiples formes de pollution qui altèrent leur potabilité. On distingue deux grandes catégories de contamination : la pollution microbiologique (d'origine fécale humaine ou animale) et la pollution chimique (industrielle, agricole et minière).</p>
+                    <p>Les rejets d'eaux usées non traitées dans les cours d'eau ou les nappes phréatiques introduisent des agents pathogènes redoutables, tandis que l'infiltration d'engrais azotés, de pesticides et de métaux lourds (comme le plomb ou le mercure) empoisonne durablement les écosystèmes aquatiques.</p>
+
+                    <!-- Illustration 2 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1618477461853-cf6ed80faba5?auto=format&fit=crop&w=1200&q=80" alt="Pollution des eaux">
+                        <div class="image-caption">Figure 3.2 : Impact des rejets industriels et domestiques non contrôlés sur la qualité des rivières.</div>
+                    </div>
+
+                    <h4>Facteurs de contamination directe :</h4>
+                    <ul>
+                        <li>Proximité immédiate entre les fosses septiques et les puits d'eau souterraine peu profonds.</li>
+                        <li>Absence de stations d'épuration municipales dans les extensions urbaines rapides.</li>
+                        <li>Ruissellement agricole chargé de nitrates et de produits phytosanitaires.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- LEÇON 3.3 -->
+            <section id="lecon33" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">3.3</div>
+                    <h2>Panorama des principales maladies hydriques (choléra, typhoïde, diarrhées)</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>L'eau contaminée est l'un des principaux vecteurs de morbidité et de mortalité infectieuse à l'échelle planétaire. Les maladies d'origine hydrique se transmettent principalement par voie fécale-orale, soit par l'ingestion d'eau souillée, soit par l'utilisation d'aliments lavés avec de l'eau insalubre.</p>
+                    
+                    <div class="box-warning">
+                        <h5><i class="fa-solid fa-triangle-exclamation"></i> Pathologies majeures</h5>
+                        <p>Le <strong>choléra</strong> (provoqué par <em>Vibrio cholerae</em>) entraîne des déshydratations fulminantes mortelles en quelques heures sans prise en charge. La <strong>fièvre typhoïde</strong>, la dysenterie bacillaire et les gastro-entérites virales (rotavirus) frappent massivement les communautés manquant d'infrastructures d'hygiène.</p>
+                    </div>
+
+                    <p>Ces affections touchent de manière disproportionnée les jeunes enfants dans les régions enclavées, provoquant des retards de croissance et des épisodes de malnutrition chronique sévère.</p>
+                </div>
+            </section>
+
+            <!-- LEÇON 3.4 -->
+            <section id="lecon34" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">3.4</div>
+                    <h2>Techniques de potabilisation domestique et collective</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>Lorsque l'eau courante sécurisée fait défaut, la mise en œuvre de méthodes de traitement simples, économiques et accessibles au niveau des ménages (traitement décentralisé) s'avère vitale pour couper la chaîne de transmission des agents infectieux.</p>
+                    <p>Les technologies vont de l'échelle industrielle (coagulation, floculation, filtration sur sable et chloration en station) aux pratiques familiales fondamentales.</p>
+
+                    <!-- Illustration 3 -->
+                    <div class="lecon-image-container">
+                        <img src="https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=80" alt="Traitement de l'eau">
+                        <div class="image-caption">Figure 3.3 : Installations modernes de filtration et de traitement de l'eau pour la collectivité.</div>
+                    </div>
+
+                    <h4>Méthodes de potabilisation à domicile :</h4>
+                    <ul>
+                        <li><strong>L'ébullition :</strong> méthode traditionnelle efficace pour détruire l'ensemble des bactéries, virus et parasites pathogènes.</li>
+                        <li><strong>La chloration domestique :</strong> utilisation de solutions d'hypochlorite de sodium à des dosages précis.</li>
+                        <li><strong>La filtration par sédimentation et filtres à sable lents :</strong> pour retenir les matières en suspension et les kystes parasitaires.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- LEÇON 3.5 -->
+            <section id="lecon35" class="lecon-section">
+                <div class="lecon-header-title">
+                    <div class="lecon-badge-num">3.5</div>
+                    <h2>Systèmes d'assainissement et gestion des eaux usées urbaines</h2>
+                </div>
+                <div class="lecon-body">
+                    <p>L'accès à l'eau potable ne peut être dissocié d'un assainissement adéquat. L'évacuation sécurisée des excreta humains et des eaux grises (douches, cuisines) prévient la contamination croisée de l'environnement immédiat des habitations.</p>
+                    <p>La construction de latrines hygiéniques, la mise en place de réseaux d'égouts séparatifs ou unitaires et l'optimisation de stations d'épuration biologiques constituent les leviers indispensables pour préserver durablement la santé des agglomérations modernes.</p>
+
+                    <div class="box-expert">
+                        <h5><i class="fa-solid fa-lightbulb" style="color: #145A86;"></i> Rôle de l'intervenant de terrain</h5>
+                        <p>Sensibiliser les populations au lavage des mains au savon aux moments clés (après l'utilisation des toilettes et avant les repas) reste l'intervention d'hygiène publique la plus efficace et la plus rentable au monde.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BOUTONS DE VALIDATION -->
+            <div class="chapter-footer-actions">
+                <button class="btn-valider-chap" id="btnValiderChapitre" onclick="validerChapitre3()">
+                    <i class="fa-solid fa-circle-check"></i> Valider le Chapitre 3
+                </button>
+                <a href="chapitre4_sante.html" class="btn-suiv-chap">
+                    Passer au Chapitre 4 <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel</p>
+    </footer>
+
+    <!-- SCRIPT DE GESTION DU PROFIL ET DU LOCALSTORAGE -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            chargerDonneesUtilisateur();
+            verifierEtatValidation();
+        });
+
+        function chargerDonneesUtilisateur() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder aux cours.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        }
+
+        function validerChapitre3() {
+            let chapId = 3;
+            let raw = JSON.parse(localStorage.getItem("sante_env_progression")) || [];
+            if(!Array.isArray(raw)) raw = [];
+
+            let progression = [...new Set(raw.map(id => parseInt(id, 10)))];
+
+            if(!progression.includes(chapId)) {
+                progression.push(chapId);
+                localStorage.setItem("sante_env_progression", JSON.stringify(progression));
+                alert("🎉 Félicitations ! Chapitre 3 validé avec succès.");
+            } else {
+                alert("ℹ️ Ce chapitre est déjà validé !");
+            }
+            verifierEtatValidation();
+        }
+
+        function verifierEtatValidation() {
+            let chapId = 3;
+            let raw = JSON.parse(localStorage.getItem("sante_env_progression")) || [];
+            if(!Array.isArray(raw)) raw = [];
+            let progression = raw.map(id => parseInt(id, 10));
+
+            let btn = document.getElementById("btnValiderChapitre");
+            if(progression.includes(chapId)) {
+                btn.style.background = "#27ae60";
+                btn.innerHTML = '<i class="fa-solid fa-check-double"></i> Chapitre 3 Validé';
+            }
+        }
+    </script>
+</body>
+</html>

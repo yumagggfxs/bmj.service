@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Chapitre 1 : Connaissance de Soi & Objectifs (SMART)</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & IMMERSIF (V2)
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            color: #2c3e50;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(20, 90, 134, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(212, 175, 55, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 25px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* CONTENEUR PRINCIPAL */
+        .main-container {
+            max-width: 950px;
+            margin: 115px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+            transform: translateX(-3px);
+        }
+
+        /* HERO DU COURS */
+        .course-hero-card {
+            background: linear-gradient(135deg, #145A86 0%, #0c3854 100%);
+            color: white;
+            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(20, 90, 134, 0.2);
+            margin-bottom: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-hero-card::after {
+            content: "\f2fd";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -30px;
+            font-size: 160px;
+            color: rgba(255, 255, 255, 0.03);
+            pointer-events: none;
+        }
+
+        .course-badge {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .course-hero-card h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            line-height: 1.25;
+        }
+
+        .course-hero-card p {
+            font-size: 15.5px;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 750px;
+        }
+
+        /* CORPS DU CONTENU RICHE */
+        .course-body {
+            background: white;
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 35px;
+        }
+
+        .course-body h2 {
+            color: #145A86;
+            font-size: 22px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 10px;
+        }
+
+        .course-body h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .course-body h3 {
+            color: #0c3854;
+            font-size: 18px;
+            margin-top: 25px;
+            margin-bottom: 12px;
+        }
+
+        .course-body p {
+            color: #475569;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        .course-body ul, .course-body ol {
+            margin-left: 20px;
+            margin-bottom: 25px;
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        .course-body li {
+            margin-bottom: 10px;
+        }
+
+        /* CITATION / FOCUS BOX */
+        .quote-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+            border-left: 5px solid #145A86;
+            padding: 25px;
+            border-radius: 0 16px 16px 0;
+            margin: 30px 0;
+            font-style: italic;
+            color: #1e293b;
+            font-size: 15.5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .quote-box span {
+            display: block;
+            margin-top: 10px;
+            font-style: normal;
+            font-weight: 600;
+            color: #D4AF37;
+            font-size: 13px;
+        }
+
+        /* CARTES MÉTHODE SWOT / SMART */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .info-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 25px;
+            border-radius: 18px;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-4px);
+            border-color: #D4AF37;
+            box-shadow: 0 10px 25px rgba(20,90,134,0.06);
+            background: white;
+        }
+
+        .info-card h4 {
+            color: #145A86;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-card p {
+            font-size: 13.5px;
+            margin-bottom: 0;
+            color: #64748b;
+        }
+
+        /* SECTION VALIDATION ULTRA-STYLÉE */
+        .action-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #0c3854 0%, #145A86 100%);
+            padding: 40px;
+            border-radius: 25px;
+            color: white;
+            box-shadow: 0 15px 35px rgba(20,90,134,0.2);
+        }
+
+        .action-section h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .action-section p {
+            font-size: 14.5px;
+            opacity: 0.85;
+            max-width: 520px;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        .btn-validate {
+            background: #D4AF37;
+            color: #145A86;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .btn-validate:hover {
+            background: #f1c40f;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 60px;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        @media(max-width: 768px) {
+            .action-section { flex-direction: column; align-items: flex-start; gap: 25px; padding: 30px; }
+            header { padding: 0 20px; }
+            .course-body { padding: 25px; }
+            .course-hero-card { padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Développement Personnel</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEUR PRINCIPAL -->
+    <div class="main-container">
+        <div class="breadcrumb">
+            <a href="module_developpement.html"><i class="fa-solid fa-arrow-left"></i> Retour au sommaire du module</a>
+        </div>
+
+        <!-- HERO DU COURS -->
+        <div class="course-hero-card">
+            <span class="course-badge">Chapitre 1 sur 7 • Fondations</span>
+            <h1>Connaissance de Soi & Objectifs (SMART)</h1>
+            <p>Plongez au cœur de votre propre identité. Ce premier module pose les fondations indispensables pour aligner vos ambitions professionnelles et personnelles avec votre véritable nature.</p>
+        </div>
+
+        <!-- CORPS DU COURS RICHE EN TEXTES -->
+        <div class="course-body">
+            
+            <h2><i class="fa-solid fa-compass" style="color: #D4AF37;"></i> Introduction : Pourquoi tout commence par soi</h2>
+            <p>Dans un monde en perpétuelle mutation, soumis à des pressions constantes et à des exigences de performance élevées, il est facile de s'oublier. Beaucoup de professionnels s'épuisent à courir après des objectifs dictés par les autres ou par les standards de la société, pour finalement réaliser qu'ils font fausse route.</p>
+            <p>La <strong>connaissance de soi</strong> n'est pas un luxe narcissique ou une simple réflexion abstraite : c'est le gouvernail de votre existence. C'est la boussole interne qui vous permet de prendre des décisions éclairées, de dire non à ce qui ne vous correspond pas, et de canaliser votre énergie vers ce qui compte vraiment.</p>
+
+            <div class="quote-box">
+                "Connais-toi toi-même et tu connaîtras l'univers et les dieux."
+                <span>— Inscription gravée sur le fronton du temple de Delphes</span>
+            </div>
+
+            <h3>Les 3 piliers de l'exploration personnelle :</h3>
+            <ul>
+                <li><strong>Le système de valeurs :</strong> Ce sont vos priorités fondamentales (l'intégrité, la liberté, la sécurité, l'accomplissement, la famille). Lorsque votre travail ou votre quotidien piétine l'une de vos valeurs phares, la frustration s'installe.</li>
+                <li><strong>Les forces et talents naturels :</strong> Ce que vous faites avec aisance et qui vous procure de l'énergie, par opposition aux compétences purement acquises qui peuvent vous épuiser.</li>
+                <li><strong>Les zones d'ombre et limites :</strong> Reconnaître vos déclencheurs émotionnels et vos peurs inconscientes pour éviter qu'ils ne sabotent vos projets.</li>
+            </ul>
+
+            <h2><i class="fa-solid fa-chart-pie" style="color: #D4AF37;"></i> 1. L'Outil Clé : L'Analyse SWOT Personnelle</h2>
+            <p>Empruntée au monde stratégique des affaires, l'analyse <strong>SWOT</strong> (adaptée à l'individu) est un exercice d'introspection redoutable d'efficacité. Elle vous offre une vision claire à 360 degrés de votre position actuelle.</p>
+
+            <div class="grid-cards">
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-bolt" style="color: #145A86;"></i> S - Strengths (Forces)</h4>
+                    <p>Vos atouts internes : diplômes, compétences relationnelles, résilience, réseaux solides, expériences passées marquantes.</p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-triangle-exclamation" style="color: #D4AF37;"></i> W - Weaknesses (Faiblesses)</h4>
+                    <p>Vos points de vigilance internes : manque de confiance dans certains domaines, maîtrise insuffisante d'un outil, tendance à la procrastination.</p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-binoculars" style="color: #145A86;"></i> O - Opportunities (Opportunités)</h4>
+                    <p>Les leviers externes : évolution du marché du travail, nouvelles formations accessibles, mentorat potentiel, tendances porteuses.</p>
+                </div>
+                <div class="info-card">
+                    <h4><i class="fa-solid fa-shield-halved" style="color: #e74c3c;"></i> T - Threats (Menaces)</h4>
+                    <p>Les risques externes : concurrence accrue dans votre secteur, instabilité économique, manque de temps chronique lié à votre environnement.</p>
+                </div>
+            </div>
+
+            <h2><i class="fa-solid fa-bullseye" style="color: #D4AF37;"></i> 2. Transformer l'intention en réalité : La Méthode SMART</h2>
+            <p>Savoir qui l'on est est une chose, savoir où l'on va en est une autre. Un désir non structuré reste un vœu pieux. Pour matérialiser vos ambitions, chaque objectif doit impérativement passer au crible de la méthodologie <strong>SMART</strong>.</p>
+            
+            <p>Examinons en profondeur chaque composante de cet acronyme incontournable du management et du développement personnel :</p>
+            
+            <ul>
+                <li><strong>S - Spécifique :</strong> L'objectif doit être formulé de manière claire, univoque et détaillée. Il doit répondre aux questions : <em>Qui ? Quoi ? Où ? Pourquoi ?</em> Un objectif vague comme "Je veux progresser" ne donne aucune direction au cerveau. Préférez : "Je souhaite maîtriser la prise de parole en public pour animer mes réunions d'équipe."</li>
+                <li><strong>M - Mesurable :</strong> Il vous faut un indicateur quantifiable. Comment saurez-vous que vous avez atteint le but ? (Ex: "Obtenir une note de 8/10 lors du prochain feedback", "Lire 2 livres de leadership par mois"). Le suivi des progrès nourrit la motivation intrinsèque.</li>
+                <li><strong>A - Atteignable :</strong> L'objectif doit placer la barre assez haut pour stimuler votre potentiel, mais rester accessible compte tenu de vos contraintes de temps, d'énergie et de budget actuelles. Un objectif inatteignable génère du découragement.</li>
+                <li><strong>R - Réaliste / Pertinent :</strong> Cet indicateur mesure l'alignement. Est-ce le bon moment pour vous lancer ce défi ? Est-ce cohérent avec votre vision globale de vie et vos valeurs profondes ?</li>
+                <li><strong>T - Temporellement défini :</strong> Tout objectif a besoin d'une date butoir ferme. Sans échéance précise, la tendance naturelle est de reporter l'action au lendemain. Fixez un jour, un mois et une année précis.</li>
+            </ul>
+
+            <div class="quote-box" style="border-left-color: #D4AF37;">
+                "Un objectif n'est qu'un rêve doté d'une date de fin."
+                <span>— Napoleon Hill</span>
+            </div>
+
+            <p>En combinant une profonde connaissance de soi (via le SWOT) et une rigueur de planification (via les critères SMART), vous cessez de subir les événements pour devenir le véritable architecte de votre trajectoire professionnelle et personnelle.</p>
+        </div>
+
+        <!-- SECTION DE VALIDATION -->
+        <div class="action-section">
+            <div>
+                <h3>Prêt à passer à l'étape supérieure ?</h3>
+                <p>En validant ce chapitre, vous enregistrez vos acquis dans votre tableau de bord et déverrouillez l'accès au Chapitre 2.</p>
+            </div>
+            <button class="btn-validate" onclick="validerChapitre1()">
+                Valider ce chapitre <i class="fa-solid fa-check-circle"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel</p>
+    </footer>
+
+    <!-- SCRIPT DE GESTION -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder aux cours.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        });
+
+        function validerChapitre1() {
+            let progression = JSON.parse(localStorage.getItem("dev_pers_progression")) || [];
+            
+            // Si le chapitre 1 n'est pas encore validé, on l'ajoute
+            if (!progression.includes(1)) {
+                progression.push(1);
+                localStorage.setItem("dev_pers_progression", JSON.stringify(progression));
+            }
+
+            alert("🎉 Félicitations ! Le Chapitre 1 a été validé avec succès.");
+            window.location.href = "developpement_personnel.html";
+        }
+    </script>
+</body>
+</html>

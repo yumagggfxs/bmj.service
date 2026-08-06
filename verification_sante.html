@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Évaluation & Certification : Santé & Environnement</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & IMMERSIF
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* LAYOUT GLOBAL */
+        .page-wrapper {
+            max-width: 1000px;
+            margin: 105px auto 50px auto;
+            padding: 0 20px;
+        }
+
+        .quiz-container {
+            background: white;
+            padding: 45px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .breadcrumb {
+            margin-bottom: 25px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+        }
+
+        .quiz-hero {
+            background: linear-gradient(135deg, #145A86, #0c3854);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            margin-bottom: 35px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(20,90,134,0.2);
+        }
+
+        .quiz-hero span {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .quiz-hero h1 {
+            font-size: 28px;
+            margin: 15px 0 10px 0;
+        }
+
+        .quiz-hero p {
+            color: #d2e4f0;
+            font-size: 14px;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* QUESTIONS STYLING */
+        .question-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.03);
+        }
+
+        .question-title {
+            color: #145A86;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .question-title span {
+            background: #145A86;
+            color: #D4AF37;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-left: 40px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: white;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #334155;
+            transition: all 0.2s ease;
+        }
+
+        .option-label:hover {
+            background: #e8f1f8;
+            border-color: #145A86;
+        }
+
+        .option-label input {
+            accent-color: #145A86;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* ACTIONS & RÉSULTATS */
+        .quiz-actions {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .btn-soumettre {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.25);
+        }
+
+        .btn-soumettre:hover {
+            background: #219653;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(39, 174, 96, 0.35);
+        }
+
+        /* BOITE DE RÉSULTAT ET PAIEMENT PREMIUM */
+        #resultatBox {
+            display: none;
+            margin-top: 40px;
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .succes-box {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            color: #14532d;
+        }
+
+        .premium-lock-box {
+            background: #fffbeb;
+            border: 2px solid #f59e0b;
+            color: #78350f;
+        }
+
+        .echec-box {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+            color: #7f1d1d;
+        }
+
+        #resultatBox h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        #resultatBox p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .btn-premium-pay {
+            background: #d97706;
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(217, 119, 6, 0.25);
+            margin-top: 15px;
+        }
+
+        .btn-premium-pay:hover {
+            background: #b45309;
+            transform: translateY(-3px);
+        }
+
+        .btn-download-cert {
+            background: #145A86;
+            color: white;
+            border: none;
+            padding: 16px 35px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(20,90,134,0.25);
+            margin-top: 15px;
+        }
+
+        .btn-download-cert:hover {
+            background: #0c3854;
+            transform: translateY(-3px);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 35px;
+            margin-top: 60px;
+            line-height: 2;
+        }
+
+        @media(max-width: 600px) {
+            header { padding: 0 15px; }
+            .quiz-container { padding: 20px; }
+            .options-list { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Santé & Environnement</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- WRAPPER GLOBAL -->
+    <div class="page-wrapper">
+        <div class="quiz-container">
+            <div class="breadcrumb">
+                <a href="sante_environnement.html"><i class="fa-solid fa-arrow-left"></i> Retour au menu des modules</a>
+            </div>
+
+            <div class="quiz-hero">
+                <span>Évaluation Finale & Certification</span>
+                <h1>Test de Validation : Santé & Environnement</h1>
+                <p>Répondez aux 10 questions ci-dessous pour valider vos connaissances acquises à travers les 7 chapitres du module. Un score d'au moins 70% est requis pour obtenir votre attestation officielle de réussite.</p>
+            </div>
+
+            <!-- FORMULAIRE DE QUIZ -->
+            <form id="quizForm" onsubmit="corrigerQuiz(event)">
+                
+                <!-- Q1 -->
+                <div class="question-card">
+                    <div class="question-title">
+                        <span>1</span> Quel est le principal gaz à effet de serre responsable du réchauffement climatique anthropique ?
+                    </div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q1" value="A"> A) L'oxygène (O₂)</label>
+                        <label class="option-label"><input type="radio" name="q1" value="B"> B) Le dioxyde de carbone (CO₂)</label>
+                        <label class="option-label"><input type="radio" name="q1" value="C"> C) L'azote (N₂)</label>
+                        <label class="option-label"><input type="radio" name="q1" value="D"> D) L'hélium (He)</label>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="question-card">
+                    <div class="question-title">
+                        <span>2</span> Quel polluant atmosphérique est principalement mesuré par l'indice AQI via les particules fines de diamètre inférieur à 2,5 micromètres ?
+                    </div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q2" value="A"> A) PM2.5</label>
+                        <label class="option-label"><input type="radio" name="q2" value="B"> B) Le monoxyde de carbone pur</label>
+                        <label class="option-label"><input type="radio" name="q2" value="C"> C) L'ozone stratosphérique</label>
+                        <label class="option-label"><input type="radio" name="q2" value="D"> D) Le méthane lourd</label>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="question-card">
+                    <div class="question-title">
+                        <span>3</span> Quelle maladie hydrique est principalement due à l'ingestion d'eau contaminée par la bactérie <i>Vibrio cholerae</i> ?
+                    </div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q3" value="A"> A) Le paludisme</label>
+                        <label class="option-label"><input type="radio" name="q3" value="B"> B) Le choléra</label>
+                        <label class="option-label"><input type="radio" name="q3" value="C"> C) La dengue</label>
+                        <label class="option-label"><input type="radio" name="q3" value="D"> D) La leptospirose</label>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="question-card">
+                    <div class="question-title">
+                        <span>4</span> Quel est le principal vecteur de transmission du parasite du paludisme (Plasmodium) chez l'humain ?
+                    </div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q4" value="A"> A) Le moustique Anophèle femelle</label>
+                        <label class="option-label"><input type="radio" name="q4" value="B"> B) La mouche Tsé-tsé</label>
+                        <label class="option-label"><input type="radio" name="q4" value="C"> C) Le rat surmulot</label>
+                        <label class="option-label"><input type="radio" name="q4" value="D"> D) Le moustique Aedes aegypti</label>
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="question-card">
+                    <div class="question-title">
+                        <span>5</span> En quoi consiste la hiérarchie moderne des déchets solides municipaux (les 3 R) ?
+                    </div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q5" value="A"> A) Refuser, Remplacer, Rejeter</label>
+                        <label class="option-label"><input type="radio" name="q5" value="B"> B) Réduire, Réutiliser, Recycler</label>
+                        <label class="option-label"><input type="radio" name="q5" value="C"> C) Ramasser, Refondre, Revendre</label>
+                        <label class="option-label"><input type="radio" name="q5" value="D"> D) Récupérer, Refouler, Répartir</label>
+                    </div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="question-card">
+                    <div class="question-title">
+                        <span>6</span> Qu'exprime le principe du « pollueur-payeur » en droit de l'environnement ?
+                    </div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q6" value="A"> A) L'État subventionne toutes les industries polluantes.</label>
+                        <label class="option-label"><input type="radio" name="q6" value="B"> B) Les auteurs de pollution supportent financièrement les coûts de prévention et de réparation des dégâts.</label>
+                        <label class="option-label"><input type="radio" name="q6" value="C"> C) Les citoyens payent une taxe pour respirer l'air pur.</label>
+                        <label class="option-label"><input type="radio" name="q6" value="D"> D) Les hôpitaux financent la collecte des ordures ménagères.</label>
+                    </div>
+                </div>
+
+                <!-- Q7 -->
+                <div class="question-card">
+                    <div class="question-title">
+                        <span>7</span> Que recouvre l'approche multisectorielle « Une Seule Santé » (One Health) ?
+                    </div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q7" value="A"> A) L'interconnexion entre la santé humaine, la santé animale et l'environnement.</label>
+                        <label class="option-label"><input type="radio" name="q7" value="B"> B) L'obligation de soigner uniquement les animaux domestiques.</label>
+                        <label class="option-label"><input type="radio" name="q7" value="C"> C) La gestion exclusive des hôpitaux par des ingénieurs civils.</label>
+                        <label class="option-label"><input type="radio" name="q7" value="D"> D) L'interdiction totale de l'utilisation des antibiotiques.</label>
+                    </div>
+                </div>
+
+                <!-- Q8 -->
+                <div class="question-card">
+                    <div class="question-title">
+                        <span>8</span> Quel équipement ou procédé est indispensable pour sécuriser l'élimination des déchets de soins piquants/tranchants en milieu hospitalier ?
+                    </div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q8" value="A"> A) Des sacs en plastique transparents souples</label>
+                        <label class="option-label"><input type="radio" name="q8" value="B"> B) Des boîtes de sécurité rigides et étanches</label>
+                        <label class="option-label"><input type="radio" name="q8" value="C"> C) Des bacs ouverts en bois compressé</label>
+                        <label class="option-label"><input type="radio" name="q8" value="D"> D) Un enfouissement direct sans conditionnement dans la cour</label>
+                    </div>
+                </div>
+
+                <!-- Q9 -->
+                <div class="question-card">
+                    <div class="question-title">
+                        <span>9</span> Quel est l'objectif principal d'une Évaluation d'Impact sur la Santé (EIS) avant la réalisation d'un grand projet d'infrastructure ?
+                    </div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q9" value="A"> A) Augmenter les taxes fiscales des entreprises</label>
+                        <label class="option-label"><input type="radio" name="q9" value="B"> B) Anticiper et atténuer en amont les répercussions négatives sur la santé des populations</label>
+                        <label class="option-label"><input type="radio" name="q9" value="C"> C) Remplacer les études géologiques du sol</label>
+                        <label class="option-label"><input type="radio" name="q9" value="D"> D) Ralentir définitivement l'économie nationale</label>
+                    </div>
+                </div>
+
+                <!-- Q10 -->
+                <div class="question-card">
+                    <div class="question-title">
+                        <span>10</span> Que signifie l'acronyme Bti (utilisé en lutte biologique anti-vectorielle) ?
+                    </div>
+                    <div class="options-list">
+                        <label class="option-label"><input type="radio" name="q10" value="A"> A) <i>Bacillus thuringiensis israelensis</i> (un bio-larvicide naturel)</label>
+                        <label class="option-label"><input type="radio" name="q10" value="B"> B) Bactérie toxique industrielle</label>
+                        <label class="option-label"><input type="radio" name="q10" value="C"> C) Barrière thermique intégrée</label>
+                        <label class="option-label"><input type="radio" name="q10" value="D"> D) Bio-insecticide de traitement intensif</label>
+                    </div>
+                </div>
+
+                <div class="quiz-actions">
+                    <button type="submit" class="btn-soumettre">
+                        <i class="fa-solid fa-square-check"></i> Soumettre mes réponses
+                    </button>
+                </div>
+            </form>
+
+            <!-- BOITE DE RÉSULTAT ET ANALYSE DE L'ABONNEMENT PREMIUM -->
+            <div id="resultatBox">
+                <div id="contenuResultat"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel</p>
+    </footer>
+
+    <!-- SCRIPT DE CORRECTION, VÉRIFICATION PREMIUM ET REDIRECTION -->
+    <script>
+        // Réponses correctes du quiz
+        const bonnesReponses = {
+            q1: "B",
+            q2: "A",
+            q3: "B",
+            q4: "A",
+            q5: "B",
+            q6: "B",
+            q7: "A",
+            q8: "B",
+            q9: "B",
+            q10: "A"
+        };
+
+        document.addEventListener("DOMContentLoaded", function() {
+            chargerDonneesUtilisateur();
+        });
+
+        function chargerDonneesUtilisateur() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder à l'évaluation.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        }
+
+        function corrigerQuiz(event) {
+            event.preventDefault();
+            
+            let score = 0;
+            let total = Object.keys(bonnesReponses).length;
+            let formData = new FormData(document.getElementById("quizForm"));
+
+            for (let [question, reponseCorrecte] of Object.entries(bonnesReponses)) {
+                let reponseUtilisateur = formData.get(question);
+                if (reponseUtilisateur === reponseCorrecte) {
+                    score++;
+                }
+            }
+
+            let pourcentage = Math.round((score / total) * 100);
+            let resultatBox = document.getElementById("resultatBox");
+            let contenuResultat = document.getElementById("contenuResultat");
+            resultatBox.style.display = "block";
+
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user")) || {};
+
+            if (pourcentage >= 70) {
+                // Marquer tout le module comme validé
+                let progressionComplete = [1, 2, 3, 4, 5, 6, 7];
+                localStorage.setItem("sante_env_progression", JSON.stringify(progressionComplete));
+
+                // ANALYSE DU PROFIL POUR VÉRIFIER L'ABONNEMENT PREMIUM
+                // On vérifie si l'utilisateur possède un statut premium actif (ex: utilisateur.isPremium === true ou utilisateur.abonnement === "paye")
+                let estAbonnePremium = utilisateur.isPremium === true || utilisateur.abonnement === "paye" || localStorage.getItem("bmj_premium_active") === "true";
+
+                if (estAbonnePremium) {
+                    // SI DÉJÀ PAYÉ -> Redirection ou bouton direct vers certificat.html
+                    resultatBox.className = "succes-box";
+                    contenuResultat.innerHTML = `
+                        <h2>🎉 Félicitations Exceptionnelles !</h2>
+                        <p>Vous avez obtenu <strong>${score} / ${total} (${pourcentage}%)</strong>. Vous avez validé l'évaluation avec succès !</p>
+                        <p style="color: #166534; font-weight: 500;"><i class="fa-solid fa-circle-check"></i> Votre profil Premium est actif. Vous pouvez accéder directement au téléchargement officiel de votre certificat.</p>
+                        <a href="certificat.html" class="btn-download-cert">
+                            <i class="fa-solid fa-certificate"></i> Télécharger mon Certificat (certificat.html)
+                        </a>
+                    `;
+                } else {
+                    // SI NON ABONNÉ -> Demander le paiement et rediriger vers certificat_marketing.html
+                    resultatBox.className = "premium-lock-box";
+                    contenuResultat.innerHTML = `
+                        <h2>🔒 Évaluation Validée (${score} / ${total} - ${pourcentage}%)</h2>
+                        <p>Félicitations pour votre réussite au test ! Cependant, l'accès au téléchargement de votre certificat officiel nécessite un <strong>abonnement Premium</strong>.</p>
+                        <p style="font-size: 14px; color: #92400e;">Veuillez effectuer votre paiement pour débloquer l'accès complet et télécharger votre certificat.</p>
+                        <a href="certificat_marketing.html" class="btn-premium-pay">
+                            <i class="fa-solid fa-crown"></i> Effectuer mon paiement
+                        </a>
+                    `;
+                }
+            } else {
+                resultatBox.className = "echec-box";
+                contenuResultat.innerHTML = `
+                    <h2>⚠️ Résultat insuffisant (${score} / ${total} - ${pourcentage}%)</h2>
+                    <p>Le seuil de validation requis est de 70% (7/10). Révisez les chapitres du module et réessayez pour décrocher votre attestation !</p>
+                    <button class="btn-soumettre" onclick="location.reload()" style="background: #e11d48; margin-top: 15px; border:none; color:white; padding: 12px 25px; border-radius: 20px; cursor:pointer;">
+                        <i class="fa-solid fa-rotate-right"></i> Recommencer le test
+                    </button>
+                `;
+            }
+
+            // Scroll fluide vers les résultats
+            resultatBox.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
