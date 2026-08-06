@@ -1012,414 +1012,134 @@ Créer mon compte
 
 
             </div>
-         ```html
+         
 <script>
+// ==========================================
+// INITIALISATION DE SUPABASE
+// ==========================================
+const SUPABASE_URL = 'https://tusenktzjuuelhhffogq.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR1c2Vua3R6anV1ZWxoaGZmb2dxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwMjAyNDQsImV4cCI6MjEwMTU5NjI0NH0.kZ2Xk-6Wf1aGJAqNJ3-bJ7IkSLtq9ryn-iuJXays0Cs';
 
-/*==========================================
-        BMJ SERVICE
-        INSCRIPTION UTILISATEUR
-        AVEC PHOTO PROFIL
-        + COMPTES ADMIN PREMIUM
-==========================================*/
+const { createClient } = supabase;
+const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 
+// ==========================================
+// SCRIPT D'INSCRIPTION BMJ SERVICE
+// ==========================================
 document.getElementById("btnInscription")
-.addEventListener("click", function(e){
+.addEventListener("click", async function(e){
 
     e.preventDefault();
 
-
-    //==========================================
     // RECUPERATION DES INFORMATIONS
-    //==========================================
+    let nom = document.getElementById("nom").value.trim();
+    let sexe = document.getElementById("sexe").value;
+    let telephone = document.getElementById("telephone").value.trim();
+    let email = document.getElementById("email").value.trim().toLowerCase();
+    let pays = document.getElementById("pays").value.trim();
+    let ville = document.getElementById("ville").value.trim();
+    let domaine = document.getElementById("domaine").value;
+    let niveau = document.getElementById("niveau").value;
+    let password = document.getElementById("password").value;
+    let confirmPassword = document.getElementById("confirmPassword").value;
+    let fichierPhoto = document.getElementById("photo").files[0];
 
-    let nom =
-        document.getElementById("nom").value.trim();
-
-    let sexe =
-        document.getElementById("sexe").value;
-
-    let telephone =
-        document.getElementById("telephone").value.trim();
-
-    let email =
-        document.getElementById("email").value.trim().toLowerCase();
-
-    let pays =
-        document.getElementById("pays").value.trim();
-
-    let ville =
-        document.getElementById("ville").value.trim();
-
-    let domaine =
-        document.getElementById("domaine").value;
-
-    let niveau =
-        document.getElementById("niveau").value;
-
-    let password =
-        document.getElementById("password").value;
-
-    let confirmPassword =
-        document.getElementById("confirmPassword").value;
-
-    let fichierPhoto =
-        document.getElementById("photo").files[0];
-
-
-    //==========================================
     // VERIFICATION DES CHAMPS
-    //==========================================
-
-    if(
-
-        nom === "" ||
-        sexe === "" ||
-        telephone === "" ||
-        email === "" ||
-        pays === "" ||
-        ville === "" ||
-        domaine === "" ||
-        niveau === "" ||
-        password === "" ||
-        confirmPassword === ""
-
-    ){
-
-        alert(
-            "Veuillez remplir tous les champs."
-        );
-
+    if(nom === "" || sexe === "" || telephone === "" || email === "" || pays === "" || ville === "" || domaine === "" || niveau === "" || password === "" || confirmPassword === ""){
+        alert("Veuillez remplir tous les champs.");
         return;
-
     }
 
-
-    //==========================================
     // VERIFICATION MOT DE PASSE
-    //==========================================
-
     if(password !== confirmPassword){
-
-        alert(
-            "Les mots de passe ne correspondent pas."
-        );
-
+        alert("Les mots de passe ne correspondent pas.");
         return;
-
     }
 
+    // VERIFICATION EMAIL EXISTANT DANS SUPABASE
+    let { data: utilisateurExiste, error: errCheck } = await _supabase
+        .from('utilisateurs')
+        .select('email')
+        .eq('email', email);
 
-    //==========================================
-    // VERIFICATION EMAIL
-    //==========================================
-
-    let utilisateurs = JSON.parse(
-
-        localStorage.getItem(
-            "bmjUtilisateurs"
-        )
-
-    ) || [];
-
-
-    let existe = utilisateurs.find(
-
-        user =>
-            user.email.toLowerCase() === email
-
-    );
-
-
-    if(existe){
-
-        alert(
-            "Cette adresse email existe déjà."
-        );
-
+    if(utilisateurExiste && utilisateurExiste.length > 0){
+        alert("Cette adresse email existe déjà.");
         return;
-
     }
 
-
-    //==========================================
     // EMAILS ADMINISTRATEURS BMJ
-    //==========================================
-
     const emailsAdministrateurs = [
-
         "direction@bmjservice.com",
-
         "administration@bmjservice.com",
-
         "contact@bmjservice.com",
-
         "formation@bmjservice.com"
-
     ];
 
+    let estAdministrateur = emailsAdministrateurs.includes(email);
+    let statutCompte = estAdministrateur ? "Administrateur" : "Actif";
+    let id_bmj = "BMJ" + Date.now();
 
-    //==========================================
-    // VERIFICATION COMPTE ADMIN
-    //==========================================
-
-    let estAdministrateur =
-
-        emailsAdministrateurs.includes(email);
-
-
-    //==========================================
-    // PREMIUM AUTOMATIQUE
-    //==========================================
-
-    let premiumAutomatique =
-
-        estAdministrateur;
-
-
-    //==========================================
-    // STATUT DU COMPTE
-    //==========================================
-
-    let statutCompte =
-
-        estAdministrateur
-
-        ? "Administrateur"
-
-        : "Actif";
-
-
-    //==========================================
-    // ID BMJ
-    //==========================================
-
-    let id_bmj =
-
-        "BMJ" + Date.now();
-
-
-    //==========================================
-    // CREATION DU COMPTE
-    //==========================================
-
-    function creerCompte(photoFinale){
-
-
-        let utilisateur = {
-
-            //==============================
-            // IDENTITE
-            //==============================
-
+    // FONCTION DE CREATION ET ENREGISTREMENT
+    async function creerCompte(photoFinale) {
+        let utilisateurData = {
             id_bmj: id_bmj,
-
             nom: nom,
-
             sexe: sexe,
-
             telephone: telephone,
-
             email: email,
-
             pays: pays,
-
             ville: ville,
-
-
-            //==============================
-            // FORMATION
-            //==============================
-
             domaine: domaine,
-
             niveau: niveau,
-
-
-            //==============================
-            // SECURITE
-            //==============================
-
             password: password,
-
-
-            //==============================
-            // PHOTO
-            //==============================
-
             photo: photoFinale,
-
-
-            //==============================
-            // STATUT
-            //==============================
-
             statut: statutCompte,
-
-
-            //==============================
-            // ROLE
-            //==============================
-
-            role:
-
-                estAdministrateur
-
-                ? "admin"
-
-                : "apprenant",
-
-
-            //==============================
-            // PREMIUM
-            //==============================
-
-            premium: premiumAutomatique,
-
-
-            //==============================
-            // PROGRESSION
-            //==============================
-
+            role: estAdministrateur ? "admin" : "apprenant",
+            premium: estAdministrateur,
             progression: 0,
-
-
-            //==============================
-            // CERTIFICATS
-            //==============================
-
             certificats: [],
-
-
-            //==============================
-            // CHAPITRES VALIDES
-            //==============================
-
-            chapitresValides: [],
-
-
-            //==============================
-            // COURS SUIVIS
-            //==============================
-
-            coursSuivis: []
-
+            chapitres_valides: [],
+            cours_suivis: []
         };
 
+        // INSERTION DANS LA BASE SUPABASE
+        let { data, error } = await _supabase
+            .from('utilisateurs')
+            .insert([utilisateurData])
+            .select();
 
-        //==================================
-        // AJOUT UTILISATEUR
-        //==================================
+        if (error) {
+            console.error("Erreur Supabase :", error.message);
+            alert("Erreur lors de l'inscription : " + error.message);
+            return;
+        }
 
-        utilisateurs.push(utilisateur);
+        // SAUVEGARDE DE LA SESSION COURANTE
+        let utilisateurEnregistre = data[0];
+        localStorage.setItem("bmj_current_user", JSON.stringify(utilisateurEnregistre));
 
-
-        localStorage.setItem(
-
-            "bmjUtilisateurs",
-
-            JSON.stringify(utilisateurs)
-
-        );
-
-
-        //==================================
-        // CONNEXION AUTOMATIQUE
-        //==================================
-
-        localStorage.setItem(
-
-            "bmj_current_user",
-
-            JSON.stringify(utilisateur)
-
-        );
-
-
-        //==================================
-        // MESSAGE ADMIN
-        //==================================
-
+        // MESSAGES ET REDIRECTION
         if(estAdministrateur){
-
-            alert(
-
-                "👑 Compte administrateur BMJ SERVICE créé !\n\n" +
-
-                "Identifiant BMJ : " +
-
-                id_bmj +
-
-                "\n\n" +
-
-                "Statut : Administrateur\n" +
-
-                "Premium : Activé automatiquement."
-
-            );
-
+            alert("👑 Compte administrateur BMJ SERVICE créé !\n\nIdentifiant BMJ : " + id_bmj + "\n\nStatut : Administrateur\nPremium : Activé automatiquement.");
+        } else {
+            alert("✅ Compte créé avec succès !\n\nVotre identifiant BMJ est : " + id_bmj);
         }
 
-        else{
-
-            alert(
-
-                "✅ Compte créé avec succès !\n\n" +
-
-                "Votre identifiant BMJ est : " +
-
-                id_bmj
-
-            );
-
-        }
-
-
-        //==================================
-        // REDIRECTION
-        //==================================
-
-        window.location.href =
-            "dashboard.html";
-
+        window.location.href = "dashboard.html";
     }
 
-
-    //==========================================
-    // GESTION DE LA PHOTO
-    //==========================================
-
+    // GESTION DE LA PHOTO DE PROFIL
     if(fichierPhoto){
-
-        let lecteur =
-            new FileReader();
-
-
+        let lecteur = new FileReader();
         lecteur.onload = function(e){
-
-            creerCompte(
-                e.target.result
-            );
-
+            creerCompte(e.target.result);
         };
-
-
-        lecteur.readAsDataURL(
-            fichierPhoto
-        );
-
+        lecteur.readAsDataURL(fichierPhoto);
+    } else {
+        creerCompte("images/user.png");
     }
-
-    else{
-
-        creerCompte(
-            "images/user.png"
-        );
-
-    }
-
 });
-
 </script>
 </body>
 
