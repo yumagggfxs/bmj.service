@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ SERVICE - Vérification Finance</title>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f8fafc;
+            color: #1e293b;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .verification-container {
+            background: #ffffff;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-box {
+            font-size: 65px;
+            margin-bottom: 20px;
+        }
+
+        .icon-box.loading {
+            color: #3b82f6;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .icon-box.success {
+            color: #10b981;
+        }
+
+        .icon-box.error {
+            color: #ef4444;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 15px;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .user-info-box {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: left;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .user-info-box span {
+            font-weight: 600;
+            color: #2563eb;
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Classes de statut utilitaires */
+        .status-ok { color: #10b981; font-weight: 600; }
+        .status-ko { color: #ef4444; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <div class="verification-container">
+        
+        <!-- ÉTAPE 1 : CHARGEMENT / ANALYSE -->
+        <div id="loadingState">
+            <div class="icon-box loading">
+                <i class="fa-solid fa-spinner"></i>
+            </div>
+            <h2>Analyse de votre parcours Finance...</h2>
+            <p>Veuillez patienter pendant que nous contrôlons l'état d'achèvement de vos chapitres dans le stockage local.</p>
+        </div>
+
+        <!-- ÉTAPE 2 : SUCCÈS (TOUT TERMINÉ) -->
+        <div id="successState" class="hidden">
+            <div class="icon-box success">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2>Félicitations !</h2>
+            <p>Tous les chapitres de la formation Finance ont été validés avec succès. Votre parcours est complet.</p>
+            
+            <div class="user-info-box">
+                <div>Apprenant : <span id="successNom">Nom</span></div>
+                <div>Domaine : <span id="successDomaine">Finance</span></div>
+                <div>État : <span class="status-ok">5/5 Chapitres Validés (100%)</span></div>
+            </div>
+
+            <a href="certificat.html" class="btn btn-primary">
+                <i class="fa-solid fa-award"></i> Afficher / Télécharger mon certificat
+            </a>
+            <a href="dashboard.html" class="btn btn-secondary">
+                Retour au tableau de bord
+            </a>
+        </div>
+
+        <!-- ÉTAPE 3 : ÉCHEC (INCOMPLET) -->
+        <div id="errorState" class="hidden">
+            <div class="icon-box error">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h2>Parcours Incomplet</h2>
+            <p>Il vous reste des chapitres à valider pour obtenir votre certificat en Finance.</p>
+            
+            <div class="user-info-box">
+                <div>Progression : <span id="errorProgression" class="status-ko">0%</span></div>
+                <div style="margin-top: 5px;">Validés : <span id="errorCount">0</span> / 5 chapitres</div>
+            </div>
+
+            <a href="finance.html" class="btn btn-primary">
+                <i class="fa-solid fa-book-open"></i> Continuer la formation Finance
+            </a>
+            <a href="dashboard.html" class="btn btn-secondary">
+                Retour au tableau de bord
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Script de vérification intégré basé sur votre logique localStorage -->
+    <script>
+        const FINANCE_CHAPITRES = [
+            { id: 1, nom: "Chapitre 1 : Introduction à la Finance", page: "introduction_finance.html" },
+            { id: 2, nom: "Chapitre 2 : Gestion de l'argent", page: "gestion_argent.html" },
+            { id: 3, nom: "Chapitre 3 : Épargne et objectifs financiers", page: "epargne.html" },
+            { id: 4, nom: "Chapitre 4 : Investissement", page: "investissement.html" },
+            { id: 5, nom: "Chapitre 5 : Projet final & Évaluation", page: "projet_final_finance.html" }
+        ];
+
+        const CLE_PROGRESS = "finance_progression";
+        const CLE_UTILISATEUR = "bmj_current_user";
+
+        document.addEventListener("DOMContentLoaded", function(){
+            // 1. Vérification de l'utilisateur connecté
+            let donneesUser = localStorage.getItem(CLE_UTILISATEUR);
+            if(!donneesUser){
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let utilisateur;
+            try {
+                utilisateur = JSON.parse(donneesUser);
+            } catch(e) {
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            // 2. Récupération et nettoyage de la progression Finance depuis le localStorage
+            let rawProgress = localStorage.getItem(CLE_PROGRESS);
+            let progression = [];
+            try {
+                if(rawProgress) {
+                    progression = JSON.parse(rawProgress);
+                }
+            } catch(e) {
+                progression = [];
+            }
+
+            if(!Array.isArray(progression)){
+                progression = [];
+            }
+
+            // S'assurer que les IDs sont des nombres valides
+            progression = progression.map(id => parseInt(id, 10)).filter(id => !isNaN(id));
+
+            // Calcul du nombre de chapitres terminés
+            let terminesCount = FINANCE_CHAPITRES.filter(chap => progression.includes(chap.id)).length;
+            let pourcentage = Math.round((terminesCount / FINANCE_CHAPITRES.length) * 100);
+            
+            // Vérification stricte si tous les 5 chapitres sont présents
+            let termineTout = FINANCE_CHAPITRES.every(chap => progression.includes(chap.id));
+
+            // Simuler un temps d'analyse de 1.2 secondes pour l'effet visuel
+            setTimeout(() => {
+                document.getElementById("loadingState").classList.add("hidden");
+
+                if(termineTout){
+                    // Affichage de l'état de succès
+                    document.getElementById("successNom").textContent = utilisateur.nom || "Apprenant";
+                    document.getElementById("successState").classList.remove("hidden");
+                } else {
+                    // Affichage de l'état incomplet
+                    document.getElementById("errorProgression").textContent = pourcentage + "%";
+                    document.getElementById("errorCount").textContent = terminesCount;
+                    document.getElementById("errorState").classList.remove("hidden");
+                }
+
+            }, 1200);
+        });
+    </script>
+
+</body>
+</html>

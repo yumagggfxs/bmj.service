@@ -4987,7 +4987,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
                         <span id="statutCertificat">
 
-                            🔒 Non disponible
+                            En cours 
 
                         </span>
 
@@ -5252,7 +5252,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
     </footer>
 <script>
-
 /*==================================================
         BMJ SERVICE
         SCRIPT TABLEAU DE BORD COMPLET
@@ -5440,11 +5439,19 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
     //==================================
-    // PROGRESSION
+    // GESTION DES PROGRESSIONS PAR DOMAINE
     //==================================
+    // Si vous stockez les progressions sous forme d'objet (ex: utilisateur.progressions = { marketing: 45, finance: 10 })
+    // On récupère la progression spécifique au domaine actuel, sinon on prend la progression globale.
+    let progression = 0;
 
-    let progression =
-        Number(utilisateur.progression) || 0;
+    if(utilisateur.progressions && utilisateur.domaine) {
+        // Normaliser la clé du domaine pour correspondre à l'objet
+        let cleDomaine = utilisateur.domaine.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+        progression = Number(utilisateur.progressions[cleDomaine]) || Number(utilisateur.progression) || 0;
+    } else {
+        progression = Number(utilisateur.progression) || 0;
+    }
 
 
     // Sécurité : minimum 0%
@@ -5473,6 +5480,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
     if(progressBar){
 
+        // Ajout d'une transition fluide en JS si non définie dans le CSS
+        progressBar.style.transition = "width 0.6s ease-in-out";
         progressBar.style.width =
             progression + "%";
 
@@ -5503,6 +5512,13 @@ document.addEventListener("DOMContentLoaded", function(){
 //==================================================
 
 function ouvrirDomaine(domaine){
+
+    // Optionnel : Mettre à jour le domaine actif de l'utilisateur dans le localStorage avant de rediriger
+    let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+    if(utilisateur) {
+        utilisateur.domaine = domaine;
+        localStorage.setItem("bmj_current_user", JSON.stringify(utilisateur));
+    }
 
     switch(domaine){
 
@@ -5742,19 +5758,34 @@ function continuerFormation(){
 
 
 //==================================================
-// CERTIFICAT
+// CERTIFICAT AVEC MODALE MODERNE
 //==================================================
 
 function ouvrirCertificat(){
 
-    /*
-        Les cours sont gratuits.
-        Le certificat est accessible
-        directement.
-    */
+    let overlay = document.getElementById("bmjModalOverlay");
+    let cancelBtn = document.getElementById("bmjCancelCertBtn");
+    let confirmBtn = document.getElementById("bmjConfirmCertBtn");
 
-    window.location.href =
-        "certificat.html";
+    // Si la modale n'existe pas dans le HTML, redirection de secours
+    if(!overlay){
+        window.location.href = "verification.html";
+        return;
+    }
+
+    // Afficher la modale moderne
+    overlay.style.display = "flex";
+
+    // Action si l'utilisateur clique sur "Non"
+    cancelBtn.onclick = function(){
+        overlay.style.display = "none";
+    };
+
+    // Action si l'utilisateur clique sur "Oui, je suis prêt"
+    confirmBtn.onclick = function(){
+        overlay.style.display = "none";
+        window.location.href = "verification.html";
+    };
 
 }
 
@@ -5866,9 +5897,44 @@ window.addEventListener(
     }
 );
 
-
 </script>
+<!-- Modale Moderne BMJ SERVICE (Vérification Certificat) -->
+<div id="bmjModalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
+    
+    <div style="background: white; padding: 35px 30px; border-radius: 16px; max-width: 420px; width: 90%; box-shadow: 0 15px 35px rgba(0,0,0,0.2); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+        
+        <!-- Icône -->
+        <div style="font-size: 55px; margin-bottom: 15px;">🎓</div>
+        
+        <!-- Titre -->
+        <h3 style="margin: 0 0 12px 0; color: #1e293b; font-size: 22px; font-weight: 700;">Validation du Certificat</h3>
+        
+        <!-- Message -->
+        <p style="margin: 0 0 25px 0; color: #64748b; line-height: 1.6; font-size: 14.5px;">
+            Êtes-vous sûr d'avoir terminé <strong>tous les chapitres</strong> de votre domaine de formation ?<br><br>
+            <span style="font-size: 13px; color: #94a3b8;">En cliquant sur "Oui", vous allez être redirigé vers la page de vérification.</span>
+        </p>
+        
+        <!-- Boutons -->
+        <div style="display: flex; gap: 12px; justify-content: center;">
+            <button id="bmjCancelCertBtn" style="flex: 1; padding: 12px; background: #f1f5f9; border: none; border-radius: 10px; color: #475569; font-weight: 600; cursor: pointer; transition: background 0.2s;">
+                Non
+            </button>
+            <button id="bmjConfirmCertBtn" style="flex: 1; padding: 12px; background: #2563eb; border: none; border-radius: 10px; color: white; font-weight: 600; cursor: pointer; transition: background 0.2s;">
+                Oui, je suis prêt
+            </button>
+        </div>
+    </div>
+</div>
 
+<style>
+@keyframes popIn {
+    0% { transform: scale(0.85); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+#bmjCancelCertBtn:hover { background: #e2e8f0; }
+#bmjConfirmCertBtn:hover { background: #1d4ed8; }
+</style>
 </body>
 
 </html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Chapitre 1, Leçon 1 : Le Processeur (CPU)</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7f6;
+            color: #2c3e50;
+            min-height: 100vh;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+            border-bottom: 2px solid #D4AF37;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* CONTENEUR PRINCIPAL */
+        .main-container {
+            max-width: 900px;
+            margin: 115px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+        }
+
+        /* BARRE DE PROGRESSION DES 5 LEÇONS */
+        .steps-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 600;
+            font-size: 12px;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .step-num {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            border: 2px solid #cbd5e1;
+        }
+
+        .step-item.active .step-num {
+            background: #145A86;
+            color: white;
+            border-color: #145A86;
+        }
+
+        .step-item.active {
+            color: #145A86;
+        }
+
+        /* CARTE DE CONTENU RICHE DE LA LEÇON */
+        .lesson-card {
+            background: white;
+            padding: 45px;
+            border-radius: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+        }
+
+        .lesson-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 20px;
+        }
+
+        .lesson-badge {
+            background: #145A86;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .lesson-header h1 {
+            color: #145A86;
+            font-size: 22px;
+        }
+
+        .lesson-body h3 {
+            color: #145A86;
+            font-size: 18px;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-left: 4px solid #D4AF37;
+            padding-left: 10px;
+        }
+
+        .lesson-body p {
+            color: #475569;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .lesson-body ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        .lesson-body li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            font-size: 14.5px;
+        }
+
+        /* BOX INFO ENCADRÉES */
+        .info-box {
+            background: #f8fafc;
+            border-left: 4px solid #D4AF37;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 25px 0;
+            font-size: 14.5px;
+            color: #334155;
+            line-height: 1.7;
+        }
+
+        /* ACTIONS DE NAVIGATION ENTRE LES LEÇONS */
+        .lesson-footer-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 25px 35px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-action {
+            background: #145A86;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-action:hover {
+            background: #0c3854;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 50px;
+            font-size: 14px;
+            border-top: 3px solid #D4AF37;
+        }
+
+        @media(max-width: 768px) {
+            .lesson-footer-action { flex-direction: column; gap: 15px; }
+            .steps-bar { overflow-x: auto; justify-content: flex-start; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Informatique & Numérique</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEUR PRINCIPAL -->
+    <div class="main-container">
+        <div class="breadcrumb">
+            <a href="chapitre1_sommaire.html"><i class="fa-solid fa-arrow-left"></i> Retour au sommaire du chapitre</a>
+        </div>
+
+        <!-- BARRE DE NAVIGATION DES 5 LEÇONS -->
+        <div class="steps-bar">
+            <a href="chap1_lecon1.html" class="step-item active">
+                <div class="step-num">1</div>
+                <span>Leçon 1</span>
+            </a>
+            <a href="chap1_lecon2.html" class="step-item">
+                <div class="step-num">2</div>
+                <span>Leçon 2</span>
+            </a>
+            <a href="chap1_lecon3.html" class="step-item">
+                <div class="step-num">3</div>
+                <span>Leçon 3</span>
+            </a>
+            <a href="chap1_lecon4.html" class="step-item">
+                <div class="step-num">4</div>
+                <span>Leçon 4</span>
+            </a>
+            <a href="chap1_lecon5.html" class="step-item">
+                <div class="step-num">5</div>
+                <span>Leçon 5</span>
+            </a>
+        </div>
+
+        <!-- CARTE DE CONTENU DÉTAILLÉ DE LA LEÇON 1 -->
+        <div class="lesson-card">
+            <div class="lesson-header">
+                <div class="lesson-badge">1</div>
+                <h1>Leçon 1 : Le Processeur (CPU) & Architecture de Calcul</h1>
+            </div>
+            
+            <div class="lesson-body">
+                <p>Le processeur, universellement désigné sous l'acronyme <strong>CPU</strong> (Central Processing Unit ou Unité Centrale de Traitement), constitue sans conteste le composant le plus noble et le plus complexe d'un système informatique. Souvent comparé au cerveau humain, il est le maître d'œuvre qui orchestre l'ensemble des tâches, des calculs mathématiques et des décisions logiques exécutées par la machine.</p>
+                
+                <h3>1. Introduction et Origine du Rôle du Processeur</h3>
+                <p>Depuis l'invention des premiers ordinateurs modernes, le processeur a subi des évolutions technologiques monumentales. De la taille d'une pièce entière avec des lampes à incandescence et des relais mécaniques, il est aujourd'hui réduit à la dimension d'un petit timbre-poste en silicium intégrant des milliards de transistors microscopiques. Sa fonction fondamentale est de lire, décoder et exécuter séquentiellement des instructions stockées en mémoire vive (RAM).</p>
+
+                <h3>2. Les Composants Internes Fondamentaux</h3>
+                <p>Pour accomplir ses missions de traitement de données à des fréquences vertigineuses mesurées en Gigahertz (GHz), le processeur se divise schématiquement en trois grands sous-ensembles interconnectés :</p>
+                <ul>
+                    <li><strong>L'Unité Arithmétique et Logique (UAL) :</strong> C'est le moteur de calcul pur du processeur. Elle prend en charge toutes les opérations mathématiques de base (addition, soustraction, multiplication, division) ainsi que les opérateurs logiques booléens (ET, OU, NON, comparaisons de type supérieur ou égal).</li>
+                    <li><strong>L'Unité de Commande (ou de Contrôle) :</strong> Véritable chef d'orchestre interne, elle extrait les instructions de la mémoire centrale, les analyse (phase de décodage) et coordonne les signaux électriques nécessaires pour activer les autres composants au moment exact requis.</li>
+                    <li><strong>La Mémoire Cache Interne (L1, L2, L3) :</strong> Il s'agit d'une mémoire statique ultrarapide directement gravée sur la même puce que le processeur. Elle sert de zone tampon temporaire pour stocker les données et les instructions les plus fréquemment sollicitées, évitant ainsi au processeur de perdre des cycles précieux en allant les chercher dans la mémoire RAM principale.</li>
+                </ul>
+
+                <div class="info-box">
+                    <i class="fa-solid fa-lightbulb" style="color: #D4AF37;"></i> <strong>Notion Avancée - Fréquence et Multi-cœurs :</strong> La vitesse brute d'un processeur ne dépend plus uniquement de sa fréquence d'horloge (GHz), car la dissipation thermique pose une limite physique. Aujourd'hui, les fabricants multiplient les cœurs de calcul indépendants au sein de la même puce (Dual-Core, Quad-Core, Octa-Core et au-delà), permettant de traiter plusieurs flux de programmes en parallèle véritable.
+                </div>
+
+                <h3>3. Le Cycle d'Instruction (Fetch-Decode-Execute)</h3>
+                <p>Le fonctionnement intime du processeur repose sur un cycle répétitif incessant appelé cycle d'instruction :</p>
+                <ul>
+                    <li><strong>La phase de recherche (Fetch) :</strong> Le processeur va chercher l'instruction suivante dans la mémoire vive à l'aide d'un registre d'adresse.</li>
+                    <li><strong>La phase de décodage (Decode) :</strong> L'unité de commande traduit cette instruction binaire en actions compréhensibles par les circuits internes.</li>
+                    <li><strong>La phase d'exécution (Execute) :</strong> L'UAL ou les autres unités exécutent l'action requise et stockent éventuellement le résultat dans un registre ou en mémoire.</li>
+                </ul>
+
+                <p>En conclusion, la performance globale d'un ordinateur dépend directement de l'efficacité de son processeur, de sa capacité à gérer les flux d'informations et de son architecture interne globale.</p>
+            </div>
+        </div>
+
+        <!-- BOUTONS DE NAVIGATION -->
+        <div class="lesson-footer-action">
+            <a href="chapitre1_sommaire.html" class="btn-action btn-secondary"><i class="fa-solid fa-arrow-left"></i> Sommaire</a>
+            <a href="chap1_lecon2.html" class="btn-action" onclick="marquerLeconFaite(1)">Leçon suivante <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel Numérique</p>
+    </footer>
+
+    <!-- SCRIPT DE SUIVI -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder aux cours.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        });
+
+        function marquerLeconFaite(numLecon) {
+            let leconsValidees = JSON.parse(localStorage.getItem("chap1_lecons_validees")) || [];
+            if(!leconsValidees.includes(numLecon)) {
+                leconsValidees.push(numLecon);
+                localStorage.setItem("chap1_lecons_validees", JSON.stringify(leconsValidees));
+            }
+        }
+    </script>
+</body>
+</html>

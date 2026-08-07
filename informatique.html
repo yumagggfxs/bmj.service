@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMJ Service - Tableau de Bord : Informatique & Numérique</title>
+    <!-- FontAwesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /*==================================================  
+            BMJ SERVICE - DESIGN ULTRA-STYLÉ & IMMERSIF
+        ==================================================*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', Arial, sans-serif;
+        }
+
+        body {
+            background: #f0f4f8;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        /* HEADER FIXE */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(20, 90, 134, 0.08);
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #D4AF37;
+        }
+
+        .logo h2 {
+            color: #145A86;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #D4AF37;
+        }
+
+        .course-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .course-user img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2px solid #D4AF37;
+            object-fit: cover;
+        }
+
+        .course-user h4 {
+            color: #145A86;
+            font-size: 14px;
+        }
+
+        .course-user small {
+            color: #7f8c8d;
+            font-size: 0.75rem;
+        }
+
+        /* CONTENEUR PRINCIPAL */
+        .main-container {
+            max-width: 1100px;
+            margin: 115px auto 60px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+        }
+
+        .breadcrumb a {
+            color: #145A86;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .breadcrumb a:hover {
+            color: #D4AF37;
+        }
+
+        /* HERO SECTION DU MODULE */
+        .module-hero {
+            background: linear-gradient(135deg, #145A86 0%, #0c3854 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(20, 90, 134, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-hero::after {
+            content: "\f108";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            position: absolute;
+            right: -20px;
+            bottom: -40px;
+            font-size: 180px;
+            color: rgba(255, 255, 255, 0.04);
+            pointer-events: none;
+        }
+
+        .module-hero-content {
+            max-width: 650px;
+        }
+
+        .module-badge {
+            background: #D4AF37;
+            color: #145A86;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .module-hero h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .module-hero p {
+            font-size: 15px;
+            opacity: 0.9;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* BARRE DE PROGRESSION */
+        .progress-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            min-width: 280px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: #D4AF37;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 5px;
+        }
+
+        /* SECTION DES CHAPITRES */
+        .chapters-section h2 {
+            color: #145A86;
+            font-size: 22px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .chapter-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(20,90,134,0.08);
+            border-color: #145A86;
+        }
+
+        .chapter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .chapter-num {
+            background: #eef2f7;
+            color: #145A86;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .chapter-status {
+            font-size: 13px;
+            font-weight: 600;
+            color: #7f8c8d;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chapter-status.completed {
+            color: #27ae60;
+        }
+
+        .chapter-card h3 {
+            color: #145A86;
+            font-size: 17px;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .chapter-card p {
+            color: #64748b;
+            font-size: 13.5px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn-chapter {
+            background: #f8fafc;
+            color: #145A86;
+            border: 1px solid #cbd5e1;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13.5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-chapter:hover {
+            background: #145A86;
+            color: white;
+            border-color: #145A86;
+        }
+
+        /* FOOTER */
+        footer {
+            background: #145A86;
+            color: white;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+            line-height: 1.8;
+        }
+
+        @media(max-width: 768px) {
+            .module-hero { flex-direction: column; align-items: flex-start; gap: 20px; padding: 30px; }
+            .progress-box { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <img src="images/logo.png" alt="Logo">
+            <h2>BMJ <span>SERVICE</span></h2>
+        </div>
+        <div class="course-user">
+            <img id="photoUtilisateur" src="images/user.png" alt="Profil">
+            <div>
+                <h4 id="nomUtilisateur">Apprenant</h4>
+                <small>Informatique & Numérique</small>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENEUR PRINCIPAL -->
+    <div class="main-container">
+        <div class="breadcrumb">
+            <a href="tableau_de_bord.html"><i class="fa-solid fa-arrow-left"></i> Retour au catalogue des formations</a>
+        </div>
+
+        <!-- HERO SECTION -->
+        <div class="module-hero">
+            <div class="module-hero-content">
+                <span class="module-badge">Module Professionnel</span>
+                <h1>Maîtrisez l'Informatique & les Fondamentaux du Numérique</h1>
+                <p>Découvrez le fonctionnement des systèmes informatiques, maîtrisez les outils bureautiques essentiels, apprenez les bases de la navigation sécurisée sur Internet et comprenez les enjeux de la transformation digitale.</p>
+            </div>
+            <div class="progress-box">
+                <div class="progress-info">
+                    <span>Progression globale</span>
+                    <span id="pourcentageProgression">0%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div id="barreProgression" class="progress-bar-fill"></div>
+                </div>
+                <small id="texteStatut" style="display:block; margin-top:10px; font-size:12px; opacity:0.8;">0 sur 7 chapitres validés</small>
+            </div>
+        </div>
+
+        <!-- LISTE DES CHAPITRES -->
+        <div class="chapters-section">
+            <h2><i class="fa-solid fa-list-check" style="color: #D4AF37;"></i> Programme du Module</h2>
+            
+            <div class="chapters-grid">
+                <!-- Chapitre 1 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <div class="chapter-num">1</div>
+                            <div class="chapter-status" id="statut-1"><i class="fa-regular fa-circle"></i> Non complété</div>
+                        </div>
+                        <h3>Introduction au Matériel & Logiciel</h3>
+                        <p>Comprenez l'architecture d'un ordinateur (CPU, RAM, stockage), les périphériques et la distinction fondamentale entre matériel et systèmes d'exploitation.</p>
+                    </div>
+                    <a href="chapitre1_informatique.html" class="btn-chapter">Commencer <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Chapitre 2 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <div class="chapter-num">2</div>
+                            <div class="chapter-status" id="statut-2"><i class="fa-regular fa-circle"></i> Non complété</div>
+                        </div>
+                        <h3>Systèmes d'Exploitation & Fichiers</h3>
+                        <p>Maîtrisez la gestion des dossiers, l'arborescence des fichiers, l'explorateur et l'utilisation quotidienne de Windows ou Linux.</p>
+                    </div>
+                    <a href="chapitre2_informatique.html" class="btn-chapter">Commencer <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Chapitre 3 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <div class="chapter-num">3</div>
+                            <div class="chapter-status" id="statut-3"><i class="fa-regular fa-circle"></i> Non complété</div>
+                        </div>
+                        <h3>Bureautique : Traitement de Texte</h3>
+                        <p>Apprenez à rédiger, mettre en forme et structurer des documents professionnels propres (rapports, lettres, CV) avec des outils de référence.</p>
+                    </div>
+                    <a href="chapitre3_informatique.html" class="btn-chapter">Commencer <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Chapitre 4 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <div class="chapter-num">4</div>
+                            <div class="chapter-status" id="statut-4"><i class="fa-regular fa-circle"></i> Non complété</div>
+                        </div>
+                        <h3>Bureautique : Tableaux & Calculs</h3>
+                        <p>Initiez-vous aux tableurs (Excel/Calc), gérez des bases de données simples, réalisez des tableaux croisés et automatisez des calculs de base.</p>
+                    </div>
+                    <a href="chapitre4_informatique.html" class="btn-chapter">Commencer <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Chapitre 5 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <div class="chapter-num">5</div>
+                            <div class="chapter-status" id="statut-5"><i class="fa-regular fa-circle"></i> Non complété</div>
+                        </div>
+                        <h3>Internet, Réseaux & Recherche</h3>
+                        <p>Comprenez le fonctionnement d'Internet, maîtrisez la navigation web avancée, l'utilisation des moteurs de recherche et le cloud computing.</p>
+                    </div>
+                    <a href="chapitre5_informatique.html" class="btn-chapter">Commencer <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Chapitre 6 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <div class="chapter-num">6</div>
+                            <div class="chapter-status" id="statut-6"><i class="fa-regular fa-circle"></i> Non complété</div>
+                        </div>
+                        <h3>Sécurité Informatique & Cybersécurité</h3>
+                        <p>Protégez vos données personnelles et professionnelles, créez des mots de passe robustes et identifiez les pièges du phishing et des malwares.</p>
+                    </div>
+                    <a href="chapitre6_informatique.html" class="btn-chapter">Commencer <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Chapitre 7 -->
+                <div class="chapter-card">
+                    <div>
+                        <div class="chapter-header">
+                            <div class="chapter-num">7</div>
+                            <div class="chapter-status" id="statut-7"><i class="fa-regular fa-circle"></i> Non complété</div>
+                        </div>
+                        <h3>Introduction au Web & Outils Numériques</h3>
+                        <p>Découvrez les bases de la création web (HTML/CSS), l'utilisation des outils collaboratifs en ligne et préparez-vous à l'évaluation finale.</p>
+                    </div>
+                    <a href="chapitre7_informatique.html" class="btn-chapter">Commencer <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Évaluation & Certification -->
+                <div class="chapter-card" style="background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%); border: 2px dashed #D4AF37;">
+                    <div>
+                        <div class="chapter-header">
+                            <div class="chapter-num" style="background: #D4AF37; color: white;"><i class="fa-solid fa-award"></i></div>
+                            <div class="chapter-status" id="statut-cert"><i class="fa-solid fa-lock"></i> Verrouillé</div>
+                        </div>
+                        <h3>Évaluation & Certification</h3>
+                        <p>Validez vos compétences informatiques à travers un test pratique et obtenez votre certificat officiel BMJ Service.</p>
+                    </div>
+                    <a href="verification_informatique.html" class="btn-chapter" style="background: #145A86; color: white; border: none;">Passer l'évaluation <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 BMJ Service - Tous droits réservés.</p>
+        <p>Plateforme d'Apprentissage et de Développement Professionnel</p>
+    </footer>
+
+    <!-- SCRIPT DE GESTION DE LA PROGRESSION ET DE L'UTILISATEUR -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            chargerDonneesUtilisateur();
+            mettreAJourProgression();
+        });
+
+        function chargerDonneesUtilisateur() {
+            let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+            if(!utilisateur) {
+                alert("⚠️ Veuillez vous connecter pour accéder aux cours.");
+                window.location.href = "connexion.html";
+                return;
+            }
+
+            let nomEl = document.getElementById("nomUtilisateur");
+            if(nomEl) nomEl.textContent = utilisateur.nom || "Apprenant";
+
+            let photoEl = document.getElementById("photoUtilisateur");
+            if(photoEl && utilisateur.photo) photoEl.src = utilisateur.photo;
+        }
+
+        function mettreAJourProgression() {
+            let progression = JSON.parse(localStorage.getItem("informatique_progression")) || [];
+            let totalChapitres = 7;
+            let valides = progression.length;
+            
+            let pourcentage = Math.round((valides / totalChapitres) * 100);
+            if (pourcentage > 100) pourcentage = 100;
+
+            document.getElementById("pourcentageProgression").textContent = pourcentage + "%";
+            document.getElementById("barreProgression").style.width = pourcentage + "%";
+            document.getElementById("texteStatut").textContent = valides + " sur " + totalChapitres + " chapitres validés";
+
+            // Mettre à jour les badges visuels de chaque chapitre
+            for (let i = 1; i <= totalChapitres; i++) {
+                let statutEl = document.getElementById("statut-" + i);
+                if (progression.includes(i)) {
+                    statutEl.innerHTML = '<i class="fa-solid fa-check-circle"></i> Complété';
+                    statutEl.className = "chapter-status completed";
+                }
+            }
+
+            // Déverrouiller la certification si tout est complété
+            let statutCert = document.getElementById("statut-cert");
+            if (valides >= totalChapitres) {
+                statutCert.innerHTML = '<i class="fa-solid fa-unlock"></i> Déverrouillé';
+                statutCert.className = "chapter-status completed";
+            }
+        }
+    </script>
+</body>
+</html>
