@@ -499,6 +499,7 @@
 
             </h2>
             <!-- Formulaire d'inscription BMJ SERVICE -->
+<!-- Formulaire d'inscription BMJ SERVICE -->
 <form id="formInscription" class="bmj-form">
     
     <!-- Ligne : Nom complet -->
@@ -517,12 +518,16 @@
         </select>
     </div>
 
-    <!-- Ligne : Pays de résidence -->
+    <!-- Ligne : Pays de résidence & Affichage instantané du drapeau -->
     <div class="form-group">
         <label for="pays">Pays de résidence</label>
-        <select id="pays" required>
-            <option value="">Sélectionnez d'abord un pays</option>
-        </select>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <select id="pays" required style="flex: 1;">
+                <option value="">Sélectionnez un pays</option>
+            </select>
+            <!-- Aperçu du drapeau en direct -->
+            <img id="drapeauPays" src="https://flagcdn.com/w160/cd.png" alt="Drapeau" crossorigin="anonymous" style="width: 45px; height: 30px; object-fit: cover; border-radius: 4px; border: 1px solid #cbd5e1;">
+        </div>
     </div>
 
     <!-- Ligne : Numéro de téléphone (Placé juste en bas du pays) -->
@@ -548,7 +553,7 @@
         <input type="email" id="email" placeholder="votreemail@domaine.com" required>
     </div>
 
-    <!-- Ligne : Domaine de formation (Vos vrais domaines) -->
+    <!-- Ligne : Domaine de formation -->
     <div class="form-group">
         <label for="domaine">Domaine de formation</label>
         <select id="domaine" required>
@@ -677,297 +682,214 @@
             </div>
      
 <script>
-/*==========================================
-        BMJ SERVICE
-        INSCRIPTION UTILISATEUR
-        LISTE ÉTENDUE DE PAYS (AVEC ZAMBIE & TANZANIE)
-==========================================*/
-
-// Base de données élargie des pays, indicatifs et principales villes
-const donneesPays = {
-    "Afghanistan": { code: "+93", villes: ["Kaboul", "Hérat", "Kandahar", "Mazar-e-Charif"] },
-    "Afrique du Sud": { code: "+27", villes: ["Johannesburg", "Le Cap", "Durban", "Pretoria", "Port Elizabeth"] },
-    "Algérie": { code: "+213", villes: ["Alger", "Oran", "Constantine", "Annaba", "Blida"] },
-    "Allemagne": { code: "+49", villes: ["Berlin", "Hambourg", "Munich", "Cologne", "Francfort", "Stuttgart"] },
-    "Angola": { code: "+244", villes: ["Luanda", "Huambo", "Lobito", "Benguela", "Lubango"] },
-    "Arabie Saoudite": { code: "+966", villes: ["Riyad", "Djeddah", "La Mecque", "Médine", "Dammam"] },
-    "Argentine": { code: "+54", villes: ["Buenos Aires", "Córdoba", "Rosario", "Mendoza", "La Plata"] },
-    "Australie": { code: "+61", villes: ["Sydney", "Melbourne", "Brisbane", "Perth", "Adélaïde"] },
-    "Belgique": { code: "+32", villes: ["Bruxelles", "Anvers", "Gand", "Charleroi", "Liège", "Bruges"] },
-    "Bénin": { code: "+229", villes: ["Cotonou", "Porto-Novo", "Parakou", "Abomey", "Bohicon"] },
-    "Brésil": { code: "+55", villes: ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador", "Fortaleza"] },
-    "Burkina Faso": { code: "+226", villes: ["Ouagadougou", "Bobo-Dioulasso", "Koudougou", "Dédougou"] },
-    "Burundi": { code: "+257", villes: ["Bujumbura", "Gitega", "Ngozi", "Bururi"] },
-    "Cameroun": { code: "+237", villes: ["Douala", "Yaoundé", "Bamenda", "Bafoussam", "Garoua"] },
-    "Canada": { code: "+1", villes: ["Montréal", "Toronto", "Québec", "Ottawa", "Vancouver", "Calgary"] },
-    "Chine": { code: "+86", villes: ["Pékin", "Shanghai", "Shenzhen", "Guangzhou", "Chengdu"] },
-    "Chypre": { code: "+357", villes: ["Nicosie", "Limassol", "Larnaca", "Paphos"] },
-    "Colombie": { code: "+57", villes: ["Bogota", "Medellín", "Cali", "Barranquilla", "Cartagena"] },
-    "Congo-Brazzaville": { code: "+242", villes: ["Brazzaville", "Pointe-Noire", "Dolisie", "Nkayi"] },
-    "Corée du Sud": { code: "+82", villes: ["Séoul", "Busan", "Incheon", "Daegu", "Daejeon"] },
-    "Côte d'Ivoire": { code: "+225", villes: ["Abidjan", "Yamoussoukro", "Bouaké", "San-Pédro", "Daloa"] },
-    "Espagne": { code: "+34", villes: ["Madrid", "Barcelone", "Valence", "Séville", "Saragosse"] },
-    "États-Unis": { code: "+1", villes: ["New York", "Los Angeles", "Chicago", "Houston", "Miami", "San Francisco"] },
-    "France": { code: "+33", villes: ["Paris", "Lyon", "Marseille", "Toulouse", "Nice", "Nantes", "Strasbourg", "Bordeaux"] },
-    "Gabon": { code: "+241", villes: ["Libreville", "Port-Gentil", "Franceville", "Oyem"] },
-    "Ghana": { code: "+233", villes: ["Accra", "Kumasi", "Tamale", "Takoradi", "Cape Coast"] },
-    "Grèce": { code: "+30", villes: ["Athènes", "Thessalonique", "Patras", "Héraklion"] },
-    "Guinée": { code: "+224", villes: ["Conakry", "Nzérékoré", "Kankan", "Kindia", "Labé"] },
-    "Inde": { code: "+91", villes: ["New Delhi", "Mumbai", "Bangalore", "Calcutta", "Chennai"] },
-    "Italie": { code: "+39", villes: ["Rome", "Milan", "Naples", "Turin", "Palerme", "Florence"] },
-    "Japon": { code: "+81", villes: ["Tokyo", "Osaka", "Yokohama", "Nagoya", "Sapporo", "Kyoto"] },
-    "Kenya": { code: "+254", villes: ["Nairobi", "Mombasa", "Kisumu", "Nakuru", "Eldoret"] },
-    "Liban": { code: "+961", villes: ["Beyrouth", "Tripoli", "Sidon", "Tyr", "Jounieh"] },
-    "Madagascar": { code: "+261", villes: ["Antananarivo", "Toamasina", "Antsirabe", "Fianarantsoa"] },
-    "Mali": { code: "+223", villes: ["Bamako", "Sikasso", "Mopti", "Koutiala", "Ségou"] },
-    "Maroc": { code: "+212", villes: ["Casablanca", "Rabat", "Marrakech", "Fès", "Tanger", "Agadir"] },
-    "Maurice": { code: "+230", villes: ["Port-Louis", "Curepipe", "Quatre-Bornes", "Vacoas-Phoenix"] },
-    "Mauritanie": { code: "+222", villes: ["Nouakchott", "Nouadhibou", "Rosso", "Kiffa"] },
-    "Mexique": { code: "+52", villes: ["Mexico", "Guadalajara", "Monterrey", "Puebla", "Tijuana"] },
-    "Niger": { code: "+227", villes: ["Niamey", "Zinder", "Maradi", "Tahoua", "Agadez"] },
-    "Nigéria": { code: "+234", villes: ["Lagos", "Abuja", "Kano", "Ibadan", "Port Harcourt"] },
-    "Ouganda": { code: "+256", villes: ["Kampala", "Gulu", "Lira", "Mbarara", "Jinja"] },
-    "Pays-Bas": { code: "+31", villes: ["Amsterdam", "Rotterdam", "La Haye", "Utrecht", "Eindhoven"] },
-    "Pologne": { code: "+48", villes: ["Varsovie", "Cracovie", "Łódź", "Wrocław", "Poznań"] },
-    "Portugal": { code: "+351", villes: ["Lisbonne", "Porto", "Vila Nova de Gaia", "Amadora", "Braga"] },
-    "République Démocratique du Congo": { code: "+243", villes: ["Lubumbashi", "Kinshasa", "Goma", "Bukavu", "Kolwezi", "Kisangani", "Mbuji-Mayi", "Kananga", "Matadi", "Bandundu", "Kindu", "Mbandaka"] },
-    "Royaume-Uni": { code: "+44", villes: ["Londres", "Birmingham", "Manchester", "Glasgow", "Liverpool"] },
-    "Rwanda": { code: "+250", villes: ["Kigali", "Butare", "Gitarama", "Ruhengeri", "Gisenyi"] },
-    "Sénégal": { code: "+221", villes: ["Dakar", "Thiès", "Kaolack", "Saint-Louis", "Ziguinchor"] },
-    "Suisse": { code: "+41", villes: ["Zurich", "Genève", "Bâle", "Lausanne", "Berne"] },
-    "Tanzanie": { code: "+255", villes: ["Dar es Salaam", "Dodoma", "Mwanza", "Arusha", "Mbeya", "Zanzibar"] },
-    "Tchad": { code: "+235", villes: ["N'Djamena", "Moundou", "Sarh", "Abéché"] },
-    "Togo": { code: "+228", villes: ["Lomé", "Sokodé", "Kara", "Kpalimé", "Atakpamé"] },
-    "Tunisie": { code: "+216", villes: ["Tunis", "Sfax", "Sousse", "Kairouan", "Bizerte"] },
-    "Turquie": { code: "+90", villes: ["Istanbul", "Ankara", "Izmir", "Bursa", "Antalya"] },
-    "Vietnam": { code: "+84", villes: ["Hô-Chi-Minh-Ville", "Hanoï", "Da Nang", "Haïphong"] },
-    "Zambie": { code: "+260", villes: ["Lusaka", "Ndola", "Kitwe", "Livingstone", "Kabwe", "Chingola"] }
-};
-
-// Charger dynamiquement les pays au chargement de la page
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const selectPays = document.getElementById("pays");
-    
-    // Trier les pays par ordre alphabétique
-    const paysTries = Object.keys(donneesPays).sort();
+    const inputIndicatif = document.getElementById("indicatif");
+    const imgDrapeau = document.getElementById("drapeauPays");
+    const selectVille = document.getElementById("ville");
 
-    paysTries.forEach(pays => {
-        let option = document.createElement("option");
-        option.value = pays;
-        option.textContent = pays;
-        selectPays.appendChild(option);
-    });
-});
+    // Dictionnaire complet de tous les pays
+    const donneesPays = {
+        "République Démocratique du Congo": { iso: "cd", indicatif: "+243", villes: ["Kinshasa", "Lubumbashi", "Goma", "Bukavu", "Kolwezi", "Kisangani"] },
+        "Congo-Brazzaville": { iso: "cg", indicatif: "+242", villes: ["Brazzaville", "Pointe-Noire", "Dolisie"] },
+        "Zambie": { iso: "zm", indicatif: "+260", villes: ["Lusaka", "Ndola", "Kitwe"] },
+        "Tanzanie": { iso: "tz", indicatif: "+255", villes: ["Dar es Salam", "Dodoma", "Arusha"] },
+        "France": { iso: "fr", indicatif: "+33", villes: ["Paris", "Lyon", "Marseille", "Toulouse"] },
+        "Côte d'Ivoire": { iso: "ci", indicatif: "+225", villes: ["Abidjan", "Yamoussoukro", "Bouaké"] },
+        "Cameroun": { iso: "cm", indicatif: "+237", villes: ["Douala", "Yaoundé", "Bamenda"] },
+        "Sénégal": { iso: "sn", indicatif: "+221", villes: ["Dakar", "Thiès", "Saint-Louis"] },
+        "Gabon": { iso: "ga", indicatif: "+241", villes: ["Libreville", "Port-Gentil", "Franceville"] },
+        "Togo": { iso: "tg", indicatif: "+228", villes: ["Lomé", "Kara", "Sokodé"] },
+        "Bénin": { iso: "bj", indicatif: "+229", villes: ["Cotonou", "Porto-Novo", "Parakou"] },
+        "Mali": { iso: "ml", indicatif: "+223", villes: ["Bamako", "Sikasso", "Kayes"] },
+        "Burkina Faso": { iso: "bf", indicatif: "+226", villes: ["Ouagadougou", "Bobo-Dioulasso"] },
+        "Rwanda": { iso: "rw", indicatif: "+250", villes: ["Kigali", "Butare", "Gisenyi"] },
+        "Burundi": { iso: "bi", indicatif: "+257", villes: ["Bujumbura", "Gitega"] },
+        "Belgique": { iso: "be", indicatif: "+32", villes: ["Bruxelles", "Anvers", "Liège"] },
+        "Canada": { iso: "ca", indicatif: "+1", villes: ["Montréal", "Québec", "Ottawa", "Toronto"] },
+        "Algérie": { iso: "dz", indicatif: "+213", villes: ["Alger", "Oran", "Constantine"] },
+        "Maroc": { iso: "ma", indicatif: "+212", villes: ["Casablanca", "Rabat", "Marrakech"] },
+        "Tunisie": { iso: "tn", indicatif: "+216", villes: ["Tunis", "Sfax", "Sousse"] },
+        "Afrique du Sud": { iso: "za", indicatif: "+27", villes: ["Johannesburg", "Le Cap", "Durban"] },
+        "Nigéria": { iso: "ng", indicatif: "+234", villes: ["Lagos", "Abuja", "Kano"] },
+        "Kenya": { iso: "ke", indicatif: "+254", villes: ["Nairobi", "Mombasa"] },
+        "Angola": { iso: "ao", indicatif: "+244", villes: ["Luanda", "Huambo", "Lobito"] },
+        "Allemagne": { iso: "de", indicatif: "+49", villes: ["Berlin", "Munich", "Francfort"] },
+        "Espagne": { iso: "es", indicatif: "+34", villes: ["Madrid", "Barcelone", "Valence"] },
+        "Italie": { iso: "it", indicatif: "+39", villes: ["Rome", "Milan", "Naples"] },
+        "Royaume-Uni": { iso: "gb", indicatif: "+44", villes: ["Londres", "Manchester", "Birmingham"] },
+        "États-Unis": { iso: "us", indicatif: "+1", villes: ["New York", "Washington", "Los Angeles", "Chicago"] },
+        "Chine": { iso: "cn", indicatif: "+86", villes: ["Pékin", "Shanghai", "Shenzhen"] },
+        "Inde": { iso: "in", indicatif: "+91", villes: ["New Delhi", "Mumbai", "Bangalore"] },
+        "Brésil": { iso: "br", indicatif: "+55", villes: ["Brasília", "Rio de Janeiro", "São Paulo"] }
+    };
 
-// Gérer le changement de pays (Mise à jour de l'indicatif et des villes)
-document.getElementById("pays").addEventListener("change", function() {
-    let paysChoisi = this.value;
-    let inputIndicatif = document.getElementById("indicatif");
-    let selectVille = document.getElementById("ville");
-
-    selectVille.innerHTML = ""; // Vider les anciennes villes
-
-    if (paysChoisi && donneesPays[paysChoisi]) {
-        // Mettre à jour l'indicatif
-        inputIndicatif.value = donneesPays[paysChoisi].code;
-
-        // Remplir les villes du pays
-        let optionDefaut = document.createElement("option");
-        optionDefaut.value = "";
-        optionDefaut.textContent = "Sélectionner une ville";
-        selectVille.appendChild(optionDefaut);
-
-        donneesPays[paysChoisi].villes.forEach(ville => {
+    // Remplissage automatique du menu déroulant des pays
+    if (selectPays) {
+        for (let pays in donneesPays) {
             let option = document.createElement("option");
-            option.value = ville;
-            option.textContent = ville;
-            selectVille.appendChild(option);
+            option.value = pays;
+            option.textContent = pays;
+            selectPays.appendChild(option);
+        }
+
+        selectPays.addEventListener("change", function () {
+            let paysChoisi = this.value;
+            if (donneesPays[paysChoisi]) {
+                let info = donneesPays[paysChoisi];
+                if (inputIndicatif) inputIndicatif.value = info.indicatif;
+                if (imgDrapeau) {
+                    imgDrapeau.src = `https://flagcdn.com/w160/${info.iso}.png`;
+                    imgDrapeau.alt = `Drapeau : ${paysChoisi}`;
+                }
+                if (selectVille) {
+                    selectVille.innerHTML = '<option value="">Sélectionner une ville</option>';
+                    info.villes.forEach(ville => {
+                        let optVille = document.createElement("option");
+                        optVille.value = ville;
+                        optVille.textContent = ville;
+                        selectVille.appendChild(optVille);
+                    });
+                }
+            } else {
+                if (inputIndicatif) inputIndicatif.value = "+243";
+                if (imgDrapeau) imgDrapeau.src = "https://flagcdn.com/w160/cd.png";
+                if (selectVille) {
+                    selectVille.innerHTML = '<option value="">Sélectionnez d\'abord un pays</option>';
+                }
+            }
         });
-    } else {
-        inputIndicatif.value = "";
-        let option = document.createElement("option");
-        option.value = "";
-        option.textContent = "Sélectionnez d'abord un pays";
-        selectVille.appendChild(option);
-    }
-});
-
-// Aperçu de la photo de profil
-document.getElementById("photo").addEventListener("change", function(e) {
-    let file = e.target.files[0];
-    if (file) {
-        let reader = new FileReader();
-        reader.onload = function(event) {
-            document.getElementById("previewPhoto").src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-// Validation et soumission du formulaire
-document.getElementById("btnInscription")
-.addEventListener("click", function(e){
-
-    e.preventDefault();
-
-    // Récupération des informations
-    let nom = document.getElementById("nom").value.trim();
-    let sexe = document.getElementById("sexe").value;
-    let indicatif = document.getElementById("indicatif").value;
-    let numeroBrut = document.getElementById("telephone").value.trim();
-    let telephone = indicatif + " " + numeroBrut;
-    let email = document.getElementById("email").value.trim().toLowerCase();
-    let pays = document.getElementById("pays").value;
-    let ville = document.getElementById("ville").value;
-    let domaine = document.getElementById("domaine").value;
-    let niveau = document.getElementById("niveau").value;
-    let password = document.getElementById("password").value;
-    let confirmPassword = document.getElementById("confirmPassword").value;
-    let conditions = document.getElementById("conditions").checked;
-    let fichierPhoto = document.getElementById("photo").files[0];
-
-    // Vérification des champs
-    if(nom === "" || sexe === "" || numeroBrut === "" || email === "" || pays === "" || ville === "" || domaine === "" || niveau === "" || password === "" || confirmPassword === ""){
-        alert("Veuillez remplir tous les champs.");
-        return;
     }
 
-    if(!conditions){
-        alert("Vous devez accepter les conditions d'utilisation.");
-        return;
+    // Gestion de l'aperçu de la photo de profil locale
+    const inputPhoto = document.getElementById("photo");
+    const previewPhoto = document.getElementById("previewPhoto");
+
+    if (inputPhoto && previewPhoto) {
+        inputPhoto.addEventListener("change", function (e) {
+            const fichier = e.target.files[0];
+            if (fichier) {
+                const lecteur = new FileReader();
+                lecteur.onload = function (event) {
+                    previewPhoto.src = event.target.result;
+                };
+                lecteur.readAsDataURL(fichier);
+            }
+        });
     }
 
-    if(password !== confirmPassword){
-        alert("Les mots de passe ne correspondent pas.");
-        return;
+    // Création dynamique de la Popup de confirmation du domaine (si elle n'existe pas)
+    let popUpDomaineOverlay = document.getElementById("bmjPopupDomaine");
+    if (!popUpDomaineOverlay) {
+        popUpDomaineOverlay = document.createElement("div");
+        popUpDomaineOverlay.id = "bmjPopupDomaine";
+        popUpDomaineOverlay.innerHTML = `
+            <div class="bmj-popup-card">
+                <div class="bmj-popup-icon">⚠️</div>
+                <h3>Confirmation de votre domaine</h3>
+                <p id="bmjPopupTexte">Êtes-vous responsable du domaine choisi ? Le certificat officiel vous sera délivré pour ce domaine précis dès le départ.</p>
+                <div class="bmj-popup-actions">
+                    <button type="button" id="bmjBtnAnnuler" class="btn-secondary">Modifier</button>
+                    <button type="button" id="bmjBtnConfirmer" class="btn-primary">Oui, Confirmer</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(popUpDomaineOverlay);
+
+        const stylePopup = document.createElement("style");
+        stylePopup.innerHTML = `
+            #bmjPopupDomaine {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(5px);
+                display: flex; align-items: center; justify-content: center;
+                z-index: 99999; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            }
+            #bmjPopupDomaine.active { opacity: 1; visibility: visible; }
+            .bmj-popup-card {
+                background: #ffffff; width: 90%; max-width: 400px; border-radius: 14px; padding: 25px; text-align: center;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); transform: translateY(20px); transition: transform 0.3s ease;
+            }
+            #bmjPopupDomaine.active .bmj-popup-card { transform: translateY(0); }
+            .bmj-popup-icon { font-size: 2.5rem; margin-bottom: 10px; }
+            .bmj-popup-card h3 { font-size: 1.2rem; color: #1e293b; margin-bottom: 10px; font-weight: 700; }
+            .bmj-popup-card p { font-size: 0.9rem; color: #64748b; line-height: 1.5; margin-bottom: 20px; }
+            .bmj-popup-actions { display: flex; gap: 10px; }
+            .bmj-popup-actions button { flex: 1; padding: 10px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; }
+            .btn-secondary { background: #f1f5f9; color: #475569; }
+            .btn-primary { background: #2563eb; color: #ffffff; }
+        `;
+        document.head.appendChild(stylePopup);
     }
 
-    // Vérification email existant
-    let utilisateurs = JSON.parse(localStorage.getItem("bmjUtilisateurs")) || [];
-    let existe = utilisateurs.find(user => user.email.toLowerCase() === email);
+    let utilisateurTemporaire = null;
 
-    if(existe){
-        alert("Cette adresse email existe déjà.");
-        return;
-    }
+    // Gestion de la soumission du formulaire
+    const formInscription = document.getElementById("formInscription");
+    if (formInscription) {
+        formInscription.addEventListener("submit", function (e) {
+            e.preventDefault();
 
-    // Fonction Helper pour les modales pro
-    function afficherModale({ icone, titre, message, type, texteBoutonValidation, callbackValidation }) {
-        const overlay = document.getElementById("bmjModalOverlay");
-        const iconDiv = document.getElementById("bmjModalIcon");
-        const titleH3 = document.getElementById("bmjModalTitle");
-        const msgP = document.getElementById("bmjModalMessage");
-        const buttonsDiv = document.getElementById("bmjModalButtons");
+            const nom = document.getElementById("nom").value.trim();
+            const sexe = document.getElementById("sexe").value;
+            const pays = selectPays.value;
+            const telephone = document.getElementById("telephone").value.trim();
+            const indicatif = inputIndicatif.value;
+            const ville = selectVille.value;
+            const email = document.getElementById("email").value.trim();
+            const domaine = document.getElementById("domaine").value;
+            const niveau = document.getElementById("niveau").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
 
-        iconDiv.innerHTML = icone;
-        titleH3.innerHTML = titre;
-        msgP.innerHTML = message;
-        buttonsDiv.innerHTML = ""; 
+            if (password !== confirmPassword) {
+                alert("Les mots de passe ne correspondent pas !");
+                return;
+            }
 
-        if (type === "confirm") {
-            buttonsDiv.innerHTML = `
-                <button id="bmjCancelBtn" style="flex: 1; padding: 12px; background: #f1f5f9; border: none; border-radius: 10px; color: #475569; font-weight: 600; cursor: pointer;">Annuler</button>
-                <button id="bmjConfirmBtn" style="flex: 1; padding: 12px; background: #2563eb; border: none; border-radius: 10px; color: white; font-weight: 600; cursor: pointer;">Confirmer</button>
-            `;
-            overlay.style.display = "flex";
-
-            document.getElementById("bmjCancelBtn").onclick = function() {
-                overlay.style.display = "none";
+            // Stockage temporaire des données en attente de confirmation du popup
+            utilisateurTemporaire = {
+                nom: nom,
+                sexe: sexe,
+                pays: pays,
+                telephone: `${indicatif} ${telephone}`,
+                ville: ville,
+                email: email,
+                domaine: domaine,
+                niveau: niveau,
+                password: password,
+                premium: false,
+                photo: previewPhoto ? previewPhoto.src : "images/user.png"
             };
-            document.getElementById("bmjConfirmBtn").onclick = function() {
-                overlay.style.display = "none";
-                if(callbackValidation) callbackValidation();
-            };
 
-        } else if (type === "success") {
-            buttonsDiv.innerHTML = `
-                <button id="bmjSuccessBtn" style="width: 100%; padding: 13px; background: #2563eb; border: none; border-radius: 10px; color: white; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);">
-                    ${texteBoutonValidation || "Accéder à mon tableau de bord"}
-                </button>
-            `;
-            overlay.style.display = "flex";
-
-            document.getElementById("bmjSuccessBtn").onclick = function() {
-                overlay.style.display = "none";
-                if(callbackValidation) callbackValidation();
-            };
-        }
+            // Affichage de la popup personnalisée avec le domaine choisi
+            document.getElementById("bmjPopupTexte").innerHTML = `Êtes-vous responsable du domaine choisi : <strong>${domaine}</strong> ? Le certificat qui vous sera délivré portera sur ce domaine.`;
+            popUpDomaineOverlay.classList.add("active");
+        });
     }
 
-    // ÉTAPE 1 : CONFIRMATION DU DOMAINE
-    afficherModale({
-        icone: "🎯",
-        titre: "Confirmation du domaine",
-        message: `Êtes-vous responsable du domaine choisi : <strong style="color: #2563eb;">${domaine}</strong> ?<br><br><span style="font-size: 13px; color: #94a3b8;">Le certificat final portera exclusivement sur ce domaine. Les autres parcours suivis seront considérés comme des options ou modules provisoires.</span>`,
-        type: "confirm",
-        callbackValidation: function() {
-            lancerInscription();
-        }
+    // Bouton "Modifier" sur la popup
+    document.getElementById("bmjBtnAnnuler").addEventListener("click", function () {
+        popUpDomaineOverlay.classList.remove("active");
     });
 
-    // ÉTAPE 2 : TRAITEMENT DE L'INSCRIPTION
-    function lancerInscription() {
-        const emailsAdministrateurs = [
-            "direction@bmjservice.com",
-            "administration@bmjservice.com",
-            "contact@bmjservice.com",
-            "formation@bmjservice.com"
-        ];
+    // Bouton "Oui, Confirmer" sur la popup
+    document.getElementById("bmjBtnConfirmer").addEventListener("click", function () {
+        if (utilisateurTemporaire) {
+            // Sauvegarde définitive dans le localStorage
+            localStorage.setItem("bmj_current_user", JSON.stringify(utilisateurTemporaire));
+            
+            let listeUtilisateurs = JSON.parse(localStorage.getItem("bmj_users_list")) || [];
+            listeUtilisateurs.push(utilisateurTemporaire);
+            localStorage.setItem("bmj_users_list", JSON.stringify(listeUtilisateurs));
 
-        let estAdministrateur = emailsAdministrateurs.includes(email);
-        let premiumAutomatique = estAdministrateur;
-        let statutCompte = estAdministrateur ? "Administrateur" : "Actif";
-        let id_bmj = "BMJ" + Date.now();
-
-        function creerCompte(photoFinale){
-            let utilisateur = {
-                id_bmj: id_bmj, nom: nom, sexe: sexe, telephone: telephone, email: email, pays: pays, ville: ville,
-                domaine: domaine, niveau: niveau, password: password, photo: photoFinale, statut: statutCompte,
-                role: estAdministrateur ? "admin" : "apprenant", premium: premiumAutomatique,
-                progression: 0, certificats: [], chapitresValides: [], coursSuivis: []
-            };
-
-            utilisateurs.push(utilisateur);
-            localStorage.setItem("bmjUtilisateurs", JSON.stringify(utilisateurs));
-            localStorage.setItem("bmj_current_user", JSON.stringify(utilisateur));
-
-            if(estAdministrateur){
-                afficherModale({
-                    icone: "👑",
-                    titre: "Compte Administrateur Activé",
-                    message: `Félicitations <strong>${nom}</strong> ! Votre compte administrateur <strong>BMJ SERVICE</strong> a été initialisé avec succès.<br><br>Identifiant unique : <code style="background: #f1f5f9; padding: 3px 6px; border-radius: 4px; color: #2563eb; font-weight: bold;">${id_bmj}</code>`,
-                    type: "success",
-                    texteBoutonValidation: "Entrer dans l'espace administration",
-                    callbackValidation: function() {
-                        window.location.href = "dashboard.html";
-                    }
-                });
-            }
-            else{
-                afficherModale({
-                    icone: "✨",
-                    titre: "Inscription Réussie !",
-                    message: `Bienvenue chez <strong>BMJ SERVICE</strong>, ${nom}. Votre compte est désormais actif.<br><br>Votre Identifiant BMJ : <code style="background: #f1f5f9; padding: 3px 6px; border-radius: 4px; color: #2563eb; font-weight: bold;">${id_bmj}</code>`,
-                    type: "success",
-                    texteBoutonValidation: "Accéder à mon tableau de bord",
-                    callbackValidation: function() {
-                        window.location.href = "dashboard.html";
-                    }
-                });
-            }
+            popUpDomaineOverlay.classList.remove("active");
+            
+            alert("Inscription validée avec succès !");
+            
+            // Redirection vers le tableau de bord (changez "dashboard.html" par le nom exact de votre page de tableau de bord si nécessaire)
+            window.location.href = "dashboard.html"; 
         }
-
-        if(fichierPhoto){
-            let lecteur = new FileReader();
-            lecteur.onload = function(e){
-                creerCompte(e.target.result);
-            };
-            lecteur.readAsDataURL(fichierPhoto);
-        }
-        else{
-            creerCompte("images/user.png");
-        }
-    }
+    });
 });
 </script>
 <!-- Modale Unique BMJ SERVICE (Confirmation & Succès) -->
