@@ -14,7 +14,7 @@
     <link rel="shortcut icon" href="images/logo.png">
 
     <link rel="apple-touch-icon" href="images/logo.png">
-
+    
     <!-- Tes autres fichiers CSS -->
 
     <style>
@@ -462,143 +462,204 @@
 
         }
 
-        /*=====================================
+       /*=====================================
         MOBILE MENU
 ======================================*/
 
-        .menu-toggle {
+.menu-toggle {
 
-            display: none;
+    display: none;
 
-            color: white;
+    color: white;
 
-            font-size: 30px;
+    font-size: 28px;
 
-            cursor: pointer;
+    cursor: pointer;
 
-        }
+    width: 45px;
+    height: 45px;
 
-        /*=====================================
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    transition: .3s;
+
+}
+
+.menu-toggle:hover {
+
+    background: rgba(255,255,255,.12);
+
+}
+
+
+/*=====================================
         RESPONSIVE
 ======================================*/
 
-        @media(max-width:992px) {
+@media(max-width:768px) {
 
-            .hero h1 {
+    header {
 
-                font-size: 45px;
+        padding: 12px 18px;
 
-            }
+        min-height: 75px;
 
-            nav {
+    }
 
-                gap: 18px;
 
-            }
+    .logo {
 
-        }
+        gap: 10px;
 
-        @media(max-width:768px) {
+    }
 
-            header {
 
-                padding: 18px 20px;
+    .logo img {
 
-            }
+        width: 45px;
 
-            nav {
+        height: 45px;
 
-                position: fixed;
+    }
 
-                top: 90px;
 
-                left: -100%;
+    .logo h2 {
 
-                width: 100%;
+        font-size: 21px;
 
-                background: #145A86;
+    }
 
-                flex-direction: column;
 
-                padding: 30px;
+    /* BOUTON HAMBURGER */
 
-                transition: .4s;
+    .menu-toggle {
 
-            }
+        display: flex;
 
-            nav.active {
+        flex-shrink: 0;
 
-                left: 0;
+    }
 
-            }
 
-            .menu-toggle {
+    /* MENU */
 
-                display: block;
+    header nav {
 
-            }
+        position: fixed;
 
-            .hero {
+        top: 75px;
 
-                padding: 120px 25px;
+        left: 0;
 
-            }
+        width: 100%;
 
-            .hero h1 {
+        height: auto;
 
-                font-size: 35px;
+        max-height: calc(100vh - 75px);
 
-            }
+        overflow-y: auto;
 
-            .hero p {
+        background: #145A86;
 
-                font-size: 18px;
+        display: flex;
 
-            }
+        flex-direction: column;
 
-            .btn {
+        align-items: stretch;
 
-                display: block;
+        gap: 0;
 
-                margin: 15px auto;
+        padding: 15px 20px 25px;
 
-            }
+        box-shadow: 0 15px 30px rgba(0,0,0,.20);
 
-            .btn2 {
+        transform: translateY(-120%);
 
-                margin-left: 0;
+        transition: transform .35s ease;
 
-            }
+        z-index: 999;
 
-            .title h2 {
+    }
 
-                font-size: 30px;
 
-            }
+    /* MENU OUVERT */
 
-        }
+    header nav.active {
 
-        @media(max-width:500px) {
+        left: 0;
 
-            .hero h1 {
+        transform: translateY(0);
 
-                font-size: 28px;
+    }
 
-            }
 
-            .hero p {
+    /* LIENS */
 
-                font-size: 16px;
+    header nav a {
 
-            }
+        width: 100%;
 
-            .logo h2 {
+        padding: 15px 10px;
 
-                font-size: 22px;
+        text-align: center;
 
-            }
+        border-bottom: 1px solid rgba(255,255,255,.10);
 
-        }
+        font-size: 15px;
+
+    }
+
+
+    header nav a:last-child {
+
+        margin-top: 12px;
+
+        border-bottom: none;
+
+    }
+
+
+    /* BOUTON CRÉER UN COMPTE */
+
+    header nav .btn {
+
+        display: block;
+
+        width: 100%;
+
+        padding: 13px 20px;
+
+        margin: 5px 0 0;
+
+        text-align: center;
+
+    }
+
+
+    .hero {
+
+        padding: 120px 25px 80px;
+
+    }
+
+
+    .hero h1 {
+
+        font-size: 35px;
+
+    }
+
+
+    .hero p {
+
+        font-size: 18px;
+
+    }
+
+}
     </style>
 </head>
 
@@ -652,7 +713,7 @@
 <div class="hero-content">
 
     <span class="hero-badge">
-        FORMATION • COMPÉTENCES • AVENIR PROFESSIONNEL
+     
     </span>
 
     <h1>
@@ -921,6 +982,152 @@
             </div>
             
         </section>
+        <script>
+
+/*========================================
+        BMJ SERVICE
+        MENU MOBILE
+========================================*/
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuToggle = document.querySelector(".menu-toggle");
+    const nav = document.querySelector("header nav");
+
+    if (!menuToggle || !nav) {
+        console.warn("Menu BMJ SERVICE introuvable.");
+        return;
+    }
+
+
+    /*====================================
+            OUVERTURE / FERMETURE
+    ====================================*/
+
+    menuToggle.addEventListener("click", function () {
+
+        nav.classList.toggle("active");
+
+
+        /* Changement de l'icône */
+
+        const icon = menuToggle.querySelector("i");
+
+        if (icon) {
+
+            if (nav.classList.contains("active")) {
+
+                icon.classList.remove("fa-bars");
+                icon.classList.add("fa-xmark");
+
+            } else {
+
+                icon.classList.remove("fa-xmark");
+                icon.classList.add("fa-bars");
+
+            }
+
+        }
+
+    });
+
+
+    /*====================================
+            FERMER APRÈS UN CLIC
+    ====================================*/
+
+    const liensMenu = nav.querySelectorAll("a");
+
+    liensMenu.forEach(function (lien) {
+
+        lien.addEventListener("click", function () {
+
+            nav.classList.remove("active");
+
+
+            const icon =
+                menuToggle.querySelector("i");
+
+
+            if (icon) {
+
+                icon.classList.remove("fa-xmark");
+                icon.classList.add("fa-bars");
+
+            }
+
+        });
+
+    });
+
+
+    /*====================================
+            FERMER SI CLIC EXTÉRIEUR
+    ====================================*/
+
+    document.addEventListener("click", function (event) {
+
+        const clicDansMenu =
+            nav.contains(event.target);
+
+        const clicSurBouton =
+            menuToggle.contains(event.target);
+
+
+        if (
+            !clicDansMenu &&
+            !clicSurBouton &&
+            nav.classList.contains("active")
+        ) {
+
+            nav.classList.remove("active");
+
+
+            const icon =
+                menuToggle.querySelector("i");
+
+
+            if (icon) {
+
+                icon.classList.remove("fa-xmark");
+                icon.classList.add("fa-bars");
+
+            }
+
+        }
+
+    });
+
+
+    /*====================================
+            FERMER SI ÉCRAN AGRANDI
+    ====================================*/
+
+    window.addEventListener("resize", function () {
+
+        if (window.innerWidth > 768) {
+
+            nav.classList.remove("active");
+
+
+            const icon =
+                menuToggle.querySelector("i");
+
+
+            if (icon) {
+
+                icon.classList.remove("fa-xmark");
+                icon.classList.add("fa-bars");
+
+            }
+
+        }
+
+    });
+
+});
+
+</script>
     </body>
 
 </html>
