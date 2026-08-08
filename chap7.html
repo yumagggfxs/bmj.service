@@ -3101,588 +3101,190 @@
     </section>
 
     <script>
+//==================================================
+// BMJ SERVICE
+// CHAPITRE 7 : PUBLICITE DIGITALE
+// SCRIPT COMPLET (CORRIGÉ & OPTIMISÉ)
+//==================================================
 
-        //==================================================
-        // BMJ SERVICE
-        // CHAPITRE 7 : PUBLICITE DIGITALE
-        // SCRIPT COMPLET
-        //==================================================
+document.addEventListener("DOMContentLoaded", function () {
+    afficherUtilisateur();
+    afficherProgression();
+});
 
+//====================================
+// RECUPERATION UTILISATEUR CONNECTE
+//====================================
+function getUtilisateur() {
+    try {
+        let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+        return utilisateur;
+    } catch (e) {
+        console.error("Erreur lors de la lecture de l'utilisateur connecté :", e);
+        return null;
+    }
+}
 
+//====================================
+// AFFICHAGE PROFIL
+//====================================
+function afficherUtilisateur() {
+    let utilisateur = getUtilisateur();
 
-        document.addEventListener("DOMContentLoaded", function () {
+    if (!utilisateur) {
+        alert("Votre session a expiré ou aucun utilisateur n'est connecté. Veuillez vous connecter.");
+        window.location.href = "connexion.html";
+        return;
+    }
 
+    // NOM
+    let nom = document.getElementById("nomUtilisateur");
+    if (nom) {
+        nom.innerHTML = utilisateur.nom || "Utilisateur BMJ";
+    }
 
-            afficherUtilisateur();
+    // EMAIL
+    let email = document.getElementById("emailUtilisateur");
+    if (email) {
+        email.innerHTML = utilisateur.email || "";
+    }
 
-            afficherProgression();
+    // ID BMJ
+    let id = document.getElementById("idBMJ");
+    if (id) {
+        id.innerHTML = utilisateur.id_bmj || "BMJ-USER";
+    }
 
+    // PHOTO
+    let photo = document.getElementById("photoUtilisateur");
+    if (photo) {
+        if (utilisateur.photo) {
+            photo.src = utilisateur.photo;
+        } else {
+            photo.src = "images/user.png";
+        }
+    }
+}
 
+//====================================
+// COMMENCER COURS
+//====================================
+function commencerCours() {
+    let section = document.querySelector(".lessons");
+    if (section) {
+        section.scrollIntoView({
+            behavior: "smooth"
         });
+    }
+}
 
+//====================================
+// SUPPORT
+//====================================
+function telechargerSupport() {
+    window.open(
+        "supports/publicite-digitale.pdf",
+        "_blank"
+    );
+}
 
+//====================================
+// PROGRESSION
+//====================================
+function afficherProgression() {
+    let valide = localStorage.getItem("publicite_valide");
+    let progression = 0;
 
+    if (valide === "true") {
+        progression = 100;
+    }
 
+    let barre = document.getElementById("chapterProgress");
+    let texte = document.getElementById("progressText");
 
-        //====================================
-        // RECUPERATION UTILISATEUR CONNECTE
-        //====================================
+    if (barre) {
+        barre.style.width = progression + "%";
+    }
 
+    if (texte) {
+        texte.innerHTML = progression + "%";
+    }
+}
 
-        function getUtilisateur() {
+//====================================
+// TERMINER CHAPITRE
+//====================================
+function terminerChapitre() {
+    let utilisateur = getUtilisateur();
 
+    localStorage.setItem("publicite_valide", "true");
 
-            let utilisateur = JSON.parse(
+    if (utilisateur) {
+        utilisateur.chapitresValides = utilisateur.chapitresValides || [];
 
-                localStorage.getItem("bmj_current_user")
-
-            );
-
-
-            return utilisateur;
-
-
+        if (!utilisateur.chapitresValides.includes("Publicité digitale")) {
+            utilisateur.chapitresValides.push("Publicité digitale");
         }
 
-
-
-
-
-
-
-        //====================================
-        // AFFICHAGE PROFIL
-        //====================================
-
-
-        function afficherUtilisateur() {
-
-
-
-            let utilisateur = getUtilisateur();
-
-
-
-            if (!utilisateur) {
-
-
-                alert("Votre session a expiré. Veuillez vous reconnecter.");
-
-
-                window.location.href = "connexion.html";
-
-
-                return;
-
-
-            }
-
-
-
-
-
-            // NOM
-
-
-            let nom = document.getElementById("nomUtilisateur");
-
-
-            if (nom) {
-
-
-                nom.innerHTML = utilisateur.nom || "Utilisateur BMJ";
-
-
-            }
-
-
-
-
-
-
-
-            // EMAIL
-
-
-            let email = document.getElementById("emailUtilisateur");
-
-
-            if (email) {
-
-
-                email.innerHTML = utilisateur.email || "";
-
-
-            }
-
-
-
-
-
-
-
-
-            // ID BMJ
-
-
-            let id = document.getElementById("idBMJ");
-
-
-            if (id) {
-
-
-                id.innerHTML = utilisateur.id_bmj || "";
-
-
-            }
-
-
-
-
-
-
-
-
-            // PHOTO
-
-
-            let photo = document.getElementById("photoUtilisateur");
-
-
-
-            if (photo) {
-
-
-
-                if (utilisateur.photo) {
-
-
-
-                    photo.src = utilisateur.photo;
-
-
-
-                }
-
-                else {
-
-
-                    photo.src = "images/user.png";
-
-
-                }
-
-
-
-            }
-
-
-
-
-
+        utilisateur.progressionPublicite = 100;
+
+        // Mise à jour de l'utilisateur courant
+        localStorage.setItem("bmj_current_user", JSON.stringify(utilisateur));
+
+        // Mise à jour synchronisée dans la liste globale des utilisateurs (si elle existe)
+        let listeUtilisateurs = JSON.parse(localStorage.getItem("bmj_users_list")) || [];
+        let index = listeUtilisateurs.findIndex(u => u.email === utilisateur.email);
+        if (index !== -1) {
+            listeUtilisateurs[index] = utilisateur;
+            localStorage.setItem("bmj_users_list", JSON.stringify(listeUtilisateurs));
         }
-
-
-
-
-
-
-
-
-
-        //====================================
-        // COMMENCER COURS
-        //====================================
-
-
-        function commencerCours() {
-
-
-
-            let section = document.querySelector(".lessons");
-
-
-
-            if (section) {
-
-
-
-                section.scrollIntoView({
-
-                    behavior: "smooth"
-
-                });
-
-
-
-            }
-
-
-        }
-
-
-
-
-
-
-
-
-        //====================================
-        // SUPPORT
-        //====================================
-
-
-        function telechargerSupport() {
-
-
-            window.open(
-
-                "supports/publicite-digitale.pdf",
-
-                "_blank"
-
-            );
-
-
-        }
-
-
-
-
-
-
-
-
-
-        //====================================
-        // PROGRESSION
-        //====================================
-
-
-        function afficherProgression() {
-
-
-
-            let valide = localStorage.getItem(
-
-                "publicite_valide"
-
-            );
-
-
-
-            let progression = 0;
-
-
-
-            if (valide === "true") {
-
-
-                progression = 100;
-
-
-            }
-
-
-
-
-
-            let barre = document.getElementById(
-
-                "chapterProgress"
-
-            );
-
-
-
-            let texte = document.getElementById(
-
-                "progressText"
-
-            );
-
-
-
-
-
-            if (barre) {
-
-
-                barre.style.width = progression + "%";
-
-
-            }
-
-
-
-
-
-            if (texte) {
-
-
-                texte.innerHTML = progression + "%";
-
-
-            }
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-        //====================================
-        // TERMINER CHAPITRE
-        //====================================
-
-
-        function terminerChapitre() {
-
-
-
-            let utilisateur = getUtilisateur();
-
-
-
-
-
-            localStorage.setItem(
-
-                "publicite_valide",
-
-                "true"
-
-            );
-
-
-
-
-
-
-
-            if (utilisateur) {
-
-
-
-                utilisateur.chapitresValides =
-
-                    utilisateur.chapitresValides || [];
-
-
-
-
-
-                if (!utilisateur.chapitresValides.includes(
-
-                    "Publicité digitale"
-
-                )) {
-
-
-                    utilisateur.chapitresValides.push(
-
-                        "Publicité digitale"
-
-                    );
-
-
-                }
-
-
-
-
-
-
-
-                utilisateur.progressionPublicite = 100;
-
-
-
-
-
-
-
-                localStorage.setItem(
-
-                    "bmj_current_user",
-
-                    JSON.stringify(utilisateur)
-
-                );
-
-
-
-            }
-
-
-
-
-
-
-            afficherProgression();
-
-
-
-
-            afficherPopupCertificat();
-
-
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-        //====================================
-        // POPUP CERTIFICAT
-        //====================================
-
-
-        function afficherPopupCertificat() {
-
-
-
-            let popup = document.createElement("div");
-
-
-
-            popup.className = "certificat-popup";
-
-
-
-            popup.innerHTML = `
-
-
-<div class="popup-box">
-
-
-    <div class="popup-icon">
-
-        🎓
-
-    </div>
-
-
-
-    <h2>
-
-        Félicitations !
-
-    </h2>
-
-
-
-    <p>
-
-        Vous avez terminé les  7 Chapitres: marketing digital.
-
-        <br><br>
-
-        Votre certificat officiel BMJ SERVICE est disponible.
-
-    </p>
-
-
-
-    <div class="popup-buttons">
-
-
-        <button onclick="allerCertificat()">
-
-            OK
-
-        </button>
-
-
-
-        <button onclick="fermerPopup()">
-
-            Plus tard
-
-        </button>
-
-
-
-    </div>
-
-
-</div>
-
-
-
-`;
-
-
-
-
-            document.body.appendChild(popup);
-
-
-
-        }
-
-
-
-
-
-
-
-
-
-        function allerCertificat() {
-
-
-            window.location.href = "certeficat.html";
-
-
-        }
-
-
-
-
-
-
-        function fermerPopup() {
-
-
-            let popup = document.querySelector(
-
-                ".certificat-popup"
-
-            );
-
-
-            if (popup) {
-
-
-                popup.remove();
-
-
-            }
-
-
-        }
-
-
-
-
-
-
-
-
+    }
+
+    afficherProgression();
+    afficherPopupCertificat();
+}
+
+//====================================
+// POPUP CERTIFICAT
+//====================================
+function afficherPopupCertificat() {
+    // Évite d'empiler plusieurs popups si l'utilisateur clique plusieurs fois
+    let popupExistante = document.querySelector(".certificat-popup");
+    if (popupExistante) return;
+
+    let popup = document.createElement("div");
+    popup.className = "certificat-popup";
+
+    popup.innerHTML = `
+        <div class="popup-box">
+            <div class="popup-icon">🎓</div>
+            <h2>Félicitations !</h2>
+            <p>
+                Vous avez terminé les 7 Chapitres: marketing digital.
+                <br><br>
+                Votre certificat officiel BMJ SERVICE est disponible.
+            </p>
+            <div class="popup-buttons">
+                <button onclick="allerCertificat()">OK</button>
+                <button onclick="fermerPopup()">Plus tard</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(popup);
+}
+
+function allerCertificat() {
+    // Redirection vers la page du certificat (ajustez le nom si c'est "certificat.html" sans 'e' au milieu)
+    window.location.href = "certificat.html";
+}
+
+function fermerPopup() {
+    let popup = document.querySelector(".certificat-popup");
+    if (popup) {
+        popup.remove();
+    }
+}
     </script>
 </body>
 
