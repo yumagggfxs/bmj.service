@@ -655,7 +655,7 @@
         return;
     }
 
-    // Dictionnaire complet et mis à jour de TOUS les pays pour FlagCDN
+    // Dictionnaire complet de TOUS les pays pour l'association des codes ISO
     const codesPaysISO = {
         "République Démocratique du Congo": "cd",
         "Congo-Brazzaville": "cg",
@@ -691,23 +691,22 @@
         "Brésil": "br"
     };
 
-    // Configuration pour éviter les blocages de sécurité (CORS) avec html2canvas
+    // Attribution dynamique du drapeau optimisée pour le web et html2canvas
     if (imgDrapeau) {
         imgDrapeau.crossOrigin = "anonymous";
         
-        // Attribution dynamique du drapeau selon le pays enregistré
         if (utilisateur.pays && codesPaysISO[utilisateur.pays]) {
             let codeIso = codesPaysISO[utilisateur.pays];
             imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
             imgDrapeau.alt = `Drapeau : ${utilisateur.pays}`;
         } else {
-            // Drapeau par défaut (RDC par défaut si non trouvé)
+            // Drapeau par défaut (RDC) si non trouvé
             imgDrapeau.src = `https://flagcdn.com/w160/cd.png`;
             imgDrapeau.alt = "Drapeau officiel";
         }
     }
 
-    // Date du jour formatée
+    // Date du jour formatée en français
     const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
     const dateDuJour = new Date().toLocaleDateString('fr-FR', optionsDate);
     if (dateElement) dateElement.textContent = dateDuJour;
@@ -733,7 +732,7 @@
         }
     }
 
-    // 4. Injection dynamique d'une modale (popup) élégante dans le DOM si elle n'existe pas
+    // 4. Injection dynamique de la modale (popup) de paiement dans le DOM si elle n'existe pas
     let modalOverlay = document.getElementById("elegantModalOverlay");
     if (!modalOverlay) {
         modalOverlay = document.createElement("div");
@@ -759,10 +758,8 @@
         const styleModale = document.createElement("style");
         styleModale.innerHTML = `
             #elegantModalOverlay {
-                position: fixed;
-                top: 0; left: 0; width: 100%; height: 100%;
-                background: rgba(15, 23, 42, 0.6);
-                backdrop-filter: blur(6px);
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(6px);
                 display: flex; align-items: center; justify-content: center;
                 z-index: 99999; opacity: 0; visibility: hidden; transition: all 0.3s ease;
             }
