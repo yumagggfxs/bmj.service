@@ -691,19 +691,19 @@
         "Brésil": "br"
     };
 
-    // Attribution dynamique du drapeau optimisée pour le web et html2canvas
+    // Attribution dynamique du drapeau sécurisée pour le web en ligne et html2canvas (via proxy CORS)
     if (imgDrapeau) {
         imgDrapeau.crossOrigin = "anonymous";
         
+        let codeIso = "cd"; // Valeur par défaut (RDC)
         if (utilisateur.pays && codesPaysISO[utilisateur.pays]) {
-            let codeIso = codesPaysISO[utilisateur.pays];
-            imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
-            imgDrapeau.alt = `Drapeau : ${utilisateur.pays}`;
-        } else {
-            // Drapeau par défaut (RDC) si non trouvé
-            imgDrapeau.src = `https://flagcdn.com/w160/cd.png`;
-            imgDrapeau.alt = "Drapeau officiel";
+            codeIso = codesPaysISO[utilisateur.pays];
         }
+        
+        let urlDrapeauDirect = `https://flagcdn.com/w160/${codeIso}.png`;
+        // Utilisation du proxy pour éviter les blocages CORS en ligne
+        imgDrapeau.src = `https://images.weserv.nl/?url=${encodeURIComponent(urlDrapeauDirect)}`;
+        imgDrapeau.alt = utilisateur.pays ? `Drapeau : ${utilisateur.pays}` : "Drapeau officiel";
     }
 
     // Date du jour formatée en français
