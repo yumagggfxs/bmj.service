@@ -726,6 +726,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Remplissage automatique du menu déroulant des pays
     if (selectPays) {
+        // Option par défaut vide pour éviter de forcer un pays au chargement
+        selectPays.innerHTML = '<option value="">Sélectionnez votre pays</option>';
+
         for (let pays in donneesPays) {
             let option = document.createElement("option");
             option.value = pays;
@@ -741,6 +744,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (imgDrapeau) {
                     imgDrapeau.src = `https://flagcdn.com/w160/${info.iso}.png`;
                     imgDrapeau.alt = `Drapeau : ${paysChoisi}`;
+                    imgDrapeau.style.display = "inline-block";
                 }
                 if (selectVille) {
                     selectVille.innerHTML = '<option value="">Sélectionner une ville</option>';
@@ -752,8 +756,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
             } else {
-                if (inputIndicatif) inputIndicatif.value = "+243";
-                if (imgDrapeau) imgDrapeau.src = "https://flagcdn.com/w160/cd.png";
+                // CORRECTION : On vide les champs au lieu de forcer la RDC par défaut
+                if (inputIndicatif) inputIndicatif.value = "";
+                if (imgDrapeau) {
+                    imgDrapeau.src = "";
+                    imgDrapeau.alt = "";
+                    imgDrapeau.style.display = "none";
+                }
                 if (selectVille) {
                     selectVille.innerHTML = '<option value="">Sélectionnez d\'abord un pays</option>';
                 }
@@ -862,34 +871,43 @@ document.addEventListener("DOMContentLoaded", function () {
             };
 
             // Affichage de la popup personnalisée avec le domaine choisi
-            document.getElementById("bmjPopupTexte").innerHTML = `Êtes-vous responsable du domaine choisi : <strong>${domaine}</strong> ? Le certificat qui vous sera délivré portera sur ce domaine.`;
+            document.getElementById("bmjPopupTexteinnerHTML") = `Êtes-vous responsable du domaine choisi : <strong>${domaine}</strong> ? Le certificat qui vous sera délivré portera sur ce domaine.`;
+            // Correction syntaxique sécurisée pour le texte du popup
+            document.getElementById("bmjPopupTexte").innerHTML = `Êtes-vous responsable du domaine choisi : <strong>${domaine}</strong> ? Le certificat qui vous sera délivré portera sur ce domaine dès le départ.`;
+            
             popUpDomaineOverlay.classList.add("active");
         });
     }
 
     // Bouton "Modifier" sur la popup
-    document.getElementById("bmjBtnAnnuler").addEventListener("click", function () {
-        popUpDomaineOverlay.classList.remove("active");
-    });
+    const btnAnnuler = document.getElementById("bmjBtnAnnuler");
+    if (btnAnnuler) {
+        btnAnnuler.addEventListener("click", function () {
+            popUpDomaineOverlay.classList.remove("active");
+        });
+    }
 
     // Bouton "Oui, Confirmer" sur la popup
-    document.getElementById("bmjBtnConfirmer").addEventListener("click", function () {
-        if (utilisateurTemporaire) {
-            // Sauvegarde définitive dans le localStorage
-            localStorage.setItem("bmj_current_user", JSON.stringify(utilisateurTemporaire));
-            
-            let listeUtilisateurs = JSON.parse(localStorage.getItem("bmj_users_list")) || [];
-            listeUtilisateurs.push(utilisateurTemporaire);
-            localStorage.setItem("bmj_users_list", JSON.stringify(listeUtilisateurs));
+    const btnConfirmer = document.getElementById("bmjBtnConfirmer");
+    if (btnConfirmer) {
+        btnConfirmer.addEventListener("click", function () {
+            if (utilisateurTemporaire) {
+                // Sauvegarde définitive dans le localStorage
+                localStorage.setItem("bmj_current_user", JSON.stringify(utilisateurTemporaire));
+                
+                let listeUtilisateurs = JSON.parse(localStorage.getItem("bmj_users_list")) || [];
+                listeUtilisateurs.push(utilisateurTemporaire);
+                localStorage.setItem("bmj_users_list", JSON.stringify(listeUtilisateurs));
 
-            popUpDomaineOverlay.classList.remove("active");
-            
-            alert("Inscription validée avec succès !");
-            
-            // Redirection vers le tableau de bord (changez "dashboard.html" par le nom exact de votre page de tableau de bord si nécessaire)
-            window.location.href = "dashboard.html"; 
-        }
-    });
+                popUpDomaineOverlay.classList.remove("active");
+                
+                alert("Inscription validée avec succès !");
+                
+                // Redirection vers le tableau de bord
+                window.location.href = "dashboard.html"; 
+            }
+        });
+    }
 });
 </script>
 <!-- Modale Unique BMJ SERVICE (Confirmation & Succès) -->
