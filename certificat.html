@@ -566,8 +566,8 @@
         <!-- HEADER -->
         <div class="cert-header">
             <div class="header-box">
-                <!-- Remplacement par un span pour afficher l'emoji drapeau de manière infaillible -->
-                <span id="drapeauPays" style="font-size: 3.5rem; line-height: 1; display: inline-block;">🇨🇩</span>
+                <!-- Image du drapeau -->
+                <img id="drapeauPays" src="https://flagcdn.com/w160/cd.png" alt="Drapeau du pays" crossorigin="anonymous" style="width: 75px; height: auto; object-fit: contain; border-radius: 4px;">
             </div>
             <div class="header-brand">
                 <h2>BMJ SERVICE</h2>
@@ -630,7 +630,7 @@
         const signatureDomaine = document.getElementById("signatureDomaine");
         const dateElement = document.getElementById("dateCertificat");
         const dateElement2 = document.getElementById("dateCertificat2");
-        const elementDrapeau = document.getElementById("drapeauPays");
+        const imgDrapeau = document.getElementById("drapeauPays");
 
         // Si aucun utilisateur n'est connecté, redirection vers la page de connexion
         if (!utilisateur) {
@@ -639,56 +639,67 @@
             return;
         }
 
-        // Dictionnaire complet de TOUS les pays associés à leurs codes ISO
+        // Dictionnaire avec des clés nettoyées (sans accents, minuscules)
         const codesPaysISO = {
-            "République Démocratique du Congo": "cd",
-            "Congo-Brazzaville": "cg",
-            "Zambie": "zm",
-            "Tanzanie": "tz",
-            "France": "fr",
-            "Côte d'Ivoire": "ci",
-            "Cameroun": "cm",
-            "Sénégal": "sn",
-            "Gabon": "ga",
-            "Togo": "tg",
-            "Bénin": "bj",
-            "Mali": "ml",
-            "Burkina Faso": "bf",
-            "Rwanda": "rw",
-            "Burundi": "bi",
-            "Belgique": "be",
-            "Canada": "ca",
-            "Algérie": "dz",
-            "Maroc": "ma",
-            "Tunisie": "tn",
-            "Afrique du Sud": "za",
-            "Nigéria": "ng",
-            "Kenya": "ke",
-            "Angola": "ao",
-            "Allemagne": "de",
-            "Espagne": "es",
-            "Italie": "it",
-            "Royaume-Uni": "gb",
-            "États-Unis": "us",
-            "Chine": "cn",
-            "Inde": "in",
-            "Brésil": "br"
+            "republique democratique du congo": "cd", "congo kinshasa": "cd", "congo-kinshasa": "cd", "cd": "cd",
+            "congo brazzaville": "cg", "congo-brazzaville": "cg", "cg": "cg",
+            "zambie": "zm", "zm": "zm",
+            "tanzanie": "tz", "tz": "tz",
+            "france": "fr", "fr": "fr",
+            "cote d'ivoire": "ci", "ci": "ci",
+            "cameroun": "cm", "cm": "cm",
+            "senegal": "sn", "sn": "sn",
+            "gabon": "ga", "ga": "ga",
+            "togo": "tg", "tg": "tg",
+            "benin": "bj", "bj": "bj",
+            "mali": "ml", "ml": "ml",
+            "burkina faso": "bf", "bf": "bf",
+            "rwanda": "rw", "rw": "rw",
+            "burundi": "bi", "bi": "bi",
+            "belgique": "be", "be": "be",
+            "canada": "ca", "ca": "ca",
+            "algerie": "dz", "dz": "dz",
+            "maroc": "ma", "ma": "ma",
+            "tunisie": "tn", "tn": "tn",
+            "afrique du sud": "za", "za": "za",
+            "nigeria": "ng", "ng": "ng",
+            "kenya": "ke", "ke": "ke",
+            "angola": "ao", "ao": "ao",
+            "allemagne": "de", "de": "de",
+            "espagne": "es", "es": "es",
+            "italie": "it", "it": "it",
+            "royaume-uni": "gb", "royaume uni": "gb", "gb": "gb",
+            "etats-unis": "us", "usa": "us", "us": "us",
+            "chine": "cn", "cn": "cn",
+            "inde": "in", "in": "in",
+            "bresil": "br", "br": "br"
         };
 
-        // Fonction pour transformer un code ISO en emoji drapeau officiel
-        function obtenirEmojiDrapeau(codeIso) {
-            return codeIso
-                .toUpperCase()
-                .replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt(0)));
+        // Fonction pour supprimer les accents et normaliser le texte du pays
+        function normaliserTexte(texte) {
+            return texte
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "") // Supprime les accents
+                .toLowerCase()
+                .trim();
         }
 
-        // Attribution dynamique du drapeau (garanti sans bug CORS en ligne)
-        if (elementDrapeau) {
-            let codeIso = "cd"; // RDC par défaut
-            if (utilisateur.pays && codesPaysISO[utilisateur.pays]) {
-                codeIso = codesPaysISO[utilisateur.pays];
+        // Attribution dynamique et sécurisée du drapeau
+        if (imgDrapeau) {
+            let codeIso = "cd"; // Valeur par défaut (RDC)
+            
+            if (utilisateur.pays) {
+                let paysNettoye = normaliserTexte(utilisateur.pays);
+                console.log("Pays utilisateur détecté et nettoyé :", paysNettoye); // Pour le débogage (F12)
+                
+                if (codesPaysISO[paysNettoye]) {
+                    codeIso = codesPaysISO[paysNettoye];
+                }
             }
-            elementDrapeau.textContent = obtenirEmojiDrapeau(codeIso);
+            
+            // Chargement de l'image officielle du drapeau
+            imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
+            imgDrapeau.alt = utilisateur.pays ? `Drapeau : ${utilisateur.pays}` : "Drapeau officiel";
         }
 
         // Date du jour formatée en français
@@ -815,7 +826,7 @@
         }
 
         // Fonction de génération et téléchargement de l'image PNG du certificat
-        function lancerTelecharger() {
+        function lancerTelechargement() {
             btnTelecharger.disabled = true;
             btnTelecharger.textContent = "Génération du certificat en cours...";
 
@@ -843,5 +854,6 @@
         }
     });
     </script>
+
 </body>
 </html>
