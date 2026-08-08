@@ -566,7 +566,7 @@
         <!-- HEADER -->
         <div class="cert-header">
             <div class="header-box">
-                <img src="https://cdn.pixabay.com/photo/2017/06/09/14/11/flag-2386946_1280.jpg" alt="Drapeau RDC" crossorigin="anonymous">
+                <img id="drapeauPays" src="" alt="Drapeau du pays" crossorigin="anonymous" style="width: 80px; height: auto; object-fit: contain;">
             </div>
             <div class="header-brand">
                 <h2>BMJ SERVICE</h2>
@@ -632,9 +632,11 @@
         </div>
     </div>
 
+
+
     <!-- JAVASCRIPT -->
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
+   document.addEventListener("DOMContentLoaded", function () {
     // 1. Récupération des données de l'utilisateur connecté
     const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
     const panelStatus = document.getElementById("panelStatus");
@@ -644,12 +646,7 @@
     const signatureDomaine = document.getElementById("signatureDomaine");
     const dateElement = document.getElementById("dateCertificat");
     const dateElement2 = document.getElementById("dateCertificat2");
-
-    // Date du jour formatée
-    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-    const dateDuJour = new Date().toLocaleDateString('fr-FR', optionsDate);
-    dateElement.textContent = dateDuJour;
-    dateElement2.textContent = dateDuJour;
+    const imgDrapeau = document.getElementById("drapeauPays");
 
     // Si aucun utilisateur n'est connecté, redirection vers la page de connexion
     if (!utilisateur) {
@@ -657,6 +654,50 @@
         window.location.href = "connexion.html";
         return;
     }
+
+    // Dictionnaire associant chaque pays à son code ISO pour FlagCDN
+    const codesPaysISO = {
+        "République Démocratique du Congo": "cd",
+        "Zambie": "zm",
+        "Tanzanie": "tz",
+        "Congo-Brazzaville": "cg",
+        "France": "fr",
+        "Côte d'Ivoire": "ci",
+        "Cameroun": "cm",
+        "Sénégal": "sn",
+        "Gabon": "ga",
+        "Togo": "tg",
+        "Bénin": "bj",
+        "Mali": "ml",
+        "Burkina Faso": "bf",
+        "Rwanda": "rw",
+        "Burundi": "bi",
+        "Belgique": "be",
+        "Canada": "ca",
+        "Algérie": "dz",
+        "Maroc": "ma",
+        "Tunisie": "tn",
+        "Afrique du Sud": "za",
+        "Nigéria": "ng",
+        "Kenya": "ke"
+    };
+
+    // Attribution dynamique du drapeau selon le pays enregistré
+    if (utilisateur.pays && codesPaysISO[utilisateur.pays]) {
+        let codeIso = codesPaysISO[utilisateur.pays];
+        imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
+        imgDrapeau.alt = `Drapeau : ${utilisateur.pays}`;
+    } else {
+        // Drapeau par défaut (RDC par défaut si non trouvé)
+        imgDrapeau.src = `https://flagcdn.com/w160/cd.png`;
+        imgDrapeau.alt = "Drapeau officiel";
+    }
+
+    // Date du jour formatée
+    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+    const dateDuJour = new Date().toLocaleDateString('fr-FR', optionsDate);
+    dateElement.textContent = dateDuJour;
+    dateElement2.textContent = dateDuJour;
 
     // 2. Injection dynamique du nom et du domaine choisi
     nomElement.textContent = utilisateur.nom || "Apprenant";
@@ -669,7 +710,7 @@
     const estPremium = utilisateur.premium === true;
 
     if (estPremium) {
-        panelStatus.innerHTML = `✅ Accès validé : Compte Premium actif pour <strong>${utilisateur.nom}</strong> (Domaine : ${domaineUtilisateur}).`;
+        panelStatus.innerHTML = `✅ Accès validé : Compte Premium actif pour <strong>${utilisateur.nom}</strong> (Pays : ${utilisateur.pays || 'Non spécifié'} | Domaine : ${domaineUtilisateur}).`;
         panelStatus.style.borderLeftColor = "#16a34a";
     } else {
         panelStatus.innerHTML = `⚠️ Compte non Premium — Nom : <strong>${utilisateur.nom}</strong> | Domaine : <em>${domaineUtilisateur}</em>. <span style="color:#dc2626;">Paiement requis pour le téléchargement.</span>`;
@@ -699,103 +740,34 @@
         `;
         document.body.appendChild(modalOverlay);
 
-        // Styles CSS injectés dynamiquement pour la popup élégante
         const styleModale = document.createElement("style");
         styleModale.innerHTML = `
             #elegantModalOverlay {
                 position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
+                top: 0; left: 0; width: 100%; height: 100%;
                 background: rgba(15, 23, 42, 0.6);
                 backdrop-filter: blur(6px);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 99999;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
+                display: flex; align-items: center; justify-content: center;
+                z-index: 99999; opacity: 0; visibility: hidden; transition: all 0.3s ease;
             }
-            #elegantModalOverlay.active {
-                opacity: 1;
-                visibility: visible;
-            }
+            #elegantModalOverlay.active { opacity: 1; visibility: visible; }
             .elegant-modal {
-                background: #ffffff;
-                width: 90%;
-                max-width: 420px;
-                border-radius: 16px;
-                padding: 30px;
-                text-align: center;
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-                transform: translateY(20px);
-                transition: transform 0.3s ease;
+                background: #ffffff; width: 90%; max-width: 420px; border-radius: 16px; padding: 30px; text-align: center;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); transform: translateY(20px); transition: transform 0.3s ease;
             }
-            #elegantModalOverlay.active .elegant-modal {
-                transform: translateY(0);
-            }
-            .modal-icon-container {
-                width: 60px;
-                height: 60px;
-                background: #fef2f2;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 0 auto 20px auto;
-            }
-            .modal-svg-icon {
-                width: 32px;
-                height: 32px;
-                color: #dc2626;
-            }
-            .elegant-modal h3 {
-                font-size: 1.25rem;
-                color: #1e293b;
-                margin-bottom: 10px;
-                font-weight: 700;
-            }
-            .elegant-modal p {
-                font-size: 0.95rem;
-                color: #64748b;
-                line-height: 1.5;
-                margin-bottom: 25px;
-            }
-            .modal-actions {
-                display: flex;
-                gap: 12px;
-            }
-            .modal-actions button {
-                flex: 1;
-                padding: 12px 16px;
-                border-radius: 8px;
-                font-size: 0.9rem;
-                font-weight: 600;
-                cursor: pointer;
-                border: none;
-                transition: background 0.2s;
-            }
-            .btn-secondary {
-                background: #f1f5f9;
-                color: #475569;
-            }
-            .btn-secondary:hover {
-                background: #e2e8f0;
-            }
-            .btn-primary {
-                background: #2563eb;
-                color: #ffffff;
-            }
-            .btn-primary:hover {
-                background: #1d4ed8;
-            }
+            #elegantModalOverlay.active .elegant-modal { transform: translateY(0); }
+            .modal-icon-container { width: 60px; height: 60px; background: #fef2f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
+            .modal-svg-icon { width: 32px; height: 32px; color: #dc2626; }
+            .elegant-modal h3 { font-size: 1.25rem; color: #1e293b; margin-bottom: 10px; font-weight: 700; }
+            .elegant-modal p { font-size: 0.95rem; color: #64748b; line-height: 1.5; margin-bottom: 25px; }
+            .modal-actions { display: flex; gap: 12px; }
+            .modal-actions button { flex: 1; padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; }
+            .btn-secondary { background: #f1f5f9; color: #475569; }
+            .btn-primary { background: #2563eb; color: #ffffff; }
         `;
         document.head.appendChild(styleModale);
     }
 
-    // Éléments de la modale
     const modalBtnFermer = document.getElementById("modalBtnFermer");
     const modalBtnPayer = document.getElementById("modalBtnPayer");
     const modalNomUser = document.getElementById("modalNomUser");
@@ -806,28 +778,22 @@
 
     btnTelecharger.addEventListener("click", function () {
         if (utilisateur.premium === true) {
-            // Si l'utilisateur a payé, téléchargement direct
             lancerTelechargement();
         } else {
-            // Remplir les informations dynamiques dans la popup élégante
             modalNomUser.textContent = utilisateur.nom;
             modalDomaineUser.textContent = domaineUtilisateur;
-            // Afficher la popup
             modalOverlay.classList.add("active");
         }
     });
 
-    // Fermer la popup
     modalBtnFermer.addEventListener("click", function () {
         modalOverlay.classList.remove("active");
     });
 
-    // Rediriger vers la page de paiement au clic sur le bouton de la popup
     modalBtnPayer.addEventListener("click", function () {
         window.location.href = "certificat_marketing.html";
     });
 
-    // Fermer en cliquant en dehors de la boîte modale
     modalOverlay.addEventListener("click", function (e) {
         if (e.target === modalOverlay) {
             modalOverlay.classList.remove("active");
