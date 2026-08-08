@@ -635,8 +635,8 @@
 
 
     <!-- JAVASCRIPT -->
-    <script>
-   document.addEventListener("DOMContentLoaded", function () {
+   <script>
+    document.addEventListener("DOMContentLoaded", function () {
     // 1. Récupération des données de l'utilisateur connecté
     const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
     const panelStatus = document.getElementById("panelStatus");
@@ -655,12 +655,12 @@
         return;
     }
 
-    // Dictionnaire associant chaque pays à son code ISO pour FlagCDN
+    // Dictionnaire complet et mis à jour de TOUS les pays pour FlagCDN
     const codesPaysISO = {
         "République Démocratique du Congo": "cd",
+        "Congo-Brazzaville": "cg",
         "Zambie": "zm",
         "Tanzanie": "tz",
-        "Congo-Brazzaville": "cg",
         "France": "fr",
         "Côte d'Ivoire": "ci",
         "Cameroun": "cm",
@@ -679,42 +679,58 @@
         "Tunisie": "tn",
         "Afrique du Sud": "za",
         "Nigéria": "ng",
-        "Kenya": "ke"
+        "Kenya": "ke",
+        "Angola": "ao",
+        "Allemagne": "de",
+        "Espagne": "es",
+        "Italie": "it",
+        "Royaume-Uni": "gb",
+        "États-Unis": "us",
+        "Chine": "cn",
+        "Inde": "in",
+        "Brésil": "br"
     };
 
-    // Attribution dynamique du drapeau selon le pays enregistré
-    if (utilisateur.pays && codesPaysISO[utilisateur.pays]) {
-        let codeIso = codesPaysISO[utilisateur.pays];
-        imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
-        imgDrapeau.alt = `Drapeau : ${utilisateur.pays}`;
-    } else {
-        // Drapeau par défaut (RDC par défaut si non trouvé)
-        imgDrapeau.src = `https://flagcdn.com/w160/cd.png`;
-        imgDrapeau.alt = "Drapeau officiel";
+    // Configuration pour éviter les blocages de sécurité (CORS) avec html2canvas
+    if (imgDrapeau) {
+        imgDrapeau.crossOrigin = "anonymous";
+        
+        // Attribution dynamique du drapeau selon le pays enregistré
+        if (utilisateur.pays && codesPaysISO[utilisateur.pays]) {
+            let codeIso = codesPaysISO[utilisateur.pays];
+            imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
+            imgDrapeau.alt = `Drapeau : ${utilisateur.pays}`;
+        } else {
+            // Drapeau par défaut (RDC par défaut si non trouvé)
+            imgDrapeau.src = `https://flagcdn.com/w160/cd.png`;
+            imgDrapeau.alt = "Drapeau officiel";
+        }
     }
 
     // Date du jour formatée
     const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
     const dateDuJour = new Date().toLocaleDateString('fr-FR', optionsDate);
-    dateElement.textContent = dateDuJour;
-    dateElement2.textContent = dateDuJour;
+    if (dateElement) dateElement.textContent = dateDuJour;
+    if (dateElement2) dateElement2.textContent = dateDuJour;
 
     // 2. Injection dynamique du nom et du domaine choisi
-    nomElement.textContent = utilisateur.nom || "Apprenant";
+    if (nomElement) nomElement.textContent = utilisateur.nom || "Apprenant";
     const domaineUtilisateur = utilisateur.domaine || "Marketing Digital";
-    domaineTexte.textContent = domaineUtilisateur;
-    nomDomaine.textContent = domaineUtilisateur.toUpperCase();
-    signatureDomaine.textContent = "Expert " + domaineUtilisateur;
+    if (domaineTexte) domaineTexte.textContent = domaineUtilisateur;
+    if (nomDomaine) nomDomaine.textContent = domaineUtilisateur.toUpperCase();
+    if (signatureDomaine) signatureDomaine.textContent = "Expert " + domaineUtilisateur;
 
     // 3. Vérification de l'abonnement Premium
     const estPremium = utilisateur.premium === true;
 
-    if (estPremium) {
-        panelStatus.innerHTML = `✅ Accès validé : Compte Premium actif pour <strong>${utilisateur.nom}</strong> (Pays : ${utilisateur.pays || 'Non spécifié'} | Domaine : ${domaineUtilisateur}).`;
-        panelStatus.style.borderLeftColor = "#16a34a";
-    } else {
-        panelStatus.innerHTML = `⚠️ Compte non Premium — Nom : <strong>${utilisateur.nom}</strong> | Domaine : <em>${domaineUtilisateur}</em>. <span style="color:#dc2626;">Paiement requis pour le téléchargement.</span>`;
-        panelStatus.style.borderLeftColor = "#dc2626";
+    if (panelStatus) {
+        if (estPremium) {
+            panelStatus.innerHTML = `✅ Accès validé : Compte Premium actif pour <strong>${utilisateur.nom}</strong> (Pays : ${utilisateur.pays || 'Non spécifié'} | Domaine : ${domaineUtilisateur}).`;
+            panelStatus.style.borderLeftColor = "#16a34a";
+        } else {
+            panelStatus.innerHTML = `⚠️ Compte non Premium — Nom : <strong>${utilisateur.nom}</strong> | Domaine : <em>${domaineUtilisateur}</em>. <span style="color:#dc2626;">Paiement requis pour le téléchargement.</span>`;
+            panelStatus.style.borderLeftColor = "#dc2626";
+        }
     }
 
     // 4. Injection dynamique d'une modale (popup) élégante dans le DOM si elle n'existe pas
@@ -776,34 +792,45 @@
     // 5. Gestion du clic sur le bouton Télécharger
     const btnTelecharger = document.getElementById("btnTelecharger");
 
-    btnTelecharger.addEventListener("click", function () {
-        if (utilisateur.premium === true) {
-            lancerTelechargement();
-        } else {
-            modalNomUser.textContent = utilisateur.nom;
-            modalDomaineUser.textContent = domaineUtilisateur;
-            modalOverlay.classList.add("active");
-        }
-    });
+    if (btnTelecharger) {
+        btnTelecharger.addEventListener("click", function () {
+            if (utilisateur.premium === true) {
+                lancerTelechargement();
+            } else {
+                if (modalNomUser) modalNomUser.textContent = utilisateur.nom;
+                if (modalDomaineUser) modalDomaineUser.textContent = domaineUtilisateur;
+                modalOverlay.classList.add("active");
+            }
+        });
+    }
 
-    modalBtnFermer.addEventListener("click", function () {
-        modalOverlay.classList.remove("active");
-    });
-
-    modalBtnPayer.addEventListener("click", function () {
-        window.location.href = "certificat_marketing.html";
-    });
-
-    modalOverlay.addEventListener("click", function (e) {
-        if (e.target === modalOverlay) {
+    if (modalBtnFermer) {
+        modalBtnFermer.addEventListener("click", function () {
             modalOverlay.classList.remove("active");
-        }
-    });
+        });
+    }
+
+    if (modalBtnPayer) {
+        modalBtnPayer.addEventListener("click", function () {
+            window.location.href = "certificat_marketing.html";
+        });
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener("click", function (e) {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove("active");
+            }
+        });
+    }
 
     // 6. Bouton Retour
-    document.getElementById("btnRetour").addEventListener("click", function () {
-        window.history.back();
-    });
+    const btnRetour = document.getElementById("btnRetour");
+    if (btnRetour) {
+        btnRetour.addEventListener("click", function () {
+            window.history.back();
+        });
+    }
 
     // Fonction de génération et téléchargement de l'image PNG du certificat
     function lancerTelechargement() {
@@ -833,6 +860,6 @@
         });
     }
 });
-    </script>
+   </script>
 </body>
 </html>
