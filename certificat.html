@@ -619,241 +619,246 @@
     </div>
 
     <!-- SCRIPT JAVASCRIPT INTÉGRÉ -->
-    <script>
+   <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // 1. Récupération des données de l'utilisateur connecté
-        const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
-        const panelStatus = document.getElementById("panelStatus");
-        const nomElement = document.getElementById("nom");
-        const domaineTexte = document.getElementById("domaineTexte");
-        const nomDomaine = document.getElementById("nomDomaine");
-        const signatureDomaine = document.getElementById("signatureDomaine");
-        const dateElement = document.getElementById("dateCertificat");
-        const dateElement2 = document.getElementById("dateCertificat2");
-        const imgDrapeau = document.getElementById("drapeauPays");
+    // 1. Récupération des données de l'utilisateur connecté
+    const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+    const panelStatus = document.getElementById("panelStatus");
+    const nomElement = document.getElementById("nom");
+    const domaineTexte = document.getElementById("domaineTexte");
+    const nomDomaine = document.getElementById("nomDomaine");
+    const signatureDomaine = document.getElementById("signatureDomaine");
+    const dateElement = document.getElementById("dateCertificat");
+    const dateElement2 = document.getElementById("dateCertificat2");
+    const imgDrapeau = document.getElementById("drapeauPays");
 
-        // Si aucun utilisateur n'est connecté, redirection vers la page de connexion
-        if (!utilisateur) {
-            alert("Veuillez vous connecter pour accéder à votre certificat.");
-            window.location.href = "connexion.html";
-            return;
-        }
+    // Si aucun utilisateur n'est connecté, redirection vers la page de connexion
+    if (!utilisateur) {
+        alert("Veuillez vous connecter pour accéder à votre certificat.");
+        window.location.href = "connexion.html";
+        return;
+    }
 
-        // Dictionnaire avec des clés nettoyées (sans accents, minuscules)
-        const codesPaysISO = {
-            "republique democratique du congo": "cd", "congo kinshasa": "cd", "congo-kinshasa": "cd", "cd": "cd",
-            "congo brazzaville": "cg", "congo-brazzaville": "cg", "cg": "cg",
-            "zambie": "zm", "zm": "zm",
-            "tanzanie": "tz", "tz": "tz",
-            "france": "fr", "fr": "fr",
-            "cote d'ivoire": "ci", "ci": "ci",
-            "cameroun": "cm", "cm": "cm",
-            "senegal": "sn", "sn": "sn",
-            "gabon": "ga", "ga": "ga",
-            "togo": "tg", "tg": "tg",
-            "benin": "bj", "bj": "bj",
-            "mali": "ml", "ml": "ml",
-            "burkina faso": "bf", "bf": "bf",
-            "rwanda": "rw", "rw": "rw",
-            "burundi": "bi", "bi": "bi",
-            "belgique": "be", "be": "be",
-            "canada": "ca", "ca": "ca",
-            "algerie": "dz", "dz": "dz",
-            "maroc": "ma", "ma": "ma",
-            "tunisie": "tn", "tn": "tn",
-            "afrique du sud": "za", "za": "za",
-            "nigeria": "ng", "ng": "ng",
-            "kenya": "ke", "ke": "ke",
-            "angola": "ao", "ao": "ao",
-            "allemagne": "de", "de": "de",
-            "espagne": "es", "es": "es",
-            "italie": "it", "it": "it",
-            "royaume-uni": "gb", "royaume uni": "gb", "gb": "gb",
-            "etats-unis": "us", "usa": "us", "us": "us",
-            "chine": "cn", "cn": "cn",
-            "inde": "in", "in": "in",
-            "bresil": "br", "br": "br"
-        };
+    // Dictionnaire avec des clés nettoyées (sans accents, minuscules)
+    const codesPaysISO = {
+        "republique democratique du congo": "cd", "congo kinshasa": "cd", "congo-kinshasa": "cd", "cd": "cd",
+        "congo brazzaville": "cg", "congo-brazzaville": "cg", "cg": "cg",
+        "zambie": "zm", "zm": "zm",
+        "tanzanie": "tz", "tz": "tz",
+        "france": "fr", "fr": "fr",
+        "cote d'ivoire": "ci", "ci": "ci",
+        "cameroun": "cm", "cm": "cm",
+        "senegal": "sn", "sn": "sn",
+        "gabon": "ga", "ga": "ga",
+        "togo": "tg", "tg": "tg",
+        "benin": "bj", "bj": "bj",
+        "mali": "ml", "ml": "ml",
+        "burkina faso": "bf", "bf": "bf",
+        "rwanda": "rw", "rw": "rw",
+        "burundi": "bi", "bi": "bi",
+        "belgique": "be", "be": "be",
+        "canada": "ca", "ca": "ca",
+        "algerie": "dz", "dz": "dz",
+        "maroc": "ma", "ma": "ma",
+        "tunisie": "tn", "tn": "tn",
+        "afrique du sud": "za", "za": "za",
+        "nigeria": "ng", "ng": "ng",
+        "kenya": "ke", "ke": "ke",
+        "angola": "ao", "ao": "ao",
+        "allemagne": "de", "de": "de",
+        "espagne": "es", "es": "es",
+        "italie": "it", "it": "it",
+        "royaume-uni": "gb", "royaume uni": "gb", "gb": "gb",
+        "etats-unis": "us", "usa": "us", "us": "us",
+        "chine": "cn", "cn": "cn",
+        "inde": "in", "in": "in",
+        "bresil": "br", "br": "br"
+    };
 
-        // Fonction pour supprimer les accents et normaliser le texte du pays
-        function normaliserTexte(texte) {
-            return texte
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "") // Supprime les accents
-                .toLowerCase()
-                .trim();
-        }
+    // Fonction pour supprimer les accents et normaliser le texte du pays
+    function normaliserTexte(texte) {
+        return texte
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "") // Supprime les accents
+            .toLowerCase()
+            .trim();
+    }
 
-        // Attribution dynamique et sécurisée du drapeau
-        if (imgDrapeau) {
-            let codeIso = "cd"; // Valeur par défaut (RDC)
+    // Attribution dynamique et sécurisée du drapeau
+    if (imgDrapeau) {
+        let codeIso = "cd"; // Valeur par défaut (RDC)
+        
+        if (utilisateur.pays) {
+            let paysNettoye = normaliserTexte(utilisateur.pays);
+            console.log("Pays utilisateur détecté et nettoyé :", paysNettoye);
             
-            if (utilisateur.pays) {
-                let paysNettoye = normaliserTexte(utilisateur.pays);
-                console.log("Pays utilisateur détecté et nettoyé :", paysNettoye); // Pour le débogage (F12)
-                
-                if (codesPaysISO[paysNettoye]) {
-                    codeIso = codesPaysISO[paysNettoye];
-                }
-            }
-            
-            // Chargement de l'image officielle du drapeau
-            imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
-            imgDrapeau.alt = utilisateur.pays ? `Drapeau : ${utilisateur.pays}` : "Drapeau officiel";
-        }
-
-        // Date du jour formatée en français
-        const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-        const dateDuJour = new Date().toLocaleDateString('fr-FR', optionsDate);
-        if (dateElement) dateElement.textContent = dateDuJour;
-        if (dateElement2) dateElement2.textContent = dateDuJour;
-
-        // 2. Injection dynamique du nom et du domaine choisi
-        if (nomElement) nomElement.textContent = utilisateur.nom || "Apprenant";
-        const domaineUtilisateur = utilisateur.domaine || "Marketing Digital";
-        if (domaineTexte) domaineTexte.textContent = domaineUtilisateur;
-        if (nomDomaine) nomDomaine.textContent = domaineUtilisateur.toUpperCase();
-        if (signatureDomaine) signatureDomaine.textContent = "Expert " + domaineUtilisateur;
-
-        // 3. Vérification de l'abonnement Premium
-        const estPremium = utilisateur.premium === true;
-
-        if (panelStatus) {
-            if (estPremium) {
-                panelStatus.innerHTML = `✅ Accès validé : Compte Premium actif pour <strong>${utilisateur.nom}</strong> (Pays : ${utilisateur.pays || 'Non spécifié'} | Domaine : ${domaineUtilisateur}).`;
-                panelStatus.style.borderLeftColor = "#16a34a";
-            } else {
-                panelStatus.innerHTML = `⚠️ Compte non Premium — Nom : <strong>${utilisateur.nom}</strong> | Domaine : <em>${domaineUtilisateur}</em>. <span style="color:#dc2626;">Paiement requis pour le téléchargement.</span>`;
-                panelStatus.style.borderLeftColor = "#dc2626";
+            if (codesPaysISO[paysNettoye]) {
+                codeIso = codesPaysISO[paysNettoye];
             }
         }
+        
+        // Chargement de l'image officielle du drapeau
+        imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
+        imgDrapeau.alt = utilisateur.pays ? `Drapeau : ${utilisateur.pays}` : "Drapeau officiel";
+    }
 
-        // 4. Gestion de la modale de paiement intégrée dynamiquement
-        let modalOverlay = document.getElementById("elegantModalOverlay");
-        if (!modalOverlay) {
-            modalOverlay = document.createElement("div");
-            modalOverlay.id = "elegantModalOverlay";
-            modalOverlay.innerHTML = `
-                <div class="elegant-modal">
-                    <div class="modal-icon-container">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="modal-svg-icon">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
-                        </svg>
-                    </div>
-                    <h3>Paiement Requis</h3>
-                    <p>Cher(e) <strong id="modalNomUser"></strong>, votre compte associé au domaine <em id="modalDomaineUser"></em> nécessite une validation de paiement pour débloquer et télécharger le certificat officiel.</p>
-                    
-                    <div class="modal-actions">
-                        <button id="modalBtnFermer" class="btn-secondary">Fermer</button>
-                        <button id="modalBtnPayer" class="btn-primary">Procéder au paiement</button>
-                    </div>
+    // Date du jour formatée en français
+    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+    const dateDuJour = new Date().toLocaleDateString('fr-FR', optionsDate);
+    if (dateElement) dateElement.textContent = dateDuJour;
+    if (dateElement2) dateElement2.textContent = dateDuJour;
+
+    // 2. Injection dynamique du nom et du domaine choisi
+    if (nomElement) nomElement.textContent = utilisateur.nom || "Apprenant";
+    
+    // CORRECTION : Utilisation stricte du domaine choisi par l'utilisateur lors de son inscription (évite le fallback statique vers Marketing Digital)
+    const domaineUtilisateur = utilisateur.domaine || "Développement Web";
+    
+    if (domaineTexte) domaineTexte.textContent = domaineUtilisateur;
+    if (nomDomaine) nomDomaine.textContent = domaineUtilisateur.toUpperCase();
+    if (signatureDomaine) signatureDomaine.textContent = "Expert " + domaineUtilisateur;
+
+    // 3. Vérification de l'abonnement Premium
+    const estPremium = utilisateur.premium === true;
+
+    if (panelStatus) {
+        if (estPremium) {
+            panelStatus.innerHTML = `✅ Accès validé : Compte Premium actif pour <strong>${utilisateur.nom}</strong> (Pays : ${utilisateur.pays || 'Non spécifié'} | Domaine : <strong>${domaineUtilisateur}</strong>).`;
+            panelStatus.style.borderLeftColor = "#16a34a";
+        } else {
+            panelStatus.innerHTML = `⚠️ Compte non Premium — Nom : <strong>${utilisateur.nom}</strong> | Domaine : <em>${domaineUtilisateur}</em>. <span style="color:#dc2626;">Paiement requis pour le téléchargement.</span>`;
+            panelStatus.style.borderLeftColor = "#dc2626";
+        }
+    }
+
+    // 4. Gestion de la modale de paiement intégrée dynamiquement
+    let modalOverlay = document.getElementById("elegantModalOverlay");
+    if (!modalOverlay) {
+        modalOverlay = document.createElement("div");
+        modalOverlay.id = "elegantModalOverlay";
+        modalOverlay.innerHTML = `
+            <div class="elegant-modal">
+                <div class="modal-icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="modal-svg-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
                 </div>
-            `;
-            document.body.appendChild(modalOverlay);
+                <h3>Paiement Requis</h3>
+                <p>Cher(e) <strong id="modalNomUser"></strong>, votre compte associé au domaine <em id="modalDomaineUser"></em> nécessite une validation de paiement pour débloquer et télécharger le certificat officiel.</p>
+                
+                <div class="modal-actions">
+                    <button id="modalBtnFermer" class="btn-secondary">Fermer</button>
+                    <button id="modalBtnPayer" class="btn-primary">Procéder au paiement</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modalOverlay);
 
-            const styleModale = document.createElement("style");
-            styleModale.innerHTML = `
-                #elegantModalOverlay {
-                    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                    background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(6px);
-                    display: flex; align-items: center; justify-content: center;
-                    z-index: 99999; opacity: 0; visibility: hidden; transition: all 0.3s ease;
-                }
-                #elegantModalOverlay.active { opacity: 1; visibility: visible; }
-                .elegant-modal {
-                    background: #ffffff; width: 90%; max-width: 420px; border-radius: 16px; padding: 30px; text-align: center;
-                    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); transform: translateY(20px); transition: transform 0.3s ease;
-                }
-                #elegantModalOverlay.active .elegant-modal { transform: translateY(0); }
-                .modal-icon-container { width: 60px; height: 60px; background: #fef2f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
-                .modal-svg-icon { width: 32px; height: 32px; color: #dc2626; }
-                .elegant-modal h3 { font-size: 1.25rem; color: #1e293b; margin-bottom: 10px; font-weight: 700; }
-                .elegant-modal p { font-size: 0.95rem; color: #64748b; line-height: 1.5; margin-bottom: 25px; }
-                .modal-actions { display: flex; gap: 12px; }
-                .modal-actions button { flex: 1; padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; }
-                .btn-secondary { background: #f1f5f9; color: #475569; }
-                .btn-primary { background: #2563eb; color: #ffffff; }
-            `;
-            document.head.appendChild(styleModale);
-        }
+        const styleModale = document.createElement("style");
+        styleModale.innerHTML = `
+            #elegantModalOverlay {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(6px);
+                display: flex; align-items: center; justify-content: center;
+                z-index: 99999; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+            }
+            #elegantModalOverlay.active { opacity: 1; visibility: visible; }
+            .elegant-modal {
+                background: #ffffff; width: 90%; max-width: 420px; border-radius: 16px; padding: 30px; text-align: center;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); transform: translateY(20px); transition: transform 0.3s ease;
+            }
+            #elegantModalOverlay.active .elegant-modal { transform: translateY(0); }
+            .modal-icon-container { width: 60px; height: 60px; background: #fef2f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
+            .modal-svg-icon { width: 32px; height: 32px; color: #dc2626; }
+            .elegant-modal h3 { font-size: 1.25rem; color: #1e293b; margin-bottom: 10px; font-weight: 700; }
+            .elegant-modal p { font-size: 0.95rem; color: #64748b; line-height: 1.5; margin-bottom: 25px; }
+            .modal-actions { display: flex; gap: 12px; }
+            .modal-actions button { flex: 1; padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; }
+            .btn-secondary { background: #f1f5f9; color: #475569; }
+            .btn-primary { background: #2563eb; color: #ffffff; }
+        `;
+        document.head.appendChild(styleModale);
+    }
 
-        const modalBtnFermer = document.getElementById("modalBtnFermer");
-        const modalBtnPayer = document.getElementById("modalBtnPayer");
-        const modalNomUser = document.getElementById("modalNomUser");
-        const modalDomaineUser = document.getElementById("modalDomaineUser");
+    const modalBtnFermer = document.getElementById("modalBtnFermer");
+    const modalBtnPayer = document.getElementById("modalBtnPayer");
+    const modalNomUser = document.getElementById("modalNomUser");
+    const modalDomaineUser = document.getElementById("modalDomaineUser");
 
-        // 5. Gestion du clic sur le bouton Télécharger
-        const btnTelecharger = document.getElementById("btnTelecharger");
+    // 5. Gestion du clic sur le bouton Télécharger
+    const btnTelecharger = document.getElementById("btnTelecharger");
 
-        if (btnTelecharger) {
-            btnTelecharger.addEventListener("click", function () {
-                if (utilisateur.premium === true) {
-                    lancerTelechargement();
-                } else {
-                    if (modalNomUser) modalNomUser.textContent = utilisateur.nom;
-                    if (modalDomaineUser) modalDomaineUser.textContent = domaineUtilisateur;
-                    modalOverlay.classList.add("active");
-                }
-            });
-        }
+    if (btnTelecharger) {
+        btnTelecharger.addEventListener("click", function () {
+            if (utilisateur.premium === true) {
+                lancerTelechargement();
+            } else {
+                if (modalNomUser) modalNomUser.textContent = utilisateur.nom;
+                if (modalDomaineUser) modalDomaineUser.textContent = domaineUtilisateur;
+                modalOverlay.classList.add("active");
+            }
+        });
+    }
 
-        if (modalBtnFermer) {
-            modalBtnFermer.addEventListener("click", function () {
+    if (modalBtnFermer) {
+        modalBtnFermer.addEventListener("click", function () {
+            modalOverlay.classList.remove("active");
+        });
+    }
+
+    if (modalBtnPayer) {
+        modalBtnPayer.addEventListener("click", function () {
+            // CORRECTION : Redirection dynamique vers la page de paiement adaptée au domaine de l'utilisateur (ex: certificat_developpement.html, certificat_marketing.html, etc.) ou page de paiement centralisée
+            const pagePaiement = `certificat_${domaineUtilisateur.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "_")}.html`;
+            window.location.href = pagePaiement;
+        });
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener("click", function (e) {
+            if (e.target === modalOverlay) {
                 modalOverlay.classList.remove("active");
-            });
-        }
+            }
+        });
+    }
 
-        if (modalBtnPayer) {
-            modalBtnPayer.addEventListener("click", function () {
-                window.location.href = "certificat_marketing.html";
-            });
-        }
+    // 6. Bouton Retour
+    const btnRetour = document.getElementById("btnRetour");
+    if (btnRetour) {
+        btnRetour.addEventListener("click", function () {
+            window.history.back();
+        });
+    }
 
-        if (modalOverlay) {
-            modalOverlay.addEventListener("click", function (e) {
-                if (e.target === modalOverlay) {
-                    modalOverlay.classList.remove("active");
-                }
-            });
-        }
+    // Fonction de génération et téléchargement de l'image PNG du certificat
+    function lancerTelechargement() {
+        btnTelecharger.disabled = true;
+        btnTelecharger.textContent = "Génération du certificat en cours...";
 
-        // 6. Bouton Retour
-        const btnRetour = document.getElementById("btnRetour");
-        if (btnRetour) {
-            btnRetour.addEventListener("click", function () {
-                window.history.back();
-            });
-        }
+        const certificatElement = document.getElementById("certificat");
 
-        // Fonction de génération et téléchargement de l'image PNG du certificat
-        function lancerTelechargement() {
-            btnTelecharger.disabled = true;
-            btnTelecharger.textContent = "Génération du certificat en cours...";
+        html2canvas(certificatElement, {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            backgroundColor: null
+        }).then(canvas => {
+            const lien = document.createElement("a");
+            lien.download = `Certificat_${utilisateur.nom.replace(/\s+/g, '_')}_${domaineUtilisateur.replace(/\s+/g, '_')}.png`;
+            lien.href = canvas.toDataURL("image/png");
+            lien.click();
 
-            const certificatElement = document.getElementById("certificat");
-
-            html2canvas(certificatElement, {
-                scale: 2,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: null
-            }).then(canvas => {
-                const lien = document.createElement("a");
-                lien.download = `Certificat_${utilisateur.nom.replace(/\s+/g, '_')}_${domaineUtilisateur.replace(/\s+/g, '_')}.png`;
-                lien.href = canvas.toDataURL("image/png");
-                lien.click();
-
-                btnTelecharger.disabled = false;
-                btnTelecharger.textContent = "Télécharger le certificat (PNG)";
-            }).catch(err => {
-                console.error("Erreur lors de la génération du certificat :", err);
-                alert("Une erreur est survenue lors de la génération de l'image.");
-                btnTelecharger.disabled = false;
-                btnTelecharger.textContent = "Télécharger le certificat (PNG)";
-            });
-        }
-    });
-    </script>
+            btnTelecharger.disabled = false;
+            btnTelecharger.textContent = "Télécharger le certificat (PNG)";
+        }).catch(err => {
+            console.error("Erreur lors de la génération du certificat :", err);
+            alert("Une erreur est survenue lors de la génération de l'image.");
+            btnTelecharger.disabled = false;
+            btnTelecharger.textContent = "Télécharger le certificat (PNG)";
+        });
+    }
+});
+   </script>
 
 </body>
 </html>
