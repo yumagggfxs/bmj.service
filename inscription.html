@@ -682,7 +682,7 @@
             </div>
      
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
     const selectPays = document.getElementById("pays");
     const inputIndicatif = document.getElementById("indicatif");
     const imgDrapeau = document.getElementById("drapeauPays");
@@ -726,7 +726,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Remplissage automatique du menu déroulant des pays
     if (selectPays) {
-        // Option par défaut vide pour éviter de forcer un pays au chargement
         selectPays.innerHTML = '<option value="">Sélectionnez votre pays</option>';
 
         for (let pays in donneesPays) {
@@ -756,7 +755,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
             } else {
-                // CORRECTION : On vide les champs au lieu de forcer la RDC par défaut
                 if (inputIndicatif) inputIndicatif.value = "";
                 if (imgDrapeau) {
                     imgDrapeau.src = "";
@@ -787,7 +785,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Création dynamique de la Popup de confirmation du domaine (si elle n'existe pas)
+    // Création dynamique de la Popup de confirmation du domaine
     let popUpDomaineOverlay = document.getElementById("bmjPopupDomaine");
     if (!popUpDomaineOverlay) {
         popUpDomaineOverlay = document.createElement("div");
@@ -870,10 +868,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 photo: previewPhoto ? previewPhoto.src : "images/user.png"
             };
 
-            // Affichage de la popup personnalisée avec le domaine choisi
-            document.getElementById("bmjPopupTexteinnerHTML") = `Êtes-vous responsable du domaine choisi : <strong>${domaine}</strong> ? Le certificat qui vous sera délivré portera sur ce domaine.`;
-            // Correction syntaxique sécurisée pour le texte du popup
-            document.getElementById("bmjPopupTexte").innerHTML = `Êtes-vous responsable du domaine choisi : <strong>${domaine}</strong> ? Le certificat qui vous sera délivré portera sur ce domaine dès le départ.`;
+            // Injection dynamique du texte avec le domaine choisi dans le popup
+            const textePopup = document.getElementById("bmjPopupTexte");
+            if (textePopup) {
+                textePopup.innerHTML = `Êtes-vous responsable du domaine choisi : <strong>${domaine}</strong> ? Le certificat qui vous sera délivré portera sur ce domaine dès le départ.`;
+            }
             
             popUpDomaineOverlay.classList.add("active");
         });
