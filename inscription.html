@@ -499,7 +499,7 @@
 
             </h2>
             <!-- Formulaire d'inscription BMJ SERVICE -->
-<!-- Formulaire d'inscription BMJ SERVICE -->
+             <!-- Formulaire d'inscription BMJ SERVICE -->
 <form id="formInscription" class="bmj-form">
     
     <!-- Ligne : Nom complet -->
@@ -530,7 +530,7 @@
         </div>
     </div>
 
-    <!-- Ligne : Numéro de téléphone (Placé juste en bas du pays) -->
+    <!-- Ligne : Numéro de téléphone -->
     <div class="form-group">
         <label for="telephone">Numéro de téléphone</label>
         <div class="phone-container" style="display: flex; gap: 10px;">
@@ -682,7 +682,7 @@
             </div>
      
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded", function () {
     const selectPays = document.getElementById("pays");
     const inputIndicatif = document.getElementById("indicatif");
     const imgDrapeau = document.getElementById("drapeauPays");
@@ -864,11 +864,9 @@
                 domaine: domaine,
                 niveau: niveau,
                 password: password,
-                premium: false,
                 photo: previewPhoto ? previewPhoto.src : "images/user.png"
             };
 
-            // Injection dynamique du texte avec le domaine choisi dans le popup
             const textePopup = document.getElementById("bmjPopupTexte");
             if (textePopup) {
                 textePopup.innerHTML = `Êtes-vous responsable du domaine choisi : <strong>${domaine}</strong> ? Le certificat qui vous sera délivré portera sur ce domaine dès le départ.`;
@@ -886,22 +884,47 @@
         });
     }
 
-    // Bouton "Oui, Confirmer" sur la popup
+    // Bouton "Oui, Confirmer" sur la popup (Enregistrement Base de données + LocalStorage)
     const btnConfirmer = document.getElementById("bmjBtnConfirmer");
     if (btnConfirmer) {
-        btnConfirmer.addEventListener("click", function () {
+        btnConfirmer.addEventListener("click", async function () {
             if (utilisateurTemporaire) {
-                // Sauvegarde définitive dans le localStorage
-                localStorage.setItem("bmj_current_user", JSON.stringify(utilisateurTemporaire));
-                
-                let listeUtilisateurs = JSON.parse(localStorage.getItem("bmj_users_list")) || [];
-                listeUtilisateurs.push(utilisateurTemporaire);
-                localStorage.setItem("bmj_users_list", JSON.stringify(listeUtilisateurs));
+                // Désactiver le bouton pendant le chargement pour éviter les doubles clics
+                btnConfirmer.textContent = "Enregistrement...";
+                btnConfirmer.disabled = true;
 
-                popUpDomaineOverlay.classList.remove("active");
-                
-                // Redirection directe vers le tableau de bord
-                window.location.href = "dashboard.html"; 
+                try {
+                    // Envoi vers votre API Render
+                    const reponse = await fetch('https://back-end-h602.onrender.com/api/apprenants', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(utilisateurTemporaire)
+                    });
+
+                    const resultat = await reponse.json();
+
+                    if (reponse.ok && resultat.success) {
+                        // Sauvegarde locale pour la session en cours
+                        localStorage.setItem("bmj_current_user", JSON.stringify(resultat.data));
+                        
+                        let listeUtilisateurs = JSON.parse(localStorage.getItem("bmj_users_list")) || [];
+                        listeUtilisateurs.push(resultat.data);
+                        localStorage.setItem("bmj_users_list", JSON.stringify(listeUtilisateurs));
+
+                        popUpDomaineOverlay.classList.remove("active");
+                        window.location.href = "dashboard.html";
+                    } else {
+                        alert("Erreur : " + (resultat.error || "Impossible de s'inscrire"));
+                        btnConfirmer.textContent = "Oui, Confirmer";
+                        btnConfirmer.disabled = false;
+                        popUpDomaineOverlay.classList.remove("active");
+                    }
+                } catch (erreur) {
+                    console.error("Erreur réseau :", erreur);
+                    alert("Erreur de connexion avec le serveur distant. Vérifiez votre connexion.");
+                    btnConfirmer.textContent = "Oui, Confirmer";
+                    btnConfirmer.disabled = false;
+                }
             }
         });
     }
