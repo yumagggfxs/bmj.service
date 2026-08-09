@@ -566,7 +566,8 @@
         <!-- HEADER -->
         <div class="cert-header">
             <div class="header-box">
-                <img src="https://cdn.pixabay.com/photo/2017/06/09/14/11/flag-2386946_1280.jpg" alt="Drapeau RDC" crossorigin="anonymous">
+                <!-- Image du drapeau -->
+                <img id="drapeauPays" src="https://flagcdn.com/w160/cd.png" alt="Drapeau du pays" crossorigin="anonymous" style="width: 75px; height: auto; object-fit: contain; border-radius: 4px;">
             </div>
             <div class="header-brand">
                 <h2>BMJ SERVICE</h2>
@@ -617,23 +618,8 @@
         <button type="button" class="btn btn-secondary" id="btnRetour">← Retour</button>
     </div>
 
-    <!-- MODAL VÉRIFICATION PREMIUM -->
-    <div class="modal-overlay" id="modalPremium">
-        <div class="modal-card">
-            <div class="modal-icon">🔐</div>
-            <div class="modal-title">Abonnement Premium Requis</div>
-            <p class="modal-desc">Le téléchargement de ce certificat est réservé aux membres abonnés Premium. Veuillez entrer un code d'activation valide.</p>
-            <input type="password" class="modal-input" id="inputCodePremium" placeholder="Code d'accès Premium">
-            <div class="modal-error" id="modalError">Code incorrect. Veuillez réessayer.</div>
-            <div class="modal-actions">
-                <button type="button" class="modal-btn modal-btn-cancel" id="btnAnnulerModal">Annuler</button>
-                <button type="button" class="modal-btn modal-btn-submit" id="btnValiderModal">Activer & Télécharger</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT -->
-    <script>
+    <!-- SCRIPT JAVASCRIPT INTÉGRÉ -->
+   <script>
     document.addEventListener("DOMContentLoaded", function () {
     // 1. Récupération des données de l'utilisateur connecté
     const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
@@ -644,12 +630,7 @@
     const signatureDomaine = document.getElementById("signatureDomaine");
     const dateElement = document.getElementById("dateCertificat");
     const dateElement2 = document.getElementById("dateCertificat2");
-
-    // Date du jour formatée
-    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-    const dateDuJour = new Date().toLocaleDateString('fr-FR', optionsDate);
-    dateElement.textContent = dateDuJour;
-    dateElement2.textContent = dateDuJour;
+    const imgDrapeau = document.getElementById("drapeauPays");
 
     // Si aucun utilisateur n'est connecté, redirection vers la page de connexion
     if (!utilisateur) {
@@ -658,25 +639,99 @@
         return;
     }
 
+    // Dictionnaire avec des clés nettoyées (sans accents, minuscules)
+    const codesPaysISO = {
+        "republique democratique du congo": "cd", "congo kinshasa": "cd", "congo-kinshasa": "cd", "cd": "cd",
+        "congo brazzaville": "cg", "congo-brazzaville": "cg", "cg": "cg",
+        "zambie": "zm", "zm": "zm",
+        "tanzanie": "tz", "tz": "tz",
+        "france": "fr", "fr": "fr",
+        "cote d'ivoire": "ci", "ci": "ci",
+        "cameroun": "cm", "cm": "cm",
+        "senegal": "sn", "sn": "sn",
+        "gabon": "ga", "ga": "ga",
+        "togo": "tg", "tg": "tg",
+        "benin": "bj", "bj": "bj",
+        "mali": "ml", "ml": "ml",
+        "burkina faso": "bf", "bf": "bf",
+        "rwanda": "rw", "rw": "rw",
+        "burundi": "bi", "bi": "bi",
+        "belgique": "be", "be": "be",
+        "canada": "ca", "ca": "ca",
+        "algerie": "dz", "dz": "dz",
+        "maroc": "ma", "ma": "ma",
+        "tunisie": "tn", "tn": "tn",
+        "afrique du sud": "za", "za": "za",
+        "nigeria": "ng", "ng": "ng",
+        "kenya": "ke", "ke": "ke",
+        "angola": "ao", "ao": "ao",
+        "allemagne": "de", "de": "de",
+        "espagne": "es", "es": "es",
+        "italie": "it", "it": "it",
+        "royaume-uni": "gb", "royaume uni": "gb", "gb": "gb",
+        "etats-unis": "us", "usa": "us", "us": "us",
+        "chine": "cn", "cn": "cn",
+        "inde": "in", "in": "in",
+        "bresil": "br", "br": "br"
+    };
+
+    // Fonction pour supprimer les accents et normaliser le texte du pays
+    function normaliserTexte(texte) {
+        return texte
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "") // Supprime les accents
+            .toLowerCase()
+            .trim();
+    }
+
+    // Attribution dynamique et sécurisée du drapeau
+    if (imgDrapeau) {
+        let codeIso = "cd"; // Valeur par défaut (RDC)
+        
+        if (utilisateur.pays) {
+            let paysNettoye = normaliserTexte(utilisateur.pays);
+            console.log("Pays utilisateur détecté et nettoyé :", paysNettoye);
+            
+            if (codesPaysISO[paysNettoye]) {
+                codeIso = codesPaysISO[paysNettoye];
+            }
+        }
+        
+        // Chargement de l'image officielle du drapeau
+        imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
+        imgDrapeau.alt = utilisateur.pays ? `Drapeau : ${utilisateur.pays}` : "Drapeau officiel";
+    }
+
+    // Date du jour formatée en français
+    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+    const dateDuJour = new Date().toLocaleDateString('fr-FR', optionsDate);
+    if (dateElement) dateElement.textContent = dateDuJour;
+    if (dateElement2) dateElement2.textContent = dateDuJour;
+
     // 2. Injection dynamique du nom et du domaine choisi
-    nomElement.textContent = utilisateur.nom || "Apprenant";
-    const domaineUtilisateur = utilisateur.domaine || "Marketing Digital";
-    domaineTexte.textContent = domaineUtilisateur;
-    nomDomaine.textContent = domaineUtilisateur.toUpperCase();
-    signatureDomaine.textContent = "Expert " + domaineUtilisateur;
+    if (nomElement) nomElement.textContent = utilisateur.nom || "Apprenant";
+    
+    // CORRECTION : Utilisation stricte du domaine choisi par l'utilisateur lors de son inscription (évite le fallback statique vers Marketing Digital)
+    const domaineUtilisateur = utilisateur.domaine || "Développement Web";
+    
+    if (domaineTexte) domaineTexte.textContent = domaineUtilisateur;
+    if (nomDomaine) nomDomaine.textContent = domaineUtilisateur.toUpperCase();
+    if (signatureDomaine) signatureDomaine.textContent = "Expert " + domaineUtilisateur;
 
     // 3. Vérification de l'abonnement Premium
     const estPremium = utilisateur.premium === true;
 
-    if (estPremium) {
-        panelStatus.innerHTML = `✅ Accès validé : Compte Premium actif pour <strong>${utilisateur.nom}</strong> (Domaine : ${domaineUtilisateur}).`;
-        panelStatus.style.borderLeftColor = "#16a34a";
-    } else {
-        panelStatus.innerHTML = `⚠️ Compte non Premium — Nom : <strong>${utilisateur.nom}</strong> | Domaine : <em>${domaineUtilisateur}</em>. <span style="color:#dc2626;">Paiement requis pour le téléchargement.</span>`;
-        panelStatus.style.borderLeftColor = "#dc2626";
+    if (panelStatus) {
+        if (estPremium) {
+            panelStatus.innerHTML = `✅ Accès validé : Compte Premium actif pour <strong>${utilisateur.nom}</strong> (Pays : ${utilisateur.pays || 'Non spécifié'} | Domaine : <strong>${domaineUtilisateur}</strong>).`;
+            panelStatus.style.borderLeftColor = "#16a34a";
+        } else {
+            panelStatus.innerHTML = `⚠️ Compte non Premium — Nom : <strong>${utilisateur.nom}</strong> | Domaine : <em>${domaineUtilisateur}</em>. <span style="color:#dc2626;">Paiement requis pour le téléchargement.</span>`;
+            panelStatus.style.borderLeftColor = "#dc2626";
+        }
     }
 
-    // 4. Injection dynamique d'une modale (popup) élégante dans le DOM si elle n'existe pas
+    // 4. Gestion de la modale de paiement intégrée dynamiquement
     let modalOverlay = document.getElementById("elegantModalOverlay");
     if (!modalOverlay) {
         modalOverlay = document.createElement("div");
@@ -699,103 +754,32 @@
         `;
         document.body.appendChild(modalOverlay);
 
-        // Styles CSS injectés dynamiquement pour la popup élégante
         const styleModale = document.createElement("style");
         styleModale.innerHTML = `
             #elegantModalOverlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(15, 23, 42, 0.6);
-                backdrop-filter: blur(6px);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 99999;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
+                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(6px);
+                display: flex; align-items: center; justify-content: center;
+                z-index: 99999; opacity: 0; visibility: hidden; transition: all 0.3s ease;
             }
-            #elegantModalOverlay.active {
-                opacity: 1;
-                visibility: visible;
-            }
+            #elegantModalOverlay.active { opacity: 1; visibility: visible; }
             .elegant-modal {
-                background: #ffffff;
-                width: 90%;
-                max-width: 420px;
-                border-radius: 16px;
-                padding: 30px;
-                text-align: center;
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-                transform: translateY(20px);
-                transition: transform 0.3s ease;
+                background: #ffffff; width: 90%; max-width: 420px; border-radius: 16px; padding: 30px; text-align: center;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); transform: translateY(20px); transition: transform 0.3s ease;
             }
-            #elegantModalOverlay.active .elegant-modal {
-                transform: translateY(0);
-            }
-            .modal-icon-container {
-                width: 60px;
-                height: 60px;
-                background: #fef2f2;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin: 0 auto 20px auto;
-            }
-            .modal-svg-icon {
-                width: 32px;
-                height: 32px;
-                color: #dc2626;
-            }
-            .elegant-modal h3 {
-                font-size: 1.25rem;
-                color: #1e293b;
-                margin-bottom: 10px;
-                font-weight: 700;
-            }
-            .elegant-modal p {
-                font-size: 0.95rem;
-                color: #64748b;
-                line-height: 1.5;
-                margin-bottom: 25px;
-            }
-            .modal-actions {
-                display: flex;
-                gap: 12px;
-            }
-            .modal-actions button {
-                flex: 1;
-                padding: 12px 16px;
-                border-radius: 8px;
-                font-size: 0.9rem;
-                font-weight: 600;
-                cursor: pointer;
-                border: none;
-                transition: background 0.2s;
-            }
-            .btn-secondary {
-                background: #f1f5f9;
-                color: #475569;
-            }
-            .btn-secondary:hover {
-                background: #e2e8f0;
-            }
-            .btn-primary {
-                background: #2563eb;
-                color: #ffffff;
-            }
-            .btn-primary:hover {
-                background: #1d4ed8;
-            }
+            #elegantModalOverlay.active .elegant-modal { transform: translateY(0); }
+            .modal-icon-container { width: 60px; height: 60px; background: #fef2f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; }
+            .modal-svg-icon { width: 32px; height: 32px; color: #dc2626; }
+            .elegant-modal h3 { font-size: 1.25rem; color: #1e293b; margin-bottom: 10px; font-weight: 700; }
+            .elegant-modal p { font-size: 0.95rem; color: #64748b; line-height: 1.5; margin-bottom: 25px; }
+            .modal-actions { display: flex; gap: 12px; }
+            .modal-actions button { flex: 1; padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; }
+            .btn-secondary { background: #f1f5f9; color: #475569; }
+            .btn-primary { background: #2563eb; color: #ffffff; }
         `;
         document.head.appendChild(styleModale);
     }
 
-    // Éléments de la modale
     const modalBtnFermer = document.getElementById("modalBtnFermer");
     const modalBtnPayer = document.getElementById("modalBtnPayer");
     const modalNomUser = document.getElementById("modalNomUser");
@@ -804,40 +788,47 @@
     // 5. Gestion du clic sur le bouton Télécharger
     const btnTelecharger = document.getElementById("btnTelecharger");
 
-    btnTelecharger.addEventListener("click", function () {
-        if (utilisateur.premium === true) {
-            // Si l'utilisateur a payé, téléchargement direct
-            lancerTelechargement();
-        } else {
-            // Remplir les informations dynamiques dans la popup élégante
-            modalNomUser.textContent = utilisateur.nom;
-            modalDomaineUser.textContent = domaineUtilisateur;
-            // Afficher la popup
-            modalOverlay.classList.add("active");
-        }
-    });
+    if (btnTelecharger) {
+        btnTelecharger.addEventListener("click", function () {
+            if (utilisateur.premium === true) {
+                lancerTelechargement();
+            } else {
+                if (modalNomUser) modalNomUser.textContent = utilisateur.nom;
+                if (modalDomaineUser) modalDomaineUser.textContent = domaineUtilisateur;
+                modalOverlay.classList.add("active");
+            }
+        });
+    }
 
-    // Fermer la popup
-    modalBtnFermer.addEventListener("click", function () {
-        modalOverlay.classList.remove("active");
-    });
-
-    // Rediriger vers la page de paiement au clic sur le bouton de la popup
-    modalBtnPayer.addEventListener("click", function () {
-        window.location.href = "certificat_marketing.html";
-    });
-
-    // Fermer en cliquant en dehors de la boîte modale
-    modalOverlay.addEventListener("click", function (e) {
-        if (e.target === modalOverlay) {
+    if (modalBtnFermer) {
+        modalBtnFermer.addEventListener("click", function () {
             modalOverlay.classList.remove("active");
-        }
-    });
+        });
+    }
+
+    if (modalBtnPayer) {
+        modalBtnPayer.addEventListener("click", function () {
+            // CORRECTION : Redirection dynamique vers la page de paiement adaptée au domaine de l'utilisateur (ex: certificat_developpement.html, certificat_marketing.html, etc.) ou page de paiement centralisée
+            const pagePaiement = `certificat_${domaineUtilisateur.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "_")}.html`;
+            window.location.href = pagePaiement;
+        });
+    }
+
+    if (modalOverlay) {
+        modalOverlay.addEventListener("click", function (e) {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove("active");
+            }
+        });
+    }
 
     // 6. Bouton Retour
-    document.getElementById("btnRetour").addEventListener("click", function () {
-        window.history.back();
-    });
+    const btnRetour = document.getElementById("btnRetour");
+    if (btnRetour) {
+        btnRetour.addEventListener("click", function () {
+            window.history.back();
+        });
+    }
 
     // Fonction de génération et téléchargement de l'image PNG du certificat
     function lancerTelechargement() {
@@ -867,6 +858,7 @@
         });
     }
 });
-    </script>
+   </script>
+
 </body>
 </html>
