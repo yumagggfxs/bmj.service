@@ -717,9 +717,9 @@ document.getElementById("btnConnexion").addEventListener("click", async function
         return;
     }
 
-    // Désactiver le bouton pendant le chargement
+    // Désactiver le bouton et prévenir que le serveur distant peut prendre quelques secondes à se réveiller
     btnConnexion.disabled = true;
-    btnConnexion.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connexion en cours...';
+    btnConnexion.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Réveil du serveur (veuillez patienter)...';
 
     try {
         // Envoi de la requête vers votre backend sur Render
@@ -760,8 +760,8 @@ document.getElementById("btnConnexion").addEventListener("click", async function
         }
 
     } catch (erreur) {
-        console.error("Erreur réseau :", erreur);
-        alert("Erreur de connexion avec le serveur distant.");
+        console.error("Erreur réseau détaillée :", erreur);
+        alert("Impossible de joindre le serveur. Si c'est la première connexion après un moment, le serveur Render se réveille, réessayez dans 30 secondes.");
         btnConnexion.disabled = false;
         btnConnexion.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
     }
