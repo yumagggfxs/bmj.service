@@ -559,70 +559,35 @@
 
             <form id="loginForm" onsubmit="return false;">
 
-                <div class="form-group">
+    <div class="form-group">
+        <label>
+            Adresse e-mail ou Identifiant BMJ
+        </label>
+        <input type="text" id="identifiant" placeholder="id ou email@gmail.com" required>
+    </div>
 
-                    <label>
+    <div class="form-group">
+        <label>
+            Mot de passe
+        </label>
+        <input type="password" id="password" placeholder="********" required>
+    </div>
 
-                        Adresse e-mail ou Identifiant BMJ
+    <div class="options">
+        <label>
+            <input type="checkbox" id="remember">
+            Se souvenir de moi
+        </label>
+        <a href="motdepasse-oublie.html">
+            Mot de passe oublié ?
+        </a>
+    </div>
 
-                    </label>
-
-                    <input type="text" id="identifiant" placeholder="BMJ000001 ou email@gmail.com" required>
-
-                </div>
-
-
-
-
-
-                <div class="form-group">
-
-                    <label>
-
-                        Mot de passe
-
-                    </label>
-
-                    <input type="password" id="password" placeholder="********" required>
-
-                </div>
-
-
-
-
-
-                <div class="options">
-
-                    <label>
-
-                        <input type="checkbox" id="remember">
-
-                        Se souvenir de moi
-
-                    </label>
-
-                    <a href="motdepasse-oublie.html">
-
-                        Mot de passe oublié ?
-
-                    </a>
-
-                </div>
-
-
-
-
-
-                <button type="button" id="btnConnexion">
-
-                    <i class="fa-solid fa-right-to-bracket"></i>
-
-                    Se connecter
-
-                </button>
-
-            </form>
-
+    <button type="button" id="btnConnexion">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        Se connecter
+    </button>
+</form>
 
 
 
@@ -732,161 +697,88 @@
 
             </center>
             <script>
-
-                //==========================================
-                // BMJ SERVICE
-                // CONNEXION LOCALE
-                //==========================================
-
-                document.getElementById("btnConnexion").addEventListener("click", function (e) {
-
-                    e.preventDefault();
-
-                    let identifiant = document.getElementById("identifiant").value.trim();
-                    let password = document.getElementById("password").value;
-                    let remember = document.getElementById("remember").checked;
-
-
-                    //==============================
-                    // VERIFICATION
-                    //==============================
-
-                    if (identifiant === "" || password === "") {
-
-                        alert("Veuillez remplir tous les champs.");
-
-                        return;
-
-                    }
-
-
-                    //==============================
-                    // LISTE DES UTILISATEURS
-                    //==============================
-
-                    let utilisateurs = JSON.parse(
-
-                        localStorage.getItem("bmjUtilisateurs")
-
-                    ) || [];
-
-
-                    //==============================
-                    // RECHERCHE UTILISATEUR
-                    //==============================
-
-                    let utilisateur = utilisateurs.find(user =>
-
-                        user.email === identifiant ||
-
-                        user.id_bmj === identifiant
-
-                    );
-
-
-                    if (!utilisateur) {
-
-                        alert("Compte introuvable.");
-
-                        return;
-
-                    }
-
-
-                    //==============================
-                    // MOT DE PASSE
-                    //==============================
-
-                    if (utilisateur.password !== password) {
-
-                        alert("Mot de passe incorrect.");
-
-                        return;
-
-                    }
-
-
-                    //==============================
-                    // COMPTE DESACTIVE
-                    //==============================
-
-                    if (utilisateur.statut !== "Actif") {
-
-                        alert("Votre compte est désactivé.");
-
-                        return;
-
-                    }
-
-
-                    //==============================
-                    // UTILISATEUR CONNECTE
-                    //==============================
-
-                    localStorage.setItem(
-
-                        "bmj_current_user",
-
-                        JSON.stringify(utilisateur)
-
-                    );
-
-
-                    //==============================
-                    // REMEMBER ME
-                    //==============================
-
-                    if (remember) {
-
-                        localStorage.setItem(
-
-                            "bmj_remember",
-
-                            identifiant
-
-                        );
-
-                    }
-
-                    else {
-
-                        localStorage.removeItem(
-
-                            "bmj_remember"
-
-                        );
-
-                    }
-
-
-                    //==============================
-                    // REDIRECTION
-                    //==============================
-
-                    window.location.href = "dashboard.html";
-
-                });
-
-
-
-
-                //==========================================
-                // CHARGER IDENTIFIANT MEMORISE
-                //==========================================
-
-                window.addEventListener("load", function () {
-
-                    let remember = localStorage.getItem("bmj_remember");
-
-                    if (remember) {
-
-                        document.getElementById("identifiant").value = remember;
-
-                        document.getElementById("remember").checked = true;
-
-                    }
-
-                });
+//==========================================
+// BMJ SERVICE - CONNEXION DISTANTE (RENDER)
+//==========================================
+
+document.getElementById("btnConnexion").addEventListener("click", async function (e) {
+    e.preventDefault();
+
+    let identifiant = document.getElementById("identifiant").value.trim();
+    let password = document.getElementById("password").value;
+    let remember = document.getElementById("remember").checked;
+    let btnConnexion = document.getElementById("btnConnexion");
+
+    //==============================
+    // VERIFICATION
+    //==============================
+    if (identifiant === "" || password === "") {
+        alert("Veuillez remplir tous les champs.");
+        return;
+    }
+
+    // Désactiver le bouton pendant le chargement
+    btnConnexion.disabled = true;
+    btnConnexion.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Connexion en cours...';
+
+    try {
+        // Envoi de la requête vers votre backend sur Render
+        let reponse = await fetch('https://back-end-h602.onrender.com/api/connexion', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ identifiant: identifiant, password: password })
+        });
+
+        let resultat = await reponse.json();
+
+        if (reponse.ok && resultat.success) {
+            //==============================
+            // UTILISATEUR CONNECTE
+            //==============================
+            localStorage.setItem(
+                "bmj_current_user",
+                JSON.stringify(resultat.data)
+            );
+
+            //==============================
+            // REMEMBER ME
+            //==============================
+            if (remember) {
+                localStorage.setItem("bmj_remember", identifiant);
+            } else {
+                localStorage.removeItem("bmj_remember");
+            }
+
+            //==============================
+            // REDIRECTION
+            //==============================
+            window.location.href = "dashboard.html";
+        } else {
+            alert(resultat.error || "Identifiants incorrects.");
+            btnConnexion.disabled = false;
+            btnConnexion.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
+        }
+
+    } catch (erreur) {
+        console.error("Erreur réseau :", erreur);
+        alert("Erreur de connexion avec le serveur distant.");
+        btnConnexion.disabled = false;
+        btnConnexion.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Se connecter';
+    }
+});
+
+//==========================================
+// CHARGER IDENTIFIANT MEMORISE
+//==========================================
+window.addEventListener("load", function () {
+    let remember = localStorage.getItem("bmj_remember");
+    if (remember) {
+        let inputId = document.getElementById("identifiant");
+        let checkRemember = document.getElementById("remember");
+        if (inputId) inputId.value = remember;
+        if (checkRemember) checkRemember.checked = true;
+    }
+});
             </script>
 </body>
 
