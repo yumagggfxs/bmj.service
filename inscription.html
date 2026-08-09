@@ -914,10 +914,21 @@
                         popUpDomaineOverlay.classList.remove("active");
                         window.location.href = "dashboard.html";
                     } else {
-                        alert("Erreur : " + (resultat.error || "Impossible de s'inscrire"));
+                        // Fermer la popup
+                        popUpDomaineOverlay.classList.remove("active");
+                        
+                        // Vérifier si c'est une erreur de doublon d'email
+                        if (resultat.error && resultat.error.includes("déjà utilisé")) {
+                            alert("Ce compte existe déjà avec cet e-mail !\n\nVeuillez plutôt vous connecter à votre espace.");
+                            // Optionnel : Rediriger vers la page de connexion si elle s'appelle connexion.html
+                            // window.location.href = "connexion.html"; 
+                        } else {
+                            alert("Erreur : " + (resultat.error || "Impossible de s'inscrire"));
+                        }
+
+                        // Réinitialiser le bouton
                         btnConfirmer.textContent = "Oui, Confirmer";
                         btnConfirmer.disabled = false;
-                        popUpDomaineOverlay.classList.remove("active");
                     }
                 } catch (erreur) {
                     console.error("Erreur réseau :", erreur);
