@@ -620,7 +620,7 @@
 
     <!-- SCRIPT JAVASCRIPT INTÉGRÉ -->
    <script>
-    document.addEventListener("DOMContentLoaded", function () {
+   document.addEventListener("DOMContentLoaded", function () {
     // 1. Récupération des données de l'utilisateur connecté
     const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
     const panelStatus = document.getElementById("panelStatus");
@@ -638,6 +638,25 @@
         window.location.href = "connexion.html";
         return;
     }
+
+    // --- GESTION DE L'EMAIL PROFESSIONNEL (Accès complet automatique) ---
+    const DOMAINES_PRO = ["entreprise.com", "bmj-service.cd", "universite.edu", "institution.org"];
+    
+    function estEmailProfessionnel(email) {
+        if (!email) return false;
+        let parts = email.split('@');
+        if (parts.length < 2) return false;
+        let domaine = parts[1].toLowerCase().trim();
+        return DOMAINES_PRO.includes(domaine);
+    }
+
+    // Si l'utilisateur a un email professionnel, on force son statut à premium/accès complet
+    if (estEmailProfessionnel(utilisateur.email)) {
+        utilisateur.premium = true;
+        utilisateur.isPremium = true;
+        localStorage.setItem("bmj_current_user", JSON.stringify(utilisateur));
+    }
+    // ------------------------------------------------------------------
 
     // Dictionnaire avec des clés nettoyées (sans accents, minuscules)
     const codesPaysISO = {
@@ -690,14 +709,11 @@
         
         if (utilisateur.pays) {
             let paysNettoye = normaliserTexte(utilisateur.pays);
-            console.log("Pays utilisateur détecté et nettoyé :", paysNettoye);
-            
             if (codesPaysISO[paysNettoye]) {
                 codeIso = codesPaysISO[paysNettoye];
             }
         }
         
-        // Chargement de l'image officielle du drapeau
         imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
         imgDrapeau.alt = utilisateur.pays ? `Drapeau : ${utilisateur.pays}` : "Drapeau officiel";
     }
@@ -711,22 +727,22 @@
     // 2. Injection dynamique du nom et du domaine choisi
     if (nomElement) nomElement.textContent = utilisateur.nom || "Apprenant";
     
-    // CORRECTION : Utilisation stricte du domaine choisi par l'utilisateur lors de son inscription (évite le fallback statique vers Marketing Digital)
     const domaineUtilisateur = utilisateur.domaine || "Développement Web";
     
     if (domaineTexte) domaineTexte.textContent = domaineUtilisateur;
     if (nomDomaine) nomDomaine.textContent = domaineUtilisateur.toUpperCase();
     if (signatureDomaine) signatureDomaine.textContent = "Expert " + domaineUtilisateur;
 
-    // 3. Vérification de l'abonnement Premium
-    const estPremium = utilisateur.premium === true;
+    // 3. Vérification de l'abonnement Premium ou Accès Professionnel
+    const estPremium = utilisateur.premium === true || estEmailProfessionnel(utilisateur.email);
 
     if (panelStatus) {
         if (estPremium) {
-            panelStatus.innerHTML = `✅ Accès validé : Compte Premium actif pour <strong>${utilisateur.nom}</strong> (Pays : ${utilisateur.pays || 'Non spécifié'} | Domaine : <strong>${domaineUtilisateur}</strong>).`;
+            let messageSource = estEmailProfessionnel(utilisateur.email) ? "Compte Pro (Email Professionnel)" : "Compte Premium actif (Paiement validé)";
+            panelStatus.innerHTML = `✅ Accès validé : ${messageSource} pour <strong>${utilisateur.nom}</strong> (Pays : ${utilisateur.pays || 'Non spécifié'} | Domaine : <strong>${domaineUtilisateur}</strong>).`;
             panelStatus.style.borderLeftColor = "#16a34a";
         } else {
-            panelStatus.innerHTML = `⚠️ Compte non Premium — Nom : <strong>${utilisateur.nom}</strong> | Domaine : <em>${domaineUtilisateur}</em>. <span style="color:#dc2626;">Paiement requis pour le téléchargement.</span>`;
+            panelStatus.innerHTML = `⚠️ Compte Standard — Nom : <strong>${utilisateur.nom}</strong> | Domaine : <em>${domaineUtilisateur}</em>. <span style="color:#dc2626;">Paiement requis pour le téléchargement.</span>`;
             panelStatus.style.borderLeftColor = "#dc2626";
         }
     }
@@ -744,7 +760,7 @@
                     </svg>
                 </div>
                 <h3>Paiement Requis</h3>
-                <p>Cher(e) <strong id="modalNomUser"></strong>, votre compte associé au domaine <em id="modalDomaineUser"></em> nécessite une validation de paiement pour débloquer et télécharger le certificat officiel.</p>
+                <p>Cher(e) <strong id="modalNomUser"></strong>, votre compte associé au domaine <em id="modalDomaineUser"></em> nécessite une validation de paiement ou un compte professionnel pour débloquer et télécharger le certificat officiel.</p>
                 
                 <div class="modal-actions">
                     <button id="modalBtnFermer" class="btn-secondary">Fermer</button>
@@ -790,7 +806,7 @@
 
     if (btnTelecharger) {
         btnTelecharger.addEventListener("click", function () {
-            if (utilisateur.premium === true) {
+            if (utilisateur.premium === true || estEmailProfessionnel(utilisateur.email)) {
                 lancerTelechargement();
             } else {
                 if (modalNomUser) modalNomUser.textContent = utilisateur.nom;
@@ -808,7 +824,6 @@
 
     if (modalBtnPayer) {
         modalBtnPayer.addEventListener("click", function () {
-            // CORRECTION : Redirection dynamique vers la page de paiement adaptée au domaine de l'utilisateur (ex: certificat_developpement.html, certificat_marketing.html, etc.) ou page de paiement centralisée
             const pagePaiement = `certificat_${domaineUtilisateur.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "_")}.html`;
             window.location.href = pagePaiement;
         });
