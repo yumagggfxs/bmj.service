@@ -650,8 +650,9 @@
         return DOMAINES_PRO.includes(domaine);
     }
 
-    // Si l'utilisateur a un email professionnel, on force son statut à premium/accès complet
-    if (estEmailProfessionnel(utilisateur.email)) {
+    // Synchronisation robuste : si email pro OU déjà pro/premium enregistré
+    let isPro = estEmailProfessionnel(utilisateur.email);
+    if (isPro || utilisateur.isPremium === true || utilisateur.premium === true) {
         utilisateur.premium = true;
         utilisateur.isPremium = true;
         localStorage.setItem("bmj_current_user", JSON.stringify(utilisateur));
@@ -698,22 +699,20 @@
     function normaliserTexte(texte) {
         return texte
             .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "") // Supprime les accents
+            .replace(/[\u0300-\u036f]/g, "")
             .toLowerCase()
             .trim();
     }
 
     // Attribution dynamique et sécurisée du drapeau
     if (imgDrapeau) {
-        let codeIso = "cd"; // Valeur par défaut (RDC)
-        
+        let codeIso = "cd";
         if (utilisateur.pays) {
             let paysNettoye = normaliserTexte(utilisateur.pays);
             if (codesPaysISO[paysNettoye]) {
                 codeIso = codesPaysISO[paysNettoye];
             }
         }
-        
         imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
         imgDrapeau.alt = utilisateur.pays ? `Drapeau : ${utilisateur.pays}` : "Drapeau officiel";
     }
@@ -734,7 +733,7 @@
     if (signatureDomaine) signatureDomaine.textContent = "Expert " + domaineUtilisateur;
 
     // 3. Vérification de l'abonnement Premium ou Accès Professionnel
-    const estPremium = utilisateur.premium === true || estEmailProfessionnel(utilisateur.email);
+    const estPremium = utilisateur.premium === true || utilisateur.isPremium === true || estEmailProfessionnel(utilisateur.email);
 
     if (panelStatus) {
         if (estPremium) {
@@ -806,7 +805,7 @@
 
     if (btnTelecharger) {
         btnTelecharger.addEventListener("click", function () {
-            if (utilisateur.premium === true || estEmailProfessionnel(utilisateur.email)) {
+            if (utilisateur.premium === true || utilisateur.isPremium === true || estEmailProfessionnel(utilisateur.email)) {
                 lancerTelechargement();
             } else {
                 if (modalNomUser) modalNomUser.textContent = utilisateur.nom;
