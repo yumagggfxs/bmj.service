@@ -682,7 +682,7 @@
             </div>
      
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
+ document.addEventListener("DOMContentLoaded", function () {
     const selectPays = document.getElementById("pays");
     const inputIndicatif = document.getElementById("indicatif");
     const imgDrapeau = document.getElementById("drapeauPays");
@@ -723,6 +723,19 @@
         "Inde": { iso: "in", indicatif: "+91", villes: ["New Delhi", "Mumbai", "Bangalore"] },
         "Brésil": { iso: "br", indicatif: "+55", villes: ["Brasília", "Rio de Janeiro", "São Paulo"] }
     };
+
+    // Liste des domaines professionnels autorisés pour un accès complet/premium automatique
+    const DOMAINES_PRO_AUTORISES = [
+        "directionbmj.com",
+        "contactbmj.com"
+    
+    ];
+
+    function estEmailProfessionnel(email) {
+        if (!email || !email.includes("@")) return false;
+        let domaine = email.split("@")[1].toLowerCase().trim();
+        return DOMAINES_PRO_AUTORISES.includes(domaine);
+    }
 
     // Remplissage automatique du menu déroulant des pays
     if (selectPays) {
@@ -853,6 +866,9 @@
                 return;
             }
 
+            // Vérification si l'email est professionnel pour attribuer le statut premium d'office
+            const estPro = estEmailProfessionnel(email);
+
             // Stockage temporaire des données en attente de confirmation du popup
             utilisateurTemporaire = {
                 nom: nom,
@@ -864,12 +880,15 @@
                 domaine: domaine,
                 niveau: niveau,
                 password: password,
+                premium: estPro, // True si email pro, false sinon
+                isProfessional: estPro,
                 photo: previewPhoto ? previewPhoto.src : "images/user.png"
             };
 
             const textePopup = document.getElementById("bmjPopupTexte");
             if (textePopup) {
-                textePopup.innerHTML = `Êtes-vous responsable du domaine choisi : <strong>${domaine}</strong> ? Le certificat qui vous sera délivré portera sur ce domaine dès le départ.`;
+                let messagePro = estPro ? "<br><br><span style='color: #16a34a; font-weight: bold;'>⭐ Email professionnel détecté : Accès Premium complet activé !</span>" : "";
+                textePopup.innerHTML = `Êtes-vous responsable du domaine choisi : <strong>${domaine}</strong> ? Le certificat qui vous sera délivré portera sur ce domaine dès le départ.${messagePro}`;
             }
             
             popUpDomaineOverlay.classList.add("active");
@@ -889,7 +908,6 @@
     if (btnConfirmer) {
         btnConfirmer.addEventListener("click", async function () {
             if (utilisateurTemporaire) {
-                // Désactiver le bouton pendant le chargement pour éviter les doubles clics
                 btnConfirmer.textContent = "Enregistrement...";
                 btnConfirmer.disabled = true;
 
@@ -914,19 +932,14 @@
                         popUpDomaineOverlay.classList.remove("active");
                         window.location.href = "dashboard.html";
                     } else {
-                        // Fermer la popup
                         popUpDomaineOverlay.classList.remove("active");
                         
-                        // Vérifier si c'est une erreur de doublon d'email
                         if (resultat.error && resultat.error.includes("déjà utilisé")) {
                             alert("Ce compte existe déjà avec cet e-mail !\n\nVeuillez plutôt vous connecter à votre espace.");
-                            // Optionnel : Rediriger vers la page de connexion si elle s'appelle connexion.html
-                            // window.location.href = "connexion.html"; 
                         } else {
                             alert("Erreur : " + (resultat.error || "Impossible de s'inscrire"));
                         }
 
-                        // Réinitialiser le bouton
                         btnConfirmer.textContent = "Oui, Confirmer";
                         btnConfirmer.disabled = false;
                     }
