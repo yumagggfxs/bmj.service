@@ -3113,11 +3113,29 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 //====================================
+// GESTION EMAIL PROFESSIONNEL
+//====================================
+const DOMAINES_PRO = ["contactbmj.com", "directionbmj.com"];
+
+function estEmailProfessionnel(email) {
+    if (!email) return false;
+    let parts = email.split('@');
+    if (parts.length < 2) return false;
+    let domaine = parts[1].toLowerCase().trim();
+    return DOMAINES_PRO.includes(domaine);
+}
+
+//====================================
 // RECUPERATION UTILISATEUR CONNECTE
 //====================================
 function getUtilisateur() {
     try {
         let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+        if (utilisateur && estEmailProfessionnel(utilisateur.email)) {
+            utilisateur.premium = true;
+            utilisateur.isPremium = true;
+            localStorage.setItem("bmj_current_user", JSON.stringify(utilisateur));
+        }
         return utilisateur;
     } catch (e) {
         console.error("Erreur lors de la lecture de l'utilisateur connecté :", e);
@@ -3228,10 +3246,16 @@ function terminerChapitre() {
 
         utilisateur.progressionPublicite = 100;
 
+        // Si email professionnel, s'assurer que les indicateurs d'accès sont complets
+        if (estEmailProfessionnel(utilisateur.email)) {
+            utilisateur.premium = true;
+            utilisateur.isPremium = true;
+        }
+
         // Mise à jour de l'utilisateur courant
         localStorage.setItem("bmj_current_user", JSON.stringify(utilisateur));
 
-        // Mise à jour synchronisée dans la liste globale des utilisateurs (si elle existe)
+        // Mise à jour synchronisée dans la liste globale des utilisateurs
         let listeUtilisateurs = JSON.parse(localStorage.getItem("bmj_users_list")) || [];
         let index = listeUtilisateurs.findIndex(u => u.email === utilisateur.email);
         if (index !== -1) {
@@ -3248,7 +3272,6 @@ function terminerChapitre() {
 // POPUP CERTIFICAT
 //====================================
 function afficherPopupCertificat() {
-    // Évite d'empiler plusieurs popups si l'utilisateur clique plusieurs fois
     let popupExistante = document.querySelector(".certificat-popup");
     if (popupExistante) return;
 
@@ -3260,7 +3283,7 @@ function afficherPopupCertificat() {
             <div class="popup-icon">🎓</div>
             <h2>Félicitations !</h2>
             <p>
-                Vous avez terminé les 7 Chapitres: marketing digital.
+                Vous avez terminé les chapitres de formation en marketing digital.
                 <br><br>
                 Votre certificat officiel BMJ SERVICE est disponible.
             </p>
@@ -3275,7 +3298,6 @@ function afficherPopupCertificat() {
 }
 
 function allerCertificat() {
-    // Redirection vers la page du certificat (ajustez le nom si c'est "certificat.html" sans 'e' au milieu)
     window.location.href = "certificat.html";
 }
 
