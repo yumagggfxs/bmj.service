@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement Sécurisé - BMJ SERVICE</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome pour de belles icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* Style Moderne pour la page de paiement */
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+}
+
+.payment-wrapper {
+    width: 100%;
+    max-width: 550px;
+}
+
+.payment-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+.payment-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.payment-header h2 {
+    color: #0f172a;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.payment-header p {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+.payment-step h3 {
+    color: #334155;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Options de méthodes de paiement */
+.method-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.method-btn {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    color: #334155;
+}
+
+.method-btn i {
+    font-size: 1.8rem;
+    color: #2563eb;
+}
+
+.method-btn:hover {
+    border-color: #2563eb;
+    background: #f0fdf4;
+    transform: translateY(-2px);
+}
+
+/* Grille des Opérateurs Mobile Money */
+.operators-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.operator-card {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 15px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.operator-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.operator-card .op-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.operator-card .op-number {
+    font-size: 0.75rem;
+    color: #059669;
+    font-weight: 700;
+    background: #d1fae5;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.operator-card:hover, .operator-card.selected {
+    border-color: #059669;
+    background: #ecfdf5;
+}
+
+/* Zone d'importation de fichier */
+.upload-container {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 15px;
+}
+
+.instruction-box {
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #475569;
+}
+
+.highlight-number {
+    color: #059669;
+    font-size: 1.1rem;
+    background: #d1fae5;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+.file-drop-area {
+    position: relative;
+    border: 2px dashed #94a3b8;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    background: #ffffff;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: background 0.2s;
+}
+
+.file-drop-area:hover {
+    background: #f1f5f9;
+}
+
+.file-drop-area i {
+    font-size: 1.5rem;
+    color: #2563eb;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.file-drop-area span {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+.file-drop-area input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.btn-submit-payment {
+    width: 100%;
+    background: #059669;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-submit-payment:hover {
+    background: #047857;
+}
+
+.back-link {
+    background: none;
+    border: none;
+    color: #64748b;
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin-bottom: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+}
+
+.back-link:hover {
+    color: #0f172a;
+}
+
+/* Spinner de chargement */
+.spinner-container {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #e2e8f0;
+    border-top: 4px solid #2563eb;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.status-badge-pending {
+    display: inline-block;
+    background: #fef3c7;
+    color: #d97706;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin: 15px 0;
+}
+
+.info-note {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.4;
+}
+</style>
+</head>
+<body>
+
+<div class="payment-wrapper">
+    <div class="payment-card">
+        
+        <!-- En-tête -->
+        <div class="payment-header">
+            <h2>Espace de Paiement Sécurisé</h2>
+            <p>Activez votre statut Premium pour accéder à votre certificat officiel.</p>
+        </div>
+
+        <!-- ÉTAPE 1 : Choix de la méthode -->
+        <div id="step-choice" class="payment-step">
+            <h3>Choisissez votre mode de paiement</h3>
+            <div class="method-options">
+                <button type="button" class="method-btn" onclick="selectionnerMethode('mobile')">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                    <span>Mobile Money</span>
+                </button>
+                <button type="button" class="method-btn" onclick="selectionnerMethode('card')">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <span>Mastercard / Visa</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ÉTAPE 2 : Paiement Mobile Money (avec images et numéros en dessous) -->
+        <div id="step-mobile" class="payment-step" style="display: none;">
+            <button type="button" class="back-link" onclick="retournerAuChoix()"><i class="fa-solid fa-arrow-left"></i> Retour</button>
+            <h3>Sélectionnez votre opérateur Mobile Money</h3>
+            
+            <div class="operators-grid">
+                <!-- Airtel -->
+                <div class="operator-card" onclick="choisirOperateur('Airtel Money', '0993585711')">
+                    <img src="images/airtel.png" alt="Airtel Money">
+                    <span class="op-name">Airtel Money</span>
+                    <span class="op-number">0993585711</span>
+                </div>
+                <!-- Orange -->
+                <div class="operator-card" onclick="choisirOperateur('Orange Money', 'Veuillez patienter...')">
+                    <img src="images/orange.webp" alt="Orange Money">
+                    <span class="op-name">Orange Money</span>
+                    <span class="op-number">Dispo bientôt</span>
+                </div>
+                <!-- M-Pesa -->
+                <div class="operator-card" onclick="choisirOperateur('M-Pesa', 'Veuillez patienter...')">
+                    <img src="images/mpesa.webp" alt="M-Pesa">
+                    <span class="op-name">M-Pesa</span>
+                    <span class="op-number">Dispo bientôt</span>
+                </div>
+            </div>
+
+            <!-- Instructions et Importation de la capture -->
+            <div id="upload-section" style="display: none;" class="upload-container">
+                <div class="instruction-box">
+                    <p>Effectuez le dépôt sur le numéro : <strong id="selected-number" class="highlight-number"></strong></p>
+                    <p class="sub-instruction">Une fois le paiement effectué, veuillez importer la capture d'écran (reçu) ci-dessous :</p>
+                </div>
+
+                <div class="file-drop-area">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <span id="file-label">Cliquez ici pour choisir votre capture d'écran</span>
+                    <input type="file" id="capturePaiement" accept="image/*" onchange="verifierFichier(this)">
+                </div>
+
+                <button type="button" class="btn-submit-payment" onclick="finaliserPaiementMobile()">
+                    Envoyer ma preuve de paiement <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- ÉTAPE 3 : Chargement / En attente de vérification Admin -->
+        <div id="step-loading" class="payment-step" style="display: none;">
+            <div class="spinner-container">
+                <div class="spinner"></div>
+                <h3>Vérification en cours...</h3>
+                <p>Votre preuve de paiement a bien été transmise à l'administration de <strong>BMJ SERVICE</strong>.</p>
+                <div class="status-badge-pending">
+                    <i class="fa-solid fa-clock"></i> En attente de validation admin
+                </div>
+                <p class="info-note">Le statut Premium s'activera automatiquement dès que l'administrateur aura validé votre transaction.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+ let operateurChoisi = "";
+let captureBase64 = "";
+
+document.addEventListener("DOMContentLoaded", async function () {
+    const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+
+    // 1. Sécurité connexion
+    if (!utilisateur) {
+        alert("Veuillez vous connecter.");
+        window.location.href = "connexion.html";
+        return;
+    }
+
+    // 2. Si déjà Premium, redirection immédiate
+    if (utilisateur.premium === true || utilisateur.isPremium === true) {
+        window.location.href = "certificat_final.html";
+        return;
+    }
+
+    // 3. Vérifier si une demande est déjà en cours (depuis l'API ou le stockage local)
+    try {
+        const reponse = await fetch('https://back-end-h602.onrender.com/api/paiements');
+        if (reponse.ok) {
+            const resultat = await reponse.json();
+            const paiements = resultat.data || resultat;
+            const paiementEnCours = paiements.find(p => p.email === utilisateur.email && p.statut === "en_attente");
+            if (paiementEnCours) {
+                afficherLoadingAttente();
+                return;
+            }
+        }
+    } catch (err) {
+        console.warn("Vérification locale de secours pour le paiement en cours.");
+    }
+
+    const historiquePaiements = JSON.parse(localStorage.getItem("bmj_paiements")) || [];
+    const paiementLocal = historiquePaiements.find(p => p.email === utilisateur.email && p.statut === "en_attente");
+    if (paiementLocal) {
+        afficherLoadingAttente();
+    }
+});
+
+// Étape choix méthode
+function selectionnerMethode(type) {
+    document.getElementById("step-choice").style.display = "none";
+    if (type === 'mobile') {
+        document.getElementById("step-mobile").style.display = "block";
+    } else {
+        // Redirection vers Visa/Mastercard
+        let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+        let paiement = {
+            idPaiement: "PAY_CARD_" + Date.now(),
+            nom: utilisateur.nom,
+            email: utilisateur.email,
+            offre: utilisateur.domaine || "Formation Générale",
+            montant: 15,
+            devise: "USD",
+            methode: "Visa/Mastercard",
+            statut: "en_attente",
+            date: new Date().toLocaleString()
+        };
+        localStorage.setItem("bmj_payment", JSON.stringify(paiement));
+        window.location.href = "paiement_visapay.html";
+    }
+}
+
+// Sélection de l'opérateur Mobile Money
+function choisirOperateur(nomOperateur, numero) {
+    veuxOperateur(nomOperateur, numero);
+}
+
+function veuxOperateur(nomOperateur, numero) {
+    operateurChoisi = nomOperateur;
+    
+    // Mettre à jour l'affichage du numéro
+    document.getElementById("selected-number").textContent = nomOperateur + " (" + numero + ")";
+    document.getElementById("upload-section").style.display = "block";
+
+    // Effet visuel de sélection sur les cartes
+    const cartes = document.querySelectorAll(".operator-card");
+    cartes.forEach(c => c.classList.remove("selected"));
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add("selected");
+    }
+}
+
+// Convertir la capture d'écran importée en Base64
+function verifierFichier(input) {
+    if (input.files && input.files[0]) {
+        const fichier = input.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            captureBase64 = e.target.result;
+            document.getElementById("file-label").textContent = "Fichier sélectionné : " + fichier.name;
+        };
+
+        reader.readAsDataURL(fichier);
+    }
+}
+
+// Finaliser et envoyer à l'API et à l'Admin
+async function finaliserPaiementMobile() {
+    if (!captureBase64) {
+        alert("Veuillez importer la capture d'écran de votre paiement avant de continuer.");
+        return;
+    }
+
+    const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+
+    // Création de l'objet complet pour l'Admin et la Base de Données
+    const nouvelleDemande = {
+        idPaiement: "PAY_MM_" + Date.now(),
+        utilisateurID: utilisateur.id || "USER_" + Date.now(),
+        nom: utilisateur.nom,
+        email: utilisateur.email,
+        offre: utilisateur.domaine || "Formation Générale",
+        montant: 15,
+        devise: "USD",
+        methode: operateurChoisi,
+        capture: captureBase64,
+        statut: "en_attente",
+        date: new Date().toLocaleString()
+    };
+
+    const boutonEnvoyer = document.querySelector(".btn-submit-payment") || document.querySelector("button[onclick='finaliserPaiementMobile()']");
+    if (boutonEnvoyer) {
+        boutonEnvoyer.textContent = "Transmission en cours...";
+        boutonEnvoyer.disabled = true;
+    }
+
+    try {
+        // Envoi de la demande de paiement vers l'API Render
+        const reponse = await fetch('https://back-end-h602.onrender.com/api/paiements', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(nouvelleDemande)
+        });
+
+        const resultat = await reponse.json();
+
+        if (!reponse.ok) {
+            console.warn("API de paiement distante non disponible, bascule sur le stockage local.");
+        }
+    } catch (erreur) {
+        console.warn("Erreur réseau API paiement, sauvegarde locale de secours activée.");
+    }
+
+    // Sauvegarde de secours dans le localStorage pour l'administrateur
+    let historiquePaiements = JSON.parse(localStorage.getItem("bmj_paiements")) || [];
+    historiquePaiements.push(nouvelleDemande);
+    localStorage.setItem("bmj_paiements", JSON.stringify(historiquePaiements));
+    localStorage.setItem("bmj_demande_admin", JSON.stringify(nouvelleDemande));
+
+    // Afficher l'écran de chargement / attente
+    afficherLoadingAttente();
+}
+
+function afficherLoadingAttente() {
+    const stepChoice = document.getElementById("step-choice");
+    const stepMobile = document.getElementById("step-mobile");
+    const stepLoading = document.getElementById("step-loading");
+
+    if (stepChoice) stepChoice.style.display = "none";
+    if (stepMobile) stepMobile.style.display = "none";
+    if (stepLoading) stepLoading.style.display = "block";
+}
+
+function retournerAuChoix() {
+    const uploadSection = document.getElementById("upload-section");
+    const stepMobile = document.getElementById("step-mobile");
+    const stepChoice = document.getElementById("step-choice");
+
+    if (uploadSection) uploadSection.style.display = "none";
+    if (stepMobile) stepMobile.style.display = "none";
+    if (stepChoice) stepChoice.style.display = "block";
+}
+</script>
+</body>
+</html>
