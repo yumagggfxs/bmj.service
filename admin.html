@@ -1,1163 +1,3455 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        BMJ SERVICE — Administration
+    </title>
+
+
+    <!-- =====================================================
+         FONT
+    ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <!-- =====================================================
+         CHART JS
+    ====================================================== -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
     <style>
-        /*====================================================
-        BMJ SERVICE - ADMIN DASHBOARD
-====================================================*/
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", sans-serif;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
 
         body {
-            background: #f5f7fb;
-            color: #333;
-            display: flex;
-            overflow-x: hidden;
+
+            font-family: "Poppins", sans-serif;
+
+            background:
+                #f4f7fb;
+
+            color:
+                #172033;
+
         }
 
-        /*====================================================
-        SIDEBAR
-====================================================*/
+
+        /* =================================================
+           SIDEBAR
+        ================================================= */
 
         .sidebar {
+
             position: fixed;
-            top: 0;
+
             left: 0;
-            width: 270px;
+            top: 0;
+
+            width: 260px;
+
             height: 100vh;
-            background: linear-gradient(180deg, #145A86, #0b3f61);
-            color: #fff;
-            overflow-y: auto;
+
+            background:
+                linear-gradient(
+                    180deg,
+                    #145a86,
+                    #0d3d5c
+                );
+
+            color: white;
+
+            padding: 25px 18px;
+
             z-index: 1000;
-            box-shadow: 5px 0 20px rgba(0, 0, 0, .15);
+
         }
 
-        /*====================================================
-        LOGO
-====================================================*/
 
         .logo {
-            text-align: center;
-            padding: 30px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, .15);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding:
+                5px 10px 30px;
+
+            border-bottom:
+                1px solid
+                rgba(255,255,255,.15);
+
         }
+
 
         .logo img {
-            width: 85px;
-            height: 85px;
-            border-radius: 50%;
-            border: 4px solid #D4AF37;
-            object-fit: cover;
-            margin-bottom: 15px;
+
+            width: 48px;
+
+            height: 48px;
+
+            object-fit: contain;
+
+            border-radius: 10px;
+
+            background: white;
+
         }
+
 
         .logo h2 {
-            font-size: 25px;
-            color: white;
+
+            font-size: 20px;
+
         }
+
 
         .logo span {
-            color: #D4AF37;
+
+            color:
+                #ffd34e;
+
         }
 
-        /*====================================================
-        MENU
-====================================================*/
 
-        .sidebar nav {
-            margin-top: 20px;
+        .admin-info {
+
+            padding: 25px 10px;
+
         }
 
-        .sidebar nav a {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: white;
-            text-decoration: none;
-            padding: 18px 25px;
-            transition: .3s;
-            font-size: 15px;
-            border-left: 4px solid transparent;
-        }
 
-        .sidebar nav a i {
-            width: 25px;
-            text-align: center;
-            font-size: 18px;
-        }
+        .admin-avatar {
 
-        .sidebar nav a:hover {
-            background: rgba(255, 255, 255, .12);
-            border-left: 4px solid #D4AF37;
-            padding-left: 35px;
-        }
+            width: 55px;
 
-        .sidebar nav a.active {
-            background: #D4AF37;
-            color: #145A86;
-            font-weight: 600;
-            border-left: 4px solid white;
-        }
+            height: 55px;
 
-        /*====================================================
-        SCROLLBAR
-====================================================*/
-
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #D4AF37;
-            border-radius: 30px;
-        }
-
-        /*====================================================
-        MAIN
-====================================================*/
-
-        main {
-            flex: 1;
-            margin-left: 270px;
-            padding: 30px;
-            min-height: 100vh;
-        }
-
-        /*====================================================
-        HEADER
-====================================================*/
-
-        header {
-            background: white;
-            border-radius: 20px;
-            padding: 20px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
-            margin-bottom: 35px;
-        }
-
-        header h1 {
-            color: #145A86;
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        header p {
-            color: #777;
-            font-size: 15px;
-        }
-
-        /*====================================================
-        ADMIN PROFILE
-====================================================*/
-
-        .admin-profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: #f8f9fb;
-            padding: 10px 20px;
-            border-radius: 15px;
-        }
-
-        .admin-profile img {
-            width: 60px;
-            height: 60px;
             border-radius: 50%;
-            border: 3px solid #D4AF37;
-            object-fit: cover;
+
+            background:
+                rgba(255,255,255,.15);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 23px;
+
+            margin-bottom: 10px;
+
         }
 
-        .admin-profile h3 {
-            color: #145A86;
-            font-size: 18px;
+
+        .admin-info strong {
+
+            display: block;
+
+            font-size: 14px;
+
         }
 
-        .admin-profile small {
-            color: #777;
+
+        .admin-info small {
+
+            opacity: .7;
+
+            font-size: 11px;
+
         }
 
-        /*====================================================
-                CARTES STATISTIQUES
-====================================================*/
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
+        .menu {
+
+            margin-top: 10px;
+
         }
 
-        /*====================================================
-                CARTE
-====================================================*/
 
-        .card {
-            background: #fff;
-            border-radius: 20px;
-            padding: 30px 25px;
-            text-align: center;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, .08);
-            transition: .35s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            border-top: 5px solid #145A86;
-        }
+        .menu button {
 
-        /* Ligne décorative */
-
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
             width: 100%;
-            height: 4px;
-            background: #D4AF37;
-            transition: .5s;
-        }
 
-        .card:hover::before {
-            left: 0;
-        }
+            border: none;
 
-        /* Hover */
+            background: transparent;
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 18px 40px rgba(20, 90, 134, .18);
-        }
-
-        /*====================================================
-                ICÔNES
-====================================================*/
-
-        .card i {
-            width: 75px;
-            height: 75px;
-            line-height: 75px;
-            border-radius: 50%;
-            background: rgba(20, 90, 134, .08);
-            color: #145A86;
-            font-size: 30px;
-            margin-bottom: 20px;
-            transition: .3s;
-        }
-
-        .card:hover i {
-            background: #145A86;
             color: white;
-            transform: rotate(8deg) scale(1.08);
+
+            text-align: left;
+
+            padding: 14px 15px;
+
+            margin-bottom: 5px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            transition: .2s;
+
         }
 
-        /*====================================================
-                NOMBRE
-====================================================*/
 
-        .card h2 {
-            font-size: 36px;
-            color: #145A86;
-            margin-bottom: 8px;
-            font-weight: 700;
+        .menu button:hover,
+        .menu button.active {
+
+            background:
+                rgba(255,255,255,.15);
+
         }
 
-        /*====================================================
-                TEXTE
-====================================================*/
 
-        .card p {
-            color: #666;
-            font-size: 15px;
-            font-weight: 500;
+        .menu i {
+
+            width: 25px;
+
         }
 
-        /*====================================================
-                COULEURS SPÉCIFIQUES
-====================================================*/
 
-        .card:nth-child(1) {
-            border-top-color: #145A86;
+        .logout {
+
+            position: absolute;
+
+            left: 18px;
+            right: 18px;
+            bottom: 20px;
+
         }
 
-        .card:nth-child(2) {
-            border-top-color: #28a745;
+
+        .logout button {
+
+            width: 100%;
+
+            border: 1px solid
+                rgba(255,255,255,.2);
+
+            background:
+                rgba(0,0,0,.15);
+
+            color: white;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-family: inherit;
+
         }
 
-        .card:nth-child(3) {
-            border-top-color: #D4AF37;
+
+        /* =================================================
+           MAIN
+        ================================================= */
+
+        .main {
+
+            margin-left: 260px;
+
+            min-height: 100vh;
+
+            padding: 25px;
+
         }
 
-        .card:nth-child(4) {
-            border-top-color: #0d6efd;
+
+        .topbar {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 25px;
+
         }
 
-        .card:nth-child(5) {
-            border-top-color: #dc3545;
+
+        .topbar h1 {
+
+            font-size: 25px;
+
         }
 
-        .card:nth-child(6) {
-            border-top-color: #6f42c1;
+
+        .topbar p {
+
+            color: #718096;
+
+            font-size: 13px;
+
+            margin-top: 4px;
+
         }
 
-        /*====================================================
-                ANIMATION
-====================================================*/
+
+        .refresh-btn {
+
+            border: none;
+
+            background: #145a86;
+
+            color: white;
+
+            padding: 11px 16px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+        }
+
+
+        .refresh-btn i {
+
+            margin-right: 5px;
+
+        }
+
+
+        /* =================================================
+           SECTIONS
+        ================================================= */
+
+        .section {
+
+            display: none;
+
+        }
+
+
+        .section.active {
+
+            display: block;
+
+        }
+
+
+        /* =================================================
+           STATISTICS
+        ================================================= */
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .stat-card {
+
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,.05);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+        }
+
+
+        .stat-icon {
+
+            width: 50px;
+
+            height: 50px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background:
+                #eaf4fb;
+
+            color:
+                #145a86;
+
+            font-size: 20px;
+
+        }
+
+
+        .stat-card strong {
+
+            font-size: 23px;
+
+            display: block;
+
+        }
+
+
+        .stat-card span {
+
+            color: #718096;
+
+            font-size: 12px;
+
+        }
+
+
+        /* =================================================
+           CARDS
+        ================================================= */
 
         .card {
-            animation: fadeCard .6s ease;
-        }
 
-        @keyframes fadeCard {
+            background: white;
 
-            from {
+            border-radius: 15px;
 
-                opacity: 0;
-                transform: translateY(30px);
+            padding: 22px;
 
-            }
+            box-shadow:
+                0 5px 20px
+                rgba(0,0,0,.05);
 
-            to {
-
-                opacity: 1;
-                transform: translateY(0);
-
-            }
+            margin-bottom: 22px;
 
         }
 
-        /*====================================================
-            EFFET AU CLIC
-====================================================*/
 
-        .card:active {
+        .card-header {
 
-            transform: scale(.97);
-
-        }
-
-        /*====================================================
-            SURVEILLANCE
-====================================================*/
-
-        .monitoring {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
-            margin: 35px 0;
-        }
-
-        .box {
-            background: #fff;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
-        }
-
-        .box h2 {
-            color: #145A86;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #eee;
-            font-size: 22px;
-        }
-
-        #activites,
-        #connexions {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-height: 350px;
-            overflow-y: auto;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 18px;
+
         }
 
-        #activites div,
-        #connexions div {
-            background: #f8f9fc;
-            padding: 15px;
-            border-left: 5px solid #145A86;
-            border-radius: 10px;
-            transition: .3s;
+
+        .card-header h2 {
+
+            font-size: 17px;
+
         }
 
-        #activites div:hover,
-        #connexions div:hover {
-            background: #eef6fb;
-            transform: translateX(5px);
+
+        /* =================================================
+           SEARCH
+        ================================================= */
+
+        .search {
+
+            position: relative;
+
         }
 
-        /*====================================================
-            TABLEAU UTILISATEURS
-====================================================*/
 
-        .users {
-            background: #fff;
-            padding: 25px;
-            border-radius: 20px;
-            margin-top: 35px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
+        .search input {
+
+            width: 280px;
+
+            padding: 11px 14px 11px 38px;
+
+            border:
+                1px solid #e2e8f0;
+
+            border-radius: 9px;
+
+            outline: none;
+
+            font-family: inherit;
+
+        }
+
+
+        .search i {
+
+            position: absolute;
+
+            left: 13px;
+
+            top: 13px;
+
+            color: #718096;
+
+        }
+
+
+        /* =================================================
+           TABLE
+        ================================================= */
+
+        .table-container {
+
             overflow-x: auto;
+
         }
 
-        .users h2 {
-            color: #145A86;
-            margin-bottom: 20px;
-        }
-
-        /*====================================================
-            TABLE
-====================================================*/
 
         table {
+
             width: 100%;
+
             border-collapse: collapse;
-            min-width: 900px;
+
+            min-width: 800px;
+
         }
 
-        thead {
-            background: #145A86;
-            color: white;
-        }
 
-        thead th {
-            padding: 16px;
-            font-size: 15px;
+        th {
+
+            background:
+                #f7fafc;
+
+            color:
+                #718096;
+
+            font-size: 11px;
+
+            text-transform: uppercase;
+
+            padding: 13px;
+
             text-align: left;
+
         }
 
-        tbody tr {
-            border-bottom: 1px solid #ececec;
-            transition: .3s;
+
+        td {
+
+            padding: 14px 13px;
+
+            border-bottom:
+                1px solid #edf2f7;
+
+            font-size: 12px;
+
         }
 
-        tbody tr:hover {
-            background: #f7fbff;
+
+        tr:hover td {
+
+            background:
+                #fafcff;
+
         }
 
-        tbody td {
-            padding: 14px;
-            font-size: 14px;
-            color: #444;
+
+        .user-cell {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
         }
 
-        /*====================================================
-            BOUTONS ACTIONS
-====================================================*/
 
-        table button {
-            border: none;
-            padding: 8px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 2px;
-            font-size: 13px;
-            transition: .3s;
+        .user-photo {
+
+            width: 38px;
+
+            height: 38px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            background:
+                #eaf4fb;
+
         }
 
-        .btn-edit {
-            background: #145A86;
-            color: white;
+
+        .user-name {
+
+            font-weight: 600;
+
         }
 
-        .btn-delete {
-            background: #dc3545;
-            color: white;
+
+        .user-email {
+
+            color:
+                #718096;
+
+            font-size: 10px;
+
         }
 
-        .btn-premium {
-            background: #D4AF37;
-            color: #145A86;
-            font-weight: bold;
-        }
 
-        table button:hover {
-            transform: scale(1.05);
-        }
-
-        /*====================================================
-        DERNIERS PREMIUM
-====================================================*/
-
-        .premium-list {
-            margin-top: 35px;
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
-        }
-
-        .premium-list h2 {
-            color: #145A86;
-            margin-bottom: 20px;
-        }
-
-        #listePremium {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
-        }
-
-        #listePremium .premium-item {
-            background: #fff8e6;
-            border-left: 5px solid #D4AF37;
-            border-radius: 15px;
-            padding: 18px;
-            transition: .3s;
-        }
-
-        #listePremium .premium-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(212, 175, 55, .25);
-        }
-
-        /*====================================================
-            CERTIFICATS
-====================================================*/
-
-        .certificats {
-            margin-top: 35px;
-            background: white;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
-        }
-
-        .certificats h2 {
-            color: #145A86;
-            margin-bottom: 20px;
-        }
-
-        #listeCertificats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        #listeCertificats .certificat-item {
-            background: #f8f9fc;
-            border-left: 5px solid:#28a745;
-            border-radius: 15px;
-            padding: 18px;
-            transition: .3s;
-        }
-
-        #listeCertificats .certificat-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(40, 167, 69, .20);
-        }
-
-        /*====================================================
-            BADGES
-====================================================*/
+        /* =================================================
+           BADGES
+        ================================================= */
 
         .badge {
+
             display: inline-block;
-            padding: 5px 12px;
+
+            padding: 5px 9px;
+
             border-radius: 20px;
-            font-size: 12px;
+
+            font-size: 10px;
+
             font-weight: 600;
+
         }
+
 
         .badge-premium {
-            background: #D4AF37;
-            color: #145A86;
+
+            background:
+                #fff4c7;
+
+            color:
+                #956d00;
+
         }
 
-        .badge-actif {
-            background: #28a745;
+
+        .badge-standard {
+
+            background:
+                #edf2f7;
+
+            color:
+                #667085;
+
+        }
+
+
+        .badge-pending {
+
+            background:
+                #fff5d6;
+
+            color:
+                #946200;
+
+        }
+
+
+        .badge-valid {
+
+            background:
+                #dcfce7;
+
+            color:
+                #16803c;
+
+        }
+
+
+        .badge-refused {
+
+            background:
+                #fee2e2;
+
+            color:
+                #b42318;
+
+        }
+
+
+        /* =================================================
+           BUTTONS
+        ================================================= */
+
+        .btn {
+
+            border: none;
+
+            padding: 8px 11px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-family: inherit;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+        }
+
+
+        .btn-premium {
+
+            background:
+                #145a86;
+
             color: white;
+
         }
 
-        .badge-bloque {
-            background: #dc3545;
+
+        .btn-standard {
+
+            background:
+                #edf2f7;
+
+            color:
+                #475467;
+
+        }
+
+
+        .btn-success {
+
+            background:
+                #16a34a;
+
             color: white;
+
         }
 
-        /*====================================================
-                RAPPORTS
-====================================================*/
 
-        .rapports {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
+        .btn-danger {
+
+            background:
+                #dc2626;
+
+            color: white;
+
         }
 
-        .rapport {
-            background: #fff;
+
+        .btn-view {
+
+            background:
+                #eef6ff;
+
+            color:
+                #145a86;
+
+        }
+
+
+        .actions {
+
+            display: flex;
+
+            gap: 6px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        /* =================================================
+           EMPTY
+        ================================================= */
+
+        .empty {
+
+            text-align: center;
+
+            padding: 50px 20px;
+
+            color:
+                #718096;
+
+        }
+
+
+        .empty i {
+
+            font-size: 40px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        /* =================================================
+           LOADING
+        ================================================= */
+
+        .loading {
+
+            text-align: center;
+
+            padding: 40px;
+
+            color:
+                #718096;
+
+        }
+
+
+        .loading i {
+
+            margin-right: 8px;
+
+        }
+
+
+        /* =================================================
+           MODAL
+        ================================================= */
+
+        .modal-overlay {
+
+            position: fixed;
+
+            inset: 0;
+
+            background:
+                rgba(0,0,0,.65);
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            z-index: 99999;
+
+        }
+
+
+        .modal-overlay.show {
+
+            display: flex;
+
+        }
+
+
+        .modal {
+
+            background: white;
+
+            width: 100%;
+
+            max-width: 500px;
+
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            border-radius: 18px;
+
             padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, .08);
-            transition: .3s;
+
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,.3);
+
+            animation:
+                modalIn .2s ease;
+
         }
 
-        .rapport:hover {
-            transform: translateY(-5px);
-        }
 
-        .rapport h3 {
-            color: #145A86;
-            margin-bottom: 20px;
-            font-size: 20px;
-            border-bottom: 2px solid #f1f1f1;
-            padding-bottom: 10px;
-        }
-
-        canvas {
-            width: 100% !important;
-            max-width: 100%;
-            height: 320px !important;
-        }
-
-        /*====================================================
-            SCROLLBAR
-====================================================*/
-
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #145A86;
-            border-radius: 20px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #edf2f7;
-        }
-
-        /*====================================================
-            ANIMATIONS
-====================================================*/
-
-        @keyframes fadeUp {
+        @keyframes modalIn {
 
             from {
 
                 opacity: 0;
-                transform: translateY(25px);
+
+                transform:
+                    scale(.9);
 
             }
 
             to {
 
                 opacity: 1;
-                transform: translateY(0);
+
+                transform:
+                    scale(1);
 
             }
 
         }
 
-        .cards,
-        .monitoring,
-        .users,
-        .premium-list,
-        .certificats,
-        .rapports {
 
-            animation: fadeUp .6s ease;
+        .modal-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
 
         }
 
-        /*====================================================
-            RESPONSIVE TABLETTE
-====================================================*/
 
-        @media(max-width:1100px) {
+        .modal-header h3 {
+
+            font-size: 18px;
+
+        }
+
+
+        .close-modal {
+
+            width: 35px;
+
+            height: 35px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background:
+                #f1f5f9;
+
+            cursor: pointer;
+
+            font-size: 17px;
+
+        }
+
+
+        .modal-image {
+
+            width: 100%;
+
+            max-height: 450px;
+
+            object-fit: contain;
+
+            border-radius: 10px;
+
+            background:
+                #f8fafc;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .payment-details {
+
+            display: grid;
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .detail {
+
+            background:
+                #f8fafc;
+
+            border-radius: 8px;
+
+            padding: 10px;
+
+        }
+
+
+        .detail small {
+
+            display: block;
+
+            color:
+                #718096;
+
+            font-size: 10px;
+
+        }
+
+
+        .detail strong {
+
+            font-size: 12px;
+
+        }
+
+
+        .modal-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+        }
+
+
+        .modal-actions button {
+
+            flex: 1;
+
+            padding: 12px;
+
+        }
+
+
+        /* =================================================
+           TOAST
+        ================================================= */
+
+        #toast-container {
+
+            position: fixed;
+
+            top: 20px;
+
+            right: 20px;
+
+            z-index: 100000;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+
+        }
+
+
+        .toast {
+
+            min-width: 300px;
+
+            max-width: 420px;
+
+            background: white;
+
+            border-radius: 12px;
+
+            padding: 15px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,.18);
+
+            display: flex;
+
+            gap: 12px;
+
+            animation:
+                toastIn .25s ease;
+
+        }
+
+
+        @keyframes toastIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateX(30px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateX(0);
+
+            }
+
+        }
+
+
+        .toast-icon {
+
+            font-size: 20px;
+
+        }
+
+
+        .toast.success
+        .toast-icon {
+
+            color:
+                #16a34a;
+
+        }
+
+
+        .toast.error
+        .toast-icon {
+
+            color:
+                #dc2626;
+
+        }
+
+
+        .toast.info
+        .toast-icon {
+
+            color:
+                #145a86;
+
+        }
+
+
+        .toast strong {
+
+            display: block;
+
+            font-size: 13px;
+
+        }
+
+
+        .toast p {
+
+            font-size: 11px;
+
+            color:
+                #667085;
+
+            margin-top: 3px;
+
+        }
+
+
+        /* =================================================
+           MOBILE
+        ================================================= */
+
+        @media(max-width: 900px) {
 
             .sidebar {
 
-                width: 220px;
+                width: 75px;
+
+                padding: 15px 10px;
 
             }
 
-            main {
+            .logo h2,
+            .admin-info,
+            .menu span,
+            .logout span {
 
-                margin-left: 220px;
-                padding: 20px;
-
-            }
-
-            header {
-
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-
-            }
-
-            .cards {
-
-                grid-template-columns: repeat(2, 1fr);
-
-            }
-
-            .monitoring {
-
-                grid-template-columns: 1fr;
-
-            }
-
-            .rapports {
-
-                grid-template-columns: 1fr;
-
-            }
-
-        }
-
-        /*====================================================
-            RESPONSIVE MOBILE
-====================================================*/
-
-        @media(max-width:768px) {
-
-            body {
-
-                display: block;
-
-            }
-
-            /* Sidebar */
-
-            .sidebar {
-
-                position: relative;
-                width: 100%;
-                height: auto;
+                display: none;
 
             }
 
             .logo {
 
-                padding: 20px;
-
-            }
-
-            .logo img {
-
-                width: 70px;
-                height: 70px;
-
-            }
-
-            /* Main */
-
-            main {
-
-                margin-left: 0;
-                width: 100%;
-                padding: 15px;
-
-            }
-
-            /* Header */
-
-            header {
-
-                flex-direction: column;
-                text-align: center;
-                gap: 20px;
-
-            }
-
-            header h1 {
-
-                font-size: 24px;
-
-            }
-
-            header p {
-
-                font-size: 14px;
-
-            }
-
-            .admin-profile {
-
-                width: 100%;
                 justify-content: center;
 
-            }
-
-            /* Cards */
-
-            .cards {
-
-                grid-template-columns: 1fr;
+                padding-bottom: 20px;
 
             }
 
-            .card {
+            .menu button {
 
-                padding: 25px 20px;
-
-            }
-
-            .card h2 {
-
-                font-size: 32px;
+                text-align: center;
 
             }
 
-            /* Monitoring */
+            .menu i {
 
-            .monitoring {
-
-                grid-template-columns: 1fr;
-
-            }
-
-            /* Tableau */
-
-            .users {
-
-                overflow-x: auto;
-
-            }
-
-            table {
-
-                min-width: 900px;
-
-            }
-
-            /* Premium */
-
-            #listePremium {
-
-                grid-template-columns: 1fr;
-
-            }
-
-            /* Certificats */
-
-            #listeCertificats {
-
-                grid-template-columns: 1fr;
-
-            }
-
-            /* Rapports */
-
-            .rapports {
-
-                grid-template-columns: 1fr;
-
-            }
-
-            canvas {
-
-                height: 250px !important;
-
-            }
-
-        }
-
-        /*====================================================
-            PETITS SMARTPHONES
-====================================================*/
-
-        @media(max-width:480px) {
-
-            .logo h2 {
-
-                font-size: 20px;
-
-            }
-
-            .sidebar nav a {
-
-                font-size: 14px;
-                padding: 15px;
-
-            }
-
-            header h1 {
-
-                font-size: 20px;
-
-            }
-
-            .card {
-
-                padding: 20px;
-
-            }
-
-            .card i {
-
-                width: 60px;
-                height: 60px;
-                line-height: 60px;
-                font-size: 24px;
-
-            }
-
-            .card h2 {
-
-                font-size: 28px;
-
-            }
-
-            .box h2,
-            .users h2,
-            .premium-list h2,
-            .certificats h2,
-            .rapport h3 {
+                width: auto;
 
                 font-size: 18px;
 
             }
 
-            .admin-profile img {
+            .main {
 
-                width: 50px;
-                height: 50px;
+                margin-left: 75px;
+
+            }
+
+            .stats {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
 
             }
 
         }
 
-        /*====================================================
-                FIN
-====================================================*/
+
+        @media(max-width: 600px) {
+
+            .main {
+
+                padding: 15px;
+
+            }
+
+            .topbar {
+
+                align-items:
+                    flex-start;
+
+                gap: 10px;
+
+            }
+
+            .topbar h1 {
+
+                font-size: 20px;
+
+            }
+
+            .stats {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+            .search input {
+
+                width: 100%;
+
+            }
+
+            .card-header {
+
+                flex-direction:
+                    column;
+
+                align-items:
+                    stretch;
+
+                gap: 12px;
+
+            }
+
+            .toast {
+
+                min-width:
+                    calc(100vw - 40px);
+
+            }
+
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <!--====================================
-            SIDEBAR ADMIN
-    =====================================-->
 
-    <aside class="sidebar">
+<!-- =====================================================
+     SIDEBAR
+====================================================== -->
 
-        <div class="logo">
+<aside class="sidebar">
 
-            <img src="images/logo.png">
 
-            <h2>BMJ <span>SERVICE</span></h2>
+    <div class="logo">
+
+        <img
+            src="images/logo.png"
+            onerror="this.style.display='none'"
+        >
+
+        <h2>
+            BMJ
+            <span>SERVICE</span>
+        </h2>
+
+    </div>
+
+
+    <div class="admin-info">
+
+        <div class="admin-avatar">
+
+            <i class="fa-solid fa-user-shield"></i>
 
         </div>
 
-        <nav>
+        <strong id="adminName">
+            Administrateur
+        </strong>
 
-            <a href="#" class="active">
-                <i class="fa-solid fa-gauge"></i>
-                <span>Tableau de bord</span>
-            </a>
+        <small id="adminEmail">
+            admin@bmjservice.com
+        </small>
 
-            <a href="#">
-                <i class="fa-solid fa-users"></i>
-                <span>Utilisateurs</span>
-            </a>
-
-            <a href="#">
-                <i class="fa-solid fa-crown"></i>
-                <span>Abonnés Premium</span>
-            </a>
-
-            <a href="#">
-                <i class="fa-solid fa-book"></i>
-                <span>Formations</span>
-            </a>
-
-            <a href="#">
-                <i class="fa-solid fa-layer-group"></i>
-                <span>Domaines</span>
-            </a>
-
-            <a href="#">
-                <i class="fa-solid fa-certificate"></i>
-                <span>Certificats</span>
-            </a>
-
-            <a href="#">
-                <i class="fa-solid fa-chart-line"></i>
-                <span>Statistiques</span>
-            </a>
-
-            <a href="#">
-                <i class="fa-solid fa-comments"></i>
-                <span>Messages</span>
-            </a>
-
-            <a href="#">
-                <i class="fa-solid fa-bell"></i>
-                <span>Notifications</span>
-            </a>
-
-            <a href="#">
-                <i class="fa-solid fa-gear"></i>
-                <span>Paramètres</span>
-            </a>
-
-            <a href="#" id="logoutAdmin">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>Déconnexion</span>
-            </a>
-
-        </nav>
-
-    </aside>
+    </div>
 
 
+    <nav class="menu">
+
+        <button
+            class="active"
+            data-section="dashboard"
+        >
+
+            <i class="fa-solid fa-chart-pie"></i>
+
+            <span>
+                Tableau de bord
+            </span>
+
+        </button>
+
+
+        <button
+            data-section="apprenants"
+        >
+
+            <i class="fa-solid fa-users"></i>
+
+            <span>
+                Apprenants
+            </span>
+
+        </button>
+
+
+        <button
+            data-section="paiements"
+        >
+
+            <i class="fa-solid fa-money-check-dollar"></i>
+
+            <span>
+                Paiements
+            </span>
+
+        </button>
+
+    </nav>
+
+
+    <div class="logout">
+
+        <button id="logoutBtn">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+
+            <span>
+                Déconnexion
+            </span>
+
+        </button>
+
+    </div>
+
+
+</aside>
 
 
 
-    <!--====================================
-                CONTENU
-    =====================================-->
+<!-- =====================================================
+     MAIN
+====================================================== -->
 
-    <main>
+<main class="main">
 
-        <!-- HEADER -->
 
-        <header>
+    <!-- =================================================
+         TOPBAR
+    ================================================== -->
 
-            <div>
+    <div class="topbar">
 
-                <h1>
+        <div>
 
-                    Tableau de bord Administrateur
+            <h1 id="pageTitle">
+                Tableau de bord
+            </h1>
 
-                </h1>
+            <p>
+                Gestion de la plateforme BMJ SERVICE
+            </p>
 
-                <p>
+        </div>
 
-                    Surveillance complète de BMJ SERVICE
 
-                </p>
+        <button
+            class="refresh-btn"
+            id="refreshBtn"
+        >
 
-            </div>
+            <i class="fa-solid fa-rotate"></i>
 
-            <div class="admin-profile">
+            Actualiser
 
-                <img src="images/admin.png">
+        </button>
+
+    </div>
+
+
+
+    <!-- =================================================
+         DASHBOARD
+    ================================================== -->
+
+    <section
+        id="dashboard"
+        class="section active"
+    >
+
+
+        <div class="stats">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-users"></i>
+
+                </div>
 
                 <div>
 
-                    <h3>Administrateur</h3>
+                    <strong id="statUsers">
+                        0
+                    </strong>
 
-                    <small>Contrôle total</small>
+                    <span>
+                        Apprenants
+                    </span>
 
                 </div>
 
             </div>
 
-        </header>
 
+            <div class="stat-card">
 
+                <div class="stat-icon">
 
+                    <i class="fa-solid fa-crown"></i>
 
+                </div>
 
-        <!-- CARTES -->
+                <div>
 
-        <section class="cards">
+                    <strong id="statPremium">
+                        0
+                    </strong>
 
-            <div class="card">
-                <i class="fa-solid fa-users"></i>
-                <h2 id="nbUtilisateurs">0</h2>
-                <p>Utilisateurs</p>
+                    <span>
+                        Comptes Premium
+                    </span>
+
+                </div>
+
             </div>
 
-            <div class="card">
-                <i class="fa-solid fa-user-check"></i>
-                <h2 id="nbActifs">0</h2>
-                <p>Utilisateurs actifs</p>
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-clock"></i>
+
+                </div>
+
+                <div>
+
+                    <strong id="statPending">
+                        0
+                    </strong>
+
+                    <span>
+                        Paiements en attente
+                    </span>
+
+                </div>
+
             </div>
 
-            <div class="card">
-                <i class="fa-solid fa-crown"></i>
-                <h2 id="nbPremium">0</h2>
-                <p>Premium</p>
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-check-circle"></i>
+
+                </div>
+
+                <div>
+
+                    <strong id="statValidated">
+                        0
+                    </strong>
+
+                    <span>
+                        Paiements validés
+                    </span>
+
+                </div>
+
             </div>
 
-            <div class="card">
-                <i class="fa-solid fa-graduation-cap"></i>
-                <h2 id="nbFormations">6</h2>
-                <p>Domaines</p>
-            </div>
 
-            <div class="card">
-                <i class="fa-solid fa-certificate"></i>
-                <h2 id="nbCertificats">0</h2>
-                <p>Certificats</p>
-            </div>
-
-            <div class="card">
-                <i class="fa-solid fa-eye"></i>
-                <h2 id="nbVisites">0</h2>
-                <p>Visites</p>
-            </div>
-
-        </section>
+        </div>
 
 
+        <div class="card">
 
-
-
-        <!-- SURVEILLANCE -->
-
-        <section class="monitoring">
-
-            <div class="box">
+            <div class="card-header">
 
                 <h2>
-
-                    Activité en temps réel
-
+                    Derniers paiements
                 </h2>
 
-                <div id="activites"></div>
+                <button
+                    class="btn btn-view"
+                    onclick="changerSection('paiements')"
+                >
+                    Voir tout
+                </button>
 
             </div>
 
-            <div class="box">
+
+            <div
+                id="dashboardPayments"
+                class="loading"
+            >
+
+                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                Chargement...
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         APPRENANTS
+    ================================================== -->
+
+    <section
+        id="apprenants"
+        class="section"
+    >
+
+
+        <div class="card">
+
+
+            <div class="card-header">
 
                 <h2>
-
-                    Dernières connexions
-
+                    Gestion des apprenants
                 </h2>
 
-                <div id="connexions"></div>
+
+                <div class="search">
+
+                    <i class="fa-solid fa-search"></i>
+
+                    <input
+                        type="search"
+                        id="searchUsers"
+                        placeholder="Rechercher un apprenant..."
+                    >
+
+                </div>
 
             </div>
 
-        </section>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Utilisateur
+                            </th>
+
+                            <th>
+                                Téléphone
+                            </th>
+
+                            <th>
+                                Domaine
+                            </th>
+
+                            <th>
+                                Statut
+                            </th>
+
+                            <th>
+                                Inscription
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="usersTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
 
 
 
+    <!-- =================================================
+         PAIEMENTS
+    ================================================== -->
+
+    <section
+        id="paiements"
+        class="section"
+    >
 
 
-        <!-- TABLEAU UTILISATEURS -->
+        <div class="card">
 
-        <section class="users">
 
-            <h2>
+            <div class="card-header">
 
-                Liste des utilisateurs
+                <h2>
+                    Demandes de paiement Premium
+                </h2>
 
-            </h2>
+
+                <div class="search">
+
+                    <i class="fa-solid fa-search"></i>
+
+                    <input
+                        type="search"
+                        id="searchPayments"
+                        placeholder="Rechercher un paiement..."
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Utilisateur
+                            </th>
+
+                            <th>
+                                Offre
+                            </th>
+
+                            <th>
+                                Montant
+                            </th>
+
+                            <th>
+                                Méthode
+                            </th>
+
+                            <th>
+                                Statut
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="paymentsTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     MODAL PAIEMENT
+====================================================== -->
+
+<div
+    id="paymentModal"
+    class="modal-overlay"
+>
+
+
+    <div class="modal">
+
+
+        <div class="modal-header">
+
+            <h3>
+                Vérification du paiement
+            </h3>
+
+            <button
+                class="close-modal"
+                onclick="fermerModal()"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <div id="paymentModalContent">
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     TOAST
+====================================================== -->
+
+<div id="toast-container"></div>
+
+
+
+<script>
+
+/* =========================================================
+   BMJ SERVICE
+   ADMINISTRATION
+========================================================= */
+
+
+/* =========================================================
+   CONFIGURATION API
+========================================================= */
+
+const API_URL =
+    "https://back-end-h602.onrender.com";
+
+
+/* =========================================================
+   ETAT
+========================================================= */
+
+let apprenants = [];
+
+let paiements = [];
+
+let paiementSelectionne = null;
+
+
+/* =========================================================
+   INITIALISATION
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
+
+        verifierAdminLocal();
+
+        initialiserNavigation();
+
+        initialiserRecherche();
+
+        await chargerDonnees();
+
+    }
+);
+
+
+/* =========================================================
+   VERIFICATION ADMIN
+========================================================= */
+
+function verifierAdminLocal() {
+
+    const admin =
+        JSON.parse(
+            localStorage.getItem(
+                "bmj_admin"
+            )
+        );
+
+
+    const utilisateur =
+        JSON.parse(
+            localStorage.getItem(
+                "bmj_current_user"
+            )
+        );
+
+
+    const adminConnecte =
+        admin ||
+        (
+            utilisateur &&
+            (
+                utilisateur.isAdmin === true ||
+                utilisateur.admin === true
+            )
+        );
+
+
+    if (!adminConnecte) {
+
+        window.location.href =
+            "admin-connexion.html";
+
+        return;
+
+    }
+
+
+    const source =
+        admin || utilisateur;
+
+
+    if (source.nom) {
+
+        document.getElementById(
+            "adminName"
+        ).textContent =
+            source.nom;
+
+    }
+
+
+    if (source.email) {
+
+        document.getElementById(
+            "adminEmail"
+        ).textContent =
+            source.email;
+
+    }
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function initialiserNavigation() {
+
+    document
+        .querySelectorAll(
+            ".menu button"
+        )
+        .forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        changerSection(
+                            button.dataset.section
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   CHANGER SECTION
+========================================================= */
+
+function changerSection(section) {
+
+    document
+        .querySelectorAll(
+            ".section"
+        )
+        .forEach(
+            function (element) {
+
+                element.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    const cible =
+        document.getElementById(
+            section
+        );
+
+
+    if (cible) {
+
+        cible.classList.add(
+            "active"
+        );
+
+    }
+
+
+    document
+        .querySelectorAll(
+            ".menu button"
+        )
+        .forEach(
+            function (button) {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.section === section
+                );
+
+            }
+        );
+
+
+    const titres = {
+
+        dashboard:
+            "Tableau de bord",
+
+        apprenants:
+            "Gestion des apprenants",
+
+        paiements:
+            "Demandes de paiement"
+
+    };
+
+
+    document.getElementById(
+        "pageTitle"
+    ).textContent =
+        titres[section] ||
+        "Administration";
+
+}
+
+
+/* =========================================================
+   CHARGER DONNEES
+========================================================= */
+
+async function chargerDonnees() {
+
+    await Promise.all([
+        chargerApprenants(),
+        chargerPaiements()
+    ]);
+
+    afficherStatistiques();
+
+    afficherDerniersPaiements();
+
+}
+
+
+/* =========================================================
+   CHARGER APPRENANTS
+========================================================= */
+
+async function chargerApprenants() {
+
+    const tbody =
+        document.getElementById(
+            "usersTable"
+        );
+
+
+    tbody.innerHTML = `
+
+        <tr>
+
+            <td colspan="6">
+
+                <div class="loading">
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    Chargement des apprenants...
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL +
+                "/api/apprenants"
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                "Impossible de récupérer les apprenants."
+            );
+
+        }
+
+
+        apprenants =
+            Array.isArray(result.data)
+                ? result.data
+                : [];
+
+
+        afficherApprenants(
+            apprenants
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+
+                    <div class="empty">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        <p>
+                            ${echapper(error.message)}
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        afficherToast(
+            "Erreur",
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AFFICHER APPRENANTS
+========================================================= */
+
+function afficherApprenants(liste) {
+
+    const tbody =
+        document.getElementById(
+            "usersTable"
+        );
+
+
+    if (!liste.length) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="6">
+
+                    <div class="empty">
+
+                        <i class="fa-solid fa-users-slash"></i>
+
+                        <p>
+                            Aucun apprenant trouvé.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        liste.map(
+            function (user) {
+
+                const premium =
+                    user.premium === true ||
+                    user.is_premium === true;
+
+
+                const photo =
+                    user.photo ||
+                    "images/user.png";
+
+
+                return `
+
+                    <tr>
+
+                        <td>
+
+                            <div class="user-cell">
+
+                                <img
+                                    class="user-photo"
+                                    src="${echapper(photo)}"
+                                    onerror="this.src='images/user.png'"
+                                >
+
+                                <div>
+
+                                    <div class="user-name">
+
+                                        ${echapper(user.nom)}
+
+                                    </div>
+
+                                    <div class="user-email">
+
+                                        ${echapper(user.email)}
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            ${echapper(user.telephone || "-")}
+
+                        </td>
+
+
+                        <td>
+
+                            ${echapper(user.domaine || "-")}
+
+                        </td>
+
+
+                        <td>
+
+                            ${
+                                premium
+
+                                ?
+
+                                `
+                                <span class="badge badge-premium">
+
+                                    <i class="fa-solid fa-crown"></i>
+
+                                    PREMIUM
+
+                                </span>
+                                `
+
+                                :
+
+                                `
+                                <span class="badge badge-standard">
+
+                                    STANDARD
+
+                                </span>
+                                `
+                            }
+
+                        </td>
+
+
+                        <td>
+
+                            ${formaterDate(user.date_creation)}
+
+                        </td>
+
+
+                        <td>
+
+                            <div class="actions">
+
+                                ${
+                                    premium
+
+                                    ?
+
+                                    `
+                                    <button
+                                        class="btn btn-standard"
+                                        onclick="modifierPremium(${user.id}, false)"
+                                    >
+
+                                        Retirer Premium
+
+                                    </button>
+                                    `
+
+                                    :
+
+                                    `
+                                    <button
+                                        class="btn btn-premium"
+                                        onclick="modifierPremium(${user.id}, true)"
+                                    >
+
+                                        <i class="fa-solid fa-crown"></i>
+
+                                        Activer Premium
+
+                                    </button>
+                                    `
+                                }
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================================================
+   MODIFIER PREMIUM
+========================================================= */
+
+async function modifierPremium(
+    userId,
+    activer
+) {
+
+
+    const user =
+        apprenants.find(
+            function (u) {
+
+                return Number(u.id) ===
+                    Number(userId);
+
+            }
+        );
+
+
+    if (!user) {
+
+        afficherToast(
+            "Erreur",
+            "Utilisateur introuvable.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const action =
+        activer
+            ? "activer"
+            : "retirer";
+
+
+    afficherConfirmation(
+        activer
+            ? "Activer Premium ?"
+            : "Retirer Premium ?",
+
+        activer
+
+            ?
+
+            "Voulez-vous réellement activer le statut Premium de cet utilisateur ?"
+
+            :
+
+            "Voulez-vous réellement retirer le statut Premium de cet utilisateur ?",
+
+        async function () {
+
+            await executerModificationPremium(
+                userId,
+                activer
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   EXECUTER MODIFICATION PREMIUM
+========================================================= */
+
+async function executerModificationPremium(
+    userId,
+    activer
+) {
+
+    try {
+
+        const response =
+            await fetch(
+
+                API_URL +
+                "/api/apprenants/" +
+                encodeURIComponent(userId) +
+                "/premium",
+
+                {
+
+                    method:
+                        "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            premium:
+                                activer,
+
+                            is_premium:
+                                activer
+
+                        })
+
+                }
+
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        afficherToast(
+            "Modification réussie",
+            activer
+                ? "Le compte Premium a été activé."
+                : "Le Premium a été retiré.",
+            "success"
+        );
+
+
+        await chargerApprenants();
+
+        afficherStatistiques();
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur Premium :",
+            error
+        );
+
+
+        afficherToast(
+            "Impossible de modifier le Premium",
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CHARGER PAIEMENTS
+========================================================= */
+
+async function chargerPaiements() {
+
+    const tbody =
+        document.getElementById(
+            "paymentsTable"
+        );
+
+
+    tbody.innerHTML = `
+
+        <tr>
+
+            <td colspan="7">
+
+                <div class="loading">
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    Chargement des paiements...
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                API_URL +
+                "/api/paiements"
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                "Impossible de récupérer les paiements."
+            );
+
+        }
+
+
+        paiements =
+            Array.isArray(result.data)
+                ? result.data
+                : [];
+
+
+        afficherPaiements(
+            paiements
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="7">
+
+                    <div class="empty">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        <p>
+                            ${echapper(error.message)}
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+
+        afficherToast(
+            "Erreur paiements",
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   AFFICHER PAIEMENTS
+========================================================= */
+
+function afficherPaiements(liste) {
+
+    const tbody =
+        document.getElementById(
+            "paymentsTable"
+        );
+
+
+    if (!liste.length) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td colspan="7">
+
+                    <div class="empty">
+
+                        <i class="fa-solid fa-receipt"></i>
+
+                        <p>
+                            Aucune demande de paiement.
+                        </p>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        liste.map(
+            function (paiement) {
+
+                const statut =
+                    normaliserStatut(
+                        paiement.statut
+                    );
+
+
+                let badge = "";
+
+
+                if (
+                    statut === "en_attente"
+                ) {
+
+                    badge = `
+                        <span class="badge badge-pending">
+                            EN ATTENTE
+                        </span>
+                    `;
+
+                }
+
+                else if (
+                    statut === "valide" ||
+                    statut === "approuve" ||
+                    statut === "active"
+                ) {
+
+                    badge = `
+                        <span class="badge badge-valid">
+                            VALIDÉ
+                        </span>
+                    `;
+
+                }
+
+                else {
+
+                    badge = `
+                        <span class="badge badge-refused">
+                            REFUSÉ
+                        </span>
+                    `;
+
+                }
+
+
+                return `
+
+                    <tr>
+
+                        <td>
+
+                            <div class="user-name">
+
+                                ${echapper(paiement.nom || "-")}
+
+                            </div>
+
+                            <div class="user-email">
+
+                                ${echapper(paiement.email || "-")}
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            ${echapper(paiement.offre || "Premium")}
+
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+
+                                ${echapper(paiement.montant || "0")}
+
+                                ${echapper(paiement.devise || "USD")}
+
+                            </strong>
+
+                        </td>
+
+
+                        <td>
+
+                            ${echapper(paiement.methode || "-")}
+
+                        </td>
+
+
+                        <td>
+
+                            ${badge}
+
+                        </td>
+
+
+                        <td>
+
+                            ${formaterDate(
+                                paiement.date
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <div class="actions">
+
+                                <button
+                                    class="btn btn-view"
+                                    onclick="ouvrirPaiement(${paiement.id})"
+                                >
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                    Voir
+
+                                </button>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        ).join("");
+
+}
+
+
+/* =========================================================
+   OUVRIR PAIEMENT
+========================================================= */
+
+function ouvrirPaiement(id) {
+
+    paiementSelectionne =
+        paiements.find(
+            function (paiement) {
+
+                return Number(paiement.id) ===
+                    Number(id);
+
+            }
+        );
+
+
+    if (!paiementSelectionne) {
+
+        afficherToast(
+            "Erreur",
+            "Paiement introuvable.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const paiement =
+        paiementSelectionne;
+
+
+    const statut =
+        normaliserStatut(
+            paiement.statut
+        );
+
+
+    const modal =
+        document.getElementById(
+            "paymentModal"
+        );
+
+
+    const content =
+        document.getElementById(
+            "paymentModalContent"
+        );
+
+
+    let imageHTML = "";
+
+
+    if (paiement.capture) {
+
+        imageHTML = `
+
+            <img
+                class="modal-image"
+                src="${echapper(paiement.capture)}"
+                alt="Preuve de paiement"
+            >
+
+        `;
+
+    }
+
+    else {
+
+        imageHTML = `
+
+            <div class="empty">
+
+                <i class="fa-solid fa-image"></i>
+
+                <p>
+                    Aucune preuve de paiement.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    let actions = "";
+
+
+    if (
+        statut === "en_attente"
+    ) {
+
+        actions = `
+
+            <div class="modal-actions">
+
+                <button
+                    class="btn btn-danger"
+                    onclick="refuserPaiement()"
+                >
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                    Refuser
+
+                </button>
+
+
+                <button
+                    class="btn btn-success"
+                    onclick="validerPaiement()"
+                >
+
+                    <i class="fa-solid fa-check"></i>
+
+                    Valider le paiement
+
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+    else {
+
+        actions = `
+
+            <div class="detail">
+
+                <strong>
+                    Ce paiement a déjà été traité.
+                </strong>
+
+            </div>
+
+        `;
+
+    }
+
+
+    content.innerHTML = `
+
+        ${imageHTML}
+
+
+        <div class="payment-details">
+
+
+            <div class="detail">
+
+                <small>
+                    Utilisateur
+                </small>
+
+                <strong>
+                    ${echapper(paiement.nom || "-")}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <small>
+                    Email
+                </small>
+
+                <strong>
+                    ${echapper(paiement.email || "-")}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <small>
+                    ID paiement
+                </small>
+
+                <strong>
+                    ${echapper(paiement.id_paiement || "-")}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <small>
+                    Méthode
+                </small>
+
+                <strong>
+                    ${echapper(paiement.methode || "-")}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <small>
+                    Montant
+                </small>
+
+                <strong>
+                    ${echapper(paiement.montant || "0")}
+                    ${echapper(paiement.devise || "USD")}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <small>
+                    Statut
+                </small>
+
+                <strong>
+                    ${echapper(paiement.statut || "-")}
+                </strong>
+
+            </div>
+
+
+            <div class="detail">
+
+                <small>
+                    Date
+                </small>
+
+                <strong>
+                    ${formaterDate(paiement.date)}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        ${actions}
+
+    `;
+
+
+    modal.classList.add(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   FERMER MODAL
+========================================================= */
+
+function fermerModal() {
+
+    document
+        .getElementById(
+            "paymentModal"
+        )
+        .classList.remove(
+            "show"
+        );
+
+}
+
+
+/* =========================================================
+   VALIDER PAIEMENT
+========================================================= */
+
+function validerPaiement() {
+
+    if (!paiementSelectionne) {
+
+        return;
+
+    }
+
+
+    afficherConfirmation(
+
+        "Valider le paiement ?",
+
+        "Après validation, le compte de cet utilisateur sera automatiquement activé en Premium.",
+
+        async function () {
+
+            await executerValidationPaiement();
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   EXECUTER VALIDATION
+========================================================= */
+
+async function executerValidationPaiement() {
+
+    const paiement =
+        paiementSelectionne;
+
+
+    try {
+
+        afficherToast(
+            "Traitement",
+            "Validation du paiement en cours...",
+            "info"
+        );
+
+
+        const response =
+            await fetch(
+
+                API_URL +
+                "/api/paiements/" +
+                encodeURIComponent(
+                    paiement.id
+                ) +
+                "/valider",
+
+                {
+
+                    method:
+                        "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    }
+
+                }
+
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        fermerModal();
+
+
+        afficherToast(
+            "Paiement validé",
+            "Le paiement est validé et le compte utilisateur est maintenant Premium.",
+            "success"
+        );
+
+
+        await chargerDonnees();
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur validation paiement :",
+            error
+        );
+
+
+        afficherToast(
+            "Échec de validation",
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   REFUSER PAIEMENT
+========================================================= */
+
+function refuserPaiement() {
+
+    if (!paiementSelectionne) {
+
+        return;
+
+    }
+
+
+    afficherConfirmation(
+
+        "Refuser le paiement ?",
+
+        "Cette demande sera marquée comme refusée. Le compte ne sera pas activé en Premium.",
+
+        async function () {
+
+            await executerRefusPaiement();
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   EXECUTER REFUS
+========================================================= */
+
+async function executerRefusPaiement() {
+
+    const paiement =
+        paiementSelectionne;
+
+
+    try {
+
+        const response =
+            await fetch(
+
+                API_URL +
+                "/api/paiements/" +
+                encodeURIComponent(
+                    paiement.id
+                ) +
+                "/refuser",
+
+                {
+
+                    method:
+                        "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    }
+
+                }
+
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.message ||
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        fermerModal();
+
+
+        afficherToast(
+            "Paiement refusé",
+            "La demande de paiement a été refusée.",
+            "success"
+        );
+
+
+        await chargerDonnees();
+
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        afficherToast(
+            "Échec du refus",
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   STATISTIQUES
+========================================================= */
+
+function afficherStatistiques() {
+
+    const total =
+        apprenants.length;
+
+
+    const premium =
+        apprenants.filter(
+            function (user) {
+
+                return (
+                    user.premium === true ||
+                    user.is_premium === true
+                );
+
+            }
+        ).length;
+
+
+    const pending =
+        paiements.filter(
+            function (paiement) {
+
+                return normaliserStatut(
+                    paiement.statut
+                ) === "en_attente";
+
+            }
+        ).length;
+
+
+    const validated =
+        paiements.filter(
+            function (paiement) {
+
+                const statut =
+                    normaliserStatut(
+                        paiement.statut
+                    );
+
+                return (
+                    statut === "valide" ||
+                    statut === "approuve" ||
+                    statut === "active"
+                );
+
+            }
+        ).length;
+
+
+    document.getElementById(
+        "statUsers"
+    ).textContent =
+        total;
+
+
+    document.getElementById(
+        "statPremium"
+    ).textContent =
+        premium;
+
+
+    document.getElementById(
+        "statPending"
+    ).textContent =
+        pending;
+
+
+    document.getElementById(
+        "statValidated"
+    ).textContent =
+        validated;
+
+}
+
+
+/* =========================================================
+   DERNIERS PAIEMENTS
+========================================================= */
+
+function afficherDerniersPaiements() {
+
+    const container =
+        document.getElementById(
+            "dashboardPayments"
+        );
+
+
+    const derniers =
+        paiements.slice(
+            0,
+            5
+        );
+
+
+    if (!derniers.length) {
+
+        container.innerHTML = `
+
+            <div class="empty">
+
+                <i class="fa-solid fa-receipt"></i>
+
+                <p>
+                    Aucun paiement enregistré.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = `
+
+        <div class="table-container">
 
             <table>
 
@@ -1165,907 +3457,684 @@
 
                     <tr>
 
-                        <th>ID BMJ</th>
+                        <th>
+                            Utilisateur
+                        </th>
 
-                        <th>Nom</th>
+                        <th>
+                            Montant
+                        </th>
 
-                        <th>Email</th>
+                        <th>
+                            Statut
+                        </th>
 
-                        <th>Domaine</th>
-
-                        <th>Premium</th>
-
-                        <th>Progression</th>
-
-                        <th>Statut</th>
-
-                        <th>Actions</th>
+                        <th>
+                            Date
+                        </th>
 
                     </tr>
 
                 </thead>
 
-                <tbody id="listeUtilisateurs">
+                <tbody>
+
+                    ${
+                        derniers.map(
+                            function (p) {
+
+                                const statut =
+                                    normaliserStatut(
+                                        p.statut
+                                    );
+
+
+                                let badge;
+
+
+                                if (
+                                    statut === "en_attente"
+                                ) {
+
+                                    badge =
+                                        `<span class="badge badge-pending">EN ATTENTE</span>`;
+
+                                }
+
+                                else if (
+                                    statut === "valide" ||
+                                    statut === "active" ||
+                                    statut === "approuve"
+                                ) {
+
+                                    badge =
+                                        `<span class="badge badge-valid">VALIDÉ</span>`;
+
+                                }
+
+                                else {
+
+                                    badge =
+                                        `<span class="badge badge-refused">REFUSÉ</span>`;
+
+                                }
+
+
+                                return `
+
+                                    <tr>
+
+                                        <td>
+                                            ${echapper(p.nom || p.email)}
+                                        </td>
+
+                                        <td>
+                                            ${echapper(p.montant || "0")}
+                                            ${echapper(p.devise || "USD")}
+                                        </td>
+
+                                        <td>
+                                            ${badge}
+                                        </td>
+
+                                        <td>
+                                            ${formaterDate(p.date)}
+                                        </td>
+
+                                    </tr>
+
+                                `;
+
+                            }
+                        ).join("")
+                    }
 
                 </tbody>
 
             </table>
 
-        </section>
-
-
-
-
-
-        <!-- DERNIERS ABONNÉS -->
-
-        <section class="premium-list">
-
-            <h2>
-
-                Derniers abonnés Premium
-
-            </h2>
-
-            <div id="listePremium"></div>
-
-        </section>
-
-
-
-
-
-        <!-- CERTIFICATS -->
-
-        <section class="certificats">
-
-            <h2>
-
-                Certificats délivrés
-
-            </h2>
-
-            <div id="listeCertificats"></div>
-
-        </section>
-
-
-
-
-
-        <!-- RAPPORTS -->
-
-        <section class="rapports">
-
-            <div class="rapport">
-
-                <h3>Progression globale</h3>
-
-                <canvas id="progressChart"></canvas>
-            </div>
-
-            <div class="rapport">
-
-                <h3>Répartition des domaines</h3>
-
-                <canvas id="domainChart"></canvas>
-            </div>
-
-        </section>
-
-
-
-
-
-    </main>
-    <script>
-        //====================================================
-        // BMJ SERVICE
-        // TABLEAU DE BORD ADMINISTRATEUR
-        // PARTIE 1/4
-        //====================================================
-
-        //============================================
-        // VERIFICATION ADMIN
-        //============================================
-
-        let admin = JSON.parse(localStorage.getItem("bmj_admin"));
-
-        if (!admin) {
-
-            alert("Accès refusé.");
-
-            window.location.href = "admin_login.html";
-
-        }
-
-        //============================================
-        // RECUPERATION DES DONNEES
-        //============================================
-
-        let utilisateurs = JSON.parse(
-            localStorage.getItem("bmj_users")
-        ) || [];
-
-        let historique = JSON.parse(
-            localStorage.getItem("bmj_historique")
-        ) || [];
-
-        let certificats = JSON.parse(
-            localStorage.getItem("bmj_certificats")
-        ) || [];
-
-        let visites = Number(
-            localStorage.getItem("bmj_visites")
-        ) || 0;
-
-        //============================================
-        // STATISTIQUES
-        //============================================
-
-        function chargerStatistiques() {
-
-            let nbUtilisateurs = utilisateurs.length;
-
-            let nbActifs = utilisateurs.filter(
-
-                u => u.statut === "Actif"
-
-            ).length;
-
-            let nbPremium = utilisateurs.filter(
-
-                u => u.premium === true
-
-            ).length;
-
-            let nbCertificats = utilisateurs.filter(
-
-                u => u.certificat === true
-
-            ).length;
-
-            //------------------------------------
-
-            document.getElementById("nbUtilisateurs").innerHTML =
-                nbUtilisateurs;
-
-            document.getElementById("nbActifs").innerHTML =
-                nbActifs;
-
-            document.getElementById("nbPremium").innerHTML =
-                nbPremium;
-
-            document.getElementById("nbCertificats").innerHTML =
-                nbCertificats;
-
-            document.getElementById("nbVisites").innerHTML =
-                visites;
-
-        }
-
-        //============================================
-        // AFFICHAGE ADMIN
-        //============================================
-
-        window.onload = function () {
-
-            chargerStatistiques();
-
-        };
-        //====================================================
-        // PARTIE 2/4
-        // GESTION DES UTILISATEURS
-        //====================================================
-
-        //============================================
-        // AFFICHER LES UTILISATEURS
-        //============================================
-
-        function afficherUtilisateurs() {
-
-            let tbody = document.getElementById("listeUtilisateurs");
-
-            if (!tbody) return;
-
-            tbody.innerHTML = "";
-
-            utilisateurs.forEach(function (u, index) {
-
-                let premium = u.premium
-                    ? "<span style='color:#16a34a;font-weight:bold;'>⭐ Premium</span>"
-                    : "<span style='color:#666;'>Gratuit</span>";
-
-                let statut = u.statut === "Actif"
-                    ? "<span style='color:#16a34a;font-weight:bold;'>Actif</span>"
-                    : "<span style='color:#dc2626;font-weight:bold;'>Bloqué</span>";
-
-                tbody.innerHTML += `
-
-        <tr>
-
-            <td>${u.id}</td>
-
-            <td>${u.nom}</td>
-
-            <td>${u.email}</td>
-
-            <td>${u.domaine || "-"}</td>
-
-            <td>${premium}</td>
-
-            <td>${u.progression || 0}%</td>
-
-            <td>${statut}</td>
-
-            <td>
-
-                <button class="btnPremium"
-                onclick="premiumUtilisateur(${index})">
-
-                Premium
-
-                </button>
-
-                <button class="btnBlock"
-                onclick="bloquerUtilisateur(${index})">
-
-                ${u.statut === "Actif" ? "Bloquer" : "Débloquer"}
-
-                </button>
-
-                <button class="btnDelete"
-                onclick="supprimerUtilisateur(${index})">
-
-                Supprimer
-
-                </button>
-
-            </td>
-
-        </tr>
-
-        `;
-
-            });
-
-        }
-
-        //============================================
-        // SUPPRIMER
-        //============================================
-
-        function supprimerUtilisateur(index) {
-
-            if (!confirm("Supprimer cet utilisateur ?")) {
-
-                return;
-
-            }
-
-            utilisateurs.splice(index, 1);
-
-            localStorage.setItem(
-
-                "bmj_users",
-
-                JSON.stringify(utilisateurs)
-
-            );
-
-            chargerStatistiques();
-
-            afficherUtilisateurs();
-
-        }
-
-        //============================================
-        // BLOQUER / DEBLOQUER
-        //============================================
-
-        function bloquerUtilisateur(index) {
-
-            if (utilisateurs[index].statut === "Actif") {
-
-                utilisateurs[index].statut = "Bloqué";
-
-            }
-
-            else {
-
-                utilisateurs[index].statut = "Actif";
-
-            }
-
-            localStorage.setItem(
-
-                "bmj_users",
-
-                JSON.stringify(utilisateurs)
-
-            );
-
-            chargerStatistiques();
-
-            afficherUtilisateurs();
-
-        }
-
-        //============================================
-        // ACTIVER PREMIUM
-        //============================================
-
-        function premiumUtilisateur(index) {
-
-            utilisateurs[index].premium = true;
-
-            localStorage.setItem(
-
-                "bmj_users",
-
-                JSON.stringify(utilisateurs)
-
-            );
-
-            chargerStatistiques();
-
-            afficherUtilisateurs();
-
-        }
-
-        //============================================
-        // CHARGEMENT INITIAL
-        //============================================
-
-        window.addEventListener("load", function () {
-
-            afficherUtilisateurs();
-
-        });
-        //====================================================
-        // PARTIE 3/4
-        // SURVEILLANCE - PREMIUM - CERTIFICATS
-        //====================================================
-
-        //============================================
-        // ACTIVITES
-        //============================================
-
-        function afficherActivites() {
-
-            let activites = document.getElementById("activites");
-
-            if (!activites) return;
-
-            let historique = JSON.parse(
-                localStorage.getItem("bmj_historique")
-            ) || [];
-
-            activites.innerHTML = "";
-
-            if (historique.length === 0) {
-
-                activites.innerHTML = `
-            <p>Aucune activité enregistrée.</p>
-        `;
-
-                return;
-            }
-
-            historique.reverse().slice(0, 10).forEach(function (item) {
-
-                activites.innerHTML += `
-
-        <div class="activity-item">
-
-            <strong>${item.utilisateur}</strong>
-
-            <br>
-
-            ${item.action}
-
-            <br>
-
-            <small>
-
-                ${item.date} - ${item.heure}
-
-            </small>
-
         </div>
 
-        `;
+    `;
 
-            });
+}
 
-        }
 
-        //============================================
-        // DERNIERES CONNEXIONS
-        //============================================
+/* =========================================================
+   RECHERCHE
+========================================================= */
 
-        function afficherConnexions() {
+function initialiserRecherche() {
 
-            let connexions = document.getElementById("connexions");
 
-            if (!connexions) return;
+    document
+        .getElementById(
+            "searchUsers"
+        )
+        .addEventListener(
+            "input",
+            function () {
 
-            let historique = JSON.parse(
-                localStorage.getItem("bmj_historique")
-            ) || [];
+                const texte =
+                    this.value
+                        .trim()
+                        .toLowerCase();
 
-            connexions.innerHTML = "";
 
-            let liste = historique.filter(function (item) {
+                const resultat =
+                    apprenants.filter(
+                        function (user) {
 
-                return item.action === "Connexion";
+                            return (
 
-            });
+                                String(
+                                    user.nom || ""
+                                )
+                                .toLowerCase()
+                                .includes(texte)
 
-            if (liste.length === 0) {
+                                ||
 
-                connexions.innerHTML = `
-            <p>Aucune connexion.</p>
-        `;
+                                String(
+                                    user.email || ""
+                                )
+                                .toLowerCase()
+                                .includes(texte)
 
-                return;
-            }
+                                ||
 
-            liste.reverse().slice(0, 10).forEach(function (item) {
+                                String(
+                                    user.telephone || ""
+                                )
+                                .toLowerCase()
+                                .includes(texte)
 
-                connexions.innerHTML += `
+                                ||
 
-        <div class="connexion-item">
+                                String(
+                                    user.domaine || ""
+                                )
+                                .toLowerCase()
+                                .includes(texte)
 
-            👤 <strong>${item.utilisateur}</strong>
+                            );
 
-            <br>
+                        }
+                    );
 
-            <small>
 
-                ${item.date}
-
-                à
-
-                ${item.heure}
-
-            </small>
-
-        </div>
-
-        `;
-
-            });
-
-        }
-
-        //============================================
-        // LISTE PREMIUM
-        //============================================
-
-        function afficherPremium() {
-
-            let zone = document.getElementById("listePremium");
-
-            if (!zone) return;
-
-            zone.innerHTML = "";
-
-            let premium = utilisateurs.filter(function (u) {
-
-                return u.premium === true;
-
-            });
-
-            if (premium.length === 0) {
-
-                zone.innerHTML = "<p>Aucun utilisateur Premium.</p>";
-
-                return;
+                afficherApprenants(
+                    resultat
+                );
 
             }
+        );
 
-            premium.forEach(function (u) {
 
-                zone.innerHTML += `
+    document
+        .getElementById(
+            "searchPayments"
+        )
+        .addEventListener(
+            "input",
+            function () {
 
-        <div class="premium-card">
+                const texte =
+                    this.value
+                        .trim()
+                        .toLowerCase();
 
-            <h3>
 
-                ⭐ ${u.nom}
+                const resultat =
+                    paiements.filter(
+                        function (p) {
+
+                            return (
+
+                                String(
+                                    p.nom || ""
+                                )
+                                .toLowerCase()
+                                .includes(texte)
+
+                                ||
+
+                                String(
+                                    p.email || ""
+                                )
+                                .toLowerCase()
+                                .includes(texte)
+
+                                ||
+
+                                String(
+                                    p.methode || ""
+                                )
+                                .toLowerCase()
+                                .includes(texte)
+
+                                ||
+
+                                String(
+                                    p.statut || ""
+                                )
+                                .toLowerCase()
+                                .includes(texte)
+
+                                ||
+
+                                String(
+                                    p.id_paiement || ""
+                                )
+                                .toLowerCase()
+                                .includes(texte)
+
+                            );
+
+                        }
+                    );
+
+
+                afficherPaiements(
+                    resultat
+                );
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   BOUTON ACTUALISER
+========================================================= */
+
+document
+    .getElementById(
+        "refreshBtn"
+    )
+    .addEventListener(
+        "click",
+        async function () {
+
+            const icon =
+                this.querySelector(
+                    "i"
+                );
+
+
+            icon.classList.add(
+                "fa-spin"
+            );
+
+
+            await chargerDonnees();
+
+
+            icon.classList.remove(
+                "fa-spin"
+            );
+
+
+            afficherToast(
+                "Actualisé",
+                "Les données ont été actualisées.",
+                "success"
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+document
+    .getElementById(
+        "logoutBtn"
+    )
+    .addEventListener(
+        "click",
+        function () {
+
+            afficherConfirmation(
+
+                "Déconnexion",
+
+                "Voulez-vous vraiment vous déconnecter ?",
+
+                function () {
+
+                    localStorage.removeItem(
+                        "bmj_admin"
+                    );
+
+                    localStorage.removeItem(
+                        "bmj_current_user"
+                    );
+
+                    window.location.href =
+                        "admin-connexion.html";
+
+                }
+
+            );
+
+        }
+    );
+
+
+/* =========================================================
+   POPUP CONFIRMATION
+========================================================= */
+
+function afficherConfirmation(
+    titre,
+    message,
+    callback
+) {
+
+    const ancien =
+        document.getElementById(
+            "confirmationModal"
+        );
+
+
+    if (ancien) {
+
+        ancien.remove();
+
+    }
+
+
+    const overlay =
+        document.createElement(
+            "div"
+        );
+
+
+    overlay.id =
+        "confirmationModal";
+
+
+    overlay.className =
+        "modal-overlay show";
+
+
+    overlay.innerHTML = `
+
+        <div class="modal"
+             style="max-width:400px;text-align:center;">
+
+            <div style="
+                width:60px;
+                height:60px;
+                margin:0 auto 18px;
+                border-radius:50%;
+                background:#eef6ff;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:#145a86;
+                font-size:25px;
+            ">
+
+                <i class="fa-solid fa-circle-question"></i>
+
+            </div>
+
+
+            <h3 style="margin-bottom:10px;">
+
+                ${echapper(titre)}
 
             </h3>
 
-            <p>
 
-                ${u.email}
+            <p style="
+                color:#667085;
+                font-size:13px;
+                line-height:1.6;
+                margin-bottom:22px;
+            ">
+
+                ${echapper(message)}
 
             </p>
 
-            <small>
 
-                ${u.domaine}
+            <div class="modal-actions">
 
-            </small>
+                <button
+                    class="btn btn-standard"
+                    id="cancelConfirmation"
+                >
 
-        </div>
+                    Annuler
 
-        `;
+                </button>
 
-            });
 
-        }
+                <button
+                    class="btn btn-premium"
+                    id="confirmConfirmation"
+                >
 
-        //============================================
-        // CERTIFICATS
-        //============================================
+                    Confirmer
 
-        function afficherCertificats() {
+                </button>
 
-            let zone = document.getElementById("listeCertificats");
-
-            if (!zone) return;
-
-            zone.innerHTML = "";
-
-            let certificats = utilisateurs.filter(function (u) {
-
-                return u.certificat === true;
-
-            });
-
-            if (certificats.length === 0) {
-
-                zone.innerHTML = "<p>Aucun certificat délivré.</p>";
-
-                return;
-
-            }
-
-            certificats.forEach(function (u) {
-
-                zone.innerHTML += `
-
-        <div class="certificat-card">
-
-            🏆
-
-            <strong>
-
-                ${u.nom}
-
-            </strong>
-
-            <br>
-
-            Domaine :
-
-            ${u.domaine}
+            </div>
 
         </div>
 
-        `;
+    `;
 
-            });
 
-        }
+    document.body.appendChild(
+        overlay
+    );
 
-        //============================================
-        // RAFRAICHISSEMENT AUTOMATIQUE
-        //============================================
 
-        setInterval(function () {
+    document
+        .getElementById(
+            "cancelConfirmation"
+        )
+        .onclick =
+        function () {
 
-            utilisateurs = JSON.parse(
-
-                localStorage.getItem("bmj_users")
-
-            ) || [];
-
-            afficherActivites();
-
-            afficherConnexions();
-
-            afficherPremium();
-
-            afficherCertificats();
-
-            chargerStatistiques();
-
-        }, 5000);
-
-        //============================================
-        // CHARGEMENT
-        //============================================
-
-        window.addEventListener("load", function () {
-
-            afficherActivites();
-
-            afficherConnexions();
-
-            afficherPremium();
-
-            afficherCertificats();
-
-        });
-        //==============================================
-        // GRAPHIQUE PROGRESSION
-        //==============================================
-
-        let progressCanvas = document.getElementById("progressChart");
-
-        if (progressCanvas) {
-
-            let moyenne = 0;
-
-            if (utilisateurs.length > 0) {
-
-                let total = 0;
-
-                utilisateurs.forEach(u => {
-
-                    total += Number(u.progression || 0);
-
-                });
-
-                moyenne = Math.round(total / utilisateurs.length);
-
-            }
-
-            new Chart(progressCanvas, {
-
-                type: "doughnut",
-
-                data: {
-
-                    labels: [
-
-                        "Progression",
-
-                        "Restant"
-
-                    ],
-
-                    datasets: [{
-
-                        data: [
-
-                            moyenne,
-
-                            100 - moyenne
-
-                        ],
-
-                        backgroundColor: [
-
-                            "#16a34a",
-
-                            "#e5e7eb"
-
-                        ],
-
-                        borderWidth: 0
-
-                    }]
-
-                },
-
-                options: {
-
-                    responsive: true,
-
-                    plugins: {
-
-                        legend: {
-
-                            position: "bottom"
-
-                        }
-
-                    }
-
-                }
-
-            });
-
-        }
-
-
-
-        //==============================================
-        // REPARTITION DES DOMAINES
-        //==============================================
-
-        let domaines = {
-
-            "Marketing Digital": 0,
-
-            "Entrepreneuriat": 0,
-
-            "Leadership": 0,
-
-            "Informatique": 0,
-
-            "Finance": 0,
-
-            "IA": 0
+            overlay.remove();
 
         };
 
-        utilisateurs.forEach(u => {
 
-            if (domaines[u.domaine] !== undefined) {
+    document
+        .getElementById(
+            "confirmConfirmation"
+        )
+        .onclick =
+        function () {
 
-                domaines[u.domaine]++;
+            overlay.remove();
+
+            callback();
+
+        };
+
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function afficherToast(
+    titre,
+    message,
+    type = "info"
+) {
+
+    const container =
+        document.getElementById(
+            "toast-container"
+        );
+
+
+    const toast =
+        document.createElement(
+            "div"
+        );
+
+
+    toast.className =
+        "toast " +
+        type;
+
+
+    let icon =
+        "fa-circle-info";
+
+
+    if (type === "success") {
+
+        icon =
+            "fa-circle-check";
+
+    }
+
+
+    if (type === "error") {
+
+        icon =
+            "fa-circle-exclamation";
+
+    }
+
+
+    toast.innerHTML = `
+
+        <div class="toast-icon">
+
+            <i class="fa-solid ${icon}"></i>
+
+        </div>
+
+
+        <div>
+
+            <strong>
+                ${echapper(titre)}
+            </strong>
+
+            <p>
+                ${echapper(message)}
+            </p>
+
+        </div>
+
+    `;
+
+
+    container.appendChild(
+        toast
+    );
+
+
+    setTimeout(
+        function () {
+
+            toast.remove();
+
+        },
+        5000
+    );
+
+}
+
+
+/* =========================================================
+   NORMALISER STATUT
+========================================================= */
+
+function normaliserStatut(
+    statut
+) {
+
+    return String(
+        statut || ""
+    )
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(
+        /[\u0300-\u036f]/g,
+        ""
+    );
+
+}
+
+
+/* =========================================================
+   FORMATER DATE
+========================================================= */
+
+function formaterDate(
+    date
+) {
+
+    if (!date) {
+
+        return "-";
+
+    }
+
+
+    try {
+
+        return new Date(
+            date
+        ).toLocaleString(
+            "fr-FR",
+            {
+                dateStyle:
+                    "short",
+                timeStyle:
+                    "short"
+            }
+        );
+
+    } catch {
+
+        return "-";
+
+    }
+
+}
+
+
+/* =========================================================
+   PROTECTION HTML
+========================================================= */
+
+function echapper(
+    texte
+) {
+
+    return String(
+        texte ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+/* =========================================================
+   FERMER MODAL EN CLIQUANT DEHORS
+========================================================= */
+
+document
+    .getElementById(
+        "paymentModal"
+    )
+    .addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target === this
+            ) {
+
+                fermerModal();
 
             }
 
-        });
-
-        let domainCanvas = document.getElementById("domainChart");
-
-        if (domainCanvas) {
-
-            new Chart(domainCanvas, {
-
-                type: "bar",
-
-                data: {
-
-                    labels: Object.keys(domaines),
-
-                    datasets: [{
-
-                        label: "Utilisateurs",
-
-                        data: Object.values(domaines),
-
-                        backgroundColor: [
-
-                            "#16a34a",
-
-                            "#3b82f6",
-
-                            "#f59e0b",
-
-                            "#ef4444",
-
-                            "#8b5cf6",
-
-                            "#06b6d4"
-
-                        ],
-
-                        borderRadius: 8
-
-                    }]
-
-                },
-
-                options: {
-
-                    responsive: true,
-
-                    scales: {
-
-                        y: {
-
-                            beginAtZero: true
-
-                        }
-
-                    }
-
-                }
-
-            });
-
         }
+    );
 
 
-
-        //==============================================
-        // ACTUALISATION AUTOMATIQUE
-        //==============================================
-
-        setInterval(function () {
-
-            document.getElementById("nbVisites").textContent =
-                Number(document.getElementById("nbVisites").textContent) + 1;
-
-        }, 10000);
+</script>
 
 
-
-        //==============================================
-        // DECONNEXION ADMIN
-        //==============================================
-
-        let logout = document.getElementById("logoutAdmin");
-
-        if (logout) {
-
-            logout.addEventListener("click", function (e) {
-
-                e.preventDefault();
-
-                let choix = confirm(
-
-                    "Voulez-vous vraiment vous déconnecter ?"
-
-                );
-
-                if (!choix) return;
-
-                localStorage.removeItem("admin_connecte");
-
-                window.location.href = "admin_login.html";
-
-            });
-
-        }
-
-
-
-        //==============================================
-        // HORLOGE TEMPS REEL
-        //==============================================
-
-        function afficherHeure() {
-
-            let maintenant = new Date();
-
-            let heure = maintenant.toLocaleTimeString();
-
-            let date = maintenant.toLocaleDateString();
-
-            document.title =
-                "BMJ SERVICE ADMIN • " + heure;
-
-        }
-
-        setInterval(afficherHeure, 1000);
-
-
-
-        //==============================================
-        // MESSAGE DE BIENVENUE
-        //==============================================
-
-        console.log(
-
-            "====================================="
-
-        );
-
-        console.log(
-
-            "BMJ SERVICE ADMIN"
-
-        );
-
-        console.log(
-
-            "Tableau de bord chargé avec succès."
-
-        );
-
-        console.log(
-
-            "Nombre d'utilisateurs :",
-
-            utilisateurs.length
-
-        );
-
-        console.log(
-
-            "====================================="
-
-        );
-    </script>
 </body>
 
 </html>
