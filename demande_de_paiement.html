@@ -364,13 +364,23 @@ body {
 /* =========================================================
    BMJ SERVICE
    DEMANDE DE PAIEMENT PREMIUM
-   VERSION COMPLÈTE
-   API NODE.JS + EXPRESS + POSTGRESQL
+
+   FRONTEND
+   API NODE.JS + EXPRESS
+   POSTGRESQL SUR RENDER
+
+   IMPORTANT :
+   ---------------------------------------------------------
+   DATABASE_URL       → UNIQUEMENT DANS RENDER
+   ADMIN_EMAIL        → UNIQUEMENT DANS RENDER
+   ADMIN_SECRET       → UNIQUEMENT DANS RENDER
+
+   NE JAMAIS mettre DATABASE_URL ici.
 ========================================================= */
 
 
 /* =========================================================
-   CONFIGURATION
+   1. CONFIGURATION API
 ========================================================= */
 
 const API_URL =
@@ -378,11 +388,12 @@ const API_URL =
 
 
 /* =========================================================
-   VARIABLES
+   2. VARIABLES GLOBALES
 ========================================================= */
 
 let operateurChoisi = "";
 let numeroOperateur = "";
+
 let captureBase64 = "";
 
 let paiementUtilisateur = null;
@@ -391,7 +402,7 @@ let envoiPaiementEnCours = false;
 
 
 /* =========================================================
-   OPERATEURS
+   3. OPÉRATEURS MOBILE MONEY
 ========================================================= */
 
 const OPERATEURS = {
@@ -416,7 +427,7 @@ const OPERATEURS = {
 
 
 /* =========================================================
-   INITIALISATION
+   4. INITIALISATION
 ========================================================= */
 
 document.addEventListener(
@@ -428,7 +439,11 @@ document.addEventListener(
         );
 
         console.log(
-            "BMJ SERVICE - PAIEMENT PREMIUM"
+            "BMJ SERVICE"
+        );
+
+        console.log(
+            "SYSTÈME DE PAIEMENT PREMIUM"
         );
 
         console.log(
@@ -436,13 +451,13 @@ document.addEventListener(
         );
 
 
+        /* -------------------------------------------------
+           Vérifier utilisateur
+        ------------------------------------------------- */
+
         const utilisateur =
             obtenirUtilisateur();
 
-
-        /* -----------------------------------------------
-           Vérification connexion
-        ----------------------------------------------- */
 
         if (!utilisateur) {
 
@@ -459,37 +474,38 @@ document.addEventListener(
             );
 
             return;
+
         }
 
 
-        /* -----------------------------------------------
-           Vérifier le serveur
-        ----------------------------------------------- */
+        /* -------------------------------------------------
+           Vérifier serveur
+        ------------------------------------------------- */
 
         await verifierServeur();
 
 
-        /* -----------------------------------------------
-           Synchroniser utilisateur
-        ----------------------------------------------- */
+        /* -------------------------------------------------
+           Synchroniser compte
+        ------------------------------------------------- */
 
         await synchroniserUtilisateur();
 
 
-        /* -----------------------------------------------
-           Rechercher paiement existant
-        ----------------------------------------------- */
+        /* -------------------------------------------------
+           Vérifier paiement existant
+        ------------------------------------------------- */
 
         await verifierPaiementUtilisateur();
 
 
         console.log(
-            "Utilisateur actuel :",
+            "Utilisateur :",
             obtenirUtilisateur()
         );
 
         console.log(
-            "Paiement actuel :",
+            "Paiement :",
             paiementUtilisateur
         );
 
@@ -498,19 +514,31 @@ document.addEventListener(
 
 
 /* =========================================================
-   OBTENIR UTILISATEUR
+   5. OBTENIR UTILISATEUR
 ========================================================= */
 
 function obtenirUtilisateur() {
 
     try {
 
+        const donnees =
+            localStorage.getItem(
+                "bmj_current_user"
+            );
+
+
+        if (!donnees) {
+
+            return null;
+
+        }
+
+
         const utilisateur =
             JSON.parse(
-                localStorage.getItem(
-                    "bmj_current_user"
-                )
+                donnees
             );
+
 
         return utilisateur || null;
 
@@ -529,7 +557,7 @@ function obtenirUtilisateur() {
 
 
 /* =========================================================
-   SAUVEGARDER UTILISATEUR
+   6. SAUVEGARDER UTILISATEUR
 ========================================================= */
 
 function sauvegarderUtilisateur(
@@ -537,21 +565,35 @@ function sauvegarderUtilisateur(
 ) {
 
     if (!utilisateur) {
+
         return;
+
     }
 
-    localStorage.setItem(
-        "bmj_current_user",
-        JSON.stringify(
-            utilisateur
-        )
-    );
+
+    try {
+
+        localStorage.setItem(
+            "bmj_current_user",
+            JSON.stringify(
+                utilisateur
+            )
+        );
+
+    } catch (erreur) {
+
+        console.error(
+            "Erreur sauvegarde utilisateur :",
+            erreur
+        );
+
+    }
 
 }
 
 
 /* =========================================================
-   VÉRIFIER SERVEUR
+   7. VÉRIFIER SERVEUR
 ========================================================= */
 
 async function verifierServeur() {
@@ -562,7 +604,11 @@ async function verifierServeur() {
             await fetch(
                 API_URL + "/",
                 {
-                    method: "GET"
+                    method: "GET",
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    }
                 }
             );
 
@@ -593,7 +639,7 @@ async function verifierServeur() {
     } catch (erreur) {
 
         console.warn(
-            "Impossible de contacter le serveur BMJ :",
+            "Impossible de contacter le serveur :",
             erreur
         );
 
@@ -605,7 +651,7 @@ async function verifierServeur() {
 
 
 /* =========================================================
-   SYNCHRONISER UTILISATEUR AVEC LE SERVEUR
+   8. SYNCHRONISER UTILISATEUR
 ========================================================= */
 
 async function synchroniserUtilisateur() {
@@ -615,7 +661,23 @@ async function synchroniserUtilisateur() {
 
 
     if (!utilisateur) {
+
         return null;
+
+    }
+
+
+    if (
+        utilisateur.id === undefined ||
+        utilisateur.id === null
+    ) {
+
+        console.warn(
+            "ID utilisateur absent."
+        );
+
+        return null;
+
     }
 
 
@@ -627,14 +689,21 @@ async function synchroniserUtilisateur() {
                 "/api/apprenants/" +
                 encodeURIComponent(
                     utilisateur.id
-                )
+                ),
+                {
+                    method: "GET",
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    }
+                }
             );
 
 
         if (!reponse.ok) {
 
             console.warn(
-                "Impossible de synchroniser le compte."
+                "Compte impossible à synchroniser."
             );
 
             return null;
@@ -655,11 +724,6 @@ async function synchroniserUtilisateur() {
                 resultat.data;
 
 
-            /*
-               On conserve uniquement les
-               informations nécessaires du compte.
-            */
-
             const utilisateurActualise = {
 
                 ...utilisateur,
@@ -670,6 +734,9 @@ async function synchroniserUtilisateur() {
                     utilisateurServeur.premium === true,
 
                 isPremium:
+                    utilisateurServeur.is_premium === true,
+
+                is_premium:
                     utilisateurServeur.is_premium === true
 
             };
@@ -700,7 +767,7 @@ async function synchroniserUtilisateur() {
 
 
 /* =========================================================
-   VÉRIFIER LE PAIEMENT DE L'UTILISATEUR
+   9. RÉCUPÉRER PAIEMENTS
 ========================================================= */
 
 async function verifierPaiementUtilisateur() {
@@ -710,16 +777,32 @@ async function verifierPaiementUtilisateur() {
 
 
     if (!utilisateur) {
+
         return null;
+
     }
 
 
     try {
 
+        /*
+           Cette route doit être protégée côté backend.
+
+           Le backend doit idéalement retourner uniquement
+           les paiements de l'utilisateur connecté.
+        */
+
         const reponse =
             await fetch(
                 API_URL +
-                "/api/paiements"
+                "/api/paiements",
+                {
+                    method: "GET",
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    }
+                }
             );
 
 
@@ -746,35 +829,63 @@ async function verifierPaiementUtilisateur() {
                 : [];
 
 
+        const emailUtilisateur =
+            String(
+                utilisateur.email || ""
+            )
+                .trim()
+                .toLowerCase();
+
+
+        const idUtilisateur =
+            String(
+                utilisateur.id || ""
+            );
+
+
         /*
-           Chercher les paiements de cet utilisateur.
+           Chercher par ID en priorité.
+           Email comme compatibilité.
         */
 
         const paiementsUtilisateur =
             paiements.filter(
                 function (paiement) {
 
+                    const idPaiement =
+                        String(
+                            paiement.utilisateurID ??
+                            paiement.utilisateur_id ??
+                            paiement.user_id ??
+                            ""
+                        );
+
+
                     const emailPaiement =
                         String(
-                            paiement.email ||
-                            ""
-                        )
-                            .trim()
-                            .toLowerCase();
-
-
-                    const emailUtilisateur =
-                        String(
-                            utilisateur.email ||
-                            ""
+                            paiement.email || ""
                         )
                             .trim()
                             .toLowerCase();
 
 
                     return (
-                        emailPaiement ===
-                        emailUtilisateur
+
+                        (
+                            idUtilisateur &&
+                            idPaiement &&
+                            idPaiement ===
+                            idUtilisateur
+                        )
+
+                        ||
+
+                        (
+                            emailUtilisateur &&
+                            emailPaiement ===
+                            emailUtilisateur
+                        )
+
                     );
 
                 }
@@ -794,7 +905,7 @@ async function verifierPaiementUtilisateur() {
 
 
         /*
-           Le plus récent est le premier.
+           Trier du plus récent au plus ancien.
         */
 
         paiementsUtilisateur.sort(
@@ -802,17 +913,21 @@ async function verifierPaiementUtilisateur() {
 
                 const dateA =
                     new Date(
-                        a.date ||
                         a.date_creation ||
+                        a.date ||
+                        a.created_at ||
                         0
                     );
 
+
                 const dateB =
                     new Date(
-                        b.date ||
                         b.date_creation ||
+                        b.date ||
+                        b.created_at ||
                         0
                     );
+
 
                 return dateB - dateA;
 
@@ -825,14 +940,14 @@ async function verifierPaiementUtilisateur() {
 
 
         console.log(
-            "Dernier paiement utilisateur :",
+            "Dernier paiement :",
             paiementUtilisateur
         );
 
 
         /*
-           Si le paiement est validé,
-           synchroniser le compte.
+           Si paiement validé,
+           actualiser le compte.
         */
 
         const statut =
@@ -870,7 +985,7 @@ async function verifierPaiementUtilisateur() {
 
 
 /* =========================================================
-   NORMALISER STATUT
+   10. NORMALISER STATUT
 ========================================================= */
 
 function normaliserStatut(
@@ -892,7 +1007,7 @@ function normaliserStatut(
 
 
 /* =========================================================
-   VÉRIFIER SI PREMIUM
+   11. VÉRIFIER PREMIUM
 ========================================================= */
 
 function utilisateurEstPremium() {
@@ -902,40 +1017,41 @@ function utilisateurEstPremium() {
 
 
     if (!utilisateur) {
+
         return false;
+
     }
 
 
     return (
+
         utilisateur.premium === true ||
+
         utilisateur.is_premium === true ||
+
         utilisateur.isPremium === true
+
     );
 
 }
 
 
 /* =========================================================
-   CHOISIR MÉTHODE DE PAIEMENT
+   12. SÉLECTIONNER MÉTHODE
 ========================================================= */
 
 async function selectionnerMethode(
     type
 ) {
 
-    /*
-       Toujours vérifier la base avant
-       d'autoriser une nouvelle demande.
-    */
-
     await synchroniserUtilisateur();
 
     await verifierPaiementUtilisateur();
 
 
-    /* =====================================================
-       COMPTE PREMIUM
-    ===================================================== */
+    /* -----------------------------------------------------
+       Premium déjà actif
+    ----------------------------------------------------- */
 
     if (
         utilisateurEstPremium()
@@ -948,12 +1064,13 @@ async function selectionnerMethode(
         );
 
         return;
+
     }
 
 
-    /* =====================================================
-       PAIEMENT EN ATTENTE
-    ===================================================== */
+    /* -----------------------------------------------------
+       Demande existante
+    ----------------------------------------------------- */
 
     if (paiementUtilisateur) {
 
@@ -974,31 +1091,9 @@ async function selectionnerMethode(
             );
 
             return;
-        }
-
-
-        /*
-           Si refusé, l'utilisateur
-           peut refaire une demande.
-        */
-
-        if (
-            statut === "refuse" ||
-            statut === "refusee" ||
-            statut === "rejete" ||
-            statut === "rejetee"
-        ) {
-
-            console.log(
-                "Ancien paiement refusé. Nouvelle demande autorisée."
-            );
 
         }
 
-
-        /*
-           Paiement validé
-        */
 
         if (
             statut === "valide" ||
@@ -1014,14 +1109,15 @@ async function selectionnerMethode(
             );
 
             return;
+
         }
 
     }
 
 
-    /* =====================================================
-       AFFICHER CHOIX
-    ===================================================== */
+    /* -----------------------------------------------------
+       Masquer choix
+    ----------------------------------------------------- */
 
     const stepChoice =
         document.getElementById(
@@ -1037,9 +1133,9 @@ async function selectionnerMethode(
     }
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        MOBILE MONEY
-    ===================================================== */
+    ----------------------------------------------------- */
 
     if (
         type === "mobile"
@@ -1060,12 +1156,13 @@ async function selectionnerMethode(
 
 
         return;
+
     }
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        VISA / MASTERCARD
-    ===================================================== */
+    ----------------------------------------------------- */
 
     if (
         type === "card" ||
@@ -1086,6 +1183,7 @@ async function selectionnerMethode(
             );
 
             return;
+
         }
 
 
@@ -1143,7 +1241,7 @@ async function selectionnerMethode(
 
 
 /* =========================================================
-   CHOISIR OPÉRATEUR
+   13. CHOISIR OPÉRATEUR
 ========================================================= */
 
 function choisirOperateur(
@@ -1153,7 +1251,7 @@ function choisirOperateur(
 ) {
 
     operateurChoisi =
-        nomOperateur;
+        nomOperateur || "";
 
 
     numeroOperateur =
@@ -1195,25 +1293,19 @@ function choisirOperateur(
     }
 
 
-    /*
-       Retirer sélection précédente.
-    */
-
-    const cartes =
-        document.querySelectorAll(
+    document
+        .querySelectorAll(
             ".operator-card"
+        )
+        .forEach(
+            function (carte) {
+
+                carte.classList.remove(
+                    "selected"
+                );
+
+            }
         );
-
-
-    cartes.forEach(
-        function (carte) {
-
-            carte.classList.remove(
-                "selected"
-            );
-
-        }
-    );
 
 
     if (element) {
@@ -1228,7 +1320,7 @@ function choisirOperateur(
 
 
 /* =========================================================
-   COMPATIBILITÉ ANCIEN CODE
+   14. COMPATIBILITÉ
 ========================================================= */
 
 function veuxOperateur(
@@ -1247,7 +1339,7 @@ function veuxOperateur(
 
 
 /* =========================================================
-   IMPORTER CAPTURE
+   15. IMPORTER CAPTURE
 ========================================================= */
 
 function verifierFichier(
@@ -1291,7 +1383,8 @@ function verifierFichier(
         );
 
 
-        input.value = "";
+        input.value =
+            "";
 
         captureBase64 =
             "";
@@ -1300,11 +1393,6 @@ function verifierFichier(
 
     }
 
-
-    /*
-       Limite de sécurité :
-       8 Mo.
-    */
 
     if (
         fichier.size >
@@ -1318,7 +1406,8 @@ function verifierFichier(
         );
 
 
-        input.value = "";
+        input.value =
+            "";
 
         captureBase64 =
             "";
@@ -1333,10 +1422,10 @@ function verifierFichier(
 
 
     reader.onload =
-        function (e) {
+        function (event) {
 
             captureBase64 =
-                e.target.result;
+                event.target.result;
 
 
             const label =
@@ -1353,10 +1442,6 @@ function verifierFichier(
 
             }
 
-
-            /*
-               Aperçu si un élément existe.
-            */
 
             const preview =
                 document.getElementById(
@@ -1397,7 +1482,7 @@ function verifierFichier(
 
 
 /* =========================================================
-   FINALISER PAIEMENT MOBILE
+   16. FINALISER PAIEMENT MOBILE
 ========================================================= */
 
 async function finaliserPaiementMobile() {
@@ -1411,11 +1496,11 @@ async function finaliserPaiementMobile() {
     }
 
 
-    /* =====================================================
-       UTILISATEUR
-    ===================================================== */
+    /* -----------------------------------------------------
+       Utilisateur
+    ----------------------------------------------------- */
 
-    const utilisateur =
+    let utilisateur =
         obtenirUtilisateur();
 
 
@@ -1434,21 +1519,32 @@ async function finaliserPaiementMobile() {
         );
 
         return;
+
     }
 
 
-    /* =====================================================
-       SYNCHRONISATION
-    ===================================================== */
+    /* -----------------------------------------------------
+       Synchronisation
+    ----------------------------------------------------- */
 
-    await synchroniserUtilisateur();
+    const utilisateurServeur =
+        await synchroniserUtilisateur();
+
+
+    if (utilisateurServeur) {
+
+        utilisateur =
+            utilisateurServeur;
+
+    }
+
 
     await verifierPaiementUtilisateur();
 
 
-    /* =====================================================
-       PREMIUM
-    ===================================================== */
+    /* -----------------------------------------------------
+       Premium
+    ----------------------------------------------------- */
 
     if (
         utilisateurEstPremium()
@@ -1461,12 +1557,13 @@ async function finaliserPaiementMobile() {
         );
 
         return;
+
     }
 
 
-    /* =====================================================
-       PAIEMENT EN ATTENTE
-    ===================================================== */
+    /* -----------------------------------------------------
+       Paiement en attente
+    ----------------------------------------------------- */
 
     if (
         paiementUtilisateur
@@ -1489,14 +1586,15 @@ async function finaliserPaiementMobile() {
             );
 
             return;
+
         }
 
     }
 
 
-    /* =====================================================
-       OPÉRATEUR
-    ===================================================== */
+    /* -----------------------------------------------------
+       Opérateur
+    ----------------------------------------------------- */
 
     if (
         !operateurChoisi
@@ -1509,12 +1607,13 @@ async function finaliserPaiementMobile() {
         );
 
         return;
+
     }
 
 
-    /* =====================================================
-       CAPTURE
-    ===================================================== */
+    /* -----------------------------------------------------
+       Capture
+    ----------------------------------------------------- */
 
     if (
         !captureBase64
@@ -1527,12 +1626,13 @@ async function finaliserPaiementMobile() {
         );
 
         return;
+
     }
 
 
-    /* =====================================================
-       CONFIRMATION
-    ===================================================== */
+    /* -----------------------------------------------------
+       Confirmation
+    ----------------------------------------------------- */
 
     const confirmation =
         await confirmerDemande();
@@ -1545,9 +1645,9 @@ async function finaliserPaiementMobile() {
     }
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        ID PAIEMENT
-    ===================================================== */
+    ----------------------------------------------------- */
 
     const idPaiement =
         "PAY_MM_" +
@@ -1559,9 +1659,9 @@ async function finaliserPaiementMobile() {
         );
 
 
-    /* =====================================================
-       NOUVELLE DEMANDE
-    ===================================================== */
+    /* -----------------------------------------------------
+       DEMANDE
+    ----------------------------------------------------- */
 
     const nouvelleDemande = {
 
@@ -1592,18 +1692,24 @@ async function finaliserPaiementMobile() {
         methode:
             operateurChoisi,
 
+        numeroOperateur:
+            numeroOperateur,
+
         capture:
             captureBase64,
 
         statut:
-            "en_attente"
+            "en_attente",
+
+        date:
+            new Date().toISOString()
 
     };
 
 
-    /* =====================================================
-       BOUTON
-    ===================================================== */
+    /* -----------------------------------------------------
+       Bouton
+    ----------------------------------------------------- */
 
     const boutonEnvoyer =
         document.querySelector(
@@ -1630,7 +1736,7 @@ async function finaliserPaiementMobile() {
 
 
     /* =====================================================
-       ENVOI SERVEUR
+       ENVOI À NODE.JS
     ===================================================== */
 
     try {
@@ -1647,6 +1753,9 @@ async function finaliserPaiementMobile() {
                     headers: {
 
                         "Content-Type":
+                            "application/json",
+
+                        "Accept":
                             "application/json"
 
                     },
@@ -1660,11 +1769,8 @@ async function finaliserPaiementMobile() {
             );
 
 
-        /*
-           Lire le JSON même en cas d'erreur.
-        */
-
         let resultat = {};
+
 
         try {
 
@@ -1679,44 +1785,34 @@ async function finaliserPaiementMobile() {
 
 
         console.log(
-            "Réponse API paiement :",
+            "Réponse API :",
             resultat
         );
 
 
-        /* =================================================
-           SERVEUR REFUSE
-        ================================================= */
+        /* -------------------------------------------------
+           ERREUR SERVEUR
+        ------------------------------------------------- */
 
         if (
             !reponse.ok ||
-            !resultat.success
+            resultat.success !== true
         ) {
 
             let message =
                 resultat.message ||
-                "Impossible d'enregistrer votre demande de paiement sur le serveur.";
+                "Impossible d'enregistrer la demande de paiement.";
 
-
-            /*
-               Cas doublon
-            */
 
             if (
                 reponse.status === 409
             ) {
 
                 message =
-                    "Une demande de paiement avec cet identifiant existe déjà.";
+                    "Une demande de paiement existe déjà.";
 
             }
 
-
-            /*
-               IMPORTANT :
-               On NE sauvegarde PAS comme paiement réussi
-               si le serveur a refusé.
-            */
 
             throw new Error(
                 message
@@ -1725,36 +1821,26 @@ async function finaliserPaiementMobile() {
         }
 
 
-        /* =================================================
-           PAIEMENT ENREGISTRÉ
-        ================================================= */
+        /* -------------------------------------------------
+           SUCCÈS
+        ------------------------------------------------- */
 
         paiementUtilisateur =
             resultat.data ||
             nouvelleDemande;
 
 
-        /*
-           Maintenant seulement,
-           sauvegarde locale.
-        */
-
         sauvegarderPaiementLocal(
             paiementUtilisateur
         );
 
 
-        /*
-           Réinitialiser capture.
-        */
+        /* -------------------------------------------------
+           Nettoyage
+        ------------------------------------------------- */
 
         captureBase64 =
             "";
-
-
-        /*
-           Réinitialiser opérateur.
-        */
 
         operateurChoisi =
             "";
@@ -1762,10 +1848,6 @@ async function finaliserPaiementMobile() {
         numeroOperateur =
             "";
 
-
-        /*
-           Réinitialiser input.
-        */
 
         const inputFichier =
             document.getElementById(
@@ -1781,9 +1863,40 @@ async function finaliserPaiementMobile() {
         }
 
 
-        /*
-           Afficher succès.
-        */
+        const preview =
+            document.getElementById(
+                "capture-preview"
+            );
+
+
+        if (preview) {
+
+            preview.src =
+                "";
+
+            preview.style.display =
+                "none";
+
+        }
+
+
+        const label =
+            document.getElementById(
+                "file-label"
+            );
+
+
+        if (label) {
+
+            label.textContent =
+                "Choisir une capture";
+
+        }
+
+
+        /* -------------------------------------------------
+           Message succès
+        ------------------------------------------------- */
 
         afficherPopup(
             "Paiement envoyé",
@@ -1792,15 +1905,11 @@ async function finaliserPaiementMobile() {
         );
 
 
-        /*
-           Retour vers l'étape principale
-        */
-
         retournerAuChoix();
 
 
         /*
-           Rechercher depuis serveur
+           Vérification finale auprès du serveur.
         */
 
         await verifierPaiementUtilisateur();
@@ -1809,7 +1918,7 @@ async function finaliserPaiementMobile() {
     } catch (erreur) {
 
         console.error(
-            "❌ ERREUR ENVOI PAIEMENT :",
+            "ERREUR ENVOI PAIEMENT :",
             erreur
         );
 
@@ -1817,7 +1926,7 @@ async function finaliserPaiementMobile() {
         afficherPopup(
             "Échec de l'envoi",
             erreur.message ||
-            "Impossible d'enregistrer votre demande de paiement sur le serveur. Aucun paiement n'a été enregistré.",
+            "Impossible d'enregistrer votre demande de paiement sur le serveur.",
             "error"
         );
 
@@ -1844,7 +1953,7 @@ async function finaliserPaiementMobile() {
 
 
 /* =========================================================
-   CONFIRMATION AVANT ENVOI
+   17. CONFIRMATION
 ========================================================= */
 
 function confirmerDemande() {
@@ -1879,7 +1988,7 @@ function confirmerDemande() {
 
 
 /* =========================================================
-   SAUVEGARDE LOCALE
+   18. SAUVEGARDE LOCALE
 ========================================================= */
 
 function sauvegarderPaiementLocal(
@@ -1907,26 +2016,22 @@ function sauvegarderPaiementLocal(
         }
 
 
-        /*
-           Éviter les doublons
-        */
+        const id =
+            paiement.idPaiement ||
+            paiement.id_paiement ||
+            "";
+
 
         const existe =
             historique.some(
                 function (element) {
 
-                    return (
-                        String(
-                            element.idPaiement ||
-                            element.id_paiement ||
-                            ""
-                        ) ===
-                        String(
-                            paiement.idPaiement ||
-                            paiement.id_paiement ||
-                            ""
-                        )
-                    );
+                    return String(
+                        element.idPaiement ||
+                        element.id_paiement ||
+                        ""
+                    ) ===
+                    String(id);
 
                 }
             );
@@ -1949,10 +2054,6 @@ function sauvegarderPaiementLocal(
         );
 
 
-        /*
-           Ancienne compatibilité
-        */
-
         localStorage.setItem(
             "bmj_demande_admin",
             JSON.stringify(
@@ -1964,7 +2065,7 @@ function sauvegarderPaiementLocal(
     } catch (erreur) {
 
         console.warn(
-            "Impossible de sauvegarder localement :",
+            "Sauvegarde locale impossible :",
             erreur
         );
 
@@ -1974,7 +2075,7 @@ function sauvegarderPaiementLocal(
 
 
 /* =========================================================
-   RETOUR AU CHOIX
+   19. RETOUR CHOIX
 ========================================================= */
 
 function retournerAuChoix() {
@@ -2021,10 +2122,6 @@ function retournerAuChoix() {
     }
 
 
-    /*
-       Désélectionner les opérateurs.
-    */
-
     document
         .querySelectorAll(
             ".operator-card"
@@ -2043,7 +2140,7 @@ function retournerAuChoix() {
 
 
 /* =========================================================
-   POPUP INFORMATION
+   20. POPUP INFORMATION
 ========================================================= */
 
 function afficherPopup(
@@ -2103,16 +2200,16 @@ function afficherPopup(
     `;
 
 
-    let icone =
-        "ℹ️";
+    let icone = "ℹ️";
+    let couleur = "#145a86";
 
 
     if (
         type === "success"
     ) {
 
-        icone =
-            "✓";
+        icone = "✓";
+        couleur = "#16803c";
 
     }
 
@@ -2121,8 +2218,8 @@ function afficherPopup(
         type === "error"
     ) {
 
-        icone =
-            "✕";
+        icone = "✕";
+        couleur = "#c62828";
 
     }
 
@@ -2131,42 +2228,8 @@ function afficherPopup(
         type === "warning"
     ) {
 
-        icone =
-            "⚠";
-
-    }
-
-
-    let couleur =
-        "#145a86";
-
-
-    if (
-        type === "success"
-    ) {
-
-        couleur =
-            "#16803c";
-
-    }
-
-
-    if (
-        type === "error"
-    ) {
-
-        couleur =
-            "#c62828";
-
-    }
-
-
-    if (
-        type === "warning"
-    ) {
-
-        couleur =
-            "#c57b00";
+        icone = "⚠";
+        couleur = "#c57b00";
 
     }
 
@@ -2299,7 +2362,7 @@ function afficherPopup(
 
 
 /* =========================================================
-   POPUP CONFIRMATION
+   21. POPUP CONFIRMATION
 ========================================================= */
 
 function afficherPopupConfirmation(
@@ -2486,7 +2549,7 @@ function afficherPopupConfirmation(
 
 
 /* =========================================================
-   SUPPRIMER POPUP
+   22. SUPPRIMER POPUP
 ========================================================= */
 
 function supprimerPopup() {
@@ -2507,7 +2570,7 @@ function supprimerPopup() {
 
 
 /* =========================================================
-   STYLE POPUP
+   23. STYLE POPUP
 ========================================================= */
 
 function ajouterStylePopup() {
@@ -2538,15 +2601,23 @@ function ajouterStylePopup() {
         @keyframes bmjPopupIn {
 
             from {
+
                 opacity:0;
-                transform:scale(.92)
-                translateY(15px);
+
+                transform:
+                    scale(.92)
+                    translateY(15px);
+
             }
 
             to {
+
                 opacity:1;
-                transform:scale(1)
-                translateY(0);
+
+                transform:
+                    scale(1)
+                    translateY(0);
+
             }
 
         }
@@ -2562,7 +2633,7 @@ function ajouterStylePopup() {
 
 
 /* =========================================================
-   PROTECTION HTML
+   24. PROTECTION HTML
 ========================================================= */
 
 function echapperHTML(
@@ -2597,7 +2668,7 @@ function echapperHTML(
 
 
 /* =========================================================
-   AFFICHER STATUT PAIEMENT
+   25. AFFICHER STATUT
 ========================================================= */
 
 async function afficherStatutPaiement() {
@@ -2605,10 +2676,6 @@ async function afficherStatutPaiement() {
     await synchroniserUtilisateur();
 
     await verifierPaiementUtilisateur();
-
-
-    const utilisateur =
-        obtenirUtilisateur();
 
 
     if (
@@ -2669,10 +2736,6 @@ async function afficherStatutPaiement() {
         statut === "active"
     ) {
 
-        /*
-           Synchronisation importante.
-        */
-
         await synchroniserUtilisateur();
 
 
@@ -2708,7 +2771,10 @@ async function afficherStatutPaiement() {
     afficherPopup(
         "Statut du paiement",
         "Statut actuel : " +
-        paiementUtilisateur.statut,
+        (
+            paiementUtilisateur.statut ||
+            "inconnu"
+        ),
         "info"
     );
 
@@ -2716,7 +2782,7 @@ async function afficherStatutPaiement() {
 
 
 /* =========================================================
-   ACTUALISER LE STATUT
+   26. ACTUALISER STATUT
 ========================================================= */
 
 async function actualiserStatutPaiement() {
@@ -2724,10 +2790,6 @@ async function actualiserStatutPaiement() {
     await synchroniserUtilisateur();
 
     await verifierPaiementUtilisateur();
-
-
-    const utilisateur =
-        obtenirUtilisateur();
 
 
     if (
@@ -2746,51 +2808,8 @@ async function actualiserStatutPaiement() {
 
 
     if (
-        paiementUtilisateur
+        !paiementUtilisateur
     ) {
-
-        const statut =
-            normaliserStatut(
-                paiementUtilisateur.statut
-            );
-
-
-        if (
-            statut === "en_attente"
-        ) {
-
-            afficherPopup(
-                "Toujours en attente",
-                "Votre demande est toujours en cours de vérification par l'administration.",
-                "warning"
-            );
-
-        }
-
-        else if (
-            statut === "refuse" ||
-            statut === "refusee" ||
-            statut === "rejete" ||
-            statut === "rejetee"
-        ) {
-
-            afficherPopup(
-                "Demande refusée",
-                "Votre demande de paiement a été refusée. Vous pouvez envoyer une nouvelle demande.",
-                "error"
-            );
-
-        }
-
-        else {
-
-            afficherStatutPaiement();
-
-        }
-
-    }
-
-    else {
 
         afficherPopup(
             "Aucune demande",
@@ -2798,13 +2817,57 @@ async function actualiserStatutPaiement() {
             "info"
         );
 
+        return;
+
     }
+
+
+    const statut =
+        normaliserStatut(
+            paiementUtilisateur.statut
+        );
+
+
+    if (
+        statut === "en_attente"
+    ) {
+
+        afficherPopup(
+            "Toujours en attente",
+            "Votre demande est toujours en cours de vérification par l'administration.",
+            "warning"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        statut === "refuse" ||
+        statut === "refusee" ||
+        statut === "rejete" ||
+        statut === "rejetee"
+    ) {
+
+        afficherPopup(
+            "Demande refusée",
+            "Votre demande de paiement a été refusée. Vous pouvez envoyer une nouvelle demande.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    await afficherStatutPaiement();
 
 }
 
 
 /* =========================================================
-   EXPORT COMPATIBILITÉ
+   27. EXPORTS GLOBAUX
 ========================================================= */
 
 window.selectionnerMethode =
@@ -2830,6 +2893,11 @@ window.afficherStatutPaiement =
 
 window.actualiserStatutPaiement =
     actualiserStatutPaiement;
+
+
+/* =========================================================
+   FIN BMJ SERVICE
+========================================================= */
 </script>
 </body>
 </html>
