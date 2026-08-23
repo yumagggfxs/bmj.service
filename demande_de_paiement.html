@@ -309,7 +309,7 @@ body {
                 <div class="operator-card" onclick="choisirOperateur('Airtel Money', '0993585711')">
                     <img src="images/airtel.png" alt="Airtel Money">
                     <span class="op-name">Airtel Money</span>
-                    <span class="op-number">0993585711</span>
+                    <span class="op-number">Disponible</span>
                 </div>
                 <!-- Orange -->
                 <div class="operator-card" onclick="choisirOperateur('Orange Money', 'Veuillez patienter...')">
@@ -361,182 +361,1174 @@ body {
 </div>
 
 <script>
- let operateurChoisi = "";
+ /* =========================================================
+   BMJ SERVICE
+   PAIEMENT PREMIUM
+   GESTION DES DEMANDES + POPUPS
+========================================================= */
+
+let operateurChoisi = "";
 let captureBase64 = "";
 
+/* =========================================================
+   CONFIGURATION API
+========================================================= */
+
+const API_URL = "https://back-end-h602.onrender.com";
+
+/* =========================================================
+   ETAT DU PAIEMENT
+========================================================= */
+
+let paiementUtilisateur = null;
+
+
+/* =========================================================
+   INITIALISATION
+========================================================= */
+
 document.addEventListener("DOMContentLoaded", async function () {
-    const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
 
-    // 1. Sécurité connexion
+    const utilisateur = JSON.parse(
+        localStorage.getItem("bmj_current_user")
+    );
+
+    /* -----------------------------------------------------
+       1. Vérification connexion
+    ----------------------------------------------------- */
+
     if (!utilisateur) {
+
         alert("Veuillez vous connecter.");
+
         window.location.href = "connexion.html";
+
         return;
     }
 
-    // 2. Si déjà Premium, redirection immédiate
-    if (utilisateur.premium === true || utilisateur.isPremium === true) {
-        window.location.href = "certificat_final.html";
-        return;
-    }
 
-    // 3. Vérifier si une demande est déjà en cours (depuis l'API ou le stockage local)
-    try {
-        const reponse = await fetch('https://back-end-h602.onrender.com/api/paiements');
-        if (reponse.ok) {
-            const resultat = await reponse.json();
-            const paiements = resultat.data || resultat;
-            const paiementEnCours = paiements.find(p => p.email === utilisateur.email && p.statut === "en_attente");
-            if (paiementEnCours) {
-                afficherLoadingAttente();
-                return;
-            }
-        }
-    } catch (err) {
-        console.warn("Vérification locale de secours pour le paiement en cours.");
-    }
+    /* -----------------------------------------------------
+       2. Vérification du statut Premium
+    ----------------------------------------------------- */
 
-    const historiquePaiements = JSON.parse(localStorage.getItem("bmj_paiements")) || [];
-    const paiementLocal = historiquePaiements.find(p => p.email === utilisateur.email && p.statut === "en_attente");
-    if (paiementLocal) {
-        afficherLoadingAttente();
-    }
+    const premiumActif =
+        utilisateur.premium === true ||
+        utilisateur.isPremium === true;
+
+
+    /*
+       On ne redirige PLUS automatiquement.
+
+       Si Premium est déjà actif, on garde la page
+       et on informe l'utilisateur uniquement lorsqu'il
+       essaie de refaire une demande.
+    */
+
+
+    /* -----------------------------------------------------
+       3. Recherche d'une demande existante
+    ----------------------------------------------------- */
+
+    await verifierPaiementUtilisateur(utilisateur);
+
+
+    /* -----------------------------------------------------
+       4. La page reste affichée normalement
+    ----------------------------------------------------- */
+
 });
 
-// Étape choix méthode
-function selectionnerMethode(type) {
-    document.getElementById("step-choice").style.display = "none";
-    if (type === 'mobile') {
-        document.getElementById("step-mobile").style.display = "block";
-    } else {
-        // Redirection vers Visa/Mastercard
-        let utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
-        let paiement = {
-            idPaiement: "PAY_CARD_" + Date.now(),
-            nom: utilisateur.nom,
-            email: utilisateur.email,
-            offre: utilisateur.domaine || "Formation Générale",
-            montant: 15,
-            devise: "USD",
-            methode: "Visa/Mastercard",
-            statut: "en_attente",
-            date: new Date().toLocaleString()
-        };
-        localStorage.setItem("bmj_payment", JSON.stringify(paiement));
-        window.location.href = "paiement_visapay.html";
-    }
-}
 
-// Sélection de l'opérateur Mobile Money
-function choisirOperateur(nomOperateur, numero) {
-    veuxOperateur(nomOperateur, numero);
-}
+/* =========================================================
+   RECHERCHER LE PAIEMENT DE L'UTILISATEUR
+========================================================= */
 
-function veuxOperateur(nomOperateur, numero) {
-    operateurChoisi = nomOperateur;
-    
-    // Mettre à jour l'affichage du numéro
-    document.getElementById("selected-number").textContent = nomOperateur + " (" + numero + ")";
-    document.getElementById("upload-section").style.display = "block";
+async function verifierPaiementUtilisateur(utilisateur) {
 
-    // Effet visuel de sélection sur les cartes
-    const cartes = document.querySelectorAll(".operator-card");
-    cartes.forEach(c => c.classList.remove("selected"));
-    if (event && event.currentTarget) {
-        event.currentTarget.classList.add("selected");
-    }
-}
+    let paiementAPI = null;
+    let paiementLocal = null;
 
-// Convertir la capture d'écran importée en Base64
-function verifierFichier(input) {
-    if (input.files && input.files[0]) {
-        const fichier = input.files[0];
-        const reader = new FileReader();
 
-        reader.onload = function (e) {
-            captureBase64 = e.target.result;
-            document.getElementById("file-label").textContent = "Fichier sélectionné : " + fichier.name;
-        };
-
-        reader.readAsDataURL(fichier);
-    }
-}
-
-// Finaliser et envoyer à l'API et à l'Admin
-async function finaliserPaiementMobile() {
-    if (!captureBase64) {
-        alert("Veuillez importer la capture d'écran de votre paiement avant de continuer.");
-        return;
-    }
-
-    const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
-
-    // Création de l'objet complet pour l'Admin et la Base de Données
-    const nouvelleDemande = {
-        idPaiement: "PAY_MM_" + Date.now(),
-        utilisateurID: utilisateur.id || "USER_" + Date.now(),
-        nom: utilisateur.nom,
-        email: utilisateur.email,
-        offre: utilisateur.domaine || "Formation Générale",
-        montant: 15,
-        devise: "USD",
-        methode: operateurChoisi,
-        capture: captureBase64,
-        statut: "en_attente",
-        date: new Date().toLocaleString()
-    };
-
-    const boutonEnvoyer = document.querySelector(".btn-submit-payment") || document.querySelector("button[onclick='finaliserPaiementMobile()']");
-    if (boutonEnvoyer) {
-        boutonEnvoyer.textContent = "Transmission en cours...";
-        boutonEnvoyer.disabled = true;
-    }
+    /* =====================================================
+       A. RECHERCHE DANS L'API
+    ===================================================== */
 
     try {
-        // Envoi de la demande de paiement vers l'API Render
-        const reponse = await fetch('https://back-end-h602.onrender.com/api/paiements', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(nouvelleDemande)
-        });
 
-        const resultat = await reponse.json();
+        const reponse = await fetch(
+            API_URL + "/api/paiements"
+        );
 
-        if (!reponse.ok) {
-            console.warn("API de paiement distante non disponible, bascule sur le stockage local.");
+        if (reponse.ok) {
+
+            const resultat = await reponse.json();
+
+            const paiements =
+                Array.isArray(resultat.data)
+                    ? resultat.data
+                    : Array.isArray(resultat)
+                        ? resultat
+                        : [];
+
+
+            /*
+               On cherche le paiement de cet utilisateur
+            */
+
+            paiementAPI = paiements.find(function (paiement) {
+
+                return (
+                    paiement.email &&
+                    utilisateur.email &&
+                    paiement.email.toLowerCase() ===
+                    utilisateur.email.toLowerCase()
+                );
+
+            }) || null;
+
         }
+
     } catch (erreur) {
-        console.warn("Erreur réseau API paiement, sauvegarde locale de secours activée.");
+
+        console.warn(
+            "API indisponible pour la vérification du paiement."
+        );
+
     }
 
-    // Sauvegarde de secours dans le localStorage pour l'administrateur
-    let historiquePaiements = JSON.parse(localStorage.getItem("bmj_paiements")) || [];
-    historiquePaiements.push(nouvelleDemande);
-    localStorage.setItem("bmj_paiements", JSON.stringify(historiquePaiements));
-    localStorage.setItem("bmj_demande_admin", JSON.stringify(nouvelleDemande));
 
-    // Afficher l'écran de chargement / attente
-    afficherLoadingAttente();
+    /* =====================================================
+       B. RECHERCHE DANS LOCALSTORAGE
+    ===================================================== */
+
+    try {
+
+        const historique =
+            JSON.parse(
+                localStorage.getItem("bmj_paiements")
+            ) || [];
+
+
+        if (Array.isArray(historique)) {
+
+            paiementLocal = historique.find(function (paiement) {
+
+                return (
+                    paiement.email &&
+                    utilisateur.email &&
+                    paiement.email.toLowerCase() ===
+                    utilisateur.email.toLowerCase()
+                );
+
+            }) || null;
+
+        }
+
+    } catch (erreur) {
+
+        console.warn(
+            "Impossible de lire l'historique local."
+        );
+
+    }
+
+
+    /* =====================================================
+       C. PRIORITÉ À L'API
+    ===================================================== */
+
+    paiementUtilisateur =
+        paiementAPI || paiementLocal || null;
+
+
+    console.log(
+        "Paiement utilisateur :",
+        paiementUtilisateur
+    );
+
 }
 
-function afficherLoadingAttente() {
-    const stepChoice = document.getElementById("step-choice");
-    const stepMobile = document.getElementById("step-mobile");
-    const stepLoading = document.getElementById("step-loading");
 
-    if (stepChoice) stepChoice.style.display = "none";
-    if (stepMobile) stepMobile.style.display = "none";
-    if (stepLoading) stepLoading.style.display = "block";
+/* =========================================================
+   CHOIX DE LA MÉTHODE DE PAIEMENT
+========================================================= */
+
+function selectionnerMethode(type) {
+
+    /*
+       AVANT d'autoriser un nouveau paiement,
+       on vérifie le statut existant.
+    */
+
+    if (paiementUtilisateur) {
+
+        const statut =
+            normaliserStatut(
+                paiementUtilisateur.statut
+            );
+
+
+        /* ================================================
+           PAIEMENT EN COURS
+        ================================================ */
+
+        if (statut === "en_attente") {
+
+            afficherPopup(
+                "Paiement déjà envoyé",
+                "Votre paiement est actuellement en cours de vérification. Veuillez attendre la validation avant d'envoyer une nouvelle demande."
+            );
+
+            return;
+        }
+
+
+        /* ================================================
+           PAIEMENT VALIDE
+        ================================================ */
+
+        if (
+            statut === "valide" ||
+            statut === "approuve" ||
+            statut === "approuvee" ||
+            statut === "active"
+        ) {
+
+            afficherPopup(
+                "Premium déjà activé",
+                "Votre compte Premium est déjà validé. Vous n'avez pas besoin d'effectuer un nouveau paiement."
+            );
+
+            return;
+        }
+
+    }
+
+
+    /* =====================================================
+       AUTORISER LE PAIEMENT
+    ===================================================== */
+
+    const stepChoice =
+        document.getElementById("step-choice");
+
+    if (stepChoice) {
+
+        stepChoice.style.display = "none";
+
+    }
+
+
+    if (type === "mobile") {
+
+        const stepMobile =
+            document.getElementById("step-mobile");
+
+        if (stepMobile) {
+
+            stepMobile.style.display = "block";
+
+        }
+
+    }
+
+    else {
+
+        /* ================================================
+           VISA / MASTERCARD
+        ================================================ */
+
+        const utilisateur =
+            JSON.parse(
+                localStorage.getItem("bmj_current_user")
+            );
+
+
+        if (!utilisateur) {
+
+            alert("Session utilisateur introuvable.");
+
+            return;
+
+        }
+
+
+        const paiement = {
+
+            idPaiement:
+                "PAY_CARD_" + Date.now(),
+
+            utilisateurID:
+                utilisateur.id ||
+                "USER_" + Date.now(),
+
+            nom:
+                utilisateur.nom || "",
+
+            email:
+                utilisateur.email || "",
+
+            offre:
+                utilisateur.domaine ||
+                "Formation Générale",
+
+            montant: 15,
+
+            devise: "USD",
+
+            methode:
+                "Visa/Mastercard",
+
+            statut:
+                "en_attente",
+
+            date:
+                new Date().toISOString()
+
+        };
+
+
+        localStorage.setItem(
+            "bmj_payment",
+            JSON.stringify(paiement)
+        );
+
+
+        window.location.href =
+            "paiement_visapay.html";
+
+    }
+
 }
+
+
+/* =========================================================
+   NORMALISER LE STATUT
+========================================================= */
+
+function normaliserStatut(statut) {
+
+    if (!statut) {
+
+        return "";
+
+    }
+
+    return String(statut)
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+}
+
+
+/* =========================================================
+   CHOIX OPERATEUR MOBILE MONEY
+========================================================= */
+
+function choisirOperateur(
+    nomOperateur,
+    numero,
+    element
+) {
+
+    operateurChoisi =
+        nomOperateur;
+
+
+    const selectedNumber =
+        document.getElementById(
+            "selected-number"
+        );
+
+
+    if (selectedNumber) {
+
+        selectedNumber.textContent =
+            nomOperateur +
+            " (" +
+            numero +
+            ")";
+
+    }
+
+
+    const uploadSection =
+        document.getElementById(
+            "upload-section"
+        );
+
+
+    if (uploadSection) {
+
+        uploadSection.style.display =
+            "block";
+
+    }
+
+
+    /* =====================================================
+       EFFET VISUEL
+    ===================================================== */
+
+    const cartes =
+        document.querySelectorAll(
+            ".operator-card"
+        );
+
+
+    cartes.forEach(function (carte) {
+
+        carte.classList.remove(
+            "selected"
+        );
+
+    });
+
+
+    if (element) {
+
+        element.classList.add(
+            "selected"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   COMPATIBILITÉ AVEC ANCIEN CODE
+========================================================= */
+
+function veuxOperateur(
+    nomOperateur,
+    numero,
+    element
+) {
+
+    choisirOperateur(
+        nomOperateur,
+        numero,
+        element
+    );
+
+}
+
+
+/* =========================================================
+   IMPORTER CAPTURE PAIEMENT
+========================================================= */
+
+function verifierFichier(input) {
+
+    if (
+        !input ||
+        !input.files ||
+        !input.files[0]
+    ) {
+
+        return;
+
+    }
+
+
+    const fichier =
+        input.files[0];
+
+
+    /* =====================================================
+       Vérification type fichier
+    ===================================================== */
+
+    const typesAutorises = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+
+    if (
+        !typesAutorises.includes(
+            fichier.type
+        )
+    ) {
+
+        alert(
+            "Veuillez sélectionner une image JPG, PNG ou WEBP."
+        );
+
+        input.value = "";
+
+        return;
+
+    }
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload =
+        function (e) {
+
+            captureBase64 =
+                e.target.result;
+
+
+            const label =
+                document.getElementById(
+                    "file-label"
+                );
+
+
+            if (label) {
+
+                label.textContent =
+                    "Fichier sélectionné : " +
+                    fichier.name;
+
+            }
+
+        };
+
+
+    reader.readAsDataURL(
+        fichier
+    );
+
+}
+
+
+/* =========================================================
+   FINALISER PAIEMENT MOBILE
+========================================================= */
+
+async function finaliserPaiementMobile() {
+
+    /* =====================================================
+       Vérifier statut avant nouvel envoi
+    ===================================================== */
+
+    if (paiementUtilisateur) {
+
+        const statut =
+            normaliserStatut(
+                paiementUtilisateur.statut
+            );
+
+
+        if (statut === "en_attente") {
+
+            afficherPopup(
+                "Demande déjà en cours",
+                "Votre paiement est déjà en cours de vérification. Vous ne pouvez pas envoyer une deuxième demande pour le moment."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            statut === "valide" ||
+            statut === "approuve" ||
+            statut === "approuvee" ||
+            statut === "active"
+        ) {
+
+            afficherPopup(
+                "Premium déjà validé",
+                "Votre paiement a déjà été validé et votre compte Premium est actif."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       Capture obligatoire
+    ===================================================== */
+
+    if (!captureBase64) {
+
+        afficherPopup(
+            "Capture manquante",
+            "Veuillez importer la capture d'écran de votre paiement avant de continuer."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       Utilisateur
+    ===================================================== */
+
+    const utilisateur =
+        JSON.parse(
+            localStorage.getItem(
+                "bmj_current_user"
+            )
+        );
+
+
+    if (!utilisateur) {
+
+        alert(
+            "Votre session a expiré. Veuillez vous reconnecter."
+        );
+
+        window.location.href =
+            "connexion.html";
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       Opérateur obligatoire
+    ===================================================== */
+
+    if (!operateurChoisi) {
+
+        afficherPopup(
+            "Opérateur manquant",
+            "Veuillez sélectionner votre opérateur Mobile Money."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       Création demande
+    ===================================================== */
+
+    const nouvelleDemande = {
+
+        idPaiement:
+            "PAY_MM_" +
+            Date.now(),
+
+        utilisateurID:
+            utilisateur.id ||
+            "USER_" +
+            Date.now(),
+
+        nom:
+            utilisateur.nom || "",
+
+        email:
+            utilisateur.email || "",
+
+        offre:
+            utilisateur.domaine ||
+            "Formation Générale",
+
+        montant: 15,
+
+        devise: "USD",
+
+        methode:
+            operateurChoisi,
+
+        capture:
+            captureBase64,
+
+        statut:
+            "en_attente",
+
+        date:
+            new Date().toISOString()
+
+    };
+
+
+    /* =====================================================
+       Bouton
+    ===================================================== */
+
+    const boutonEnvoyer =
+        document.querySelector(
+            ".btn-submit-payment"
+        );
+
+
+    if (boutonEnvoyer) {
+
+        boutonEnvoyer.textContent =
+            "Transmission en cours...";
+
+        boutonEnvoyer.disabled =
+            true;
+
+    }
+
+
+    let envoiAPI = false;
+
+
+    /* =====================================================
+       ENVOI API
+    ===================================================== */
+
+    try {
+
+        const reponse =
+            await fetch(
+                API_URL +
+                "/api/paiements",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            nouvelleDemande
+                        )
+
+                }
+            );
+
+
+        const resultat =
+            await reponse.json();
+
+
+        if (!reponse.ok) {
+
+            throw new Error(
+                resultat.message ||
+                "Erreur API."
+            );
+
+        }
+
+
+        envoiAPI = true;
+
+
+        console.log(
+            "Paiement enregistré dans la base :",
+            resultat
+        );
+
+
+    } catch (erreur) {
+
+        console.error(
+            "Erreur API paiement :",
+            erreur
+        );
+
+    }
+
+
+    /* =====================================================
+       SAUVEGARDE LOCALE
+    ===================================================== */
+
+    let historiquePaiements =
+        JSON.parse(
+            localStorage.getItem(
+                "bmj_paiements"
+            )
+        ) || [];
+
+
+    /*
+       On évite de créer plusieurs fois
+       exactement la même demande.
+    */
+
+    historiquePaiements.push(
+        nouvelleDemande
+    );
+
+
+    localStorage.setItem(
+        "bmj_paiements",
+        JSON.stringify(
+            historiquePaiements
+        )
+    );
+
+
+    localStorage.setItem(
+        "bmj_demande_admin",
+        JSON.stringify(
+            nouvelleDemande
+        )
+    );
+
+
+    /* =====================================================
+       Mise à jour de l'état local
+    ===================================================== */
+
+    paiementUtilisateur =
+        nouvelleDemande;
+
+
+    /* =====================================================
+       Réactiver bouton
+    ===================================================== */
+
+    if (boutonEnvoyer) {
+
+        boutonEnvoyer.textContent =
+            "Envoyer le paiement";
+
+        boutonEnvoyer.disabled =
+            false;
+
+    }
+
+
+    /* =====================================================
+       POPUP
+    ===================================================== */
+
+    if (envoiAPI) {
+
+        afficherPopup(
+            "Paiement envoyé",
+            "Votre paiement a bien été transmis. Il est maintenant en cours de vérification."
+        );
+
+    }
+
+    else {
+
+        afficherPopup(
+            "Demande enregistrée localement",
+            "Le serveur est momentanément indisponible. Votre demande a été conservée localement."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   POPUP GENERIQUE
+========================================================= */
+
+function afficherPopup(
+    titre,
+    message
+) {
+
+    /* =====================================================
+       Supprimer une ancienne popup
+    ===================================================== */
+
+    const ancienne =
+        document.getElementById(
+            "bmj-payment-popup"
+        );
+
+
+    if (ancienne) {
+
+        ancienne.remove();
+
+    }
+
+
+    /* =====================================================
+       Overlay
+    ===================================================== */
+
+    const overlay =
+        document.createElement(
+            "div"
+        );
+
+
+    overlay.id =
+        "bmj-payment-popup";
+
+
+    overlay.style.cssText = `
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.65);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        padding: 20px;
+    `;
+
+
+    /* =====================================================
+       Boîte
+    ===================================================== */
+
+    const boite =
+        document.createElement(
+            "div"
+        );
+
+
+    boite.style.cssText = `
+        width: 100%;
+        max-width: 430px;
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 28px;
+        text-align: center;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.30);
+        font-family: Arial, sans-serif;
+        animation: bmjPopupIn .25s ease;
+    `;
+
+
+    boite.innerHTML = `
+
+        <div style="
+            width:64px;
+            height:64px;
+            margin:0 auto 18px;
+            border-radius:50%;
+            background:#eef6ff;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:30px;
+        ">
+            ℹ️
+        </div>
+
+        <h2 style="
+            margin:0 0 12px;
+            color:#145a86;
+            font-size:22px;
+        ">
+            ${echapperHTML(titre)}
+        </h2>
+
+        <p style="
+            margin:0 0 24px;
+            color:#555;
+            line-height:1.6;
+            font-size:15px;
+        ">
+            ${echapperHTML(message)}
+        </p>
+
+        <button
+            type="button"
+            id="bmj-popup-close"
+            style="
+                width:100%;
+                border:0;
+                padding:13px 20px;
+                border-radius:10px;
+                background:#145a86;
+                color:#fff;
+                font-size:15px;
+                font-weight:600;
+                cursor:pointer;
+            "
+        >
+            Compris
+        </button>
+
+    `;
+
+
+    overlay.appendChild(
+        boite
+    );
+
+
+    document.body.appendChild(
+        overlay
+    );
+
+
+    /* =====================================================
+       Animation
+    ===================================================== */
+
+    if (
+        !document.getElementById(
+            "bmj-popup-style"
+        )
+    ) {
+
+        const style =
+            document.createElement(
+                "style"
+            );
+
+
+        style.id =
+            "bmj-popup-style";
+
+
+        style.textContent = `
+
+            @keyframes bmjPopupIn {
+
+                from {
+
+                    opacity:0;
+                    transform:scale(.90);
+
+                }
+
+                to {
+
+                    opacity:1;
+                    transform:scale(1);
+
+                }
+
+            }
+
+        `;
+
+
+        document.head.appendChild(
+            style
+        );
+
+    }
+
+
+    /* =====================================================
+       Fermeture
+    ===================================================== */
+
+    document
+        .getElementById(
+            "bmj-popup-close"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                overlay.remove();
+
+            }
+        );
+
+
+    /* Fermeture en cliquant autour */
+
+    overlay.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target ===
+                overlay
+            ) {
+
+                overlay.remove();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   PROTECTION TEXTE POPUP
+========================================================= */
+
+function echapperHTML(texte) {
+
+    return String(texte || "")
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================================
+   RETOUR AU CHOIX
+========================================================= */
 
 function retournerAuChoix() {
-    const uploadSection = document.getElementById("upload-section");
-    const stepMobile = document.getElementById("step-mobile");
-    const stepChoice = document.getElementById("step-choice");
 
-    if (uploadSection) uploadSection.style.display = "none";
-    if (stepMobile) stepMobile.style.display = "none";
-    if (stepChoice) stepChoice.style.display = "block";
+    const uploadSection =
+        document.getElementById(
+            "upload-section"
+        );
+
+    const stepMobile =
+        document.getElementById(
+            "step-mobile"
+        );
+
+    const stepChoice =
+        document.getElementById(
+            "step-choice"
+        );
+
+
+    if (uploadSection) {
+
+        uploadSection.style.display =
+            "none";
+
+    }
+
+
+    if (stepMobile) {
+
+        stepMobile.style.display =
+            "none";
+
+    }
+
+
+    if (stepChoice) {
+
+        stepChoice.style.display =
+            "block";
+
+    }
+
 }
 </script>
 </body>
