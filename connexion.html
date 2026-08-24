@@ -700,16 +700,24 @@
  /* ============================================================
    BMJ SERVICE
    CONNEXION UTILISATEUR
-   ------------------------------------------------------------
-   - Recherche l'utilisateur dans PostgreSQL
-   - Vérifie email + mot de passe
-   - Vérifie compte bloqué
-   - Vérifie automatiquement l'expiration Premium
-   - Retourne les informations de l'utilisateur
-   - Compatible avec :
-       /api/connexion
-       /api/login
-       /api/signin
+   ============================================================
+   
+   ROUTES :
+   POST /api/connexion
+   POST /api/login
+   POST /api/signin
+
+   SOURCE DES IDENTIFIANTS :
+   TABLE PostgreSQL : users
+
+   IDENTIFIANTS :
+   - email
+   - password
+
+   COMPATIBILITÉ :
+   - inscription
+   - register
+   - signup
    ============================================================ */
 
 
@@ -727,65 +735,94 @@ function normalizeLoginEmail(email) {
 
 
 /* ============================================================
-   2. CONNEXION UTILISATEUR
+   2. FONCTION DE CONNEXION
 ============================================================ */
 
 async function loginUser(req, res) {
 
     try {
 
+        console.log(
+            "=================================================="
+        );
+
+        console.log(
+            "[BMJ LOGIN] Nouvelle tentative de connexion"
+        );
+
+
         /* ====================================================
-           RÉCUPÉRATION DES DONNÉES
+           RÉCUPÉRATION DU BODY
         ==================================================== */
 
         const body =
             req.body || {};
 
 
+        console.log(
+            "[BMJ LOGIN] Données reçues :",
+            {
+                email: body.email || null
+            }
+        );
+
+
+        /* ====================================================
+           RÉCUPÉRATION EMAIL
+           
+           Accepte plusieurs noms :
+           
+           email
+           mail
+           username
+        ==================================================== */
+
         const email =
             normalizeLoginEmail(
+
                 body.email ||
                 body.mail ||
                 body.username
-            );
 
-
-        const password =
-            String(
-                body.password ||
-                body.motDePasse ||
-                body.mot_de_passe ||
-                body.pass ||
-                ""
             );
 
 
         /* ====================================================
-           VÉRIFICATION DES CHAMPS
+           RÉCUPÉRATION MOT DE PASSE
+           
+           Accepte :
+           
+           password
+           motDePasse
+           mot_de_passe
+        ==================================================== */
+
+        const password =
+            String(
+
+                body.password ||
+                body.motDePasse ||
+                body.mot_de_passe ||
+                ""
+
+            );
+
+
+        /* ====================================================
+           VÉRIFICATION EMAIL
         ==================================================== */
 
         if (!email) {
 
-            return error(
-
-                res,
-
-                "Veuillez entrer votre adresse email.",
-
-                400
-
+            console.log(
+                "[BMJ LOGIN] Email manquant"
             );
 
-        }
-
-
-        if (!password) {
-
             return error(
 
                 res,
 
-                "Veuillez entrer votre mot de passe.",
+                "Veuillez saisir votre adresse email.",
 
                 400
 
@@ -795,17 +832,48 @@ async function loginUser(req, res) {
 
 
         /* ====================================================
-           RECHERCHE DE L'UTILISATEUR
+           VÉRIFICATION MOT DE PASSE
+        ==================================================== */
+
+        if (!password) {
+
+            console.log(
+                "[BMJ LOGIN] Mot de passe manquant"
+            );
+
+            return error(
+
+                res,
+
+                "Veuillez saisir votre mot de passe.",
+
+                400
+
+            );
+
+        }
+
+
+        /* ====================================================
+           RECHERCHE UTILISATEUR DANS POSTGRESQL
            
            IMPORTANT :
-           On utilise LOWER(email) afin que :
+           On cherche directement dans users.
            
-           ESPOIR@GMAIL.COM
+           LOWER + TRIM permettent :
+           
+           ESPoir@gmail.com
            espoir@gmail.com
-           Espoir@gmail.com
+           ESPOIR@GMAIL.COM
            
-           soient reconnus comme le même compte.
+           de fonctionner.
         ==================================================== */
+
+        console.log(
+            "[BMJ LOGIN] Recherche utilisateur :",
+            email
+        );
+
 
         const result =
             await pool.query(
@@ -835,16 +903,24 @@ async function loginUser(req, res) {
                 LIMIT 1
                 `,
 
-                [email]
+                [
+                    email
+                ]
 
             );
 
 
         /* ====================================================
-           UTILISATEUR INTROUVABLE
+           UTILISATEUR NON TROUVÉ
         ==================================================== */
 
         if (!result.rows.length) {
+
+            console.log(
+                "[BMJ LOGIN] Utilisateur introuvable :",
+                email
+            );
+
 
             return error(
 
@@ -867,13 +943,62 @@ async function loginUser(req, res) {
             result.rows[0];
 
 
+        console.log(
+            "[BMJ LOGIN] Utilisateur trouvé :",
+            {
+                id: user.id,
+                email: user.email,
+                nom: user.nom
+            }
+        );
+
+
+        /* ====================================================
+           VÉRIFICATION COMPTE BLOQUÉ
+           
+           Le serveur possède deux colonnes :
+           
+           blocked
+           is_blocked
+        ==================================================== */
+
+        const blocked =
+            user.blocked === true ||
+            user.is_blocked === true;
+
+
+        if (blocked) {
+
+            console.log(
+                "[BMJ LOGIN] Compte bloqué :",
+                user.email
+            );
+
+
+            return error(
+
+                res,
+
+                "Votre compte est bloqué. Veuillez contacter l'administrateur.",
+
+                403
+
+            );
+
+        }
+
+
         /* ====================================================
            VÉRIFICATION DU MOT DE PASSE
            
-           Pour l'instant les inscriptions de ton système
-           enregistrent le mot de passe tel quel.
+           IMPORTANT :
+           Ton système d'inscription actuel enregistre :
            
-           On compare donc directement les deux valeurs.
+           password
+           
+           directement dans PostgreSQL.
+           
+           On compare donc avec la valeur enregistrée.
         ==================================================== */
 
         const savedPassword =
@@ -893,6 +1018,12 @@ async function loginUser(req, res) {
             savedPassword !== enteredPassword
         ) {
 
+            console.log(
+                "[BMJ LOGIN] Mot de passe incorrect :",
+                user.email
+            );
+
+
             return error(
 
                 res,
@@ -900,35 +1031,6 @@ async function loginUser(req, res) {
                 "Email ou mot de passe incorrect.",
 
                 401
-
-            );
-
-        }
-
-
-        /* ====================================================
-           VÉRIFICATION DU COMPTE BLOQUÉ
-           
-           Le système accepte les deux colonnes :
-           
-           blocked
-           is_blocked
-        ==================================================== */
-
-        const isBlocked =
-            user.blocked === true ||
-            user.is_blocked === true;
-
-
-        if (isBlocked) {
-
-            return error(
-
-                res,
-
-                "Votre compte est bloqué. Veuillez contacter l'administrateur.",
-
-                403
 
             );
 
@@ -945,12 +1047,11 @@ async function loginUser(req, res) {
 
 
         let premiumUntil =
-            user.premium_until ||
-            null;
+            user.premium_until || null;
 
 
         /* ====================================================
-           SI PREMIUM AVEC DATE D'EXPIRATION
+           VÉRIFICATION DATE PREMIUM
         ==================================================== */
 
         if (
@@ -958,26 +1059,32 @@ async function loginUser(req, res) {
             premiumUntil
         ) {
 
-            const expirationDate =
+            const expiration =
                 new Date(
                     premiumUntil
                 );
 
 
-            const now =
+            const maintenant =
                 new Date();
 
 
-            /* ==================================================
+            /* ================================================
                PREMIUM EXPIRÉ
-            ================================================== */
+            ================================================ */
 
             if (
                 !Number.isNaN(
-                    expirationDate.getTime()
+                    expiration.getTime()
                 ) &&
-                expirationDate <= now
+                expiration <= maintenant
             ) {
+
+                console.log(
+                    "[BMJ LOGIN] Premium expiré pour :",
+                    user.email
+                );
+
 
                 await pool.query(
 
@@ -993,7 +1100,9 @@ async function loginUser(req, res) {
                     WHERE id = $1
                     `,
 
-                    [user.id]
+                    [
+                        user.id
+                    ]
 
                 );
 
@@ -1008,14 +1117,7 @@ async function loginUser(req, res) {
 
 
         /* ====================================================
-           SI PREMIUM ACTIF MAIS SANS DATE
-           
-           On garde Premium actif.
-        ==================================================== */
-
-
-        /* ====================================================
-           JOURNAL DE CONNEXION
+           JOURNAL ACTIVITÉ
         ==================================================== */
 
         try {
@@ -1024,31 +1126,89 @@ async function loginUser(req, res) {
 
                 "USER_LOGIN",
 
-                `Connexion utilisateur : ${user.email}`,
+                `Connexion réussie : ${user.email}`,
 
-                user.id
+                user.id,
+
+                null
 
             );
 
         } catch (logError) {
 
             console.error(
-
-                "Erreur journal connexion :",
-
+                "[BMJ LOGIN] Erreur journal :",
                 logError.message
-
             );
 
         }
 
 
         /* ====================================================
-           RÉPONSE
+           CONSTRUCTION DE L'UTILISATEUR
            
            IMPORTANT :
-           NE JAMAIS retourner le mot de passe.
+           Le mot de passe n'est JAMAIS renvoyé au frontend.
         ==================================================== */
+
+        const userData = {
+
+            id:
+                user.id,
+
+            nom:
+                user.nom,
+
+            email:
+                user.email,
+
+            telephone:
+                user.telephone,
+
+            domaine:
+                user.domaine,
+
+            photo:
+                user.photo,
+
+            premium:
+                premium,
+
+            is_premium:
+                premium,
+
+            premium_until:
+                premiumUntil,
+
+            blocked:
+                false,
+
+            is_blocked:
+                false,
+
+            created_at:
+                user.created_at,
+
+            updated_at:
+                user.updated_at
+
+        };
+
+
+        /* ====================================================
+           RÉPONSE FINALE
+        ==================================================== */
+
+        console.log(
+            "[BMJ LOGIN] Connexion réussie :",
+            user.email
+        );
+
+
+        console.log(
+            "=================================================="
+        );
+
 
         return success(
 
@@ -1056,48 +1216,8 @@ async function loginUser(req, res) {
 
             {
 
-                user: {
-
-                    id:
-                        user.id,
-
-                    nom:
-                        user.nom,
-
-                    email:
-                        user.email,
-
-                    telephone:
-                        user.telephone,
-
-                    domaine:
-                        user.domaine,
-
-                    photo:
-                        user.photo,
-
-                    premium:
-                        premium,
-
-                    is_premium:
-                        premium,
-
-                    premium_until:
-                        premiumUntil,
-
-                    blocked:
-                        false,
-
-                    is_blocked:
-                        false,
-
-                    created_at:
-                        user.created_at,
-
-                    updated_at:
-                        user.updated_at
-
-                }
+                user:
+                    userData
 
             },
 
@@ -1105,14 +1225,20 @@ async function loginUser(req, res) {
 
         );
 
+
     } catch (err) {
 
         console.error(
+            "=================================================="
+        );
 
-            "Erreur connexion utilisateur :",
-
+        console.error(
+            "[BMJ LOGIN] ERREUR :",
             err
+        );
 
+        console.error(
+            "=================================================="
         );
 
 
@@ -1134,12 +1260,8 @@ async function loginUser(req, res) {
 
 
 /* ============================================================
-   3. ROUTES DE CONNEXION
+   3. ROUTE PRINCIPALE
 ============================================================ */
-
-/*
-   Route principale
-*/
 
 app.post(
 
@@ -1150,9 +1272,9 @@ app.post(
 );
 
 
-/*
-   Alias anglais
-*/
+/* ============================================================
+   4. ROUTE LOGIN
+============================================================ */
 
 app.post(
 
@@ -1163,9 +1285,9 @@ app.post(
 );
 
 
-/*
-   Alias signin
-*/
+/* ============================================================
+   5. ROUTE SIGNIN
+============================================================ */
 
 app.post(
 
@@ -1177,7 +1299,7 @@ app.post(
 
 
 /* ============================================================
-   FIN DU SCRIPT CONNEXION
+   FIN CONNEXION UTILISATEUR
 ============================================================ */
 </script>
 </body>
