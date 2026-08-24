@@ -4546,24 +4546,60 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     </footer>
 
 <script>
-  /*==================================================
-        BMJ SERVICE
-        SCRIPT TABLEAU DE BORD
-        SYNCHRONISATION PREMIUM AVEC LE SERVEUR
-==================================================*/
+ /* =========================================================
+   BMJ SERVICE
+   SCRIPT TABLEAU DE BORD
+   VERSION : 5.0.0
+
+   OBJECTIFS :
+   ---------------------------------------------------------
+   1. Une seule session utilisateur :
+      localStorage -> bmj_current_user
+
+   2. Synchronisation avec PostgreSQL
+
+   3. Utilisateur identifié par son ID
+
+   4. Aucun mélange entre plusieurs comptes
+
+   5. Synchronisation Premium
+
+   6. Gestion photo / nom / domaine / progression
+
+   7. Déconnexion complète
+
+   ========================================================= */
 
 
-/*==================================================
-        CONFIGURATION API
-==================================================*/
+/* =========================================================
+   1. CONFIGURATION API
+   ========================================================= */
 
 const API_URL =
     "https://back-end-h602.onrender.com";
 
 
-/*==================================================
-        EMAILS PROFESSIONNELS
-==================================================*/
+/* =========================================================
+   2. CLE UNIQUE DE SESSION
+   ========================================================= */
+
+const SESSION_KEY =
+    "bmj_current_user";
+
+
+/* =========================================================
+   3. ANCIENNES CLES A SUPPRIMER
+   ========================================================= */
+
+const OLD_SESSION_KEYS = [
+    "bmj_user",
+    "bmj_logged_in"
+];
+
+
+/* =========================================================
+   4. DOMAINES EMAIL PROFESSIONNELS
+   ========================================================= */
 
 const DOMAINES_PRO = [
     "contactbmj.com",
@@ -4571,9 +4607,46 @@ const DOMAINES_PRO = [
 ];
 
 
-/*==================================================
-        VERIFIER EMAIL PROFESSIONNEL
-==================================================*/
+/* =========================================================
+   5. FORMATIONS RESTREINTES
+   ========================================================= */
+
+const DOMAINES_RESTRICTED_FOR_STANDARD = [
+    "informatique"
+];
+
+
+/* =========================================================
+   6. NORMALISER TEXTE
+   ========================================================= */
+
+function normaliserTexte(valeur) {
+
+    return String(valeur || "")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+}
+
+
+/* =========================================================
+   7. NORMALISER API URL
+   ========================================================= */
+
+function getApiUrl() {
+
+    return String(API_URL || "")
+        .trim()
+        .replace(/\/+$/, "");
+
+}
+
+
+/* =========================================================
+   8. VERIFIER EMAIL PROFESSIONNEL
+   ========================================================= */
 
 function estEmailProfessionnel(email) {
 
@@ -4581,43 +4654,56 @@ function estEmailProfessionnel(email) {
         return false;
     }
 
-    const parts =
-        String(email).trim().split("@");
+    const valeur =
+        String(email)
+            .trim()
+            .toLowerCase();
 
-    if (parts.length < 2) {
+    const position =
+        valeur.lastIndexOf("@");
+
+    if (position === -1) {
         return false;
     }
 
     const domaine =
-        parts[1]
-            .toLowerCase()
+        valeur
+            .substring(position + 1)
             .trim();
 
-    return DOMAINES_PRO.includes(domaine);
+    return DOMAINES_PRO.includes(
+        domaine
+    );
+
 }
 
 
-/*==================================================
-        NORMALISER STATUT
-==================================================*/
+/* =========================================================
+   9. CONVERTIR VALEUR BOOLEENNE
+   ========================================================= */
 
-function normaliserStatut(statut) {
+function valeurBooleenne(valeur) {
 
-    if (!statut) {
-        return "";
+    if (
+        valeur === true ||
+        valeur === 1 ||
+        valeur === "1" ||
+        valeur === "true" ||
+        valeur === "TRUE" ||
+        valeur === "yes" ||
+        valeur === "YES"
+    ) {
+        return true;
     }
 
-    return String(statut)
-        .trim()
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+    return false;
+
 }
 
 
-/*==================================================
-        DETERMINER PREMIUM
-==================================================*/
+/* =========================================================
+   10. DETERMINER PREMIUM
+   ========================================================= */
 
 function utilisateurEstPremium(utilisateur) {
 
@@ -4625,71 +4711,605 @@ function utilisateurEstPremium(utilisateur) {
         return false;
     }
 
+    const premium =
+        valeurBooleenne(
+            utilisateur.premium
+        );
 
-    /*
-        1. STATUT SERVEUR
-    */
+    const isPremium =
+        valeurBooleenne(
+            utilisateur.is_premium
+        );
 
-    const premiumServeur =
-        utilisateur.premium === true ||
-        utilisateur.premium === 1 ||
-        utilisateur.premium === "true" ||
-        utilisateur.premium === "1";
-
-
-    const isPremiumServeur =
-        utilisateur.is_premium === true ||
-        utilisateur.is_premium === 1 ||
-        utilisateur.is_premium === "true" ||
-        utilisateur.is_premium === "1";
-
-
-    /*
-        2. COMPATIBILITE ANCIEN FRONTEND
-    */
-
-    const isPremiumFrontend =
+    const ancienPremium =
         utilisateur.isPremium === true;
-
-
-    /*
-        3. EMAIL PROFESSIONNEL
-    */
 
     const emailPro =
         estEmailProfessionnel(
             utilisateur.email
         );
 
-
-    /*
-        PREMIUM FINAL
-
-        Le serveur est prioritaire.
-
-        Si l'admin active Premium,
-        l'utilisateur reste Premium.
-
-        Si email professionnel,
-        Premium également.
-    */
-
     return (
-        premiumServeur ||
-        isPremiumServeur ||
-        isPremiumFrontend ||
+        premium ||
+        isPremium ||
+        ancienPremium ||
         emailPro
     );
+
 }
 
 
-/*==================================================
-        POPUP BMJ
-==================================================*/
+/* =========================================================
+   11. RECUPERER SESSION
+   ========================================================= */
+
+function recupererUtilisateurLocal() {
+
+    let utilisateur = null;
+
+    try {
+
+        const valeur =
+            localStorage.getItem(
+                SESSION_KEY
+            );
+
+        if (!valeur) {
+            return null;
+        }
+
+        utilisateur =
+            JSON.parse(valeur);
+
+    } catch (erreur) {
+
+        console.error(
+            "[BMJ SESSION] Session invalide :",
+            erreur
+        );
+
+        localStorage.removeItem(
+            SESSION_KEY
+        );
+
+        return null;
+    }
+
+    if (
+        !utilisateur ||
+        typeof utilisateur !== "object"
+    ) {
+        return null;
+    }
+
+    return utilisateur;
+
+}
+
+
+/* =========================================================
+   12. SAUVEGARDER SESSION
+   ========================================================= */
+
+function sauvegarderUtilisateur(
+    utilisateur
+) {
+
+    if (
+        !utilisateur ||
+        typeof utilisateur !== "object"
+    ) {
+        return false;
+    }
+
+    try {
+
+        localStorage.setItem(
+            SESSION_KEY,
+            JSON.stringify(
+                utilisateur
+            )
+        );
+
+        return true;
+
+    } catch (erreur) {
+
+        console.error(
+            "[BMJ SESSION] Impossible de sauvegarder :",
+            erreur
+        );
+
+        return false;
+    }
+
+}
+
+
+/* =========================================================
+   13. SUPPRIMER ANCIENNES SESSIONS
+   ========================================================= */
+
+function nettoyerAnciennesSessions() {
+
+    OLD_SESSION_KEYS.forEach(
+        function (cle) {
+
+            localStorage.removeItem(
+                cle
+            );
+
+            sessionStorage.removeItem(
+                cle
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   14. REDIRECTION CONNEXION
+   ========================================================= */
+
+function redirigerConnexion() {
+
+    window.location.replace(
+        "connexion.html"
+    );
+
+}
+
+
+/* =========================================================
+   15. EXTRAIRE UTILISATEUR API
+   ========================================================= */
+
+function extraireUtilisateurAPI(
+    resultat
+) {
+
+    if (!resultat) {
+        return null;
+    }
+
+    /*
+        Format :
+
+        {
+            success: true,
+            data: {
+                user: {...}
+            }
+        }
+    */
+
+    if (
+        resultat.data &&
+        resultat.data.user
+    ) {
+
+        return resultat.data.user;
+
+    }
+
+
+    /*
+        Format :
+
+        {
+            success: true,
+            user: {...}
+        }
+    */
+
+    if (resultat.user) {
+
+        return resultat.user;
+
+    }
+
+
+    /*
+        Format :
+
+        {
+            success: true,
+            utilisateur: {...}
+        }
+    */
+
+    if (
+        resultat.utilisateur
+    ) {
+
+        return resultat.utilisateur;
+
+    }
+
+
+    /*
+        Format :
+
+        {
+            success: true,
+            data: {...}
+        }
+    */
+
+    if (
+        resultat.data &&
+        typeof resultat.data === "object" &&
+        !Array.isArray(resultat.data)
+    ) {
+
+        if (
+            resultat.data.id ||
+            resultat.data.email
+        ) {
+
+            return resultat.data;
+
+        }
+
+    }
+
+    return null;
+
+}
+
+
+/* =========================================================
+   16. SYNCHRONISER UTILISATEUR AVEC POSTGRESQL
+   ========================================================= */
+
+async function synchroniserUtilisateurServeur() {
+
+    let utilisateur =
+        recupererUtilisateurLocal();
+
+
+    /*
+        Aucun compte connecté
+    */
+
+    if (!utilisateur) {
+
+        redirigerConnexion();
+
+        return null;
+
+    }
+
+
+    /*
+        Nettoyage des anciennes sessions
+    */
+
+    nettoyerAnciennesSessions();
+
+
+    /*
+        ID obligatoire
+    */
+
+    if (
+        utilisateur.id === undefined ||
+        utilisateur.id === null ||
+        utilisateur.id === ""
+    ) {
+
+        console.error(
+            "[BMJ SESSION] ID utilisateur absent."
+        );
+
+        /*
+            On ne remplace surtout pas
+            cet utilisateur par un autre.
+        */
+
+        utilisateur.isPremium =
+            utilisateurEstPremium(
+                utilisateur
+            );
+
+        utilisateur.premium =
+            utilisateur.isPremium;
+
+        utilisateur.is_premium =
+            utilisateur.isPremium;
+
+        sauvegarderUtilisateur(
+            utilisateur
+        );
+
+        return utilisateur;
+
+    }
+
+
+    try {
+
+        const url =
+            getApiUrl() +
+            "/api/apprenants/" +
+            encodeURIComponent(
+                String(
+                    utilisateur.id
+                )
+            );
+
+
+        console.log(
+            "[BMJ DASHBOARD] Synchronisation :",
+            url
+        );
+
+
+        const reponse =
+            await fetch(
+                url,
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    },
+
+                    cache: "no-store"
+                }
+            );
+
+
+        /*
+            Utilisateur introuvable
+        */
+
+        if (
+            reponse.status === 404
+        ) {
+
+            console.warn(
+                "[BMJ DASHBOARD] Utilisateur introuvable."
+            );
+
+            /*
+                On supprime la session locale
+                pour éviter d'afficher un
+                ancien compte.
+            */
+
+            localStorage.removeItem(
+                SESSION_KEY
+            );
+
+            redirigerConnexion();
+
+            return null;
+
+        }
+
+
+        if (!reponse.ok) {
+
+            throw new Error(
+                "Erreur HTTP " +
+                reponse.status
+            );
+
+        }
+
+
+        const resultat =
+            await reponse.json();
+
+
+        console.log(
+            "[BMJ DASHBOARD] Réponse PostgreSQL :",
+            resultat
+        );
+
+
+        const utilisateurServeur =
+            extraireUtilisateurAPI(
+                resultat
+            );
+
+
+        if (!utilisateurServeur) {
+
+            throw new Error(
+                "Les informations utilisateur sont absentes."
+            );
+
+        }
+
+
+        /*
+            SECURITE IMPORTANTE
+
+            Le serveur doit retourner
+            le même ID que celui demandé.
+
+            Cela évite qu'un mauvais backend
+            retourne accidentellement un
+            autre compte.
+        */
+
+        if (
+            utilisateurServeur.id !== undefined &&
+            utilisateurServeur.id !== null
+        ) {
+
+            if (
+                String(
+                    utilisateurServeur.id
+                ) !==
+                String(
+                    utilisateur.id
+                )
+            ) {
+
+                console.error(
+                    "[BMJ SECURITY] ID utilisateur différent.",
+                    {
+                        demande:
+                            utilisateur.id,
+
+                        recu:
+                            utilisateurServeur.id
+                    }
+                );
+
+                throw new Error(
+                    "Le serveur a retourné un utilisateur différent."
+                );
+
+            }
+
+        }
+
+
+        /*
+            IMPORTANT :
+
+            Les données PostgreSQL deviennent
+            la source principale.
+
+            Les anciennes données locales
+            ne doivent pas remplacer les
+            nouvelles données serveur.
+        */
+
+        const utilisateurFinal = {
+
+            ...utilisateur,
+
+            ...utilisateurServeur
+
+        };
+
+
+        /*
+            ID SERVEUR PRIORITAIRE
+        */
+
+        utilisateurFinal.id =
+            utilisateurServeur.id ??
+            utilisateur.id;
+
+
+        /*
+            PREMIUM SERVEUR
+        */
+
+        const premiumServeur =
+            valeurBooleenne(
+                utilisateurServeur.premium
+            );
+
+        const isPremiumServeur =
+            valeurBooleenne(
+                utilisateurServeur.is_premium
+            );
+
+
+        /*
+            Email professionnel
+        */
+
+        const emailPro =
+            estEmailProfessionnel(
+                utilisateurFinal.email
+            );
+
+
+        /*
+            STATUT FINAL
+        */
+
+        const premiumFinal =
+            premiumServeur ||
+            isPremiumServeur ||
+            emailPro;
+
+
+        utilisateurFinal.isPremium =
+            premiumFinal;
+
+        utilisateurFinal.premium =
+            premiumFinal;
+
+        utilisateurFinal.is_premium =
+            premiumFinal;
+
+
+        /*
+            SAUVEGARDE
+        */
+
+        sauvegarderUtilisateur(
+            utilisateurFinal
+        );
+
+
+        console.log(
+            "[BMJ DASHBOARD] Utilisateur synchronisé :",
+            utilisateurFinal
+        );
+
+
+        return utilisateurFinal;
+
+
+    } catch (erreur) {
+
+        console.error(
+            "[BMJ DASHBOARD] Synchronisation impossible :",
+            erreur
+        );
+
+
+        /*
+            En cas d'indisponibilité temporaire
+            de Render, on garde le compte local.
+
+            Mais on ne crée JAMAIS un autre compte.
+        */
+
+        utilisateur.isPremium =
+            utilisateurEstPremium(
+                utilisateur
+            );
+
+        utilisateur.premium =
+            utilisateur.isPremium;
+
+        utilisateur.is_premium =
+            utilisateur.isPremium;
+
+
+        sauvegarderUtilisateur(
+            utilisateur
+        );
+
+
+        return utilisateur;
+
+    }
+
+}
+
+
+/* =========================================================
+   17. POPUP BMJ
+   ========================================================= */
 
 function afficherPopupBMJ(
     titre,
-    message,
+    messageTexte,
     type = "error",
     callback = null
 ) {
@@ -4703,7 +5323,9 @@ function afficherPopupBMJ(
     if (!overlay) {
 
         overlay =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
         overlay.id =
             "bmjModalAlerte";
@@ -4717,14 +5339,18 @@ function afficherPopupBMJ(
                     id="bmjModalIcon"
                     class="bmj-modal-icon"
                 >
-                    ✨
+                    ⚠️
                 </div>
 
-                <h3 id="bmjModalTitle">
+                <h3
+                    id="bmjModalTitle"
+                >
                     Notification
                 </h3>
 
-                <p id="bmjModalText"></p>
+                <p
+                    id="bmjModalText"
+                ></p>
 
                 <button
                     type="button"
@@ -4745,36 +5371,42 @@ function afficherPopupBMJ(
 
 
         const style =
-            document.createElement("style");
+            document.createElement(
+                "style"
+            );
 
 
-        style.innerHTML = `
+        style.textContent = `
 
             #bmjModalAlerte {
 
                 position: fixed;
                 inset: 0;
 
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                padding: 20px;
+
                 background:
-                    rgba(15,23,42,.65);
+                    rgba(15,23,42,.68);
 
                 backdrop-filter:
                     blur(8px);
 
-                display: flex;
+                -webkit-backdrop-filter:
+                    blur(8px);
 
-                align-items: center;
-                justify-content: center;
-
-                z-index: 99999;
+                z-index: 999999;
 
                 opacity: 0;
                 visibility: hidden;
 
                 transition:
-                    all .3s ease;
+                    opacity .25s ease,
+                    visibility .25s ease;
 
-                padding: 20px;
             }
 
 
@@ -4782,31 +5414,34 @@ function afficherPopupBMJ(
 
                 opacity: 1;
                 visibility: visible;
+
             }
 
 
             .bmj-modal-box {
 
-                background: #fff;
-
                 width: 100%;
-                max-width: 380px;
-
-                border-radius: 20px;
+                max-width: 400px;
 
                 padding: 30px;
+
+                background: #fff;
+
+                border-radius: 22px;
 
                 text-align: center;
 
                 box-shadow:
-                    0 25px 50px
+                    0 25px 70px
                     rgba(0,0,0,.25);
 
                 transform:
-                    translateY(20px);
+                    translateY(20px)
+                    scale(.97);
 
                 transition:
-                    .3s;
+                    transform .25s ease;
+
             }
 
 
@@ -4814,34 +5449,54 @@ function afficherPopupBMJ(
             .bmj-modal-box {
 
                 transform:
-                    translateY(0);
+                    translateY(0)
+                    scale(1);
+
             }
 
 
             .bmj-modal-icon {
 
-                font-size: 3rem;
+                width: 65px;
+                height: 65px;
 
-                margin-bottom: 15px;
+                margin:
+                    0 auto 18px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                border-radius: 50%;
+
+                background: #eff6ff;
+
+                font-size: 30px;
+
             }
 
 
             #bmjModalTitle {
 
-                color: #1e293b;
+                margin-bottom: 10px;
 
-                margin:
-                    0 0 10px 0;
+                color: #0f172a;
+
+                font-size: 21px;
+
             }
 
 
             #bmjModalText {
 
+                margin-bottom: 22px;
+
                 color: #64748b;
 
-                margin-bottom: 20px;
+                font-size: 14px;
 
-                line-height: 1.5;
+                line-height: 1.7;
+
             }
 
 
@@ -4849,19 +5504,20 @@ function afficherPopupBMJ(
 
                 width: 100%;
 
-                padding: 14px;
+                border: none;
 
                 border-radius: 12px;
 
-                border: none;
+                padding: 14px;
 
-                background: #2563eb;
+                background: #145a86;
 
                 color: #fff;
 
-                font-weight: bold;
+                font-weight: 700;
 
                 cursor: pointer;
+
             }
 
         `;
@@ -4870,6 +5526,7 @@ function afficherPopupBMJ(
         document.head.appendChild(
             style
         );
+
     }
 
 
@@ -4882,23 +5539,27 @@ function afficherPopupBMJ(
     document.getElementById(
         "bmjModalText"
     ).innerHTML =
-        message;
+        messageTexte;
 
 
     document.getElementById(
         "bmjModalIcon"
-    ).innerHTML =
+    ).textContent =
         type === "success"
             ? "✅"
             : "⚠️";
 
 
-    document.getElementById(
-        "bmjModalBtn"
-    ).style.background =
+    const bouton =
+        document.getElementById(
+            "bmjModalBtn"
+        );
+
+
+    bouton.style.background =
         type === "success"
             ? "#16a34a"
-            : "#2563eb";
+            : "#145a86";
 
 
     overlay.classList.add(
@@ -4906,17 +5567,20 @@ function afficherPopupBMJ(
     );
 
 
-    document.getElementById(
-        "bmjModalBtn"
-    ).onclick =
+    bouton.onclick =
         function () {
 
             overlay.classList.remove(
                 "active"
             );
 
-            if (callback) {
+            if (
+                typeof callback ===
+                "function"
+            ) {
+
                 callback();
+
             }
 
         };
@@ -4924,299 +5588,364 @@ function afficherPopupBMJ(
 }
 
 
-/*==================================================
-        SYNCHRONISER UTILISATEUR AVEC POSTGRESQL
-==================================================*/
+/* =========================================================
+   18. AFFICHER INFORMATIONS UTILISATEUR
+   ========================================================= */
 
-async function synchroniserUtilisateurServeur() {
-
-    let utilisateur =
-        JSON.parse(
-            localStorage.getItem(
-                "bmj_current_user"
-            )
-        );
-
-
-    /*
-        Aucun utilisateur connecté
-    */
+function afficherInformationsUtilisateur(
+    utilisateur
+) {
 
     if (!utilisateur) {
-
-        window.location.href =
-            "connexion.html";
-
-        return null;
+        return;
     }
 
 
     /*
-        ID obligatoire
+        NOM
     */
 
-    if (!utilisateur.id) {
-
-        console.warn(
-            "ID utilisateur absent."
+    const nomUtilisateur =
+        document.getElementById(
+            "nomUtilisateur"
         );
 
-        /*
-            On conserve quand même
-            l'utilisateur local.
-        */
 
-        utilisateur.isPremium =
-            utilisateurEstPremium(
-                utilisateur
-            );
+    if (nomUtilisateur) {
 
-        localStorage.setItem(
-            "bmj_current_user",
-            JSON.stringify(
-                utilisateur
-            )
-        );
+        nomUtilisateur.textContent =
+            utilisateur.nom ||
+            "Utilisateur";
 
-        return utilisateur;
     }
 
 
     /*
-        REQUETE SERVEUR
+        NOM COMPLET
     */
 
-    try {
-
-        console.log(
-            "🔄 Synchronisation utilisateur..."
+    const nomComplet =
+        document.getElementById(
+            "nomComplet"
         );
 
 
-        const reponse =
-            await fetch(
+    if (nomComplet) {
 
-                API_URL +
-                "/api/apprenants/" +
-                encodeURIComponent(
-                    utilisateur.id
-                ),
+        nomComplet.textContent =
+            "Bienvenue " +
+            (
+                utilisateur.nom ||
+                "Apprenant"
+            ) +
+            " 👋";
 
-                {
-                    method: "GET",
-
-                    headers: {
-                        "Accept":
-                            "application/json"
-                    },
-
-                    cache: "no-store"
-                }
-
-            );
+    }
 
 
-        /*
-            Utilisateur supprimé
-            ou introuvable
-        */
+    /*
+        DOMAINE
+    */
 
-        if (reponse.status === 404) {
-
-            console.warn(
-                "Utilisateur introuvable sur le serveur."
-            );
-
-            return utilisateur;
-        }
-
-
-        if (!reponse.ok) {
-
-            throw new Error(
-                "HTTP " +
-                reponse.status
-            );
-        }
-
-
-        const resultat =
-            await reponse.json();
-
-
-        console.log(
-            "📡 Réponse serveur :",
-            resultat
+    const roleUtilisateur =
+        document.getElementById(
+            "roleUtilisateur"
         );
 
 
-        /*
-            EXTRAIRE USER
-        */
+    if (roleUtilisateur) {
 
-        let utilisateurServeur =
-            resultat.data ||
-            resultat.user ||
-            resultat.utilisateur;
+        roleUtilisateur.textContent =
+            utilisateur.domaine ||
+            "Apprenant";
 
-
-        if (!utilisateurServeur) {
-
-            throw new Error(
-                "Utilisateur absent de la réponse."
-            );
-        }
+    }
 
 
-        /*
-            IMPORTANT
-
-            On remplace les anciennes
-            informations locales par
-            celles de PostgreSQL.
-        */
-
-        utilisateur = {
-
-            ...utilisateur,
-
-            ...utilisateurServeur
-
-        };
-
-
-        /*
-            NORMALISATION PREMIUM
-        */
-
-        const premiumServeur =
-            utilisateurServeur.premium === true ||
-            utilisateurServeur.premium === 1 ||
-            utilisateurServeur.premium === "true" ||
-            utilisateurServeur.premium === "1";
-
-
-        const isPremiumServeur =
-            utilisateurServeur.is_premium === true ||
-            utilisateurServeur.is_premium === 1 ||
-            utilisateurServeur.is_premium === "true" ||
-            utilisateurServeur.is_premium === "1";
-
-
-        const emailPro =
-            estEmailProfessionnel(
-                utilisateur.email
-            );
-
-
-        /*
-            STATUT FRONTEND FINAL
-        */
-
-        utilisateur.isPremium =
-            premiumServeur ||
-            isPremiumServeur ||
-            emailPro;
-
-
-        /*
-            Synchroniser les deux
-            noms utilisés par le frontend.
-        */
-
-        utilisateur.premium =
-            utilisateur.isPremium;
-
-
-        utilisateur.is_premium =
-            utilisateur.isPremium;
-
-
-        /*
-            SAUVEGARDE LOCALE
-        */
-
-        localStorage.setItem(
-            "bmj_current_user",
-            JSON.stringify(
-                utilisateur
-            )
+    const domaineFormation =
+        document.getElementById(
+            "domaineFormation"
         );
 
 
-        console.log(
-            "✅ Utilisateur synchronisé :",
+    if (domaineFormation) {
+
+        domaineFormation.textContent =
+            utilisateur.domaine ||
+            "Aucun domaine";
+
+    }
+
+
+    /*
+        PHOTO
+    */
+
+    const photo =
+        utilisateur.photo ||
+        "images/user.png";
+
+
+    const photoUtilisateur =
+        document.getElementById(
+            "photoUtilisateur"
+        );
+
+
+    const photoProfil =
+        document.getElementById(
+            "photoProfil"
+        );
+
+
+    if (photoUtilisateur) {
+
+        photoUtilisateur.src =
+            photo;
+
+        photoUtilisateur.onerror =
+            function () {
+
+                this.src =
+                    "images/user.png";
+
+            };
+
+    }
+
+
+    if (photoProfil) {
+
+        photoProfil.src =
+            photo;
+
+        photoProfil.onerror =
+            function () {
+
+                this.src =
+                    "images/user.png";
+
+            };
+
+    }
+
+
+    /*
+        PREMIUM
+    */
+
+    const premium =
+        utilisateurEstPremium(
             utilisateur
         );
 
 
-        return utilisateur;
-
-
-    } catch (erreur) {
-
-        console.error(
-            "❌ Synchronisation serveur impossible :",
-            erreur
+    const badgeStatut =
+        document.getElementById(
+            "badgeStatut"
         );
 
 
-        /*
-            Si Render est temporairement
-            indisponible, on utilise
-            les données locales.
-        */
+    if (badgeStatut) {
 
-        utilisateur.isPremium =
-            utilisateurEstPremium(
-                utilisateur
+        if (premium) {
+
+            badgeStatut.innerHTML = `
+
+                <span style="
+                    display:inline-flex;
+                    align-items:center;
+                    gap:6px;
+
+                    background:#dcfce7;
+                    color:#15803d;
+
+                    padding:6px 11px;
+
+                    border-radius:9px;
+
+                    font-size:13px;
+                    font-weight:700;
+                ">
+                    ⭐ Premium
+                </span>
+
+            `;
+
+        } else {
+
+            badgeStatut.innerHTML = `
+
+                <span style="
+                    display:inline-flex;
+                    align-items:center;
+                    gap:6px;
+
+                    background:#f1f5f9;
+                    color:#64748b;
+
+                    padding:6px 11px;
+
+                    border-radius:9px;
+
+                    font-size:13px;
+                    font-weight:700;
+                ">
+                    👤 Standard
+                </span>
+
+            `;
+
+        }
+
+    }
+
+
+    /*
+        PROGRESSION
+    */
+
+    let progression = 0;
+
+
+    if (
+        utilisateur.progressions &&
+        utilisateur.domaine
+    ) {
+
+        const cleDomaine =
+            normaliserTexte(
+                utilisateur.domaine
             );
 
 
-        return utilisateur;
+        progression =
+            Number(
+                utilisateur.progressions[
+                    cleDomaine
+                ]
+            ) || 0;
+
+    }
+
+
+    if (!progression) {
+
+        progression =
+            Number(
+                utilisateur.progression
+            ) || 0;
+
+    }
+
+
+    progression =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                progression
+            )
+        );
+
+
+    const progressBar =
+        document.getElementById(
+            "progressBar"
+        );
+
+
+    if (progressBar) {
+
+        progressBar.style.transition =
+            "width .6s ease";
+
+        progressBar.style.width =
+            progression + "%";
+
+    }
+
+
+    const progressText =
+        document.getElementById(
+            "progressText"
+        );
+
+
+    if (progressText) {
+
+        progressText.textContent =
+            progression + "%";
+
     }
 
 }
 
 
-/*==================================================
-        CHARGEMENT DU DASHBOARD
-==================================================*/
+/* =========================================================
+   19. CHARGEMENT DU DASHBOARD
+   ========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     async function () {
 
+        console.log(
+            "======================================"
+        );
+
+        console.log(
+            "BMJ SERVICE - DASHBOARD"
+        );
+
+        console.log(
+            "======================================"
+        );
+
 
         /*
-            RECUPERER UTILISATEUR
+            Nettoyer les anciennes clés
         */
 
-        let utilisateur =
-            JSON.parse(
-                localStorage.getItem(
-                    "bmj_current_user"
-                )
+        nettoyerAnciennesSessions();
+
+
+        /*
+            Vérifier session actuelle
+        */
+
+        const session =
+            recupererUtilisateurLocal();
+
+
+        if (!session) {
+
+            console.warn(
+                "[BMJ DASHBOARD] Aucun utilisateur connecté."
             );
 
-
-        if (!utilisateur) {
-
-            window.location.href =
-                "connexion.html";
+            redirigerConnexion();
 
             return;
+
         }
 
 
         /*
-            IMPORTANT
-
-            On attend la réponse PostgreSQL
-            avant d'afficher le statut.
+            Afficher rapidement
+            les données locales
         */
 
-        utilisateur =
+        afficherInformationsUtilisateur(
+            session
+        );
+
+
+        /*
+            Synchronisation PostgreSQL
+        */
+
+        const utilisateur =
             await synchroniserUtilisateurServeur();
 
 
@@ -5226,426 +5955,134 @@ document.addEventListener(
 
 
         /*
-            CALCUL PREMIUM
+            Afficher les données finales
         */
 
-        const premium =
-            utilisateurEstPremium(
-                utilisateur
-            );
-
-
-        utilisateur.isPremium =
-            premium;
-
-
-        /*
-            Ne jamais remplacer
-            le vrai statut serveur
-            par false.
-        */
-
-        if (premium) {
-
-            utilisateur.premium =
-                true;
-
-            utilisateur.is_premium =
-                true;
-
-        }
-
-
-        localStorage.setItem(
-            "bmj_current_user",
-            JSON.stringify(
-                utilisateur
-            )
+        afficherInformationsUtilisateur(
+            utilisateur
         );
 
 
-        /*==================================================
-                NOM UTILISATEUR
-        ==================================================*/
-
-        const nomUtilisateur =
-            document.getElementById(
-                "nomUtilisateur"
-            );
-
-
-        if (nomUtilisateur) {
-
-            nomUtilisateur.textContent =
-                utilisateur.nom ||
-                "Utilisateur";
-
-        }
-
-
-        /*==================================================
-                PHOTO
-        ==================================================*/
-
-        const photo =
-            utilisateur.photo ||
-            "images/user.png";
-
-
-        const photoUtilisateur =
-            document.getElementById(
-                "photoUtilisateur"
-            );
-
-
-        const photoProfil =
-            document.getElementById(
-                "photoProfil"
-            );
-
-
-        if (photoUtilisateur) {
-
-            photoUtilisateur.src =
-                photo;
-
-        }
-
-
-        if (photoProfil) {
-
-            photoProfil.src =
-                photo;
-
-        }
-
-
-        /*==================================================
-                DOMAINE
-        ==================================================*/
-
-        const roleUtilisateur =
-            document.getElementById(
-                "roleUtilisateur"
-            );
-
-
-        if (roleUtilisateur) {
-
-            roleUtilisateur.textContent =
-                utilisateur.domaine ||
-                "Apprenant";
-
-        }
-
-
-        /*==================================================
-                BADGE STATUT
-        ==================================================*/
-
-        const badgeStatut =
-            document.getElementById(
-                "badgeStatut"
-            );
-
-
-        if (badgeStatut) {
-
-            if (premium) {
-
-                badgeStatut.innerHTML = `
-
-                    <span style="
-                        background:#dcfce7;
-                        color:#16a34a;
-                        padding:5px 10px;
-                        border-radius:8px;
-                        font-weight:600;
-                    ">
-                        ⭐ Premium
-                    </span>
-
-                `;
-
-            } else {
-
-                badgeStatut.innerHTML = `
-
-                    <span style="
-                        background:#f1f5f9;
-                        color:#64748b;
-                        padding:5px 10px;
-                        border-radius:8px;
-                        font-weight:600;
-                    ">
-                        👤 Standard
-                    </span>
-
-                `;
-
-            }
-
-        }
-
-
-        /*==================================================
-                NOM COMPLET
-        ==================================================*/
-
-        const nomComplet =
-            document.getElementById(
-                "nomComplet"
-            );
-
-
-        if (nomComplet) {
-
-            nomComplet.textContent =
-                "Bienvenue " +
-                (
-                    utilisateur.nom ||
-                    "Apprenant"
-                ) +
-                " 👋";
-
-        }
-
-
-        /*==================================================
-                DOMAINE FORMATION
-        ==================================================*/
-
-        const domaineFormation =
-            document.getElementById(
-                "domaineFormation"
-            );
-
-
-        if (domaineFormation) {
-
-            domaineFormation.textContent =
-                utilisateur.domaine ||
-                "Aucun domaine";
-
-        }
-
-
-        /*==================================================
-                PROGRESSION
-        ==================================================*/
-
-        let progression = 0;
-
-
-        if (
-            utilisateur.progressions &&
-            utilisateur.domaine
-        ) {
-
-            const cleDomaine =
-                utilisateur.domaine
-                    .toLowerCase()
-                    .normalize("NFD")
-                    .replace(
-                        /[\u0300-\u036f]/g,
-                        ""
-                    )
-                    .trim();
-
-
-            progression =
-                Number(
-                    utilisateur.progressions[
-                        cleDomaine
-                    ]
-                ) ||
-                Number(
-                    utilisateur.progression
-                ) ||
-                0;
-
-        } else {
-
-            progression =
-                Number(
-                    utilisateur.progression
-                ) ||
-                0;
-
-        }
-
-
-        if (progression < 0) {
-            progression = 0;
-        }
-
-
-        if (progression > 100) {
-            progression = 100;
-        }
-
-
-        const progressBar =
-            document.getElementById(
-                "progressBar"
-            );
-
-
-        if (progressBar) {
-
-            progressBar.style.transition =
-                "width .6s ease-in-out";
-
-            progressBar.style.width =
-                progression + "%";
-
-        }
-
-
-        const progressText =
-            document.getElementById(
-                "progressText"
-            );
-
-
-        if (progressText) {
-
-            progressText.textContent =
-                progression + "%";
-
-        }
-
-
         console.log(
-            "================================"
+            "[BMJ DASHBOARD] ID :",
+            utilisateur.id
         );
 
         console.log(
-            "BMJ SERVICE DASHBOARD"
-        );
-
-        console.log(
-            "Utilisateur :",
+            "[BMJ DASHBOARD] Email :",
             utilisateur.email
         );
 
         console.log(
-            "Premium :",
+            "[BMJ DASHBOARD] Nom :",
+            utilisateur.nom
+        );
+
+        console.log(
+            "[BMJ DASHBOARD] Premium :",
             utilisateur.isPremium
         );
 
         console.log(
-            "Premium DB :",
-            utilisateur.premium
-        );
-
-        console.log(
-            "is_premium DB :",
-            utilisateur.is_premium
-        );
-
-        console.log(
-            "================================"
+            "======================================"
         );
 
     }
 );
 
 
-/*==================================================
-        OUVERTURE FORMATION
-==================================================*/
+/* =========================================================
+   20. OUVRIR FORMATION
+   ========================================================= */
 
-function ouvrirDomaine(domaine) {
+function ouvrirDomaine(
+    domaine
+) {
 
-
-    let utilisateur =
-        JSON.parse(
-            localStorage.getItem(
-                "bmj_current_user"
-            )
-        );
+    const utilisateur =
+        recupererUtilisateurLocal();
 
 
     if (!utilisateur) {
 
-        window.location.href =
-            "connexion.html";
+        redirigerConnexion();
 
         return;
+
     }
 
 
+    const domaineNormalise =
+        normaliserTexte(
+            domaine
+        );
+
+
     /*
-        RECALCULER LE PREMIUM
+        Vérification Premium
     */
 
-    utilisateur.isPremium =
+    const premium =
         utilisateurEstPremium(
             utilisateur
         );
 
 
     /*
-        FORMATIONS RESTREINTES
+        Formations restreintes
     */
 
-    const DOMAINES_RESTRICTED_FOR_STANDARD = [
-
-        "informatique"
-
-    ];
-
-
-    const domaineNormalise =
-        String(domaine)
-            .toLowerCase()
-            .trim();
-
-
     if (
-
-        !utilisateur.isPremium &&
-
+        !premium &&
         DOMAINES_RESTRICTED_FOR_STANDARD
             .includes(
                 domaineNormalise
             )
-
     ) {
 
         afficherPopupBMJ(
 
             "Accès restreint",
 
-            "Votre compte est actuellement <strong>Standard</strong>. Ce module nécessite un compte Premium.",
+            "Votre compte est actuellement <strong>Standard</strong>. Cette formation nécessite un compte Premium.",
 
             "error"
 
         );
 
         return;
+
     }
 
 
     /*
-        SAUVEGARDER DOMAINE
+        Sauvegarder le domaine
+        pour CE compte uniquement
     */
 
     utilisateur.domaine =
         domaine;
 
 
-    localStorage.setItem(
-        "bmj_current_user",
-        JSON.stringify(
-            utilisateur
-        )
+    utilisateur.isPremium =
+        premium;
+
+
+    utilisateur.premium =
+        premium;
+
+
+    utilisateur.is_premium =
+        premium;
+
+
+    sauvegarderUtilisateur(
+        utilisateur
     );
 
 
     /*
-        REDIRECTION
+        Redirection
     */
 
     switch (
@@ -5728,6 +6165,8 @@ function ouvrirDomaine(domaine) {
             break;
 
 
+        case "gestion equipe":
+
         case "gestion_equipe":
 
             window.location.href =
@@ -5756,30 +6195,28 @@ function ouvrirDomaine(domaine) {
 }
 
 
-/*==================================================
-        CONTINUER FORMATION
-==================================================*/
+/* =========================================================
+   21. CONTINUER FORMATION
+   ========================================================= */
 
 function continuerFormation() {
 
     const utilisateur =
-        JSON.parse(
-            localStorage.getItem(
-                "bmj_current_user"
-            )
-        );
+        recupererUtilisateurLocal();
 
 
     if (!utilisateur) {
 
-        window.location.href =
-            "connexion.html";
+        redirigerConnexion();
 
         return;
+
     }
 
 
-    if (utilisateur.domaine) {
+    if (
+        utilisateur.domaine
+    ) {
 
         ouvrirDomaine(
             utilisateur.domaine
@@ -5795,9 +6232,9 @@ function continuerFormation() {
 }
 
 
-/*==================================================
-        CERTIFICAT
-==================================================*/
+/* =========================================================
+   22. CERTIFICAT
+   ========================================================= */
 
 function ouvrirCertificat() {
 
@@ -5807,82 +6244,200 @@ function ouvrirCertificat() {
 }
 
 
-/*==================================================
-        DECONNEXION
-==================================================*/
+/* =========================================================
+   23. DECONNEXION COMPLETE
+   ========================================================= */
 
 function deconnexion() {
 
+    /*
+        Supprimer la session actuelle
+    */
+
     localStorage.removeItem(
-        "bmj_current_user"
+        SESSION_KEY
     );
 
 
-    window.location.href =
-        "connexion.html";
+    /*
+        Supprimer anciennes sessions
+    */
 
-}
-
-
-/*==================================================
-        BOUTON LOGOUT
-==================================================*/
-
-const logout =
-    document.getElementById(
-        "logout"
-    );
+    nettoyerAnciennesSessions();
 
 
-if (logout) {
+    /*
+        Nettoyer également
+        sessionStorage
+    */
 
-    logout.addEventListener(
-        "click",
-        function (e) {
+    sessionStorage.clear();
 
-            e.preventDefault();
 
-            deconnexion();
+    /*
+        Redirection sans conserver
+        l'ancienne page dans l'historique
+    */
 
-        }
+    window.location.replace(
+        "connexion.html"
     );
 
 }
 
 
-/*==================================================
-        MENU MOBILE
-==================================================*/
+/* =========================================================
+   24. BOUTON LOGOUT
+   ========================================================= */
 
-const menuBtn =
-    document.getElementById(
-        "menuBtn"
-    );
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-
-const sidebar =
-    document.getElementById(
-        "sidebar"
-    );
+        const logout =
+            document.getElementById(
+                "logout"
+            );
 
 
-if (
-    menuBtn &&
-    sidebar
-) {
+        if (logout) {
 
-    menuBtn.addEventListener(
-        "click",
-        function () {
+            logout.addEventListener(
+                "click",
+                function (event) {
 
-            sidebar.classList.toggle(
-                "active"
+                    event.preventDefault();
+
+                    deconnexion();
+
+                }
             );
 
         }
-    );
 
-}
+    }
+);
+
+
+/* =========================================================
+   25. MENU MOBILE
+   ========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const menuBtn =
+            document.getElementById(
+                "menuBtn"
+            );
+
+
+        const sidebar =
+            document.getElementById(
+                "sidebar"
+            );
+
+
+        if (
+            menuBtn &&
+            sidebar
+        ) {
+
+            menuBtn.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.toggle(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   26. PROTECTION CONTRE SESSION CORROMPUE
+   ========================================================= */
+
+window.addEventListener(
+    "storage",
+    function (event) {
+
+        /*
+            Si un autre onglet modifie
+            la session, on recharge.
+
+            Cela évite qu'un dashboard
+            affiche un ancien utilisateur.
+        */
+
+        if (
+            event.key === SESSION_KEY
+        ) {
+
+            if (
+                !event.newValue
+            ) {
+
+                redirigerConnexion();
+
+                return;
+
+            }
+
+
+            try {
+
+                const nouvelUtilisateur =
+                    JSON.parse(
+                        event.newValue
+                    );
+
+
+                if (
+                    !nouvelUtilisateur ||
+                    !nouvelUtilisateur.id
+                ) {
+
+                    redirigerConnexion();
+
+                    return;
+
+                }
+
+
+                /*
+                    Recharger le dashboard
+                    avec le nouveau compte.
+                */
+
+                window.location.reload();
+
+            } catch (erreur) {
+
+                console.error(
+                    "[BMJ SESSION] Session externe invalide."
+                );
+
+                redirigerConnexion();
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   FIN SCRIPT BMJ SERVICE
+   ========================================================= */
 </script>
 <!-- Modale Moderne BMJ SERVICE (Vérification Certificat) -->
 <div id="bmjModalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
