@@ -4548,408 +4548,116 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 <script>
  /* =========================================================
    BMJ SERVICE
-   SCRIPT TABLEAU DE BORD
-   VERSION : 5.0.0
+   DASHBOARD ADMINISTRATEUR
+   SCRIPT COMPLET
+   Compatible avec :
+   NODE.JS + EXPRESS + POSTGRESQL + RENDER
 
-   OBJECTIFS :
-   ---------------------------------------------------------
-   1. Une seule session utilisateur :
-      localStorage -> bmj_current_user
-
-   2. Synchronisation avec PostgreSQL
-
-   3. Utilisateur identifié par son ID
-
-   4. Aucun mélange entre plusieurs comptes
-
-   5. Synchronisation Premium
-
-   6. Gestion photo / nom / domaine / progression
-
-   7. Déconnexion complète
-
-   ========================================================= */
+   VERSION : 13.0.0
+========================================================= */
 
 
 /* =========================================================
-   1. CONFIGURATION API
-   ========================================================= */
+   1. CONFIGURATION
+========================================================= */
 
 const API_URL =
     "https://back-end-h602.onrender.com";
 
 
-/* =========================================================
-   2. CLE UNIQUE DE SESSION
-   ========================================================= */
-
-const SESSION_KEY =
-    "bmj_current_user";
+const REFRESH_INTERVAL =
+    15000;
 
 
-/* =========================================================
-   3. ANCIENNES CLES A SUPPRIMER
-   ========================================================= */
-
-const OLD_SESSION_KEYS = [
-    "bmj_user",
-    "bmj_logged_in"
-];
+const REQUEST_TIMEOUT =
+    20000;
 
 
 /* =========================================================
-   4. DOMAINES EMAIL PROFESSIONNELS
-   ========================================================= */
+   2. ROUTES API
+========================================================= */
 
-const DOMAINES_PRO = [
-    "contactbmj.com",
-    "directionbmj.com"
-];
+const ROUTES = {
+
+    statistiques:
+        `${API_URL}/api/admin/statistiques`,
+
+    paiements:
+        `${API_URL}/api/admin/paiements`,
+
+    paiementsPublic:
+        `${API_URL}/api/paiements`,
+
+    utilisateurs:
+        `${API_URL}/api/apprenants`,
+
+    users:
+        `${API_URL}/api/users`
+
+};
 
 
 /* =========================================================
-   5. FORMATIONS RESTREINTES
-   ========================================================= */
+   3. VARIABLES GLOBALES
+========================================================= */
 
-const DOMAINES_RESTRICTED_FOR_STANDARD = [
-    "informatique"
-];
+let utilisateurs = [];
+
+let paiements = [];
+
+let utilisateursFiltres = [];
+
+let paiementsFiltres = [];
+
+let paiementSelectionne = null;
+
+let utilisateurSelectionne = null;
+
+let refreshTimer = null;
+
+let chargementPaiements = false;
+
+let chargementUtilisateurs = false;
+
+let chargementStatistiques = false;
+
+let dashboardInitialise = false;
 
 
 /* =========================================================
-   6. NORMALISER TEXTE
-   ========================================================= */
+   4. UTILITAIRES DOM
+========================================================= */
 
-function normaliserTexte(valeur) {
+function $(selector) {
 
-    return String(valeur || "")
-        .trim()
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
+    return document.querySelector(selector);
 
 }
 
 
-/* =========================================================
-   7. NORMALISER API URL
-   ========================================================= */
+function $$(selector) {
 
-function getApiUrl() {
-
-    return String(API_URL || "")
-        .trim()
-        .replace(/\/+$/, "");
-
-}
-
-
-/* =========================================================
-   8. VERIFIER EMAIL PROFESSIONNEL
-   ========================================================= */
-
-function estEmailProfessionnel(email) {
-
-    if (!email) {
-        return false;
-    }
-
-    const valeur =
-        String(email)
-            .trim()
-            .toLowerCase();
-
-    const position =
-        valeur.lastIndexOf("@");
-
-    if (position === -1) {
-        return false;
-    }
-
-    const domaine =
-        valeur
-            .substring(position + 1)
-            .trim();
-
-    return DOMAINES_PRO.includes(
-        domaine
+    return Array.from(
+        document.querySelectorAll(selector)
     );
 
 }
 
 
 /* =========================================================
-   9. CONVERTIR VALEUR BOOLEENNE
-   ========================================================= */
+   5. RECHERCHE COMPATIBLE D'UN ÉLÉMENT
+========================================================= */
 
-function valeurBooleenne(valeur) {
+function getElementByIds(...ids) {
 
-    if (
-        valeur === true ||
-        valeur === 1 ||
-        valeur === "1" ||
-        valeur === "true" ||
-        valeur === "TRUE" ||
-        valeur === "yes" ||
-        valeur === "YES"
-    ) {
-        return true;
-    }
+    for (const id of ids) {
 
-    return false;
+        const element =
+            document.getElementById(id);
 
-}
+        if (element) {
 
-
-/* =========================================================
-   10. DETERMINER PREMIUM
-   ========================================================= */
-
-function utilisateurEstPremium(utilisateur) {
-
-    if (!utilisateur) {
-        return false;
-    }
-
-    const premium =
-        valeurBooleenne(
-            utilisateur.premium
-        );
-
-    const isPremium =
-        valeurBooleenne(
-            utilisateur.is_premium
-        );
-
-    const ancienPremium =
-        utilisateur.isPremium === true;
-
-    const emailPro =
-        estEmailProfessionnel(
-            utilisateur.email
-        );
-
-    return (
-        premium ||
-        isPremium ||
-        ancienPremium ||
-        emailPro
-    );
-
-}
-
-
-/* =========================================================
-   11. RECUPERER SESSION
-   ========================================================= */
-
-function recupererUtilisateurLocal() {
-
-    let utilisateur = null;
-
-    try {
-
-        const valeur =
-            localStorage.getItem(
-                SESSION_KEY
-            );
-
-        if (!valeur) {
-            return null;
-        }
-
-        utilisateur =
-            JSON.parse(valeur);
-
-    } catch (erreur) {
-
-        console.error(
-            "[BMJ SESSION] Session invalide :",
-            erreur
-        );
-
-        localStorage.removeItem(
-            SESSION_KEY
-        );
-
-        return null;
-    }
-
-    if (
-        !utilisateur ||
-        typeof utilisateur !== "object"
-    ) {
-        return null;
-    }
-
-    return utilisateur;
-
-}
-
-
-/* =========================================================
-   12. SAUVEGARDER SESSION
-   ========================================================= */
-
-function sauvegarderUtilisateur(
-    utilisateur
-) {
-
-    if (
-        !utilisateur ||
-        typeof utilisateur !== "object"
-    ) {
-        return false;
-    }
-
-    try {
-
-        localStorage.setItem(
-            SESSION_KEY,
-            JSON.stringify(
-                utilisateur
-            )
-        );
-
-        return true;
-
-    } catch (erreur) {
-
-        console.error(
-            "[BMJ SESSION] Impossible de sauvegarder :",
-            erreur
-        );
-
-        return false;
-    }
-
-}
-
-
-/* =========================================================
-   13. SUPPRIMER ANCIENNES SESSIONS
-   ========================================================= */
-
-function nettoyerAnciennesSessions() {
-
-    OLD_SESSION_KEYS.forEach(
-        function (cle) {
-
-            localStorage.removeItem(
-                cle
-            );
-
-            sessionStorage.removeItem(
-                cle
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   14. REDIRECTION CONNEXION
-   ========================================================= */
-
-function redirigerConnexion() {
-
-    window.location.replace(
-        "connexion.html"
-    );
-
-}
-
-
-/* =========================================================
-   15. EXTRAIRE UTILISATEUR API
-   ========================================================= */
-
-function extraireUtilisateurAPI(
-    resultat
-) {
-
-    if (!resultat) {
-        return null;
-    }
-
-    /*
-        Format :
-
-        {
-            success: true,
-            data: {
-                user: {...}
-            }
-        }
-    */
-
-    if (
-        resultat.data &&
-        resultat.data.user
-    ) {
-
-        return resultat.data.user;
-
-    }
-
-
-    /*
-        Format :
-
-        {
-            success: true,
-            user: {...}
-        }
-    */
-
-    if (resultat.user) {
-
-        return resultat.user;
-
-    }
-
-
-    /*
-        Format :
-
-        {
-            success: true,
-            utilisateur: {...}
-        }
-    */
-
-    if (
-        resultat.utilisateur
-    ) {
-
-        return resultat.utilisateur;
-
-    }
-
-
-    /*
-        Format :
-
-        {
-            success: true,
-            data: {...}
-        }
-    */
-
-    if (
-        resultat.data &&
-        typeof resultat.data === "object" &&
-        !Array.isArray(resultat.data)
-    ) {
-
-        if (
-            resultat.data.id ||
-            resultat.data.email
-        ) {
-
-            return resultat.data;
+            return element;
 
         }
 
@@ -4961,342 +4669,235 @@ function extraireUtilisateurAPI(
 
 
 /* =========================================================
-   16. SYNCHRONISER UTILISATEUR AVEC POSTGRESQL
-   ========================================================= */
+   6. AUTHENTIFICATION ADMIN
+========================================================= */
 
-async function synchroniserUtilisateurServeur() {
+function getAdminToken() {
 
-    let utilisateur =
-        recupererUtilisateurLocal();
+    const possibleKeys = [
+
+        "adminToken",
+        "admin_token",
+        "token",
+        "authToken",
+        "accessToken",
+        "jwt",
+        "bmj_admin_token"
+
+    ];
 
 
-    /*
-        Aucun compte connecté
-    */
+    for (const key of possibleKeys) {
 
-    if (!utilisateur) {
+        const value =
+            localStorage.getItem(key);
 
-        redirigerConnexion();
+        if (value) {
 
-        return null;
+            return value;
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   7. HEADERS API
+========================================================= */
+
+function getHeaders() {
+
+    const headers = {
+
+        "Content-Type":
+            "application/json",
+
+        "Accept":
+            "application/json"
+
+    };
+
+
+    const token =
+        getAdminToken();
+
+
+    if (token) {
+
+        headers.Authorization =
+            token.startsWith("Bearer ")
+                ? token
+                : `Bearer ${token}`;
 
     }
 
 
-    /*
-        Nettoyage des anciennes sessions
-    */
+    return headers;
 
-    nettoyerAnciennesSessions();
+}
 
 
-    /*
-        ID obligatoire
-    */
+/* =========================================================
+   8. REQUÊTE API
+========================================================= */
 
-    if (
-        utilisateur.id === undefined ||
-        utilisateur.id === null ||
-        utilisateur.id === ""
-    ) {
+async function apiRequest(
 
-        console.error(
-            "[BMJ SESSION] ID utilisateur absent."
+    url,
+
+    options = {}
+
+) {
+
+    const controller =
+        new AbortController();
+
+
+    const timeout =
+        setTimeout(
+
+            function() {
+
+                controller.abort();
+
+            },
+
+            REQUEST_TIMEOUT
+
         );
-
-        /*
-            On ne remplace surtout pas
-            cet utilisateur par un autre.
-        */
-
-        utilisateur.isPremium =
-            utilisateurEstPremium(
-                utilisateur
-            );
-
-        utilisateur.premium =
-            utilisateur.isPremium;
-
-        utilisateur.is_premium =
-            utilisateur.isPremium;
-
-        sauvegarderUtilisateur(
-            utilisateur
-        );
-
-        return utilisateur;
-
-    }
 
 
     try {
 
-        const url =
-            getApiUrl() +
-            "/api/apprenants/" +
-            encodeURIComponent(
-                String(
-                    utilisateur.id
-                )
-            );
+        const config = {
+
+            ...options,
+
+            headers: {
+
+                ...getHeaders(),
+
+                ...(options.headers || {})
+
+            },
+
+            signal:
+                controller.signal
+
+        };
 
 
-        console.log(
-            "[BMJ DASHBOARD] Synchronisation :",
-            url
-        );
-
-
-        const reponse =
+        const response =
             await fetch(
+
                 url,
-                {
-                    method: "GET",
 
-                    headers: {
-                        "Accept":
-                            "application/json"
-                    },
+                config
 
-                    cache: "no-store"
-                }
             );
 
 
-        /*
-            Utilisateur introuvable
-        */
+        const contentType =
+            response.headers.get(
+                "content-type"
+            ) || "";
+
+
+        let data;
+
 
         if (
-            reponse.status === 404
+            contentType.includes(
+                "application/json"
+            )
         ) {
 
-            console.warn(
-                "[BMJ DASHBOARD] Utilisateur introuvable."
-            );
+            data =
+                await response.json();
 
-            /*
-                On supprime la session locale
-                pour éviter d'afficher un
-                ancien compte.
-            */
+        } else {
 
-            localStorage.removeItem(
-                SESSION_KEY
-            );
-
-            redirigerConnexion();
-
-            return null;
-
-        }
+            const text =
+                await response.text();
 
 
-        if (!reponse.ok) {
+            try {
 
-            throw new Error(
-                "Erreur HTTP " +
-                reponse.status
-            );
+                data =
+                    JSON.parse(text);
 
-        }
+            } catch (_) {
 
+                data = {
 
-        const resultat =
-            await reponse.json();
+                    success:
+                        response.ok,
 
+                    message:
+                        text || ""
 
-        console.log(
-            "[BMJ DASHBOARD] Réponse PostgreSQL :",
-            resultat
-        );
-
-
-        const utilisateurServeur =
-            extraireUtilisateurAPI(
-                resultat
-            );
-
-
-        if (!utilisateurServeur) {
-
-            throw new Error(
-                "Les informations utilisateur sont absentes."
-            );
-
-        }
-
-
-        /*
-            SECURITE IMPORTANTE
-
-            Le serveur doit retourner
-            le même ID que celui demandé.
-
-            Cela évite qu'un mauvais backend
-            retourne accidentellement un
-            autre compte.
-        */
-
-        if (
-            utilisateurServeur.id !== undefined &&
-            utilisateurServeur.id !== null
-        ) {
-
-            if (
-                String(
-                    utilisateurServeur.id
-                ) !==
-                String(
-                    utilisateur.id
-                )
-            ) {
-
-                console.error(
-                    "[BMJ SECURITY] ID utilisateur différent.",
-                    {
-                        demande:
-                            utilisateur.id,
-
-                        recu:
-                            utilisateurServeur.id
-                    }
-                );
-
-                throw new Error(
-                    "Le serveur a retourné un utilisateur différent."
-                );
+                };
 
             }
 
         }
 
 
-        /*
-            IMPORTANT :
+        if (!response.ok) {
 
-            Les données PostgreSQL deviennent
-            la source principale.
-
-            Les anciennes données locales
-            ne doivent pas remplacer les
-            nouvelles données serveur.
-        */
-
-        const utilisateurFinal = {
-
-            ...utilisateur,
-
-            ...utilisateurServeur
-
-        };
+            const message =
+                data?.message ||
+                data?.error ||
+                `Erreur HTTP ${response.status}`;
 
 
-        /*
-            ID SERVEUR PRIORITAIRE
-        */
+            throw new Error(message);
 
-        utilisateurFinal.id =
-            utilisateurServeur.id ??
-            utilisateur.id;
+        }
 
 
-        /*
-            PREMIUM SERVEUR
-        */
+        if (
+            data &&
+            data.success === false
+        ) {
 
-        const premiumServeur =
-            valeurBooleenne(
-                utilisateurServeur.premium
+            throw new Error(
+
+                data.message ||
+                data.error ||
+                "Erreur API"
+
             );
 
-        const isPremiumServeur =
-            valeurBooleenne(
-                utilisateurServeur.is_premium
+        }
+
+
+        return data;
+
+    } catch (error) {
+
+        if (
+            error.name ===
+            "AbortError"
+        ) {
+
+            throw new Error(
+                "Le serveur met trop de temps à répondre."
             );
 
-
-        /*
-            Email professionnel
-        */
-
-        const emailPro =
-            estEmailProfessionnel(
-                utilisateurFinal.email
-            );
+        }
 
 
-        /*
-            STATUT FINAL
-        */
+        throw error;
 
-        const premiumFinal =
-            premiumServeur ||
-            isPremiumServeur ||
-            emailPro;
+    } finally {
 
-
-        utilisateurFinal.isPremium =
-            premiumFinal;
-
-        utilisateurFinal.premium =
-            premiumFinal;
-
-        utilisateurFinal.is_premium =
-            premiumFinal;
-
-
-        /*
-            SAUVEGARDE
-        */
-
-        sauvegarderUtilisateur(
-            utilisateurFinal
-        );
-
-
-        console.log(
-            "[BMJ DASHBOARD] Utilisateur synchronisé :",
-            utilisateurFinal
-        );
-
-
-        return utilisateurFinal;
-
-
-    } catch (erreur) {
-
-        console.error(
-            "[BMJ DASHBOARD] Synchronisation impossible :",
-            erreur
-        );
-
-
-        /*
-            En cas d'indisponibilité temporaire
-            de Render, on garde le compte local.
-
-            Mais on ne crée JAMAIS un autre compte.
-        */
-
-        utilisateur.isPremium =
-            utilisateurEstPremium(
-                utilisateur
-            );
-
-        utilisateur.premium =
-            utilisateur.isPremium;
-
-        utilisateur.is_premium =
-            utilisateur.isPremium;
-
-
-        sauvegarderUtilisateur(
-            utilisateur
-        );
-
-
-        return utilisateur;
+        clearTimeout(timeout);
 
     }
 
@@ -5304,578 +4905,1833 @@ async function synchroniserUtilisateurServeur() {
 
 
 /* =========================================================
-   17. POPUP BMJ
-   ========================================================= */
+   9. EXTRACTION DES DONNÉES
+========================================================= */
 
-function afficherPopupBMJ(
-    titre,
-    messageTexte,
-    type = "error",
-    callback = null
+function extractList(response) {
+
+    if (!response) {
+
+        return [];
+
+    }
+
+
+    if (
+        Array.isArray(response)
+    ) {
+
+        return response;
+
+    }
+
+
+    if (
+        Array.isArray(response.data)
+    ) {
+
+        return response.data;
+
+    }
+
+
+    if (
+        Array.isArray(
+            response.data?.data
+        )
+    ) {
+
+        return response.data.data;
+
+    }
+
+
+    if (
+        Array.isArray(response.paiements)
+    ) {
+
+        return response.paiements;
+
+    }
+
+
+    if (
+        Array.isArray(response.users)
+    ) {
+
+        return response.users;
+
+    }
+
+
+    if (
+        Array.isArray(response.utilisateurs)
+    ) {
+
+        return response.utilisateurs;
+
+    }
+
+
+    if (
+        Array.isArray(response.results)
+    ) {
+
+        return response.results;
+
+    }
+
+
+    return [];
+
+}
+
+
+/* =========================================================
+   10. COMPATIBILITÉ DES CHAMPS UTILISATEUR
+========================================================= */
+
+function getUserId(user) {
+
+    return (
+        user?.id ??
+        user?.user_id ??
+        user?.userId ??
+        null
+    );
+
+}
+
+
+function getUserName(user) {
+
+    return (
+        user?.nom ??
+        user?.name ??
+        user?.fullname ??
+        user?.full_name ??
+        "Utilisateur"
+    );
+
+}
+
+
+function getUserEmail(user) {
+
+    return (
+        user?.email ??
+        ""
+    );
+
+}
+
+
+function getUserPhone(user) {
+
+    return (
+        user?.telephone ??
+        user?.phone ??
+        ""
+    );
+
+}
+
+
+function isUserPremium(user) {
+
+    return (
+        user?.premium === true ||
+        user?.is_premium === true
+    );
+
+}
+
+
+function isUserBlocked(user) {
+
+    return (
+        user?.blocked === true ||
+        user?.is_blocked === true
+    );
+
+}
+
+
+/* =========================================================
+   11. COMPATIBILITÉ DES CHAMPS PAIEMENT
+========================================================= */
+
+function getPaymentId(payment) {
+
+    return (
+        payment?.id ??
+        payment?.payment_id ??
+        null
+    );
+
+}
+
+
+function getPaymentUserId(payment) {
+
+    return (
+        payment?.user_id ??
+        payment?.userId ??
+        null
+    );
+
+}
+
+
+function getPaymentName(payment) {
+
+    return (
+        payment?.nom ??
+        payment?.name ??
+        payment?.user_nom_db ??
+        "Utilisateur"
+    );
+
+}
+
+
+function getPaymentEmail(payment) {
+
+    return (
+        payment?.email ??
+        payment?.user_email_db ??
+        ""
+    );
+
+}
+
+
+function getPaymentPhone(payment) {
+
+    return (
+        payment?.telephone ??
+        payment?.phone ??
+        payment?.user_telephone_db ??
+        ""
+    );
+
+}
+
+
+function getPaymentAmount(payment) {
+
+    return Number(
+
+        payment?.amount ??
+        payment?.montant ??
+        0
+
+    );
+
+}
+
+
+function getPaymentCurrency(payment) {
+
+    return (
+
+        payment?.currency ??
+        "USD"
+
+    );
+
+}
+
+
+function getPaymentMethod(payment) {
+
+    return (
+
+        payment?.methode ??
+        payment?.method ??
+        payment?.mode_paiement ??
+        "Non spécifié"
+
+    );
+
+}
+
+
+function getPaymentReference(payment) {
+
+    return (
+
+        payment?.reference ??
+        payment?.transaction_id ??
+        payment?.transactionId ??
+        "Aucune"
+
+    );
+
+}
+
+
+function getPaymentProof(payment) {
+
+    return (
+
+        payment?.proof ??
+        payment?.preuve ??
+        payment?.image ??
+        null
+
+    );
+
+}
+
+
+function getPaymentStatus(payment) {
+
+    return String(
+
+        payment?.status ??
+        "pending"
+
+    ).toLowerCase();
+
+}
+
+
+/* =========================================================
+   12. FORMATAGE
+========================================================= */
+
+function formatMoney(
+
+    amount,
+
+    currency = "USD"
+
 ) {
 
-    let overlay =
-        document.getElementById(
-            "bmjModalAlerte"
+    const number =
+        Number(amount) || 0;
+
+
+    return (
+
+        number.toLocaleString(
+            "fr-FR",
+            {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }
+        ) +
+        " " +
+        currency
+
+    );
+
+}
+
+
+function formatDate(value) {
+
+    if (!value) {
+
+        return "—";
+
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return String(value);
+
+    }
+
+
+    return date.toLocaleString(
+
+        "fr-FR",
+
+        {
+
+            day: "2-digit",
+
+            month: "2-digit",
+
+            year: "numeric",
+
+            hour: "2-digit",
+
+            minute: "2-digit"
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   13. NORMALISATION STATUT
+========================================================= */
+
+function normalizeStatus(status) {
+
+    const value =
+        String(
+            status || "pending"
+        ).toLowerCase();
+
+
+    if (
+        value === "validated" ||
+        value === "valide" ||
+        value === "validé" ||
+        value === "approved" ||
+        value === "paid"
+    ) {
+
+        return "validated";
+
+    }
+
+
+    if (
+        value === "refused" ||
+        value === "refuse" ||
+        value === "refusé" ||
+        value === "rejected"
+    ) {
+
+        return "refused";
+
+    }
+
+
+    return "pending";
+
+}
+
+
+/* =========================================================
+   14. LABEL STATUT
+========================================================= */
+
+function getStatusLabel(status) {
+
+    const normalized =
+        normalizeStatus(status);
+
+
+    if (
+        normalized === "validated"
+    ) {
+
+        return "Validé";
+
+    }
+
+
+    if (
+        normalized === "refused"
+    ) {
+
+        return "Refusé";
+
+    }
+
+
+    return "En attente";
+
+}
+
+
+/* =========================================================
+   15. CLASSE STATUT
+========================================================= */
+
+function getStatusClass(status) {
+
+    const normalized =
+        normalizeStatus(status);
+
+
+    if (
+        normalized === "validated"
+    ) {
+
+        return "validated";
+
+    }
+
+
+    if (
+        normalized === "refused"
+    ) {
+
+        return "refused";
+
+    }
+
+
+    return "pending";
+
+}
+
+
+/* =========================================================
+   16. NOTIFICATION
+========================================================= */
+
+function showNotification(
+
+    message,
+
+    type = "success"
+
+) {
+
+    let container =
+        getElementByIds(
+            "notificationContainer",
+            "notifications",
+            "toastContainer"
         );
 
 
-    if (!overlay) {
+    if (!container) {
 
-        overlay =
+        container =
             document.createElement(
                 "div"
             );
 
-        overlay.id =
-            "bmjModalAlerte";
+        container.id =
+            "notificationContainer";
+
+        container.style.position =
+            "fixed";
+
+        container.style.top =
+            "20px";
+
+        container.style.right =
+            "20px";
+
+        container.style.zIndex =
+            "99999";
+
+        container.style.display =
+            "flex";
+
+        container.style.flexDirection =
+            "column";
+
+        container.style.gap =
+            "10px";
+
+        document.body.appendChild(
+            container
+        );
+
+    }
 
 
-        overlay.innerHTML = `
+    const notification =
+        document.createElement(
+            "div"
+        );
 
-            <div class="bmj-modal-box">
 
-                <div
-                    id="bmjModalIcon"
-                    class="bmj-modal-icon"
-                >
-                    ⚠️
-                </div>
+    notification.textContent =
+        message;
 
-                <h3
-                    id="bmjModalTitle"
-                >
-                    Notification
-                </h3>
 
-                <p
-                    id="bmjModalText"
-                ></p>
+    notification.style.padding =
+        "14px 18px";
 
-                <button
-                    type="button"
-                    id="bmjModalBtn"
-                    class="bmj-modal-btn"
-                >
-                    Compris
-                </button>
+
+    notification.style.borderRadius =
+        "10px";
+
+
+    notification.style.background =
+        type === "error"
+            ? "#b42318"
+            : type === "warning"
+                ? "#b54708"
+                : "#087443";
+
+
+    notification.style.color =
+        "#ffffff";
+
+
+    notification.style.fontWeight =
+        "600";
+
+
+    notification.style.boxShadow =
+        "0 8px 25px rgba(0,0,0,.2)";
+
+
+    container.appendChild(
+        notification
+    );
+
+
+    setTimeout(
+
+        function() {
+
+            notification.remove();
+
+        },
+
+        4000
+
+    );
+
+}
+
+
+/* =========================================================
+   17. CHARGEMENT
+========================================================= */
+
+function setLoading(
+
+    element,
+
+    loading,
+
+    text = "Chargement..."
+
+) {
+
+    if (!element) {
+
+        return;
+
+    }
+
+
+    if (loading) {
+
+        element.dataset.originalText =
+            element.textContent;
+
+        element.disabled = true;
+
+        element.textContent =
+            text;
+
+    } else {
+
+        element.disabled = false;
+
+        if (
+            element.dataset.originalText
+        ) {
+
+            element.textContent =
+                element.dataset.originalText;
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   18. CHARGER STATISTIQUES
+========================================================= */
+
+async function loadStatistics() {
+
+    if (chargementStatistiques) {
+
+        return;
+
+    }
+
+
+    chargementStatistiques =
+        true;
+
+
+    try {
+
+        const response =
+            await apiRequest(
+                ROUTES.statistiques
+            );
+
+
+        const data =
+            response?.data ??
+            response ??
+            {};
+
+
+        updateStatistics(
+            data
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur statistiques :",
+            error
+        );
+
+
+        showNotification(
+
+            "Impossible de charger les statistiques.",
+
+            "error"
+
+        );
+
+    } finally {
+
+        chargementStatistiques =
+            false;
+
+    }
+
+}
+
+
+/* =========================================================
+   19. AFFICHER STATISTIQUES
+========================================================= */
+
+function updateStatistics(data) {
+
+    const values = {
+
+        utilisateurs:
+            Number(
+                data.utilisateurs ??
+                data.users ??
+                data.total_users ??
+                0
+            ),
+
+        premium:
+            Number(
+                data.premium ??
+                data.total_premium ??
+                0
+            ),
+
+        bloques:
+            Number(
+                data.bloques ??
+                data.blocked ??
+                0
+            ),
+
+        paiements:
+            Number(
+                data.paiements ??
+                data.total_payments ??
+                0
+            ),
+
+        en_attente:
+            Number(
+                data.en_attente ??
+                data.pending ??
+                0
+            ),
+
+        valides:
+            Number(
+                data.valides ??
+                data.validated ??
+                0
+            ),
+
+        refuses:
+            Number(
+                data.refuses ??
+                data.refused ??
+                0
+            ),
+
+        revenus:
+            Number(
+                data.revenus ??
+                0
+            )
+
+    };
+
+
+    const elements = {
+
+        utilisateurs:
+            [
+                "totalUtilisateurs",
+                "utilisateurs",
+                "total-users",
+                "statUtilisateurs"
+            ],
+
+        premium:
+            [
+                "totalPremium",
+                "premium",
+                "premiumUsers",
+                "statPremium"
+            ],
+
+        bloques:
+            [
+                "totalBloques",
+                "bloques",
+                "blockedUsers",
+                "statBloques"
+            ],
+
+        paiements:
+            [
+                "totalPaiements",
+                "paiements",
+                "totalPayments",
+                "statPaiements"
+            ],
+
+        en_attente:
+            [
+                "paiementsAttente",
+                "enAttente",
+                "pendingPayments",
+                "statEnAttente"
+            ],
+
+        valides:
+            [
+                "paiementsValides",
+                "valides",
+                "validatedPayments",
+                "statValides"
+            ],
+
+        refuses:
+            [
+                "paiementsRefuses",
+                "refuses",
+                "refusedPayments",
+                "statRefuses"
+            ],
+
+        revenus:
+            [
+                "revenus",
+                "totalRevenus",
+                "revenue",
+                "statRevenus"
+            ]
+
+    };
+
+
+    Object.keys(
+        elements
+    ).forEach(
+
+        function(key) {
+
+            const element =
+                getElementByIds(
+                    ...elements[key]
+                );
+
+
+            if (!element) {
+
+                return;
+
+            }
+
+
+            if (
+                key === "revenus"
+            ) {
+
+                element.textContent =
+                    formatMoney(
+                        values[key],
+                        "USD"
+                    );
+
+            } else {
+
+                element.textContent =
+                    values[key]
+                        .toLocaleString(
+                            "fr-FR"
+                        );
+
+            }
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   20. CHARGER PAIEMENTS
+========================================================= */
+
+async function loadPayments(
+
+    silent = false
+
+) {
+
+    if (chargementPaiements) {
+
+        return;
+
+    }
+
+
+    chargementPaiements =
+        true;
+
+
+    try {
+
+        const response =
+            await apiRequest(
+                ROUTES.paiements
+            );
+
+
+        paiements =
+            extractList(
+                response
+            );
+
+
+        paiementsFiltres =
+            [...paiements];
+
+
+        renderPayments(
+            paiementsFiltres
+        );
+
+
+        updatePaymentCounters(
+            paiements
+        );
+
+
+        if (!silent) {
+
+            showNotification(
+                "Paiements chargés."
+            );
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur paiements :",
+            error
+        );
+
+
+        if (!silent) {
+
+            showNotification(
+
+                error.message ||
+                "Impossible de charger les paiements.",
+
+                "error"
+
+            );
+
+        }
+
+    } finally {
+
+        chargementPaiements =
+            false;
+
+    }
+
+}
+
+
+/* =========================================================
+   21. COMPTEURS PAIEMENTS
+========================================================= */
+
+function updatePaymentCounters(
+    list
+) {
+
+    const pending =
+        list.filter(
+
+            payment =>
+                normalizeStatus(
+                    getPaymentStatus(payment)
+                ) === "pending"
+
+        ).length;
+
+
+    const validated =
+        list.filter(
+
+            payment =>
+                normalizeStatus(
+                    getPaymentStatus(payment)
+                ) === "validated"
+
+        ).length;
+
+
+    const refused =
+        list.filter(
+
+            payment =>
+                normalizeStatus(
+                    getPaymentStatus(payment)
+                ) === "refused"
+
+        ).length;
+
+
+    const total =
+        list.length;
+
+
+    const mapping = {
+
+        pending: [
+            "paiementsAttente",
+            "enAttente",
+            "pendingPayments"
+        ],
+
+        validated: [
+            "paiementsValides",
+            "valides",
+            "validatedPayments"
+        ],
+
+        refused: [
+            "paiementsRefuses",
+            "refuses",
+            "refusedPayments"
+        ],
+
+        total: [
+            "totalPaiements",
+            "paiements",
+            "totalPayments"
+        ]
+
+    };
+
+
+    const values = {
+
+        pending,
+
+        validated,
+
+        refused,
+
+        total
+
+    };
+
+
+    Object.keys(
+        mapping
+    ).forEach(
+
+        key => {
+
+            const element =
+                getElementByIds(
+                    ...mapping[key]
+                );
+
+
+            if (element) {
+
+                element.textContent =
+                    values[key];
+
+            }
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   22. RENDRE LES PAIEMENTS
+========================================================= */
+
+function renderPayments(list) {
+
+    const container =
+        getElementByIds(
+
+            "paymentsContainer",
+
+            "paiementsContainer",
+
+            "paymentsList",
+
+            "paiementsList",
+
+            "paymentList"
+
+        );
+
+
+    const tbody =
+        getElementByIds(
+
+            "paymentsTableBody",
+
+            "paiementsTableBody",
+
+            "paymentTableBody",
+
+            "paiementsBody"
+
+        );
+
+
+    if (
+        !container &&
+        !tbody
+    ) {
+
+        return;
+
+    }
+
+
+    if (!list.length) {
+
+        const emptyHTML = `
+
+            <div class="empty-state">
+
+                Aucun paiement trouvé.
 
             </div>
 
         `;
 
 
-        document.body.appendChild(
-            overlay
-        );
+        if (tbody) {
 
+            tbody.innerHTML = `
 
-        const style =
-            document.createElement(
-                "style"
-            );
+                <tr>
 
+                    <td colspan="10">
 
-        style.textContent = `
+                        Aucun paiement trouvé.
 
-            #bmjModalAlerte {
+                    </td>
 
-                position: fixed;
-                inset: 0;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                padding: 20px;
-
-                background:
-                    rgba(15,23,42,.68);
-
-                backdrop-filter:
-                    blur(8px);
-
-                -webkit-backdrop-filter:
-                    blur(8px);
-
-                z-index: 999999;
-
-                opacity: 0;
-                visibility: hidden;
-
-                transition:
-                    opacity .25s ease,
-                    visibility .25s ease;
-
-            }
-
-
-            #bmjModalAlerte.active {
-
-                opacity: 1;
-                visibility: visible;
-
-            }
-
-
-            .bmj-modal-box {
-
-                width: 100%;
-                max-width: 400px;
-
-                padding: 30px;
-
-                background: #fff;
-
-                border-radius: 22px;
-
-                text-align: center;
-
-                box-shadow:
-                    0 25px 70px
-                    rgba(0,0,0,.25);
-
-                transform:
-                    translateY(20px)
-                    scale(.97);
-
-                transition:
-                    transform .25s ease;
-
-            }
-
-
-            #bmjModalAlerte.active
-            .bmj-modal-box {
-
-                transform:
-                    translateY(0)
-                    scale(1);
-
-            }
-
-
-            .bmj-modal-icon {
-
-                width: 65px;
-                height: 65px;
-
-                margin:
-                    0 auto 18px;
-
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
-                border-radius: 50%;
-
-                background: #eff6ff;
-
-                font-size: 30px;
-
-            }
-
-
-            #bmjModalTitle {
-
-                margin-bottom: 10px;
-
-                color: #0f172a;
-
-                font-size: 21px;
-
-            }
-
-
-            #bmjModalText {
-
-                margin-bottom: 22px;
-
-                color: #64748b;
-
-                font-size: 14px;
-
-                line-height: 1.7;
-
-            }
-
-
-            .bmj-modal-btn {
-
-                width: 100%;
-
-                border: none;
-
-                border-radius: 12px;
-
-                padding: 14px;
-
-                background: #145a86;
-
-                color: #fff;
-
-                font-weight: 700;
-
-                cursor: pointer;
-
-            }
-
-        `;
-
-
-        document.head.appendChild(
-            style
-        );
-
-    }
-
-
-    document.getElementById(
-        "bmjModalTitle"
-    ).textContent =
-        titre;
-
-
-    document.getElementById(
-        "bmjModalText"
-    ).innerHTML =
-        messageTexte;
-
-
-    document.getElementById(
-        "bmjModalIcon"
-    ).textContent =
-        type === "success"
-            ? "✅"
-            : "⚠️";
-
-
-    const bouton =
-        document.getElementById(
-            "bmjModalBtn"
-        );
-
-
-    bouton.style.background =
-        type === "success"
-            ? "#16a34a"
-            : "#145a86";
-
-
-    overlay.classList.add(
-        "active"
-    );
-
-
-    bouton.onclick =
-        function () {
-
-            overlay.classList.remove(
-                "active"
-            );
-
-            if (
-                typeof callback ===
-                "function"
-            ) {
-
-                callback();
-
-            }
-
-        };
-
-}
-
-
-/* =========================================================
-   18. AFFICHER INFORMATIONS UTILISATEUR
-   ========================================================= */
-
-function afficherInformationsUtilisateur(
-    utilisateur
-) {
-
-    if (!utilisateur) {
-        return;
-    }
-
-
-    /*
-        NOM
-    */
-
-    const nomUtilisateur =
-        document.getElementById(
-            "nomUtilisateur"
-        );
-
-
-    if (nomUtilisateur) {
-
-        nomUtilisateur.textContent =
-            utilisateur.nom ||
-            "Utilisateur";
-
-    }
-
-
-    /*
-        NOM COMPLET
-    */
-
-    const nomComplet =
-        document.getElementById(
-            "nomComplet"
-        );
-
-
-    if (nomComplet) {
-
-        nomComplet.textContent =
-            "Bienvenue " +
-            (
-                utilisateur.nom ||
-                "Apprenant"
-            ) +
-            " 👋";
-
-    }
-
-
-    /*
-        DOMAINE
-    */
-
-    const roleUtilisateur =
-        document.getElementById(
-            "roleUtilisateur"
-        );
-
-
-    if (roleUtilisateur) {
-
-        roleUtilisateur.textContent =
-            utilisateur.domaine ||
-            "Apprenant";
-
-    }
-
-
-    const domaineFormation =
-        document.getElementById(
-            "domaineFormation"
-        );
-
-
-    if (domaineFormation) {
-
-        domaineFormation.textContent =
-            utilisateur.domaine ||
-            "Aucun domaine";
-
-    }
-
-
-    /*
-        PHOTO
-    */
-
-    const photo =
-        utilisateur.photo ||
-        "images/user.png";
-
-
-    const photoUtilisateur =
-        document.getElementById(
-            "photoUtilisateur"
-        );
-
-
-    const photoProfil =
-        document.getElementById(
-            "photoProfil"
-        );
-
-
-    if (photoUtilisateur) {
-
-        photoUtilisateur.src =
-            photo;
-
-        photoUtilisateur.onerror =
-            function () {
-
-                this.src =
-                    "images/user.png";
-
-            };
-
-    }
-
-
-    if (photoProfil) {
-
-        photoProfil.src =
-            photo;
-
-        photoProfil.onerror =
-            function () {
-
-                this.src =
-                    "images/user.png";
-
-            };
-
-    }
-
-
-    /*
-        PREMIUM
-    */
-
-    const premium =
-        utilisateurEstPremium(
-            utilisateur
-        );
-
-
-    const badgeStatut =
-        document.getElementById(
-            "badgeStatut"
-        );
-
-
-    if (badgeStatut) {
-
-        if (premium) {
-
-            badgeStatut.innerHTML = `
-
-                <span style="
-                    display:inline-flex;
-                    align-items:center;
-                    gap:6px;
-
-                    background:#dcfce7;
-                    color:#15803d;
-
-                    padding:6px 11px;
-
-                    border-radius:9px;
-
-                    font-size:13px;
-                    font-weight:700;
-                ">
-                    ⭐ Premium
-                </span>
+                </tr>
 
             `;
 
         } else {
 
-            badgeStatut.innerHTML = `
-
-                <span style="
-                    display:inline-flex;
-                    align-items:center;
-                    gap:6px;
-
-                    background:#f1f5f9;
-                    color:#64748b;
-
-                    padding:6px 11px;
-
-                    border-radius:9px;
-
-                    font-size:13px;
-                    font-weight:700;
-                ">
-                    👤 Standard
-                </span>
-
-            `;
+            container.innerHTML =
+                emptyHTML;
 
         }
 
+
+        return;
+
     }
 
 
-    /*
-        PROGRESSION
-    */
+    if (tbody) {
 
-    let progression = 0;
+        tbody.innerHTML =
+            list.map(
+
+                payment =>
+                    createPaymentRow(
+                        payment
+                    )
+
+            ).join("");
+
+
+        attachPaymentEvents();
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        list.map(
+
+            payment =>
+                createPaymentCard(
+                    payment
+                )
+
+        ).join("");
+
+
+    attachPaymentEvents();
+
+}
+
+
+/* =========================================================
+   23. LIGNE PAIEMENT
+========================================================= */
+
+function createPaymentRow(payment) {
+
+    const id =
+        getPaymentId(payment);
+
+
+    const status =
+        normalizeStatus(
+            getPaymentStatus(payment)
+        );
+
+
+    const amount =
+        getPaymentAmount(payment);
+
+
+    const currency =
+        getPaymentCurrency(payment);
+
+
+    const method =
+        getPaymentMethod(payment);
+
+
+    const reference =
+        getPaymentReference(payment);
+
+
+    const proof =
+        getPaymentProof(payment);
+
+
+    const proofButton =
+        proof
+            ? `
+
+                <button
+                    type="button"
+                    class="btn-proof"
+                    data-action="proof"
+                    data-id="${id}"
+                >
+                    Voir preuve
+                </button>
+
+            `
+            : "—";
+
+
+    return `
+
+        <tr data-payment-id="${id}">
+
+            <td>
+                #${id}
+            </td>
+
+            <td>
+                <strong>
+                    ${escapeHTML(
+                        getPaymentName(payment)
+                    )}
+                </strong>
+
+                <br>
+
+                <small>
+                    ${escapeHTML(
+                        getPaymentEmail(payment)
+                    )}
+                </small>
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    getPaymentPhone(payment)
+                )}
+            </td>
+
+            <td>
+                ${formatMoney(
+                    amount,
+                    currency
+                )}
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    method
+                )}
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    reference
+                )}
+            </td>
+
+            <td>
+                <span
+                    class="payment-status ${status}"
+                >
+                    ${getStatusLabel(status)}
+                </span>
+            </td>
+
+            <td>
+                ${formatDate(
+                    payment.created_at
+                )}
+            </td>
+
+            <td>
+                ${proofButton}
+            </td>
+
+            <td>
+
+                <div
+                    class="payment-actions"
+                >
+
+                    ${
+                        status === "pending"
+                            ? `
+
+                                <button
+                                    type="button"
+                                    data-action="validate"
+                                    data-id="${id}"
+                                    class="btn-validate"
+                                >
+                                    Valider
+                                </button>
+
+                                <button
+                                    type="button"
+                                    data-action="refuse"
+                                    data-id="${id}"
+                                    class="btn-refuse"
+                                >
+                                    Refuser
+                                </button>
+
+                              `
+                            : ""
+                    }
+
+                    <button
+                        type="button"
+                        data-action="view"
+                        data-id="${id}"
+                        class="btn-view"
+                    >
+                        Voir
+                    </button>
+
+                    <button
+                        type="button"
+                        data-action="delete"
+                        data-id="${id}"
+                        class="btn-delete"
+                    >
+                        Supprimer
+                    </button>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    `;
+
+}
+
+
+/* =========================================================
+   24. CARTE PAIEMENT
+========================================================= */
+
+function createPaymentCard(payment) {
+
+    const id =
+        getPaymentId(payment);
+
+
+    const status =
+        normalizeStatus(
+            getPaymentStatus(payment)
+        );
+
+
+    const proof =
+        getPaymentProof(payment);
+
+
+    return `
+
+        <article
+            class="payment-card"
+            data-payment-id="${id}"
+        >
+
+            <div class="payment-card-header">
+
+                <strong>
+                    Paiement #${id}
+                </strong>
+
+                <span
+                    class="payment-status ${status}"
+                >
+                    ${getStatusLabel(status)}
+                </span>
+
+            </div>
+
+
+            <div class="payment-card-body">
+
+                <p>
+                    <strong>Nom :</strong>
+                    ${escapeHTML(
+                        getPaymentName(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Email :</strong>
+                    ${escapeHTML(
+                        getPaymentEmail(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Téléphone :</strong>
+                    ${escapeHTML(
+                        getPaymentPhone(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Montant :</strong>
+                    ${formatMoney(
+                        getPaymentAmount(payment),
+                        getPaymentCurrency(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Méthode :</strong>
+                    ${escapeHTML(
+                        getPaymentMethod(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Référence :</strong>
+                    ${escapeHTML(
+                        getPaymentReference(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Date :</strong>
+                    ${formatDate(
+                        payment.created_at
+                    )}
+                </p>
+
+                ${
+                    proof
+                        ? `
+
+                            <button
+                                type="button"
+                                data-action="proof"
+                                data-id="${id}"
+                                class="btn-proof"
+                            >
+                                Voir la preuve
+                            </button>
+
+                          `
+                        : ""
+                }
+
+            </div>
+
+
+            <div class="payment-card-actions">
+
+                ${
+                    status === "pending"
+                        ? `
+
+                            <button
+                                type="button"
+                                data-action="validate"
+                                data-id="${id}"
+                                class="btn-validate"
+                            >
+                                Valider
+                            </button>
+
+                            <button
+                                type="button"
+                                data-action="refuse"
+                                data-id="${id}"
+                                class="btn-refuse"
+                            >
+                                Refuser
+                            </button>
+
+                          `
+                        : ""
+                }
+
+
+                <button
+                    type="button"
+                    data-action="view"
+                    data-id="${id}"
+                    class="btn-view"
+                >
+                    Voir
+                </button>
+
+
+                <button
+                    type="button"
+                    data-action="delete"
+                    data-id="${id}"
+                    class="btn-delete"
+                >
+                    Supprimer
+                </button>
+
+            </div>
+
+        </article>
+
+    `;
+
+}
+
+
+/* =========================================================
+   25. ÉVÉNEMENTS PAIEMENTS
+========================================================= */
+
+function attachPaymentEvents() {
+
+    $$(
+        "[data-action]"
+    ).forEach(
+
+        function(button) {
+
+            if (
+                button.dataset.listenerAttached
+            ) {
+
+                return;
+
+            }
+
+
+            button.dataset.listenerAttached =
+                "true";
+
+
+            button.addEventListener(
+
+                "click",
+
+                async function() {
+
+                    const action =
+                        button.dataset.action;
+
+
+                    const id =
+                        Number(
+                            button.dataset.id
+                        );
+
+
+                    if (!id) {
+
+                        return;
+
+                    }
+
+
+                    if (
+                        action === "validate"
+                    ) {
+
+                        await validatePayment(
+                            id,
+                            button
+                        );
+
+                    }
+
+
+                    if (
+                        action === "refuse"
+                    ) {
+
+                        await refusePayment(
+                            id,
+                            button
+                        );
+
+                    }
+
+
+                    if (
+                        action === "delete"
+                    ) {
+
+                        await deletePayment(
+                            id,
+                            button
+                        );
+
+                    }
+
+
+                    if (
+                        action === "view"
+                    ) {
+
+                        await viewPayment(
+                            id
+                        );
+
+                    }
+
+
+                    if (
+                        action === "proof"
+                    ) {
+
+                        showPaymentProof(
+                            id
+                        );
+
+                    }
+
+                }
+
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   26. TROUVER PAIEMENT
+========================================================= */
+
+function findPayment(id) {
+
+    return paiements.find(
+
+        payment =>
+            Number(
+                getPaymentId(payment)
+            ) === Number(id)
+
+    );
+
+}
+
+
+/* =========================================================
+   27. VALIDER PAIEMENT
+========================================================= */
+
+async function validatePayment(
+
+    id,
+
+    button = null
+
+) {
+
+    const payment =
+        findPayment(id);
+
+
+    if (!payment) {
+
+        showNotification(
+            "Paiement introuvable.",
+            "error"
+        );
+
+        return;
+
+    }
 
 
     if (
-        utilisateur.progressions &&
-        utilisateur.domaine
+        normalizeStatus(
+            getPaymentStatus(payment)
+        ) !== "pending"
     ) {
 
-        const cleDomaine =
-            normaliserTexte(
-                utilisateur.domaine
+        showNotification(
+            "Ce paiement n'est plus en attente.",
+            "warning"
+        );
+
+        return;
+
+    }
+
+
+    const confirmed =
+        window.confirm(
+
+            `Voulez-vous valider le paiement #${id} ?\n\n` +
+
+            `Utilisateur : ${getPaymentName(payment)}\n` +
+
+            `Montant : ${formatMoney(
+                getPaymentAmount(payment),
+                getPaymentCurrency(payment)
+            )}\n\n` +
+
+            `Cette action activera le Premium de l'utilisateur.`
+
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    setLoading(
+        button,
+        true,
+        "Validation..."
+    );
+
+
+    try {
+
+        const response =
+            await apiRequest(
+
+                `${API_URL}/api/admin/paiements/${id}/valider`,
+
+                {
+
+                    method:
+                        "PATCH"
+
+                }
+
             );
 
 
-        progression =
-            Number(
-                utilisateur.progressions[
-                    cleDomaine
-                ]
-            ) || 0;
+        showNotification(
 
-    }
+            response?.message ||
+            "Paiement validé et Premium activé."
 
-
-    if (!progression) {
-
-        progression =
-            Number(
-                utilisateur.progression
-            ) || 0;
-
-    }
-
-
-    progression =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                progression
-            )
         );
 
 
-    const progressBar =
-        document.getElementById(
-            "progressBar"
+        await reloadDashboardData();
+
+
+    } catch (error) {
+
+        console.error(
+            "Validation paiement :",
+            error
         );
 
 
-    if (progressBar) {
+        showNotification(
 
-        progressBar.style.transition =
-            "width .6s ease";
+            error.message ||
+            "Impossible de valider le paiement.",
 
-        progressBar.style.width =
-            progression + "%";
+            "error"
 
-    }
-
-
-    const progressText =
-        document.getElementById(
-            "progressText"
         );
 
+    } finally {
 
-    if (progressText) {
-
-        progressText.textContent =
-            progression + "%";
+        setLoading(
+            button,
+            false
+        );
 
     }
 
@@ -5883,168 +6739,1465 @@ function afficherInformationsUtilisateur(
 
 
 /* =========================================================
-   19. CHARGEMENT DU DASHBOARD
-   ========================================================= */
+   28. REFUSER PAIEMENT
+========================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    async function () {
+async function refusePayment(
 
-        console.log(
-            "======================================"
-        );
+    id,
 
-        console.log(
-            "BMJ SERVICE - DASHBOARD"
-        );
+    button = null
 
-        console.log(
-            "======================================"
-        );
-
-
-        /*
-            Nettoyer les anciennes clés
-        */
-
-        nettoyerAnciennesSessions();
-
-
-        /*
-            Vérifier session actuelle
-        */
-
-        const session =
-            recupererUtilisateurLocal();
-
-
-        if (!session) {
-
-            console.warn(
-                "[BMJ DASHBOARD] Aucun utilisateur connecté."
-            );
-
-            redirigerConnexion();
-
-            return;
-
-        }
-
-
-        /*
-            Afficher rapidement
-            les données locales
-        */
-
-        afficherInformationsUtilisateur(
-            session
-        );
-
-
-        /*
-            Synchronisation PostgreSQL
-        */
-
-        const utilisateur =
-            await synchroniserUtilisateurServeur();
-
-
-        if (!utilisateur) {
-            return;
-        }
-
-
-        /*
-            Afficher les données finales
-        */
-
-        afficherInformationsUtilisateur(
-            utilisateur
-        );
-
-
-        console.log(
-            "[BMJ DASHBOARD] ID :",
-            utilisateur.id
-        );
-
-        console.log(
-            "[BMJ DASHBOARD] Email :",
-            utilisateur.email
-        );
-
-        console.log(
-            "[BMJ DASHBOARD] Nom :",
-            utilisateur.nom
-        );
-
-        console.log(
-            "[BMJ DASHBOARD] Premium :",
-            utilisateur.isPremium
-        );
-
-        console.log(
-            "======================================"
-        );
-
-    }
-);
-
-
-/* =========================================================
-   20. OUVRIR FORMATION
-   ========================================================= */
-
-function ouvrirDomaine(
-    domaine
 ) {
 
-    const utilisateur =
-        recupererUtilisateurLocal();
+    const payment =
+        findPayment(id);
 
 
-    if (!utilisateur) {
+    if (!payment) {
 
-        redirigerConnexion();
+        showNotification(
+            "Paiement introuvable.",
+            "error"
+        );
 
         return;
 
     }
 
 
-    const domaineNormalise =
-        normaliserTexte(
-            domaine
+    const reason =
+        window.prompt(
+
+            "Indiquez le motif du refus :",
+
+            "Paiement refusé par l'administrateur"
+
         );
 
 
-    /*
-        Vérification Premium
-    */
+    if (reason === null) {
 
-    const premium =
-        utilisateurEstPremium(
-            utilisateur
+        return;
+
+    }
+
+
+    const finalReason =
+        reason.trim() ||
+        "Paiement refusé par l'administrateur";
+
+
+    setLoading(
+        button,
+        true,
+        "Refus..."
+    );
+
+
+    try {
+
+        const response =
+            await apiRequest(
+
+                `${API_URL}/api/admin/paiements/${id}/refuser`,
+
+                {
+
+                    method:
+                        "PATCH",
+
+                    body:
+                        JSON.stringify({
+
+                            reason:
+                                finalReason,
+
+                            motif:
+                                finalReason,
+
+                            refusal_reason:
+                                finalReason
+
+                        })
+
+                }
+
+            );
+
+
+        showNotification(
+
+            response?.message ||
+            "Paiement refusé."
+
         );
 
 
-    /*
-        Formations restreintes
-    */
+        await reloadDashboardData();
+
+
+    } catch (error) {
+
+        console.error(
+            "Refus paiement :",
+            error
+        );
+
+
+        showNotification(
+
+            error.message ||
+            "Impossible de refuser le paiement.",
+
+            "error"
+
+        );
+
+    } finally {
+
+        setLoading(
+            button,
+            false
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   29. SUPPRIMER PAIEMENT
+========================================================= */
+
+async function deletePayment(
+
+    id,
+
+    button = null
+
+) {
+
+    const confirmed =
+        window.confirm(
+
+            `Supprimer définitivement le paiement #${id} ?\n\n` +
+
+            `Cette opération est irréversible.`
+
+        );
+
+
+    if (!confirmed) {
+
+        return;
+
+    }
+
+
+    setLoading(
+        button,
+        true,
+        "Suppression..."
+    );
+
+
+    try {
+
+        const response =
+            await apiRequest(
+
+                `${API_URL}/api/paiements/${id}`,
+
+                {
+
+                    method:
+                        "DELETE"
+
+                }
+
+            );
+
+
+        showNotification(
+
+            response?.message ||
+            "Paiement supprimé."
+
+        );
+
+
+        await reloadDashboardData();
+
+
+    } catch (error) {
+
+        console.error(
+            "Suppression paiement :",
+            error
+        );
+
+
+        showNotification(
+
+            error.message ||
+            "Impossible de supprimer le paiement.",
+
+            "error"
+
+        );
+
+    } finally {
+
+        setLoading(
+            button,
+            false
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   30. VOIR PAIEMENT
+========================================================= */
+
+async function viewPayment(id) {
+
+    let payment =
+        findPayment(id);
+
+
+    if (!payment) {
+
+        try {
+
+            const response =
+                await apiRequest(
+
+                    `${API_URL}/api/paiements/${id}`
+
+                );
+
+
+            payment =
+                response?.data ??
+                response?.payment ??
+                response;
+
+        } catch (error) {
+
+            showNotification(
+                error.message,
+                "error"
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    paiementSelectionne =
+        payment;
+
+
+    showPaymentModal(
+        payment
+    );
+
+}
+
+
+/* =========================================================
+   31. MODAL PAIEMENT
+========================================================= */
+
+function showPaymentModal(payment) {
+
+    let modal =
+        getElementByIds(
+            "paymentModal",
+            "paiementModal"
+        );
+
+
+    if (!modal) {
+
+        modal =
+            document.createElement(
+                "div"
+            );
+
+        modal.id =
+            "paymentModal";
+
+        modal.className =
+            "payment-modal";
+
+
+        document.body.appendChild(
+            modal
+        );
+
+    }
+
+
+    const id =
+        getPaymentId(payment);
+
+
+    const proof =
+        getPaymentProof(payment);
+
+
+    modal.innerHTML = `
+
+        <div
+            class="payment-modal-overlay"
+            data-close-payment-modal="true"
+        ></div>
+
+
+        <div
+            class="payment-modal-content"
+        >
+
+            <button
+                type="button"
+                class="payment-modal-close"
+                data-close-payment-modal="true"
+            >
+                ×
+            </button>
+
+
+            <h2>
+                Paiement #${id}
+            </h2>
+
+
+            <div class="payment-details">
+
+                <p>
+                    <strong>Nom :</strong>
+                    ${escapeHTML(
+                        getPaymentName(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Email :</strong>
+                    ${escapeHTML(
+                        getPaymentEmail(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Téléphone :</strong>
+                    ${escapeHTML(
+                        getPaymentPhone(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Montant :</strong>
+                    ${formatMoney(
+                        getPaymentAmount(payment),
+                        getPaymentCurrency(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Méthode :</strong>
+                    ${escapeHTML(
+                        getPaymentMethod(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Référence :</strong>
+                    ${escapeHTML(
+                        getPaymentReference(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Statut :</strong>
+                    ${getStatusLabel(
+                        getPaymentStatus(payment)
+                    )}
+                </p>
+
+                <p>
+                    <strong>Jours Premium :</strong>
+                    ${Number(
+                        payment.premium_days ??
+                        30
+                    )}
+                </p>
+
+                <p>
+                    <strong>Date :</strong>
+                    ${formatDate(
+                        payment.created_at
+                    )}
+                </p>
+
+                ${
+                    payment.notes
+                        ? `
+
+                            <p>
+                                <strong>Notes :</strong>
+                                ${escapeHTML(
+                                    payment.notes
+                                )}
+                            </p>
+
+                          `
+                        : ""
+                }
+
+                ${
+                    payment.refusal_reason
+                        ? `
+
+                            <p>
+                                <strong>Motif du refus :</strong>
+                                ${escapeHTML(
+                                    payment.refusal_reason
+                                )}
+                            </p>
+
+                          `
+                        : ""
+                }
+
+            </div>
+
+
+            ${
+                proof
+                    ? `
+
+                        <div class="payment-proof">
+
+                            <h3>
+                                Preuve de paiement
+                            </h3>
+
+                            <img
+                                src="${escapeAttribute(proof)}"
+                                alt="Preuve de paiement"
+                                loading="lazy"
+                            >
+
+                        </div>
+
+                      `
+                    : ""
+            }
+
+
+            <div class="payment-modal-actions">
+
+                ${
+                    normalizeStatus(
+                        getPaymentStatus(payment)
+                    ) === "pending"
+                        ? `
+
+                            <button
+                                type="button"
+                                data-modal-action="validate"
+                                data-id="${id}"
+                            >
+                                Valider
+                            </button>
+
+                            <button
+                                type="button"
+                                data-modal-action="refuse"
+                                data-id="${id}"
+                            >
+                                Refuser
+                            </button>
+
+                          `
+                        : ""
+                }
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    modal.style.display =
+        "block";
+
+
+    modal
+        .querySelectorAll(
+            "[data-close-payment-modal]"
+        )
+        .forEach(
+
+            element => {
+
+                element.addEventListener(
+
+                    "click",
+
+                    closePaymentModal
+
+                );
+
+            }
+
+        );
+
+
+    modal
+        .querySelectorAll(
+            "[data-modal-action]"
+        )
+        .forEach(
+
+            button => {
+
+                button.addEventListener(
+
+                    "click",
+
+                    async function() {
+
+                        const action =
+                            button.dataset
+                                .modalAction;
+
+
+                        const id =
+                            Number(
+                                button.dataset.id
+                            );
+
+
+                        closePaymentModal();
+
+
+                        if (
+                            action === "validate"
+                        ) {
+
+                            await validatePayment(
+                                id
+                            );
+
+                        }
+
+
+                        if (
+                            action === "refuse"
+                        ) {
+
+                            await refusePayment(
+                                id
+                            );
+
+                        }
+
+                    }
+
+                );
+
+            }
+
+        );
+
+}
+
+
+/* =========================================================
+   32. FERMER MODAL
+========================================================= */
+
+function closePaymentModal() {
+
+    const modal =
+        getElementByIds(
+            "paymentModal",
+            "paiementModal"
+        );
+
+
+    if (modal) {
+
+        modal.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =========================================================
+   33. AFFICHER PREUVE
+========================================================= */
+
+function showPaymentProof(id) {
+
+    const payment =
+        findPayment(id);
+
+
+    if (!payment) {
+
+        showNotification(
+            "Paiement introuvable.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const proof =
+        getPaymentProof(payment);
+
+
+    if (!proof) {
+
+        showNotification(
+            "Aucune preuve disponible.",
+            "warning"
+        );
+
+        return;
+
+    }
+
+
+    let modal =
+        getElementByIds(
+            "proofModal",
+            "paymentProofModal"
+        );
+
+
+    if (!modal) {
+
+        modal =
+            document.createElement(
+                "div"
+            );
+
+        modal.id =
+            "proofModal";
+
+        modal.className =
+            "proof-modal";
+
+
+        document.body.appendChild(
+            modal
+        );
+
+    }
+
+
+    modal.innerHTML = `
+
+        <div
+            class="proof-overlay"
+            data-close-proof="true"
+        ></div>
+
+
+        <div class="proof-content">
+
+            <button
+                type="button"
+                data-close-proof="true"
+                class="proof-close"
+            >
+                ×
+            </button>
+
+
+            <h2>
+                Preuve du paiement #${id}
+            </h2>
+
+
+            <img
+                src="${escapeAttribute(proof)}"
+                alt="Preuve du paiement"
+            >
+
+        </div>
+
+    `;
+
+
+    modal.style.display =
+        "block";
+
+
+    modal
+        .querySelectorAll(
+            "[data-close-proof]"
+        )
+        .forEach(
+
+            element => {
+
+                element.addEventListener(
+
+                    "click",
+
+                    function() {
+
+                        modal.style.display =
+                            "none";
+
+                    }
+
+                );
+
+            }
+
+        );
+
+}
+
+
+/* =========================================================
+   34. RECHERCHE PAIEMENTS
+========================================================= */
+
+function filterPayments(value) {
+
+    const query =
+        String(
+            value || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    if (!query) {
+
+        paiementsFiltres =
+            [...paiements];
+
+    } else {
+
+        paiementsFiltres =
+            paiements.filter(
+
+                payment => {
+
+                    const content = [
+
+                        getPaymentId(payment),
+
+                        getPaymentName(payment),
+
+                        getPaymentEmail(payment),
+
+                        getPaymentPhone(payment),
+
+                        getPaymentReference(payment),
+
+                        getPaymentMethod(payment),
+
+                        getPaymentStatus(payment)
+
+                    ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                    return content.includes(
+                        query
+                    );
+
+                }
+
+            );
+
+    }
+
+
+    renderPayments(
+        paiementsFiltres
+    );
+
+}
+
+
+/* =========================================================
+   35. FILTRE PAR STATUT
+========================================================= */
+
+function filterPaymentsByStatus(
+    status
+) {
+
+    const normalized =
+        String(
+            status || "all"
+        ).toLowerCase();
+
 
     if (
-        !premium &&
-        DOMAINES_RESTRICTED_FOR_STANDARD
-            .includes(
-                domaineNormalise
-            )
+        normalized === "all" ||
+        normalized === "tous" ||
+        normalized === ""
     ) {
 
-        afficherPopupBMJ(
+        paiementsFiltres =
+            [...paiements];
 
-            "Accès restreint",
+    } else {
 
-            "Votre compte est actuellement <strong>Standard</strong>. Cette formation nécessite un compte Premium.",
+        paiementsFiltres =
+            paiements.filter(
+
+                payment =>
+
+                    normalizeStatus(
+                        getPaymentStatus(payment)
+                    ) === normalized
+
+            );
+
+    }
+
+
+    renderPayments(
+        paiementsFiltres
+    );
+
+}
+
+
+/* =========================================================
+   36. CHARGER UTILISATEURS
+========================================================= */
+
+async function loadUsers(
+
+    silent = false
+
+) {
+
+    if (chargementUtilisateurs) {
+
+        return;
+
+    }
+
+
+    chargementUtilisateurs =
+        true;
+
+
+    try {
+
+        const response =
+            await apiRequest(
+                ROUTES.utilisateurs
+            );
+
+
+        utilisateurs =
+            extractList(
+                response
+            );
+
+
+        utilisateursFiltres =
+            [...utilisateurs];
+
+
+        renderUsers(
+            utilisateursFiltres
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Erreur utilisateurs :",
+            error
+        );
+
+
+        if (!silent) {
+
+            showNotification(
+
+                error.message ||
+                "Impossible de charger les utilisateurs.",
+
+                "error"
+
+            );
+
+        }
+
+    } finally {
+
+        chargementUtilisateurs =
+            false;
+
+    }
+
+}
+
+
+/* =========================================================
+   37. RENDRE UTILISATEURS
+========================================================= */
+
+function renderUsers(list) {
+
+    const tbody =
+        getElementByIds(
+
+            "usersTableBody",
+
+            "utilisateursTableBody",
+
+            "usersBody",
+
+            "utilisateursBody"
+
+        );
+
+
+    const container =
+        getElementByIds(
+
+            "usersContainer",
+
+            "utilisateursContainer",
+
+            "usersList",
+
+            "utilisateursList"
+
+        );
+
+
+    if (
+        !tbody &&
+        !container
+    ) {
+
+        return;
+
+    }
+
+
+    if (!list.length) {
+
+        if (tbody) {
+
+            tbody.innerHTML = `
+
+                <tr>
+
+                    <td colspan="10">
+
+                        Aucun utilisateur trouvé.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        } else {
+
+            container.innerHTML = `
+
+                <div class="empty-state">
+
+                    Aucun utilisateur trouvé.
+
+                </div>
+
+            `;
+
+        }
+
+
+        return;
+
+    }
+
+
+    if (tbody) {
+
+        tbody.innerHTML =
+            list.map(
+                createUserRow
+            ).join("");
+
+
+        attachUserEvents();
+
+    } else {
+
+        container.innerHTML =
+            list.map(
+                createUserCard
+            ).join("");
+
+
+        attachUserEvents();
+
+    }
+
+}
+
+
+/* =========================================================
+   38. LIGNE UTILISATEUR
+========================================================= */
+
+function createUserRow(user) {
+
+    const id =
+        getUserId(user);
+
+
+    const premium =
+        isUserPremium(user);
+
+
+    const blocked =
+        isUserBlocked(user);
+
+
+    return `
+
+        <tr data-user-id="${id}">
+
+            <td>
+                #${id}
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    getUserName(user)
+                )}
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    getUserEmail(user)
+                )}
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    getUserPhone(user)
+                )}
+            </td>
+
+            <td>
+
+                <span
+                    class="user-status ${
+                        premium
+                            ? "premium"
+                            : "normal"
+                    }"
+                >
+
+                    ${
+                        premium
+                            ? "Premium"
+                            : "Normal"
+                    }
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <span
+                    class="user-status ${
+                        blocked
+                            ? "blocked"
+                            : "active"
+                    }"
+                >
+
+                    ${
+                        blocked
+                            ? "Bloqué"
+                            : "Actif"
+                    }
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <button
+                    type="button"
+                    data-user-action="premium"
+                    data-id="${id}"
+                >
+                    ${
+                        premium
+                            ? "Gérer Premium"
+                            : "Activer Premium"
+                    }
+                </button>
+
+
+                <button
+                    type="button"
+                    data-user-action="block"
+                    data-id="${id}"
+                >
+                    ${
+                        blocked
+                            ? "Débloquer"
+                            : "Bloquer"
+                    }
+                </button>
+
+            </td>
+
+        </tr>
+
+    `;
+
+}
+
+
+/* =========================================================
+   39. CARTE UTILISATEUR
+========================================================= */
+
+function createUserCard(user) {
+
+    const id =
+        getUserId(user);
+
+
+    const premium =
+        isUserPremium(user);
+
+
+    const blocked =
+        isUserBlocked(user);
+
+
+    return `
+
+        <article
+            class="user-card"
+            data-user-id="${id}"
+        >
+
+            <h3>
+                ${escapeHTML(
+                    getUserName(user)
+                )}
+            </h3>
+
+
+            <p>
+                ${escapeHTML(
+                    getUserEmail(user)
+                )}
+            </p>
+
+
+            <p>
+                ${escapeHTML(
+                    getUserPhone(user)
+                )}
+            </p>
+
+
+            <p>
+                ${
+                    premium
+                        ? "Premium"
+                        : "Normal"
+                }
+            </p>
+
+
+            <p>
+                ${
+                    blocked
+                        ? "Bloqué"
+                        : "Actif"
+                }
+            </p>
+
+
+            <button
+                type="button"
+                data-user-action="premium"
+                data-id="${id}"
+            >
+                ${
+                    premium
+                        ? "Gérer Premium"
+                        : "Activer Premium"
+                }
+            </button>
+
+
+            <button
+                type="button"
+                data-user-action="block"
+                data-id="${id}"
+            >
+                ${
+                    blocked
+                        ? "Débloquer"
+                        : "Bloquer"
+                }
+            </button>
+
+        </article>
+
+    `;
+
+}
+
+
+/* =========================================================
+   40. ÉVÉNEMENTS UTILISATEURS
+========================================================= */
+
+function attachUserEvents() {
+
+    $$(
+        "[data-user-action]"
+    ).forEach(
+
+        function(button) {
+
+            if (
+                button.dataset.listenerAttached
+            ) {
+
+                return;
+
+            }
+
+
+            button.dataset.listenerAttached =
+                "true";
+
+
+            button.addEventListener(
+
+                "click",
+
+                async function() {
+
+                    const action =
+                        button.dataset
+                            .userAction;
+
+
+                    const id =
+                        Number(
+                            button.dataset.id
+                        );
+
+
+                    if (
+                        action === "premium"
+                    ) {
+
+                        await managePremium(
+                            id,
+                            button
+                        );
+
+                    }
+
+
+                    if (
+                        action === "block"
+                    ) {
+
+                        await manageBlock(
+                            id,
+                            button
+                        );
+
+                    }
+
+                }
+
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   41. GESTION PREMIUM
+========================================================= */
+
+async function managePremium(
+
+    id,
+
+    button = null
+
+) {
+
+    const user =
+        utilisateurs.find(
+
+            item =>
+                Number(
+                    getUserId(item)
+                ) === Number(id)
+
+        );
+
+
+    const currentlyPremium =
+        user
+            ? isUserPremium(user)
+            : false;
+
+
+    if (currentlyPremium) {
+
+        const disable =
+            window.confirm(
+
+                `Voulez-vous désactiver le Premium de l'utilisateur #${id} ?`
+
+            );
+
+
+        if (!disable) {
+
+            return;
+
+        }
+
+
+        setLoading(
+            button,
+            true,
+            "Désactivation..."
+        );
+
+
+        try {
+
+            await apiRequest(
+
+                `${API_URL}/api/admin/users/${id}/premium`,
+
+                {
+
+                    method:
+                        "PATCH",
+
+                    body:
+                        JSON.stringify({
+
+                            enabled:
+                                false
+
+                        })
+
+                }
+
+            );
+
+
+            showNotification(
+                "Premium désactivé."
+            );
+
+
+            await reloadDashboardData();
+
+
+        } catch (error) {
+
+            showNotification(
+                error.message,
+                "error"
+            );
+
+        } finally {
+
+            setLoading(
+                button,
+                false
+            );
+
+        }
+
+
+        return;
+
+    }
+
+
+    const input =
+        window.prompt(
+
+            "Combien de jours Premium voulez-vous donner ?",
+
+            "30"
+
+        );
+
+
+    if (input === null) {
+
+        return;
+
+    }
+
+
+    const days =
+        Number(input);
+
+
+    if (
+        !Number.isInteger(days) ||
+        days <= 0
+    ) {
+
+        showNotification(
+
+            "Nombre de jours Premium invalide.",
 
             "error"
 
@@ -6055,140 +8208,64 @@ function ouvrirDomaine(
     }
 
 
-    /*
-        Sauvegarder le domaine
-        pour CE compte uniquement
-    */
-
-    utilisateur.domaine =
-        domaine;
-
-
-    utilisateur.isPremium =
-        premium;
-
-
-    utilisateur.premium =
-        premium;
-
-
-    utilisateur.is_premium =
-        premium;
-
-
-    sauvegarderUtilisateur(
-        utilisateur
+    setLoading(
+        button,
+        true,
+        "Activation..."
     );
 
 
-    /*
-        Redirection
-    */
+    try {
 
-    switch (
-        domaineNormalise
-    ) {
+        await apiRequest(
 
-        case "marketing":
+            `${API_URL}/api/admin/users/${id}/premium`,
 
-            window.location.href =
-                "marketing.html";
+            {
 
-            break;
+                method:
+                    "PATCH",
 
+                body:
+                    JSON.stringify({
 
-        case "entrepreneuriat":
+                        enabled:
+                            true,
 
-            window.location.href =
-                "entrepreneuriat.html";
+                        days:
+                            days,
 
-            break;
+                        premium_days:
+                            days
 
+                    })
 
-        case "leadership":
+            }
 
-            window.location.href =
-                "leadership.html";
-
-            break;
+        );
 
 
-        case "informatique":
-
-            window.location.href =
-                "informatique.html";
-
-            break;
+        showNotification(
+            `Premium activé pour ${days} jours.`
+        );
 
 
-        case "finance":
-
-            window.location.href =
-                "finance.html";
-
-            break;
+        await reloadDashboardData();
 
 
-        case "sante":
+    } catch (error) {
 
-        case "sante et environnement":
+        showNotification(
+            error.message,
+            "error"
+        );
 
-            window.location.href =
-                "sante_environnement.html";
+    } finally {
 
-            break;
-
-
-        case "developpement":
-
-        case "developpement personnel":
-
-            window.location.href =
-                "developpement_personnel.html";
-
-            break;
-
-
-        case "education":
-
-            window.location.href =
-                "education.html";
-
-            break;
-
-
-        case "communication":
-
-            window.location.href =
-                "communication.html";
-
-            break;
-
-
-        case "gestion equipe":
-
-        case "gestion_equipe":
-
-            window.location.href =
-                "gestion_equipe.html";
-
-            break;
-
-
-        case "cybersecurite":
-
-            window.location.href =
-                "cybersecurite.html";
-
-            break;
-
-
-        default:
-
-            window.location.href =
-                "formations.html";
-
-            break;
+        setLoading(
+            button,
+            false
+        );
 
     }
 
@@ -6196,248 +8273,808 @@ function ouvrirDomaine(
 
 
 /* =========================================================
-   21. CONTINUER FORMATION
-   ========================================================= */
+   42. BLOQUER / DÉBLOQUER
+========================================================= */
 
-function continuerFormation() {
+async function manageBlock(
 
-    const utilisateur =
-        recupererUtilisateurLocal();
+    id,
+
+    button = null
+
+) {
+
+    const user =
+        utilisateurs.find(
+
+            item =>
+                Number(
+                    getUserId(item)
+                ) === Number(id)
+
+        );
 
 
-    if (!utilisateur) {
+    const currentlyBlocked =
+        user
+            ? isUserBlocked(user)
+            : false;
 
-        redirigerConnexion();
+
+    const newValue =
+        !currentlyBlocked;
+
+
+    const confirmed =
+        window.confirm(
+
+            newValue
+
+                ? `Bloquer l'utilisateur #${id} ?`
+
+                : `Débloquer l'utilisateur #${id} ?`
+
+        );
+
+
+    if (!confirmed) {
 
         return;
 
     }
 
 
-    if (
-        utilisateur.domaine
-    ) {
-
-        ouvrirDomaine(
-            utilisateur.domaine
-        );
-
-    } else {
-
-        window.location.href =
-            "formations.html";
-
-    }
-
-}
-
-
-/* =========================================================
-   22. CERTIFICAT
-   ========================================================= */
-
-function ouvrirCertificat() {
-
-    window.location.href =
-        "verification.html";
-
-}
-
-
-/* =========================================================
-   23. DECONNEXION COMPLETE
-   ========================================================= */
-
-function deconnexion() {
-
-    /*
-        Supprimer la session actuelle
-    */
-
-    localStorage.removeItem(
-        SESSION_KEY
+    setLoading(
+        button,
+        true,
+        newValue
+            ? "Blocage..."
+            : "Déblocage..."
     );
 
 
-    /*
-        Supprimer anciennes sessions
-    */
+    try {
 
-    nettoyerAnciennesSessions();
+        await apiRequest(
 
+            `${API_URL}/api/admin/users/${id}/block`,
 
-    /*
-        Nettoyer également
-        sessionStorage
-    */
+            {
 
-    sessionStorage.clear();
+                method:
+                    "PATCH",
 
+                body:
+                    JSON.stringify({
 
-    /*
-        Redirection sans conserver
-        l'ancienne page dans l'historique
-    */
+                        blocked:
+                            newValue
 
-    window.location.replace(
-        "connexion.html"
-    );
-
-}
-
-
-/* =========================================================
-   24. BOUTON LOGOUT
-   ========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        const logout =
-            document.getElementById(
-                "logout"
-            );
-
-
-        if (logout) {
-
-            logout.addEventListener(
-                "click",
-                function (event) {
-
-                    event.preventDefault();
-
-                    deconnexion();
-
-                }
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   25. MENU MOBILE
-   ========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        const menuBtn =
-            document.getElementById(
-                "menuBtn"
-            );
-
-
-        const sidebar =
-            document.getElementById(
-                "sidebar"
-            );
-
-
-        if (
-            menuBtn &&
-            sidebar
-        ) {
-
-            menuBtn.addEventListener(
-                "click",
-                function () {
-
-                    sidebar.classList.toggle(
-                        "active"
-                    );
-
-                }
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   26. PROTECTION CONTRE SESSION CORROMPUE
-   ========================================================= */
-
-window.addEventListener(
-    "storage",
-    function (event) {
-
-        /*
-            Si un autre onglet modifie
-            la session, on recharge.
-
-            Cela évite qu'un dashboard
-            affiche un ancien utilisateur.
-        */
-
-        if (
-            event.key === SESSION_KEY
-        ) {
-
-            if (
-                !event.newValue
-            ) {
-
-                redirigerConnexion();
-
-                return;
+                    })
 
             }
 
+        );
 
-            try {
 
-                const nouvelUtilisateur =
-                    JSON.parse(
-                        event.newValue
+        showNotification(
+
+            newValue
+                ? "Utilisateur bloqué."
+                : "Utilisateur débloqué."
+
+        );
+
+
+        await reloadDashboardData();
+
+
+    } catch (error) {
+
+        showNotification(
+            error.message,
+            "error"
+        );
+
+    } finally {
+
+        setLoading(
+            button,
+            false
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   43. RECHERCHE UTILISATEURS
+========================================================= */
+
+function filterUsers(value) {
+
+    const query =
+        String(
+            value || ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+    if (!query) {
+
+        utilisateursFiltres =
+            [...utilisateurs];
+
+    } else {
+
+        utilisateursFiltres =
+            utilisateurs.filter(
+
+                user => {
+
+                    const content = [
+
+                        getUserId(user),
+
+                        getUserName(user),
+
+                        getUserEmail(user),
+
+                        getUserPhone(user)
+
+                    ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                    return content.includes(
+                        query
                     );
 
+                }
+
+            );
+
+    }
+
+
+    renderUsers(
+        utilisateursFiltres
+    );
+
+}
+
+
+/* =========================================================
+   44. ÉCHAPPEMENT HTML
+========================================================= */
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* =========================================================
+   45. ÉCHAPPEMENT ATTRIBUT
+========================================================= */
+
+function escapeAttribute(value) {
+
+    return escapeHTML(
+        value
+    );
+
+}
+
+
+/* =========================================================
+   46. RECHARGEMENT COMPLET
+========================================================= */
+
+async function reloadDashboardData() {
+
+    await Promise.allSettled([
+
+        loadStatistics(),
+
+        loadPayments(true),
+
+        loadUsers(true)
+
+    ]);
+
+}
+
+
+/* =========================================================
+   47. ACTUALISATION AUTOMATIQUE
+========================================================= */
+
+function startAutoRefresh() {
+
+    if (refreshTimer) {
+
+        clearInterval(
+            refreshTimer
+        );
+
+    }
+
+
+    refreshTimer =
+        setInterval(
+
+            async function() {
 
                 if (
-                    !nouvelUtilisateur ||
-                    !nouvelUtilisateur.id
+                    document.hidden
                 ) {
-
-                    redirigerConnexion();
 
                     return;
 
                 }
 
 
-                /*
-                    Recharger le dashboard
-                    avec le nouveau compte.
-                */
-
-                window.location.reload();
-
-            } catch (erreur) {
-
-                console.error(
-                    "[BMJ SESSION] Session externe invalide."
+                await loadPayments(
+                    true
                 );
 
-                redirigerConnexion();
+
+                await loadStatistics();
+
+            },
+
+            REFRESH_INTERVAL
+
+        );
+
+}
+
+
+/* =========================================================
+   48. ARRÊT AUTO REFRESH
+========================================================= */
+
+function stopAutoRefresh() {
+
+    if (refreshTimer) {
+
+        clearInterval(
+            refreshTimer
+        );
+
+        refreshTimer =
+            null;
+
+    }
+
+}
+
+
+/* =========================================================
+   49. BOUTON ACTUALISER
+========================================================= */
+
+function attachRefreshButtons() {
+
+    const buttons =
+        $$(
+            "[data-action='refresh'], " +
+            "#refreshDashboard, " +
+            "#refreshPayments, " +
+            "#btnRefresh"
+        );
+
+
+    buttons.forEach(
+
+        function(button) {
+
+            if (
+                button.dataset.listenerAttached
+            ) {
+
+                return;
 
             }
+
+
+            button.dataset.listenerAttached =
+                "true";
+
+
+            button.addEventListener(
+
+                "click",
+
+                async function() {
+
+                    setLoading(
+                        button,
+                        true,
+                        "Actualisation..."
+                    );
+
+
+                    try {
+
+                        await reloadDashboardData();
+
+
+                        showNotification(
+                            "Dashboard actualisé."
+                        );
+
+
+                    } finally {
+
+                        setLoading(
+                            button,
+                            false
+                        );
+
+                    }
+
+                }
+
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   50. CHAMP RECHERCHE PAIEMENTS
+========================================================= */
+
+function attachPaymentSearch() {
+
+    const inputs =
+        $$(
+            "#paymentSearch, " +
+            "#paiementSearch, " +
+            "#searchPayments, " +
+            "[data-payment-search]"
+        );
+
+
+    inputs.forEach(
+
+        function(input) {
+
+            if (
+                input.dataset.listenerAttached
+            ) {
+
+                return;
+
+            }
+
+
+            input.dataset.listenerAttached =
+                "true";
+
+
+            input.addEventListener(
+
+                "input",
+
+                function() {
+
+                    filterPayments(
+                        input.value
+                    );
+
+                }
+
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   51. CHAMP RECHERCHE UTILISATEURS
+========================================================= */
+
+function attachUserSearch() {
+
+    const inputs =
+        $$(
+            "#userSearch, " +
+            "#utilisateurSearch, " +
+            "#searchUsers, " +
+            "[data-user-search]"
+        );
+
+
+    inputs.forEach(
+
+        function(input) {
+
+            if (
+                input.dataset.listenerAttached
+            ) {
+
+                return;
+
+            }
+
+
+            input.dataset.listenerAttached =
+                "true";
+
+
+            input.addEventListener(
+
+                "input",
+
+                function() {
+
+                    filterUsers(
+                        input.value
+                    );
+
+                }
+
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   52. FILTRES STATUT
+========================================================= */
+
+function attachStatusFilters() {
+
+    const filters =
+        $$(
+            "#paymentStatusFilter, " +
+            "#paiementStatusFilter, " +
+            "[data-payment-status-filter]"
+        );
+
+
+    filters.forEach(
+
+        function(filter) {
+
+            if (
+                filter.dataset.listenerAttached
+            ) {
+
+                return;
+
+            }
+
+
+            filter.dataset.listenerAttached =
+                "true";
+
+
+            filter.addEventListener(
+
+                "change",
+
+                function() {
+
+                    filterPaymentsByStatus(
+                        filter.value
+                    );
+
+                }
+
+            );
+
+        }
+
+    );
+
+}
+
+
+/* =========================================================
+   53. VÉRIFICATION SESSION ADMIN
+========================================================= */
+
+function checkAdminSession() {
+
+    const token =
+        getAdminToken();
+
+
+    if (!token) {
+
+        console.warn(
+            "Aucun token administrateur trouvé."
+        );
+
+        /*
+           On ne redirige pas automatiquement ici.
+
+           Cela permet au dashboard de fonctionner
+           avec les systèmes d'authentification existants
+           qui utilisent un autre mécanisme.
+        */
+
+    }
+
+}
+
+
+/* =========================================================
+   54. JOURNAL LOCAL ADMIN
+========================================================= */
+
+function saveLocalAdminActivity(
+    action,
+    details
+) {
+
+    const key =
+        "bmj_admin_activity";
+
+
+    let history = [];
+
+
+    try {
+
+        history =
+            JSON.parse(
+                localStorage.getItem(
+                    key
+                ) || "[]"
+            );
+
+    } catch (_) {
+
+        history = [];
+
+    }
+
+
+    history.unshift({
+
+        action,
+
+        details,
+
+        date:
+            new Date().toISOString()
+
+    });
+
+
+    history =
+        history.slice(
+            0,
+            100
+        );
+
+
+    localStorage.setItem(
+
+        key,
+
+        JSON.stringify(
+            history
+        )
+
+    );
+
+}
+
+
+/* =========================================================
+   55. VISIBILITÉ PAGE
+========================================================= */
+
+document.addEventListener(
+
+    "visibilitychange",
+
+    function() {
+
+        if (
+            document.hidden
+        ) {
+
+            stopAutoRefresh();
+
+        } else {
+
+            startAutoRefresh();
+
+            loadPayments(true);
+
+            loadStatistics();
 
         }
 
     }
+
 );
 
 
 /* =========================================================
-   FIN SCRIPT BMJ SERVICE
-   ========================================================= */
+   56. INITIALISATION
+========================================================= */
+
+async function initDashboard() {
+
+    if (dashboardInitialise) {
+
+        return;
+
+    }
+
+
+    dashboardInitialise =
+        true;
+
+
+    console.log(
+        "======================================"
+    );
+
+    console.log(
+        "BMJ SERVICE ADMIN DASHBOARD"
+    );
+
+    console.log(
+        "Backend :",
+        API_URL
+    );
+
+    console.log(
+        "======================================"
+    );
+
+
+    checkAdminSession();
+
+
+    attachRefreshButtons();
+
+    attachPaymentSearch();
+
+    attachUserSearch();
+
+    attachStatusFilters();
+
+
+    await reloadDashboardData();
+
+
+    startAutoRefresh();
+
+
+    console.log(
+        "Dashboard administrateur prêt."
+    );
+
+}
+
+
+/* =========================================================
+   57. DÉMARRAGE
+========================================================= */
+
+if (
+    document.readyState ===
+    "loading"
+) {
+
+    document.addEventListener(
+
+        "DOMContentLoaded",
+
+        initDashboard
+
+    );
+
+} else {
+
+    initDashboard();
+
+}
+
+
+/* =========================================================
+   58. EXPORT GLOBAL
+========================================================= */
+
+window.BMJ_ADMIN = {
+
+    loadStatistics,
+
+    loadPayments,
+
+    loadUsers,
+
+    reloadDashboardData,
+
+    validatePayment,
+
+    refusePayment,
+
+    deletePayment,
+
+    viewPayment,
+
+    showPaymentProof,
+
+    filterPayments,
+
+    filterPaymentsByStatus,
+
+    filterUsers,
+
+    managePremium,
+
+    manageBlock,
+
+    startAutoRefresh,
+
+    stopAutoRefresh
+
+};
+
+
+/* =========================================================
+   FIN DU SCRIPT
+========================================================= */
 </script>
 <!-- Modale Moderne BMJ SERVICE (Vérification Certificat) -->
 <div id="bmjModalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
