@@ -4548,12 +4548,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 <script>
  /* =========================================================
    BMJ SERVICE
-   DASHBOARD ADMINISTRATEUR
+   DASHBOARD ADMINISTRATION
    SCRIPT COMPLET
-   Compatible avec :
-   NODE.JS + EXPRESS + POSTGRESQL + RENDER
-
-   VERSION : 13.0.0
+   SERVER API : VERSION 12.0.0
 ========================================================= */
 
 
@@ -4565,114 +4562,89 @@ const API_URL =
     "https://back-end-h602.onrender.com";
 
 
-const REFRESH_INTERVAL =
-    15000;
-
-
-const REQUEST_TIMEOUT =
-    20000;
-
-
 /* =========================================================
-   2. ROUTES API
-========================================================= */
-
-const ROUTES = {
-
-    statistiques:
-        `${API_URL}/api/admin/statistiques`,
-
-    paiements:
-        `${API_URL}/api/admin/paiements`,
-
-    paiementsPublic:
-        `${API_URL}/api/paiements`,
-
-    utilisateurs:
-        `${API_URL}/api/apprenants`,
-
-    users:
-        `${API_URL}/api/users`
-
-};
-
-
-/* =========================================================
-   3. VARIABLES GLOBALES
+   2. VARIABLES GLOBALES
 ========================================================= */
 
 let utilisateurs = [];
-
 let paiements = [];
+let statistiques = null;
+let admin = null;
 
-let utilisateursFiltres = [];
-
-let paiementsFiltres = [];
-
-let paiementSelectionne = null;
-
-let utilisateurSelectionne = null;
-
-let refreshTimer = null;
-
-let chargementPaiements = false;
-
-let chargementUtilisateurs = false;
-
-let chargementStatistiques = false;
-
-let dashboardInitialise = false;
+let currentSection = "dashboard";
 
 
 /* =========================================================
-   4. UTILITAIRES DOM
+   3. ELEMENTS
 ========================================================= */
 
-function $(selector) {
+const $ = (selector) =>
+    document.querySelector(selector);
 
-    return document.querySelector(selector);
-
-}
-
-
-function $$(selector) {
-
-    return Array.from(
-        document.querySelectorAll(selector)
-    );
-
-}
+const $$ = (selector) =>
+    document.querySelectorAll(selector);
 
 
 /* =========================================================
-   5. RECHERCHE COMPATIBLE D'UN ÉLÉMENT
+   4. NOTIFICATION
 ========================================================= */
 
-function getElementByIds(...ids) {
+function notify(
+    message,
+    type = "info"
+) {
 
-    for (const id of ids) {
+    let box =
+        document.getElementById(
+            "notification"
+        );
 
-        const element =
-            document.getElementById(id);
+    if (!box) {
 
-        if (element) {
+        box =
+            document.createElement(
+                "div"
+            );
 
-            return element;
+        box.id =
+            "notification";
 
-        }
+        document.body.appendChild(box);
 
     }
 
-    return null;
+    box.className =
+        type;
+
+    box.textContent =
+        message;
+
+    box.style.display =
+        "block";
+
+    clearTimeout(
+        box._timer
+    );
+
+    box._timer =
+        setTimeout(
+            function() {
+
+                box.style.display =
+                    "none";
+
+            },
+            4000
+        );
 
 }
 
 
 /* =========================================================
-   6. AUTHENTIFICATION ADMIN
+   5. TOKEN
 ========================================================= */
 
-function getAdminToken() {
+function getToken() {
 
     const possibleKeys = [
 
@@ -4681,16 +4653,20 @@ function getAdminToken() {
         "token",
         "authToken",
         "accessToken",
-        "jwt",
-        "bmj_admin_token"
+        "access_token",
+        "bmj_admin_token",
+        "bmj_token"
 
     ];
 
-
-    for (const key of possibleKeys) {
+    for (
+        const key of possibleKeys
+    ) {
 
         const value =
-            localStorage.getItem(key);
+            localStorage.getItem(
+                key
+            );
 
         if (value) {
 
@@ -4700,14 +4676,13 @@ function getAdminToken() {
 
     }
 
-
     return null;
 
 }
 
 
 /* =========================================================
-   7. HEADERS API
+   6. HEADERS
 ========================================================= */
 
 function getHeaders() {
@@ -4724,12 +4699,14 @@ function getHeaders() {
 
 
     const token =
-        getAdminToken();
+        getToken();
 
 
     if (token) {
 
-        headers.Authorization =
+        headers[
+            "Authorization"
+        ] =
             token.startsWith("Bearer ")
                 ? token
                 : `Bearer ${token}`;
@@ -4743,73 +4720,90 @@ function getHeaders() {
 
 
 /* =========================================================
-   8. REQUÊTE API
+   7. REQUETE API
 ========================================================= */
 
 async function apiRequest(
-
-    url,
-
+    endpoint,
     options = {}
-
 ) {
 
-    const controller =
-        new AbortController();
+    const url =
+        endpoint.startsWith("http")
+            ? endpoint
+            : API_URL + endpoint;
 
 
-    const timeout =
-        setTimeout(
+    const config = {
 
-            function() {
+        method:
+            options.method || "GET",
 
-                controller.abort();
+        headers: {
 
-            },
+            ...getHeaders(),
 
-            REQUEST_TIMEOUT
+            ...(options.headers || {})
 
-        );
+        },
+
+        credentials:
+            "include",
+
+        cache:
+            "no-store"
+
+    };
+
+
+    if (
+        options.body !== undefined
+    ) {
+
+        config.body =
+            typeof options.body === "string"
+                ? options.body
+                : JSON.stringify(
+                    options.body
+                );
+
+    }
+
+
+    let response;
 
 
     try {
 
-        const config = {
-
-            ...options,
-
-            headers: {
-
-                ...getHeaders(),
-
-                ...(options.headers || {})
-
-            },
-
-            signal:
-                controller.signal
-
-        };
-
-
-        const response =
+        response =
             await fetch(
-
                 url,
-
                 config
-
             );
 
+    } catch (error) {
 
-        const contentType =
-            response.headers.get(
-                "content-type"
-            ) || "";
+        console.error(
+            "Erreur réseau :",
+            error
+        );
+
+        throw new Error(
+            "Impossible de contacter le serveur."
+        );
+
+    }
 
 
-        let data;
+    let result = null;
 
+    const contentType =
+        response.headers.get(
+            "content-type"
+        ) || "";
+
+
+    try {
 
         if (
             contentType.includes(
@@ -4817,7 +4811,7 @@ async function apiRequest(
             )
         ) {
 
-            data =
+            result =
                 await response.json();
 
         } else {
@@ -4825,21 +4819,20 @@ async function apiRequest(
             const text =
                 await response.text();
 
-
             try {
 
-                data =
+                result =
                     JSON.parse(text);
 
-            } catch (_) {
+            } catch {
 
-                data = {
+                result = {
 
                     success:
                         response.ok,
 
                     message:
-                        text || ""
+                        text
 
                 };
 
@@ -4847,32 +4840,553 @@ async function apiRequest(
 
         }
 
+    } catch (error) {
 
-        if (!response.ok) {
+        throw new Error(
+            "Réponse invalide du serveur."
+        );
 
-            const message =
-                data?.message ||
-                data?.error ||
-                `Erreur HTTP ${response.status}`;
+    }
 
 
-            throw new Error(message);
+    console.log(
+        `[API] ${config.method} ${endpoint}`,
+        response.status,
+        result
+    );
+
+
+    if (!response.ok) {
+
+        const message =
+            result?.message ||
+            result?.error ||
+            `Erreur HTTP ${response.status}`;
+
+        const error =
+            new Error(message);
+
+        error.status =
+            response.status;
+
+        error.data =
+            result;
+
+        throw error;
+
+    }
+
+
+    if (
+        result &&
+        result.success === false
+    ) {
+
+        const error =
+            new Error(
+                result.message ||
+                "La requête a échoué."
+            );
+
+        error.data =
+            result;
+
+        throw error;
+
+    }
+
+
+    return result;
+
+}
+
+
+/* =========================================================
+   8. EXTRACTION DATA
+========================================================= */
+
+function extractData(
+    response
+) {
+
+    if (!response) {
+
+        return null;
+
+    }
+
+
+    if (
+        response.data !== undefined
+    ) {
+
+        return response.data;
+
+    }
+
+
+    return response;
+
+}
+
+
+/* =========================================================
+   9. REDIRECTION LOGIN
+========================================================= */
+
+function goToLogin() {
+
+    window.location.href =
+        "connexion.html";
+
+}
+
+
+/* =========================================================
+   10. SESSION ADMIN
+========================================================= */
+
+async function checkAdminSession() {
+
+    try {
+
+        const result =
+            await apiRequest(
+                "/api/admin/me"
+            );
+
+
+        if (
+            result &&
+            result.success === false
+        ) {
+
+            throw new Error(
+                result.message ||
+                "Session administrateur invalide."
+            );
 
         }
 
 
+        admin =
+            extractData(
+                result
+            );
+
+
         if (
-            data &&
-            data.success === false
+            admin &&
+            typeof admin === "object"
+        ) {
+
+            const adminName =
+                admin.nom ||
+                admin.name ||
+                admin.username ||
+                admin.email ||
+                "Administrateur";
+
+
+            const adminEmail =
+                admin.email ||
+                admin.mail ||
+                "";
+
+
+            const nameElement =
+                $("#adminName");
+
+            const emailElement =
+                $("#adminEmail");
+
+
+            if (nameElement) {
+
+                nameElement.textContent =
+                    adminName;
+
+            }
+
+
+            if (emailElement) {
+
+                emailElement.textContent =
+                    adminEmail;
+
+            }
+
+        }
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Session admin :",
+            error
+        );
+
+
+        /*
+         * Si le serveur répond 401/403,
+         * la session est réellement invalide.
+         */
+
+        if (
+            error.status === 401 ||
+            error.status === 403
+        ) {
+
+            return false;
+
+        }
+
+
+        /*
+         * Si /api/admin/me existe mais
+         * utilise un format particulier,
+         * on tente le dashboard.
+         */
+
+        try {
+
+            const dashboard =
+                await apiRequest(
+                    "/api/admin/dashboard"
+                );
+
+
+            if (
+                dashboard &&
+                dashboard.success !== false
+            ) {
+
+                return true;
+
+            }
+
+        } catch (secondError) {
+
+            console.error(
+                "Vérification dashboard :",
+                secondError
+            );
+
+        }
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   11. STATISTIQUES
+========================================================= */
+
+async function loadStatistics() {
+
+    try {
+
+        /*
+         * Route officielle :
+         * GET /api/admin/statistiques
+         */
+
+        const result =
+            await apiRequest(
+                "/api/admin/statistiques"
+            );
+
+
+        statistiques =
+            extractData(
+                result
+            );
+
+
+        if (
+            !statistiques ||
+            typeof statistiques !== "object"
         ) {
 
             throw new Error(
-
-                data.message ||
-                data.error ||
-                "Erreur API"
-
+                "Les statistiques reçues sont invalides."
             );
+
+        }
+
+
+        updateStatisticsUI(
+            statistiques
+        );
+
+
+        return statistiques;
+
+    } catch (error) {
+
+        console.error(
+            "Erreur statistiques :",
+            error
+        );
+
+
+        /*
+         * Fallback :
+         * /api/statistiques
+         */
+
+        try {
+
+            const fallback =
+                await apiRequest(
+                    "/api/statistiques"
+                );
+
+
+            statistiques =
+                extractData(
+                    fallback
+                );
+
+
+            if (
+                statistiques
+            ) {
+
+                updateStatisticsUI(
+                    statistiques
+                );
+
+                return statistiques;
+
+            }
+
+        } catch (fallbackError) {
+
+            console.error(
+                "Fallback statistiques :",
+                fallbackError
+            );
+
+        }
+
+
+        notify(
+            error.message ||
+            "Impossible de charger les statistiques.",
+            "error"
+        );
+
+
+        return null;
+
+    }
+
+}
+
+
+/* =========================================================
+   12. AFFICHER STATISTIQUES
+========================================================= */
+
+function updateStatisticsUI(
+    data
+) {
+
+    const values = {
+
+        utilisateurs:
+            data.utilisateurs ??
+            data.users ??
+            data.total_users ??
+            data.totalUsers ??
+            0,
+
+        premium:
+            data.premium ??
+            data.premium_users ??
+            data.total_premium ??
+            0,
+
+        bloques:
+            data.bloques ??
+            data.blocked ??
+            data.blocked_users ??
+            0,
+
+        paiements:
+            data.paiements ??
+            data.payments ??
+            data.total_payments ??
+            0,
+
+        en_attente:
+            data.en_attente ??
+            data.pending ??
+            data.pending_payments ??
+            0,
+
+        valides:
+            data.valides ??
+            data.validated ??
+            data.validated_payments ??
+            0,
+
+        refuses:
+            data.refuses ??
+            data.refused ??
+            data.refused_payments ??
+            0,
+
+        revenus:
+            data.revenus ??
+            data.revenue ??
+            data.total_revenue ??
+            0
+
+    };
+
+
+    setText(
+        "statUsers",
+        formatNumber(
+            values.utilisateurs
+        )
+    );
+
+
+    setText(
+        "statPremium",
+        formatNumber(
+            values.premium
+        )
+    );
+
+
+    setText(
+        "statBlocked",
+        formatNumber(
+            values.bloques
+        )
+    );
+
+
+    setText(
+        "statPayments",
+        formatNumber(
+            values.paiements
+        )
+    );
+
+
+    setText(
+        "statPending",
+        formatNumber(
+            values.en_attente
+        )
+    );
+
+
+    setText(
+        "statValidated",
+        formatNumber(
+            values.valides
+        )
+    );
+
+
+    setText(
+        "statRefused",
+        formatNumber(
+            values.refuses
+        )
+    );
+
+
+    setText(
+        "statRevenue",
+        formatMoney(
+            values.revenus
+        )
+    );
+
+}
+
+
+/* =========================================================
+   13. DASHBOARD
+========================================================= */
+
+async function loadDashboard() {
+
+    try {
+
+        const result =
+            await apiRequest(
+                "/api/admin/dashboard"
+            );
+
+
+        const data =
+            extractData(
+                result
+            );
+
+
+        /*
+         * Certains serveurs mettent les
+         * statistiques dans data.statistics.
+         */
+
+        if (
+            data &&
+            data.statistics
+        ) {
+
+            updateStatisticsUI(
+                data.statistics
+            );
+
+        }
+
+        else if (
+            data &&
+            data.statistiques
+        ) {
+
+            updateStatisticsUI(
+                data.statistiques
+            );
+
+        }
+
+        else if (
+            data &&
+            typeof data === "object"
+        ) {
+
+            /*
+             * Si /dashboard contient directement
+             * utilisateurs, premium, etc.
+             */
+
+            if (
+                data.utilisateurs !== undefined ||
+                data.paiements !== undefined ||
+                data.premium !== undefined
+            ) {
+
+                updateStatisticsUI(
+                    data
+                );
+
+            }
 
         }
 
@@ -4881,23 +5395,20 @@ async function apiRequest(
 
     } catch (error) {
 
-        if (
-            error.name ===
-            "AbortError"
-        ) {
-
-            throw new Error(
-                "Le serveur met trop de temps à répondre."
-            );
-
-        }
+        console.error(
+            "Dashboard :",
+            error
+        );
 
 
-        throw error;
+        /*
+         * Les statistiques ont leur propre
+         * route officielle.
+         */
 
-    } finally {
+        await loadStatistics();
 
-        clearTimeout(timeout);
+        return null;
 
     }
 
@@ -4905,79 +5416,283 @@ async function apiRequest(
 
 
 /* =========================================================
-   9. EXTRACTION DES DONNÉES
+   14. UTILISATEURS
 ========================================================= */
 
-function extractList(response) {
+async function loadUsers() {
 
-    if (!response) {
+    try {
 
-        return [];
+        /*
+         * Route officielle.
+         */
+
+        const result =
+            await apiRequest(
+                "/api/admin/utilisateurs"
+            );
+
+
+        const data =
+            extractData(
+                result
+            );
+
+
+        utilisateurs =
+            normalizeArray(
+                data,
+                [
+                    "utilisateurs",
+                    "users",
+                    "data",
+                    "rows",
+                    "results"
+                ]
+            );
+
+
+        renderUsers(
+            utilisateurs
+        );
+
+
+        return utilisateurs;
+
+    } catch (error) {
+
+        console.error(
+            "Erreur utilisateurs :",
+            error
+        );
+
+
+        /*
+         * Fallback officiel.
+         */
+
+        try {
+
+            const result =
+                await apiRequest(
+                    "/api/admin/users"
+                );
+
+
+            const data =
+                extractData(
+                    result
+                );
+
+
+            utilisateurs =
+                normalizeArray(
+                    data,
+                    [
+                        "users",
+                        "utilisateurs",
+                        "data",
+                        "rows",
+                        "results"
+                    ]
+                );
+
+
+            renderUsers(
+                utilisateurs
+            );
+
+
+            return utilisateurs;
+
+        } catch (fallbackError) {
+
+            console.error(
+                "Fallback utilisateurs :",
+                fallbackError
+            );
+
+
+            showTableMessage(
+                "usersTableBody",
+                "Impossible de charger les utilisateurs."
+            );
+
+
+            notify(
+                fallbackError.message ||
+                "Impossible de charger les utilisateurs.",
+                "error"
+            );
+
+
+            return [];
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   15. PAIEMENTS
+========================================================= */
+
+async function loadPayments() {
+
+    try {
+
+        /*
+         * Route officielle.
+         */
+
+        const result =
+            await apiRequest(
+                "/api/admin/paiements"
+            );
+
+
+        const data =
+            extractData(
+                result
+            );
+
+
+        paiements =
+            normalizeArray(
+                data,
+                [
+                    "paiements",
+                    "payments",
+                    "data",
+                    "rows",
+                    "results"
+                ]
+            );
+
+
+        renderPayments(
+            paiements
+        );
+
+
+        return paiements;
+
+    } catch (error) {
+
+        console.error(
+            "Erreur paiements :",
+            error
+        );
+
+
+        /*
+         * Fallback officiel.
+         */
+
+        try {
+
+            const result =
+                await apiRequest(
+                    "/api/admin/payments"
+                );
+
+
+            const data =
+                extractData(
+                    result
+                );
+
+
+            paiements =
+                normalizeArray(
+                    data,
+                    [
+                        "payments",
+                        "paiements",
+                        "data",
+                        "rows",
+                        "results"
+                    ]
+                );
+
+
+            renderPayments(
+                paiements
+            );
+
+
+            return paiements;
+
+        } catch (fallbackError) {
+
+            console.error(
+                "Fallback paiements :",
+                fallbackError
+            );
+
+
+            showTableMessage(
+                "paymentsTableBody",
+                "Impossible de charger les paiements."
+            );
+
+
+            notify(
+                fallbackError.message ||
+                "Impossible de charger les paiements.",
+                "error"
+            );
+
+
+            return [];
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   16. NORMALISER TABLEAU
+========================================================= */
+
+function normalizeArray(
+    data,
+    keys = []
+) {
+
+    if (
+        Array.isArray(data)
+    ) {
+
+        return data;
 
     }
 
 
     if (
-        Array.isArray(response)
+        data &&
+        typeof data === "object"
     ) {
 
-        return response;
+        for (
+            const key of keys
+        ) {
 
-    }
+            if (
+                Array.isArray(
+                    data[key]
+                )
+            ) {
 
+                return data[key];
 
-    if (
-        Array.isArray(response.data)
-    ) {
+            }
 
-        return response.data;
-
-    }
-
-
-    if (
-        Array.isArray(
-            response.data?.data
-        )
-    ) {
-
-        return response.data.data;
-
-    }
-
-
-    if (
-        Array.isArray(response.paiements)
-    ) {
-
-        return response.paiements;
-
-    }
-
-
-    if (
-        Array.isArray(response.users)
-    ) {
-
-        return response.users;
-
-    }
-
-
-    if (
-        Array.isArray(response.utilisateurs)
-    ) {
-
-        return response.utilisateurs;
-
-    }
-
-
-    if (
-        Array.isArray(response.results)
-    ) {
-
-        return response.results;
+        }
 
     }
 
@@ -4988,1646 +5703,262 @@ function extractList(response) {
 
 
 /* =========================================================
-   10. COMPATIBILITÉ DES CHAMPS UTILISATEUR
+   17. AFFICHER UTILISATEURS
 ========================================================= */
 
-function getUserId(user) {
-
-    return (
-        user?.id ??
-        user?.user_id ??
-        user?.userId ??
-        null
-    );
-
-}
-
-
-function getUserName(user) {
-
-    return (
-        user?.nom ??
-        user?.name ??
-        user?.fullname ??
-        user?.full_name ??
-        "Utilisateur"
-    );
-
-}
-
-
-function getUserEmail(user) {
-
-    return (
-        user?.email ??
-        ""
-    );
-
-}
-
-
-function getUserPhone(user) {
-
-    return (
-        user?.telephone ??
-        user?.phone ??
-        ""
-    );
-
-}
-
-
-function isUserPremium(user) {
-
-    return (
-        user?.premium === true ||
-        user?.is_premium === true
-    );
-
-}
-
-
-function isUserBlocked(user) {
-
-    return (
-        user?.blocked === true ||
-        user?.is_blocked === true
-    );
-
-}
-
-
-/* =========================================================
-   11. COMPATIBILITÉ DES CHAMPS PAIEMENT
-========================================================= */
-
-function getPaymentId(payment) {
-
-    return (
-        payment?.id ??
-        payment?.payment_id ??
-        null
-    );
-
-}
-
-
-function getPaymentUserId(payment) {
-
-    return (
-        payment?.user_id ??
-        payment?.userId ??
-        null
-    );
-
-}
-
-
-function getPaymentName(payment) {
-
-    return (
-        payment?.nom ??
-        payment?.name ??
-        payment?.user_nom_db ??
-        "Utilisateur"
-    );
-
-}
-
-
-function getPaymentEmail(payment) {
-
-    return (
-        payment?.email ??
-        payment?.user_email_db ??
-        ""
-    );
-
-}
-
-
-function getPaymentPhone(payment) {
-
-    return (
-        payment?.telephone ??
-        payment?.phone ??
-        payment?.user_telephone_db ??
-        ""
-    );
-
-}
-
-
-function getPaymentAmount(payment) {
-
-    return Number(
-
-        payment?.amount ??
-        payment?.montant ??
-        0
-
-    );
-
-}
-
-
-function getPaymentCurrency(payment) {
-
-    return (
-
-        payment?.currency ??
-        "USD"
-
-    );
-
-}
-
-
-function getPaymentMethod(payment) {
-
-    return (
-
-        payment?.methode ??
-        payment?.method ??
-        payment?.mode_paiement ??
-        "Non spécifié"
-
-    );
-
-}
-
-
-function getPaymentReference(payment) {
-
-    return (
-
-        payment?.reference ??
-        payment?.transaction_id ??
-        payment?.transactionId ??
-        "Aucune"
-
-    );
-
-}
-
-
-function getPaymentProof(payment) {
-
-    return (
-
-        payment?.proof ??
-        payment?.preuve ??
-        payment?.image ??
-        null
-
-    );
-
-}
-
-
-function getPaymentStatus(payment) {
-
-    return String(
-
-        payment?.status ??
-        "pending"
-
-    ).toLowerCase();
-
-}
-
-
-/* =========================================================
-   12. FORMATAGE
-========================================================= */
-
-function formatMoney(
-
-    amount,
-
-    currency = "USD"
-
-) {
-
-    const number =
-        Number(amount) || 0;
-
-
-    return (
-
-        number.toLocaleString(
-            "fr-FR",
-            {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            }
-        ) +
-        " " +
-        currency
-
-    );
-
-}
-
-
-function formatDate(value) {
-
-    if (!value) {
-
-        return "—";
-
-    }
-
-
-    const date =
-        new Date(value);
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
-        return String(value);
-
-    }
-
-
-    return date.toLocaleString(
-
-        "fr-FR",
-
-        {
-
-            day: "2-digit",
-
-            month: "2-digit",
-
-            year: "numeric",
-
-            hour: "2-digit",
-
-            minute: "2-digit"
-
-        }
-
-    );
-
-}
-
-
-/* =========================================================
-   13. NORMALISATION STATUT
-========================================================= */
-
-function normalizeStatus(status) {
-
-    const value =
-        String(
-            status || "pending"
-        ).toLowerCase();
-
-
-    if (
-        value === "validated" ||
-        value === "valide" ||
-        value === "validé" ||
-        value === "approved" ||
-        value === "paid"
-    ) {
-
-        return "validated";
-
-    }
-
-
-    if (
-        value === "refused" ||
-        value === "refuse" ||
-        value === "refusé" ||
-        value === "rejected"
-    ) {
-
-        return "refused";
-
-    }
-
-
-    return "pending";
-
-}
-
-
-/* =========================================================
-   14. LABEL STATUT
-========================================================= */
-
-function getStatusLabel(status) {
-
-    const normalized =
-        normalizeStatus(status);
-
-
-    if (
-        normalized === "validated"
-    ) {
-
-        return "Validé";
-
-    }
-
-
-    if (
-        normalized === "refused"
-    ) {
-
-        return "Refusé";
-
-    }
-
-
-    return "En attente";
-
-}
-
-
-/* =========================================================
-   15. CLASSE STATUT
-========================================================= */
-
-function getStatusClass(status) {
-
-    const normalized =
-        normalizeStatus(status);
-
-
-    if (
-        normalized === "validated"
-    ) {
-
-        return "validated";
-
-    }
-
-
-    if (
-        normalized === "refused"
-    ) {
-
-        return "refused";
-
-    }
-
-
-    return "pending";
-
-}
-
-
-/* =========================================================
-   16. NOTIFICATION
-========================================================= */
-
-function showNotification(
-
-    message,
-
-    type = "success"
-
-) {
-
-    let container =
-        getElementByIds(
-            "notificationContainer",
-            "notifications",
-            "toastContainer"
-        );
-
-
-    if (!container) {
-
-        container =
-            document.createElement(
-                "div"
-            );
-
-        container.id =
-            "notificationContainer";
-
-        container.style.position =
-            "fixed";
-
-        container.style.top =
-            "20px";
-
-        container.style.right =
-            "20px";
-
-        container.style.zIndex =
-            "99999";
-
-        container.style.display =
-            "flex";
-
-        container.style.flexDirection =
-            "column";
-
-        container.style.gap =
-            "10px";
-
-        document.body.appendChild(
-            container
-        );
-
-    }
-
-
-    const notification =
-        document.createElement(
-            "div"
-        );
-
-
-    notification.textContent =
-        message;
-
-
-    notification.style.padding =
-        "14px 18px";
-
-
-    notification.style.borderRadius =
-        "10px";
-
-
-    notification.style.background =
-        type === "error"
-            ? "#b42318"
-            : type === "warning"
-                ? "#b54708"
-                : "#087443";
-
-
-    notification.style.color =
-        "#ffffff";
-
-
-    notification.style.fontWeight =
-        "600";
-
-
-    notification.style.boxShadow =
-        "0 8px 25px rgba(0,0,0,.2)";
-
-
-    container.appendChild(
-        notification
-    );
-
-
-    setTimeout(
-
-        function() {
-
-            notification.remove();
-
-        },
-
-        4000
-
-    );
-
-}
-
-
-/* =========================================================
-   17. CHARGEMENT
-========================================================= */
-
-function setLoading(
-
-    element,
-
-    loading,
-
-    text = "Chargement..."
-
-) {
-
-    if (!element) {
-
-        return;
-
-    }
-
-
-    if (loading) {
-
-        element.dataset.originalText =
-            element.textContent;
-
-        element.disabled = true;
-
-        element.textContent =
-            text;
-
-    } else {
-
-        element.disabled = false;
-
-        if (
-            element.dataset.originalText
-        ) {
-
-            element.textContent =
-                element.dataset.originalText;
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   18. CHARGER STATISTIQUES
-========================================================= */
-
-async function loadStatistics() {
-
-    if (chargementStatistiques) {
-
-        return;
-
-    }
-
-
-    chargementStatistiques =
-        true;
-
-
-    try {
-
-        const response =
-            await apiRequest(
-                ROUTES.statistiques
-            );
-
-
-        const data =
-            response?.data ??
-            response ??
-            {};
-
-
-        updateStatistics(
-            data
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Erreur statistiques :",
-            error
-        );
-
-
-        showNotification(
-
-            "Impossible de charger les statistiques.",
-
-            "error"
-
-        );
-
-    } finally {
-
-        chargementStatistiques =
-            false;
-
-    }
-
-}
-
-
-/* =========================================================
-   19. AFFICHER STATISTIQUES
-========================================================= */
-
-function updateStatistics(data) {
-
-    const values = {
-
-        utilisateurs:
-            Number(
-                data.utilisateurs ??
-                data.users ??
-                data.total_users ??
-                0
-            ),
-
-        premium:
-            Number(
-                data.premium ??
-                data.total_premium ??
-                0
-            ),
-
-        bloques:
-            Number(
-                data.bloques ??
-                data.blocked ??
-                0
-            ),
-
-        paiements:
-            Number(
-                data.paiements ??
-                data.total_payments ??
-                0
-            ),
-
-        en_attente:
-            Number(
-                data.en_attente ??
-                data.pending ??
-                0
-            ),
-
-        valides:
-            Number(
-                data.valides ??
-                data.validated ??
-                0
-            ),
-
-        refuses:
-            Number(
-                data.refuses ??
-                data.refused ??
-                0
-            ),
-
-        revenus:
-            Number(
-                data.revenus ??
-                0
-            )
-
-    };
-
-
-    const elements = {
-
-        utilisateurs:
-            [
-                "totalUtilisateurs",
-                "utilisateurs",
-                "total-users",
-                "statUtilisateurs"
-            ],
-
-        premium:
-            [
-                "totalPremium",
-                "premium",
-                "premiumUsers",
-                "statPremium"
-            ],
-
-        bloques:
-            [
-                "totalBloques",
-                "bloques",
-                "blockedUsers",
-                "statBloques"
-            ],
-
-        paiements:
-            [
-                "totalPaiements",
-                "paiements",
-                "totalPayments",
-                "statPaiements"
-            ],
-
-        en_attente:
-            [
-                "paiementsAttente",
-                "enAttente",
-                "pendingPayments",
-                "statEnAttente"
-            ],
-
-        valides:
-            [
-                "paiementsValides",
-                "valides",
-                "validatedPayments",
-                "statValides"
-            ],
-
-        refuses:
-            [
-                "paiementsRefuses",
-                "refuses",
-                "refusedPayments",
-                "statRefuses"
-            ],
-
-        revenus:
-            [
-                "revenus",
-                "totalRevenus",
-                "revenue",
-                "statRevenus"
-            ]
-
-    };
-
-
-    Object.keys(
-        elements
-    ).forEach(
-
-        function(key) {
-
-            const element =
-                getElementByIds(
-                    ...elements[key]
-                );
-
-
-            if (!element) {
-
-                return;
-
-            }
-
-
-            if (
-                key === "revenus"
-            ) {
-
-                element.textContent =
-                    formatMoney(
-                        values[key],
-                        "USD"
-                    );
-
-            } else {
-
-                element.textContent =
-                    values[key]
-                        .toLocaleString(
-                            "fr-FR"
-                        );
-
-            }
-
-        }
-
-    );
-
-}
-
-
-/* =========================================================
-   20. CHARGER PAIEMENTS
-========================================================= */
-
-async function loadPayments(
-
-    silent = false
-
-) {
-
-    if (chargementPaiements) {
-
-        return;
-
-    }
-
-
-    chargementPaiements =
-        true;
-
-
-    try {
-
-        const response =
-            await apiRequest(
-                ROUTES.paiements
-            );
-
-
-        paiements =
-            extractList(
-                response
-            );
-
-
-        paiementsFiltres =
-            [...paiements];
-
-
-        renderPayments(
-            paiementsFiltres
-        );
-
-
-        updatePaymentCounters(
-            paiements
-        );
-
-
-        if (!silent) {
-
-            showNotification(
-                "Paiements chargés."
-            );
-
-        }
-
-
-    } catch (error) {
-
-        console.error(
-            "Erreur paiements :",
-            error
-        );
-
-
-        if (!silent) {
-
-            showNotification(
-
-                error.message ||
-                "Impossible de charger les paiements.",
-
-                "error"
-
-            );
-
-        }
-
-    } finally {
-
-        chargementPaiements =
-            false;
-
-    }
-
-}
-
-
-/* =========================================================
-   21. COMPTEURS PAIEMENTS
-========================================================= */
-
-function updatePaymentCounters(
+function renderUsers(
     list
 ) {
 
-    const pending =
-        list.filter(
-
-            payment =>
-                normalizeStatus(
-                    getPaymentStatus(payment)
-                ) === "pending"
-
-        ).length;
-
-
-    const validated =
-        list.filter(
-
-            payment =>
-                normalizeStatus(
-                    getPaymentStatus(payment)
-                ) === "validated"
-
-        ).length;
-
-
-    const refused =
-        list.filter(
-
-            payment =>
-                normalizeStatus(
-                    getPaymentStatus(payment)
-                ) === "refused"
-
-        ).length;
-
-
-    const total =
-        list.length;
-
-
-    const mapping = {
-
-        pending: [
-            "paiementsAttente",
-            "enAttente",
-            "pendingPayments"
-        ],
-
-        validated: [
-            "paiementsValides",
-            "valides",
-            "validatedPayments"
-        ],
-
-        refused: [
-            "paiementsRefuses",
-            "refuses",
-            "refusedPayments"
-        ],
-
-        total: [
-            "totalPaiements",
-            "paiements",
-            "totalPayments"
-        ]
-
-    };
-
-
-    const values = {
-
-        pending,
-
-        validated,
-
-        refused,
-
-        total
-
-    };
-
-
-    Object.keys(
-        mapping
-    ).forEach(
-
-        key => {
-
-            const element =
-                getElementByIds(
-                    ...mapping[key]
-                );
-
-
-            if (element) {
-
-                element.textContent =
-                    values[key];
-
-            }
-
-        }
-
-    );
-
-}
-
-
-/* =========================================================
-   22. RENDRE LES PAIEMENTS
-========================================================= */
-
-function renderPayments(list) {
-
-    const container =
-        getElementByIds(
-
-            "paymentsContainer",
-
-            "paiementsContainer",
-
-            "paymentsList",
-
-            "paiementsList",
-
-            "paymentList"
-
-        );
-
-
     const tbody =
-        getElementByIds(
-
-            "paymentsTableBody",
-
-            "paiementsTableBody",
-
-            "paymentTableBody",
-
-            "paiementsBody"
-
-        );
+        $("#usersTableBody");
 
 
-    if (
-        !container &&
-        !tbody
-    ) {
+    if (!tbody) {
 
         return;
 
     }
 
 
-    if (!list.length) {
+    if (
+        !Array.isArray(list) ||
+        !list.length
+    ) {
 
-        const emptyHTML = `
+        tbody.innerHTML = `
 
-            <div class="empty-state">
+            <tr>
 
-                Aucun paiement trouvé.
+                <td
+                    colspan="8"
+                    class="empty"
+                >
 
-            </div>
+                    Aucun utilisateur trouvé.
+
+                </td>
+
+            </tr>
 
         `;
 
-
-        if (tbody) {
-
-            tbody.innerHTML = `
-
-                <tr>
-
-                    <td colspan="10">
-
-                        Aucun paiement trouvé.
-
-                    </td>
-
-                </tr>
-
-            `;
-
-        } else {
-
-            container.innerHTML =
-                emptyHTML;
-
-        }
-
-
         return;
 
     }
 
 
-    if (tbody) {
-
-        tbody.innerHTML =
-            list.map(
-
-                payment =>
-                    createPaymentRow(
-                        payment
-                    )
-
-            ).join("");
-
-
-        attachPaymentEvents();
-
-        return;
-
-    }
-
-
-    container.innerHTML =
+    tbody.innerHTML =
         list.map(
+            function(user) {
 
-            payment =>
-                createPaymentCard(
-                    payment
-                )
+                const id =
+                    user.id;
 
-        ).join("");
+                const nom =
+                    user.nom ||
+                    user.name ||
+                    user.username ||
+                    "Sans nom";
 
+                const email =
+                    user.email ||
+                    "-";
 
-    attachPaymentEvents();
+                const telephone =
+                    user.telephone ||
+                    user.phone ||
+                    "-";
 
-}
+                const premium =
+                    getBooleanValue(
+                        user.premium ??
+                        user.is_premium
+                    );
 
+                const blocked =
+                    getBooleanValue(
+                        user.blocked ??
+                        user.is_blocked
+                    );
 
-/* =========================================================
-   23. LIGNE PAIEMENT
-========================================================= */
-
-function createPaymentRow(payment) {
-
-    const id =
-        getPaymentId(payment);
-
-
-    const status =
-        normalizeStatus(
-            getPaymentStatus(payment)
-        );
-
-
-    const amount =
-        getPaymentAmount(payment);
-
-
-    const currency =
-        getPaymentCurrency(payment);
-
-
-    const method =
-        getPaymentMethod(payment);
+                const premiumUntil =
+                    user.premium_until ||
+                    user.premiumUntil ||
+                    null;
 
 
-    const reference =
-        getPaymentReference(payment);
+                return `
 
+                    <tr>
 
-    const proof =
-        getPaymentProof(payment);
+                        <td>
+                            ${escapeHtml(id)}
+                        </td>
 
+                        <td>
 
-    const proofButton =
-        proof
-            ? `
+                            <div class="userCell">
 
-                <button
-                    type="button"
-                    class="btn-proof"
-                    data-action="proof"
-                    data-id="${id}"
-                >
-                    Voir preuve
-                </button>
+                                <div class="userMini">
 
-            `
-            : "—";
+                                    ${escapeHtml(
+                                        getInitials(nom)
+                                    )}
 
+                                </div>
 
-    return `
+                                <div>
 
-        <tr data-payment-id="${id}">
+                                    <strong>
+                                        ${escapeHtml(nom)}
+                                    </strong>
 
-            <td>
-                #${id}
-            </td>
+                                    <span>
+                                        ${escapeHtml(email)}
+                                    </span>
 
-            <td>
-                <strong>
-                    ${escapeHTML(
-                        getPaymentName(payment)
-                    )}
-                </strong>
+                                </div>
 
-                <br>
+                            </div>
 
-                <small>
-                    ${escapeHTML(
-                        getPaymentEmail(payment)
-                    )}
-                </small>
-            </td>
+                        </td>
 
-            <td>
-                ${escapeHTML(
-                    getPaymentPhone(payment)
-                )}
-            </td>
+                        <td>
+                            ${escapeHtml(telephone)}
+                        </td>
 
-            <td>
-                ${formatMoney(
-                    amount,
-                    currency
-                )}
-            </td>
+                        <td>
 
-            <td>
-                ${escapeHTML(
-                    method
-                )}
-            </td>
+                            ${
+                                premium
+                                    ? `
+                                        <span class="badge badge-success">
+                                            Premium
+                                        </span>
+                                      `
+                                    : `
+                                        <span class="badge badge-info">
+                                            Standard
+                                        </span>
+                                      `
+                            }
 
-            <td>
-                ${escapeHTML(
-                    reference
-                )}
-            </td>
+                        </td>
 
-            <td>
-                <span
-                    class="payment-status ${status}"
-                >
-                    ${getStatusLabel(status)}
-                </span>
-            </td>
+                        <td>
 
-            <td>
-                ${formatDate(
-                    payment.created_at
-                )}
-            </td>
+                            ${
+                                premiumUntil
+                                    ? formatDate(
+                                        premiumUntil
+                                      )
+                                    : "-"
+                            }
 
-            <td>
-                ${proofButton}
-            </td>
+                        </td>
 
-            <td>
+                        <td>
 
-                <div
-                    class="payment-actions"
-                >
+                            ${
+                                blocked
+                                    ? `
+                                        <span class="badge badge-danger">
+                                            Bloqué
+                                        </span>
+                                      `
+                                    : `
+                                        <span class="badge badge-success">
+                                            Actif
+                                        </span>
+                                      `
+                            }
 
-                    ${
-                        status === "pending"
-                            ? `
+                        </td>
+
+                        <td>
+
+                            ${formatDate(
+                                user.created_at ||
+                                user.createdAt
+                            )}
+
+                        </td>
+
+                        <td>
+
+                            <div class="actions">
 
                                 <button
-                                    type="button"
-                                    data-action="validate"
-                                    data-id="${id}"
-                                    class="btn-validate"
+                                    class="actionBtn actionView"
+                                    title="Voir"
+                                    onclick="viewUser(${Number(id)})"
                                 >
-                                    Valider
+
+                                    <i class="fa-solid fa-eye"></i>
+
                                 </button>
 
                                 <button
-                                    type="button"
-                                    data-action="refuse"
-                                    data-id="${id}"
-                                    class="btn-refuse"
+                                    class="actionBtn actionWarning"
+                                    title="Premium"
+                                    onclick="togglePremium(${Number(id)}, ${!premium})"
                                 >
-                                    Refuser
+
+                                    <i class="fa-solid fa-crown"></i>
+
                                 </button>
 
-                              `
-                            : ""
-                    }
+                                <button
+                                    class="actionBtn ${
+                                        blocked
+                                            ? "actionSuccess"
+                                            : "actionDanger"
+                                    }"
+                                    title="${
+                                        blocked
+                                            ? "Débloquer"
+                                            : "Bloquer"
+                                    }"
+                                    onclick="toggleBlock(${Number(id)}, ${!blocked})"
+                                >
 
-                    <button
-                        type="button"
-                        data-action="view"
-                        data-id="${id}"
-                        class="btn-view"
-                    >
-                        Voir
-                    </button>
+                                    <i class="fa-solid ${
+                                        blocked
+                                            ? "fa-unlock"
+                                            : "fa-ban"
+                                    }"></i>
 
-                    <button
-                        type="button"
-                        data-action="delete"
-                        data-id="${id}"
-                        class="btn-delete"
-                    >
-                        Supprimer
-                    </button>
+                                </button>
 
-                </div>
+                            </div>
 
-            </td>
+                        </td>
 
-        </tr>
+                    </tr>
 
-    `;
-
-}
-
-
-/* =========================================================
-   24. CARTE PAIEMENT
-========================================================= */
-
-function createPaymentCard(payment) {
-
-    const id =
-        getPaymentId(payment);
-
-
-    const status =
-        normalizeStatus(
-            getPaymentStatus(payment)
-        );
-
-
-    const proof =
-        getPaymentProof(payment);
-
-
-    return `
-
-        <article
-            class="payment-card"
-            data-payment-id="${id}"
-        >
-
-            <div class="payment-card-header">
-
-                <strong>
-                    Paiement #${id}
-                </strong>
-
-                <span
-                    class="payment-status ${status}"
-                >
-                    ${getStatusLabel(status)}
-                </span>
-
-            </div>
-
-
-            <div class="payment-card-body">
-
-                <p>
-                    <strong>Nom :</strong>
-                    ${escapeHTML(
-                        getPaymentName(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Email :</strong>
-                    ${escapeHTML(
-                        getPaymentEmail(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Téléphone :</strong>
-                    ${escapeHTML(
-                        getPaymentPhone(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Montant :</strong>
-                    ${formatMoney(
-                        getPaymentAmount(payment),
-                        getPaymentCurrency(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Méthode :</strong>
-                    ${escapeHTML(
-                        getPaymentMethod(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Référence :</strong>
-                    ${escapeHTML(
-                        getPaymentReference(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Date :</strong>
-                    ${formatDate(
-                        payment.created_at
-                    )}
-                </p>
-
-                ${
-                    proof
-                        ? `
-
-                            <button
-                                type="button"
-                                data-action="proof"
-                                data-id="${id}"
-                                class="btn-proof"
-                            >
-                                Voir la preuve
-                            </button>
-
-                          `
-                        : ""
-                }
-
-            </div>
-
-
-            <div class="payment-card-actions">
-
-                ${
-                    status === "pending"
-                        ? `
-
-                            <button
-                                type="button"
-                                data-action="validate"
-                                data-id="${id}"
-                                class="btn-validate"
-                            >
-                                Valider
-                            </button>
-
-                            <button
-                                type="button"
-                                data-action="refuse"
-                                data-id="${id}"
-                                class="btn-refuse"
-                            >
-                                Refuser
-                            </button>
-
-                          `
-                        : ""
-                }
-
-
-                <button
-                    type="button"
-                    data-action="view"
-                    data-id="${id}"
-                    class="btn-view"
-                >
-                    Voir
-                </button>
-
-
-                <button
-                    type="button"
-                    data-action="delete"
-                    data-id="${id}"
-                    class="btn-delete"
-                >
-                    Supprimer
-                </button>
-
-            </div>
-
-        </article>
-
-    `;
-
-}
-
-
-/* =========================================================
-   25. ÉVÉNEMENTS PAIEMENTS
-========================================================= */
-
-function attachPaymentEvents() {
-
-    $$(
-        "[data-action]"
-    ).forEach(
-
-        function(button) {
-
-            if (
-                button.dataset.listenerAttached
-            ) {
-
-                return;
+                `;
 
             }
-
-
-            button.dataset.listenerAttached =
-                "true";
-
-
-            button.addEventListener(
-
-                "click",
-
-                async function() {
-
-                    const action =
-                        button.dataset.action;
-
-
-                    const id =
-                        Number(
-                            button.dataset.id
-                        );
-
-
-                    if (!id) {
-
-                        return;
-
-                    }
-
-
-                    if (
-                        action === "validate"
-                    ) {
-
-                        await validatePayment(
-                            id,
-                            button
-                        );
-
-                    }
-
-
-                    if (
-                        action === "refuse"
-                    ) {
-
-                        await refusePayment(
-                            id,
-                            button
-                        );
-
-                    }
-
-
-                    if (
-                        action === "delete"
-                    ) {
-
-                        await deletePayment(
-                            id,
-                            button
-                        );
-
-                    }
-
-
-                    if (
-                        action === "view"
-                    ) {
-
-                        await viewPayment(
-                            id
-                        );
-
-                    }
-
-
-                    if (
-                        action === "proof"
-                    ) {
-
-                        showPaymentProof(
-                            id
-                        );
-
-                    }
-
-                }
-
-            );
-
-        }
-
-    );
+        )
+        .join("");
 
 }
 
 
 /* =========================================================
-   26. TROUVER PAIEMENT
+   18. AFFICHER PAIEMENTS
 ========================================================= */
 
-function findPayment(id) {
-
-    return paiements.find(
-
-        payment =>
-            Number(
-                getPaymentId(payment)
-            ) === Number(id)
-
-    );
-
-}
-
-
-/* =========================================================
-   27. VALIDER PAIEMENT
-========================================================= */
-
-async function validatePayment(
-
-    id,
-
-    button = null
-
+function renderPayments(
+    list
 ) {
 
-    const payment =
-        findPayment(id);
+    const tbody =
+        $("#paymentsTableBody");
 
 
-    if (!payment) {
-
-        showNotification(
-            "Paiement introuvable.",
-            "error"
-        );
+    if (!tbody) {
 
         return;
 
@@ -6635,102 +5966,452 @@ async function validatePayment(
 
 
     if (
-        normalizeStatus(
-            getPaymentStatus(payment)
-        ) !== "pending"
+        !Array.isArray(list) ||
+        !list.length
     ) {
 
-        showNotification(
-            "Ce paiement n'est plus en attente.",
-            "warning"
-        );
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="9"
+                    class="empty"
+                >
+
+                    Aucun paiement trouvé.
+
+                </td>
+
+            </tr>
+
+        `;
 
         return;
 
     }
 
 
-    const confirmed =
-        window.confirm(
+    tbody.innerHTML =
+        list.map(
+            function(payment) {
 
-            `Voulez-vous valider le paiement #${id} ?\n\n` +
+                const id =
+                    payment.id;
 
-            `Utilisateur : ${getPaymentName(payment)}\n` +
+                const nom =
+                    payment.nom ||
+                    payment.user_nom ||
+                    payment.user_name ||
+                    "Utilisateur";
 
-            `Montant : ${formatMoney(
-                getPaymentAmount(payment),
-                getPaymentCurrency(payment)
-            )}\n\n` +
+                const email =
+                    payment.email ||
+                    payment.user_email ||
+                    "-";
 
-            `Cette action activera le Premium de l'utilisateur.`
+                const amount =
+                    payment.amount ??
+                    payment.montant ??
+                    0;
 
-        );
+                const currency =
+                    payment.currency ||
+                    "USD";
+
+                const method =
+                    payment.methode ||
+                    payment.method ||
+                    payment.mode_paiement ||
+                    "-";
+
+                const reference =
+                    payment.reference ||
+                    payment.transaction_id ||
+                    "-";
+
+                const status =
+                    String(
+                        payment.status ||
+                        "pending"
+                    ).toLowerCase();
 
 
-    if (!confirmed) {
+                return `
 
-        return;
+                    <tr>
+
+                        <td>
+                            #${escapeHtml(id)}
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                ${escapeHtml(nom)}
+                            </strong>
+
+                            <br>
+
+                            <small>
+                                ${escapeHtml(email)}
+                            </small>
+
+                        </td>
+
+                        <td>
+                            ${formatMoney(
+                                amount,
+                                currency
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(method)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(reference)}
+                        </td>
+
+                        <td>
+
+                            ${getPaymentBadge(
+                                status
+                            )}
+
+                        </td>
+
+                        <td>
+
+                            ${formatDate(
+                                payment.created_at ||
+                                payment.createdAt
+                            )}
+
+                        </td>
+
+                        <td>
+
+                            <div class="actions">
+
+                                <button
+                                    class="actionBtn actionView"
+                                    title="Voir"
+                                    onclick="viewPayment(${Number(id)})"
+                                >
+
+                                    <i class="fa-solid fa-eye"></i>
+
+                                </button>
+
+
+                                ${
+                                    status !== "validated"
+                                    && status !== "refused"
+                                    ?
+
+                                    `
+
+                                    <button
+                                        class="actionBtn actionSuccess"
+                                        title="Valider"
+                                        onclick="validatePayment(${Number(id)})"
+                                    >
+
+                                        <i class="fa-solid fa-check"></i>
+
+                                    </button>
+
+
+                                    <button
+                                        class="actionBtn actionDanger"
+                                        title="Refuser"
+                                        onclick="refusePayment(${Number(id)})"
+                                    >
+
+                                        <i class="fa-solid fa-xmark"></i>
+
+                                    </button>
+
+                                    `
+
+                                    :
+
+                                    ""
+                                }
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* =========================================================
+   19. BADGE PAIEMENT
+========================================================= */
+
+function getPaymentBadge(
+    status
+) {
+
+    switch (status) {
+
+        case "validated":
+
+        case "valide":
+
+        case "validé":
+
+            return `
+                <span class="badge badge-success">
+                    Validé
+                </span>
+            `;
+
+
+        case "refused":
+
+        case "refuse":
+
+        case "refusé":
+
+            return `
+                <span class="badge badge-danger">
+                    Refusé
+                </span>
+            `;
+
+
+        default:
+
+            return `
+                <span class="badge badge-warning">
+                    En attente
+                </span>
+            `;
 
     }
 
+}
 
-    setLoading(
-        button,
-        true,
-        "Validation..."
-    );
 
+/* =========================================================
+   20. VOIR UTILISATEUR
+========================================================= */
+
+async function viewUser(
+    id
+) {
 
     try {
 
-        const response =
+        const result =
             await apiRequest(
-
-                `${API_URL}/api/admin/paiements/${id}/valider`,
-
-                {
-
-                    method:
-                        "PATCH"
-
-                }
-
+                `/api/users/${id}`
             );
 
 
-        showNotification(
+        const user =
+            extractData(
+                result
+            );
 
-            response?.message ||
-            "Paiement validé et Premium activé."
 
+        showUserModal(
+            user
         );
-
-
-        await reloadDashboardData();
-
 
     } catch (error) {
 
-        console.error(
-            "Validation paiement :",
-            error
+        /*
+         * Fallback admin.
+         */
+
+        try {
+
+            const result =
+                await apiRequest(
+                    `/api/utilisateurs/${id}`
+                );
+
+
+            const user =
+                extractData(
+                    result
+                );
+
+
+            showUserModal(
+                user
+            );
+
+        } catch (fallbackError) {
+
+            notify(
+                fallbackError.message ||
+                "Impossible de charger cet utilisateur.",
+                "error"
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   21. MODAL UTILISATEUR
+========================================================= */
+
+function showUserModal(
+    user
+) {
+
+    if (!user) {
+
+        return;
+
+    }
+
+
+    const modal =
+        $("#detailModal");
+
+    const title =
+        $("#detailModalTitle");
+
+    const content =
+        $("#detailModalContent");
+
+
+    if (
+        !modal ||
+        !title ||
+        !content
+    ) {
+
+        return;
+
+    }
+
+
+    title.textContent =
+        "Informations utilisateur";
+
+
+    content.innerHTML = `
+
+        <div class="detailGrid">
+
+            ${detail(
+                "ID",
+                user.id
+            )}
+
+            ${detail(
+                "Nom",
+                user.nom ||
+                user.name
+            )}
+
+            ${detail(
+                "Email",
+                user.email
+            )}
+
+            ${detail(
+                "Téléphone",
+                user.telephone ||
+                user.phone
+            )}
+
+            ${detail(
+                "Premium",
+                getBooleanValue(
+                    user.premium ??
+                    user.is_premium
+                )
+                    ? "Oui"
+                    : "Non"
+            )}
+
+            ${detail(
+                "Premium jusqu'au",
+                formatDate(
+                    user.premium_until
+                )
+            )}
+
+            ${detail(
+                "Compte bloqué",
+                getBooleanValue(
+                    user.blocked ??
+                    user.is_blocked
+                )
+                    ? "Oui"
+                    : "Non"
+            )}
+
+            ${detail(
+                "Créé le",
+                formatDate(
+                    user.created_at
+                )
+            )}
+
+        </div>
+
+    `;
+
+
+    openModal();
+
+}
+
+
+/* =========================================================
+   22. VOIR PAIEMENT
+========================================================= */
+
+async function viewPayment(
+    id
+) {
+
+    try {
+
+        const result =
+            await apiRequest(
+                `/api/paiements/${id}`
+            );
+
+
+        const payment =
+            extractData(
+                result
+            );
+
+
+        showPaymentModal(
+            payment
         );
 
+    } catch (error) {
 
-        showNotification(
-
+        notify(
             error.message ||
-            "Impossible de valider le paiement.",
-
+            "Impossible de charger le paiement.",
             "error"
-
-        );
-
-    } finally {
-
-        setLoading(
-            button,
-            false
         );
 
     }
@@ -6739,126 +6420,525 @@ async function validatePayment(
 
 
 /* =========================================================
-   28. REFUSER PAIEMENT
+   23. MODAL PAIEMENT
 ========================================================= */
 
-async function refusePayment(
-
-    id,
-
-    button = null
-
+function showPaymentModal(
+    payment
 ) {
-
-    const payment =
-        findPayment(id);
-
 
     if (!payment) {
 
-        showNotification(
-            "Paiement introuvable.",
-            "error"
-        );
+        return;
+
+    }
+
+
+    const modal =
+        $("#detailModal");
+
+    const title =
+        $("#detailModalTitle");
+
+    const content =
+        $("#detailModalContent");
+
+
+    if (
+        !modal ||
+        !title ||
+        !content
+    ) {
 
         return;
 
     }
 
 
-    const reason =
-        window.prompt(
-
-            "Indiquez le motif du refus :",
-
-            "Paiement refusé par l'administrateur"
-
-        );
+    title.textContent =
+        `Paiement #${payment.id}`;
 
 
-    if (reason === null) {
+    const proof =
+        payment.proof ||
+        payment.preuve ||
+        null;
+
+
+    content.innerHTML = `
+
+        <div class="detailGrid">
+
+            ${detail(
+                "ID",
+                payment.id
+            )}
+
+            ${detail(
+                "Nom",
+                payment.nom
+            )}
+
+            ${detail(
+                "Email",
+                payment.email
+            )}
+
+            ${detail(
+                "Téléphone",
+                payment.telephone
+            )}
+
+            ${detail(
+                "Montant",
+                formatMoney(
+                    payment.amount ??
+                    payment.montant ??
+                    0,
+                    payment.currency ||
+                    "USD"
+                )
+            )}
+
+            ${detail(
+                "Méthode",
+                payment.methode ||
+                payment.method
+            )}
+
+            ${detail(
+                "Référence",
+                payment.reference ||
+                payment.transaction_id
+            )}
+
+            ${detail(
+                "Statut",
+                payment.status
+            )}
+
+            ${detail(
+                "Premium",
+                `${
+                    payment.premium_days ||
+                    30
+                } jours`
+            )}
+
+            ${detail(
+                "Date",
+                formatDate(
+                    payment.created_at
+                )
+            )}
+
+        </div>
+
+        ${
+            proof
+                ? `
+                    <img
+                        class="proofImage"
+                        src="${escapeAttribute(proof)}"
+                        alt="Preuve de paiement"
+                    >
+                  `
+                : ""
+        }
+
+    `;
+
+
+    openModal();
+
+}
+
+
+/* =========================================================
+   24. DETAIL
+========================================================= */
+
+function detail(
+    label,
+    value
+) {
+
+    return `
+
+        <div class="detailItem">
+
+            <small>
+                ${escapeHtml(
+                    label
+                )}
+            </small>
+
+            <strong>
+                ${escapeHtml(
+                    value ??
+                    "-"
+                )}
+            </strong>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================================
+   25. VALIDER PAIEMENT
+========================================================= */
+
+async function validatePayment(
+    id
+) {
+
+    if (
+        !confirm(
+            "Voulez-vous vraiment valider ce paiement et activer le Premium ?"
+        )
+    ) {
 
         return;
 
     }
-
-
-    const finalReason =
-        reason.trim() ||
-        "Paiement refusé par l'administrateur";
-
-
-    setLoading(
-        button,
-        true,
-        "Refus..."
-    );
 
 
     try {
 
-        const response =
+        const result =
             await apiRequest(
-
-                `${API_URL}/api/admin/paiements/${id}/refuser`,
-
+                `/api/admin/paiements/${id}/valider`,
                 {
-
                     method:
-                        "PATCH",
-
-                    body:
-                        JSON.stringify({
-
-                            reason:
-                                finalReason,
-
-                            motif:
-                                finalReason,
-
-                            refusal_reason:
-                                finalReason
-
-                        })
-
+                        "PATCH"
                 }
-
             );
 
 
-        showNotification(
-
-            response?.message ||
-            "Paiement refusé."
-
+        notify(
+            result.message ||
+            "Paiement validé et Premium activé.",
+            "success"
         );
 
 
-        await reloadDashboardData();
+        await refreshAll();
 
 
     } catch (error) {
 
-        console.error(
-            "Refus paiement :",
-            error
+        /*
+         * Fallback vers la route sans /admin.
+         */
+
+        try {
+
+            const result =
+                await apiRequest(
+                    `/api/paiements/${id}/valider`,
+                    {
+                        method:
+                            "PATCH"
+                    }
+                );
+
+
+            notify(
+                result.message ||
+                "Paiement validé.",
+                "success"
+            );
+
+
+            await refreshAll();
+
+        } catch (fallbackError) {
+
+            notify(
+                fallbackError.message ||
+                "Impossible de valider le paiement.",
+                "error"
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   26. REFUSER PAIEMENT
+========================================================= */
+
+async function refusePayment(
+    id
+) {
+
+    const reason =
+        prompt(
+            "Motif du refus :",
+            "Paiement refusé par l'administrateur"
         );
 
 
-        showNotification(
+    if (
+        reason === null
+    ) {
 
+        return;
+
+    }
+
+
+    try {
+
+        const result =
+            await apiRequest(
+                `/api/admin/paiements/${id}/refuser`,
+                {
+                    method:
+                        "PATCH",
+
+                    body: {
+
+                        reason:
+                            reason.trim() ||
+                            "Paiement refusé par l'administrateur"
+
+                    }
+
+                }
+            );
+
+
+        notify(
+            result.message ||
+            "Paiement refusé.",
+            "success"
+        );
+
+
+        await refreshAll();
+
+
+    } catch (error) {
+
+        try {
+
+            const result =
+                await apiRequest(
+                    `/api/paiements/${id}/refuser`,
+                    {
+                        method:
+                            "PATCH",
+
+                        body: {
+
+                            reason:
+                                reason.trim() ||
+                                "Paiement refusé par l'administrateur"
+
+                        }
+
+                    }
+                );
+
+
+            notify(
+                result.message ||
+                "Paiement refusé.",
+                "success"
+            );
+
+
+            await refreshAll();
+
+        } catch (fallbackError) {
+
+            notify(
+                fallbackError.message ||
+                "Impossible de refuser le paiement.",
+                "error"
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   27. PREMIUM UTILISATEUR
+========================================================= */
+
+async function togglePremium(
+    id,
+    enabled
+) {
+
+    let days = 30;
+
+
+    if (enabled) {
+
+        const input =
+            prompt(
+                "Nombre de jours Premium :",
+                "30"
+            );
+
+
+        if (
+            input === null
+        ) {
+
+            return;
+
+        }
+
+
+        days =
+            Number(
+                input
+            );
+
+
+        if (
+            !Number.isInteger(days) ||
+            days <= 0
+        ) {
+
+            notify(
+                "Nombre de jours invalide.",
+                "error"
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    try {
+
+        const result =
+            await apiRequest(
+                `/api/admin/users/${id}/premium`,
+                {
+                    method:
+                        "PATCH",
+
+                    body: {
+
+                        enabled:
+                            enabled,
+
+                        days:
+                            days
+
+                    }
+
+                }
+            );
+
+
+        notify(
+            result.message ||
+            (
+                enabled
+                    ? "Premium activé."
+                    : "Premium désactivé."
+            ),
+            "success"
+        );
+
+
+        await refreshAll();
+
+
+    } catch (error) {
+
+        notify(
             error.message ||
-            "Impossible de refuser le paiement.",
-
+            "Impossible de modifier Premium.",
             "error"
-
         );
 
-    } finally {
+    }
 
-        setLoading(
-            button,
-            false
+}
+
+
+/* =========================================================
+   28. BLOQUER UTILISATEUR
+========================================================= */
+
+async function toggleBlock(
+    id,
+    blocked
+) {
+
+    const confirmation =
+        confirm(
+            blocked
+                ? "Voulez-vous bloquer cet utilisateur ?"
+                : "Voulez-vous débloquer cet utilisateur ?"
+        );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const result =
+            await apiRequest(
+                `/api/admin/users/${id}/block`,
+                {
+                    method:
+                        "PATCH",
+
+                    body: {
+
+                        blocked:
+                            blocked
+
+                    }
+
+                }
+            );
+
+
+        notify(
+            result.message ||
+            (
+                blocked
+                    ? "Utilisateur bloqué."
+                    : "Utilisateur débloqué."
+            ),
+            "success"
+        );
+
+
+        await refreshAll();
+
+
+    } catch (error) {
+
+        notify(
+            error.message ||
+            "Impossible de modifier le blocage.",
+            "error"
         );
 
     }
@@ -6871,474 +6951,498 @@ async function refusePayment(
 ========================================================= */
 
 async function deletePayment(
-
-    id,
-
-    button = null
-
+    id
 ) {
 
-    const confirmed =
-        window.confirm(
-
-            `Supprimer définitivement le paiement #${id} ?\n\n` +
-
-            `Cette opération est irréversible.`
-
-        );
-
-
-    if (!confirmed) {
+    if (
+        !confirm(
+            "Voulez-vous vraiment supprimer ce paiement ?"
+        )
+    ) {
 
         return;
 
     }
 
 
-    setLoading(
-        button,
-        true,
-        "Suppression..."
+    try {
+
+        const result =
+            await apiRequest(
+                `/api/paiements/${id}`,
+                {
+                    method:
+                        "DELETE"
+                }
+            );
+
+
+        notify(
+            result.message ||
+            "Paiement supprimé.",
+            "success"
+        );
+
+
+        await refreshAll();
+
+    } catch (error) {
+
+        notify(
+            error.message ||
+            "Impossible de supprimer le paiement.",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   30. RECHERCHE UTILISATEURS
+========================================================= */
+
+function filterUsers() {
+
+    const input =
+        $("#userSearch");
+
+
+    const query =
+        (
+            input?.value ||
+            ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    if (!query) {
+
+        renderUsers(
+            utilisateurs
+        );
+
+        return;
+
+    }
+
+
+    const filtered =
+        utilisateurs.filter(
+            function(user) {
+
+                return (
+
+                    String(
+                        user.id || ""
+                    )
+                    .toLowerCase()
+                    .includes(query)
+
+                    ||
+
+                    String(
+                        user.nom ||
+                        user.name ||
+                        ""
+                    )
+                    .toLowerCase()
+                    .includes(query)
+
+                    ||
+
+                    String(
+                        user.email ||
+                        ""
+                    )
+                    .toLowerCase()
+                    .includes(query)
+
+                    ||
+
+                    String(
+                        user.telephone ||
+                        user.phone ||
+                        ""
+                    )
+                    .toLowerCase()
+                    .includes(query)
+
+                );
+
+            }
+        );
+
+
+    renderUsers(
+        filtered
+    );
+
+}
+
+
+/* =========================================================
+   31. RECHERCHE PAIEMENTS
+========================================================= */
+
+function filterPayments() {
+
+    const input =
+        $("#paymentSearch");
+
+
+    const query =
+        (
+            input?.value ||
+            ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    const status =
+        (
+            $("#paymentStatusFilter")
+            ?.value ||
+            ""
+        )
+        .toLowerCase();
+
+
+    const filtered =
+        paiements.filter(
+            function(payment) {
+
+                const text =
+                    [
+
+                        payment.id,
+
+                        payment.nom,
+
+                        payment.email,
+
+                        payment.reference,
+
+                        payment.transaction_id,
+
+                        payment.method,
+
+                        payment.methode
+
+                    ]
+                    .join(" ")
+                    .toLowerCase();
+
+
+                const paymentStatus =
+                    String(
+                        payment.status ||
+                        "pending"
+                    )
+                    .toLowerCase();
+
+
+                return (
+
+                    (!query ||
+                        text.includes(
+                            query
+                        )
+                    )
+
+                    &&
+
+                    (!status ||
+                        paymentStatus ===
+                        status
+                    )
+
+                );
+
+            }
+        );
+
+
+    renderPayments(
+        filtered
+    );
+
+}
+
+
+/* =========================================================
+   32. NAVIGATION
+========================================================= */
+
+function openSection(
+    section
+) {
+
+    currentSection =
+        section;
+
+
+    $$(".section")
+        .forEach(
+            function(element) {
+
+                element.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+    const target =
+        document.getElementById(
+            `section-${section}`
+        );
+
+
+    if (target) {
+
+        target.classList.add(
+            "active"
+        );
+
+    }
+
+
+    $$(".menu button[data-section]")
+        .forEach(
+            function(button) {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.section ===
+                    section
+                );
+
+            }
+        );
+
+
+    const titles = {
+
+        dashboard:
+            "Dashboard",
+
+        utilisateurs:
+            "Utilisateurs",
+
+        paiements:
+            "Paiements",
+
+        statistiques:
+            "Statistiques",
+
+        systeme:
+            "Système"
+
+    };
+
+
+    setText(
+        "currentTitle",
+        titles[section] ||
+        "Dashboard"
+    );
+
+
+    const sidebar =
+        $("#sidebar");
+
+
+    if (sidebar) {
+
+        sidebar.classList.remove(
+            "open"
+        );
+
+    }
+
+
+    /*
+     * Chargement à la demande.
+     */
+
+    if (
+        section === "utilisateurs" &&
+        !utilisateurs.length
+    ) {
+
+        loadUsers();
+
+    }
+
+
+    if (
+        section === "paiements" &&
+        !paiements.length
+    ) {
+
+        loadPayments();
+
+    }
+
+
+    if (
+        section === "statistiques"
+    ) {
+
+        loadStatistics();
+
+    }
+
+}
+
+
+/* =========================================================
+   33. ACTUALISATION COMPLETE
+========================================================= */
+
+async function refreshAll() {
+
+    notify(
+        "Actualisation des données...",
+        "info"
     );
 
 
     try {
 
-        const response =
-            await apiRequest(
+        await Promise.allSettled([
 
-                `${API_URL}/api/paiements/${id}`,
+            loadStatistics(),
 
-                {
+            loadUsers(),
 
-                    method:
-                        "DELETE"
+            loadPayments(),
 
-                }
+            loadDashboard()
 
-            );
+        ]);
 
 
-        showNotification(
-
-            response?.message ||
-            "Paiement supprimé."
-
+        notify(
+            "Données actualisées.",
+            "success"
         );
-
-
-        await reloadDashboardData();
-
 
     } catch (error) {
 
         console.error(
-            "Suppression paiement :",
             error
         );
 
-
-        showNotification(
-
-            error.message ||
-            "Impossible de supprimer le paiement.",
-
-            "error"
-
-        );
-
-    } finally {
-
-        setLoading(
-            button,
-            false
-        );
-
     }
 
 }
 
 
 /* =========================================================
-   30. VOIR PAIEMENT
+   34. DECONNEXION
 ========================================================= */
 
-async function viewPayment(id) {
+async function logout() {
 
-    let payment =
-        findPayment(id);
+    try {
+
+        await apiRequest(
+            "/api/admin/logout",
+            {
+                method:
+                    "POST"
+            }
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Déconnexion serveur :",
+            error
+        );
+
+    }
 
 
-    if (!payment) {
+    /*
+     * Nettoyage local.
+     */
 
-        try {
+    const keys = [
 
-            const response =
-                await apiRequest(
+        "adminToken",
+        "admin_token",
+        "token",
+        "authToken",
+        "accessToken",
+        "access_token",
+        "bmj_admin_token",
+        "bmj_token",
+        "admin",
+        "adminUser"
 
-                    `${API_URL}/api/paiements/${id}`
-
-                );
+    ];
 
 
-            payment =
-                response?.data ??
-                response?.payment ??
-                response;
+    keys.forEach(
+        function(key) {
 
-        } catch (error) {
-
-            showNotification(
-                error.message,
-                "error"
+            localStorage.removeItem(
+                key
             );
 
-            return;
+            sessionStorage.removeItem(
+                key
+            );
 
         }
-
-    }
-
-
-    paiementSelectionne =
-        payment;
-
-
-    showPaymentModal(
-        payment
     );
 
-}
 
-
-/* =========================================================
-   31. MODAL PAIEMENT
-========================================================= */
-
-function showPaymentModal(payment) {
-
-    let modal =
-        getElementByIds(
-            "paymentModal",
-            "paiementModal"
-        );
-
-
-    if (!modal) {
-
-        modal =
-            document.createElement(
-                "div"
-            );
-
-        modal.id =
-            "paymentModal";
-
-        modal.className =
-            "payment-modal";
-
-
-        document.body.appendChild(
-            modal
-        );
-
-    }
-
-
-    const id =
-        getPaymentId(payment);
-
-
-    const proof =
-        getPaymentProof(payment);
-
-
-    modal.innerHTML = `
-
-        <div
-            class="payment-modal-overlay"
-            data-close-payment-modal="true"
-        ></div>
-
-
-        <div
-            class="payment-modal-content"
-        >
-
-            <button
-                type="button"
-                class="payment-modal-close"
-                data-close-payment-modal="true"
-            >
-                ×
-            </button>
-
-
-            <h2>
-                Paiement #${id}
-            </h2>
-
-
-            <div class="payment-details">
-
-                <p>
-                    <strong>Nom :</strong>
-                    ${escapeHTML(
-                        getPaymentName(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Email :</strong>
-                    ${escapeHTML(
-                        getPaymentEmail(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Téléphone :</strong>
-                    ${escapeHTML(
-                        getPaymentPhone(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Montant :</strong>
-                    ${formatMoney(
-                        getPaymentAmount(payment),
-                        getPaymentCurrency(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Méthode :</strong>
-                    ${escapeHTML(
-                        getPaymentMethod(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Référence :</strong>
-                    ${escapeHTML(
-                        getPaymentReference(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Statut :</strong>
-                    ${getStatusLabel(
-                        getPaymentStatus(payment)
-                    )}
-                </p>
-
-                <p>
-                    <strong>Jours Premium :</strong>
-                    ${Number(
-                        payment.premium_days ??
-                        30
-                    )}
-                </p>
-
-                <p>
-                    <strong>Date :</strong>
-                    ${formatDate(
-                        payment.created_at
-                    )}
-                </p>
-
-                ${
-                    payment.notes
-                        ? `
-
-                            <p>
-                                <strong>Notes :</strong>
-                                ${escapeHTML(
-                                    payment.notes
-                                )}
-                            </p>
-
-                          `
-                        : ""
-                }
-
-                ${
-                    payment.refusal_reason
-                        ? `
-
-                            <p>
-                                <strong>Motif du refus :</strong>
-                                ${escapeHTML(
-                                    payment.refusal_reason
-                                )}
-                            </p>
-
-                          `
-                        : ""
-                }
-
-            </div>
-
-
-            ${
-                proof
-                    ? `
-
-                        <div class="payment-proof">
-
-                            <h3>
-                                Preuve de paiement
-                            </h3>
-
-                            <img
-                                src="${escapeAttribute(proof)}"
-                                alt="Preuve de paiement"
-                                loading="lazy"
-                            >
-
-                        </div>
-
-                      `
-                    : ""
-            }
-
-
-            <div class="payment-modal-actions">
-
-                ${
-                    normalizeStatus(
-                        getPaymentStatus(payment)
-                    ) === "pending"
-                        ? `
-
-                            <button
-                                type="button"
-                                data-modal-action="validate"
-                                data-id="${id}"
-                            >
-                                Valider
-                            </button>
-
-                            <button
-                                type="button"
-                                data-modal-action="refuse"
-                                data-id="${id}"
-                            >
-                                Refuser
-                            </button>
-
-                          `
-                        : ""
-                }
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    modal.style.display =
-        "block";
-
-
-    modal
-        .querySelectorAll(
-            "[data-close-payment-modal]"
-        )
-        .forEach(
-
-            element => {
-
-                element.addEventListener(
-
-                    "click",
-
-                    closePaymentModal
-
-                );
-
-            }
-
-        );
-
-
-    modal
-        .querySelectorAll(
-            "[data-modal-action]"
-        )
-        .forEach(
-
-            button => {
-
-                button.addEventListener(
-
-                    "click",
-
-                    async function() {
-
-                        const action =
-                            button.dataset
-                                .modalAction;
-
-
-                        const id =
-                            Number(
-                                button.dataset.id
-                            );
-
-
-                        closePaymentModal();
-
-
-                        if (
-                            action === "validate"
-                        ) {
-
-                            await validatePayment(
-                                id
-                            );
-
-                        }
-
-
-                        if (
-                            action === "refuse"
-                        ) {
-
-                            await refusePayment(
-                                id
-                            );
-
-                        }
-
-                    }
-
-                );
-
-            }
-
-        );
+    window.location.href =
+        "connexion.html";
 
 }
 
 
 /* =========================================================
-   32. FERMER MODAL
+   35. MODAL
 ========================================================= */
 
-function closePaymentModal() {
+function openModal() {
 
     const modal =
-        getElementByIds(
-            "paymentModal",
-            "paiementModal"
-        );
+        $("#detailModal");
 
 
     if (modal) {
 
-        modal.style.display =
-            "none";
+        modal.classList.add(
+            "show"
+        );
+
+    }
+
+}
+
+
+function closeModal() {
+
+    const modal =
+        $("#detailModal");
+
+
+    if (modal) {
+
+        modal.classList.remove(
+            "show"
+        );
 
     }
 
@@ -7346,1112 +7450,350 @@ function closePaymentModal() {
 
 
 /* =========================================================
-   33. AFFICHER PREUVE
+   36. INITIALISATION
 ========================================================= */
 
-function showPaymentProof(id) {
+async function initializeDashboard() {
 
-    const payment =
-        findPayment(id);
+    const loader =
+        $("#pageLoader");
 
+    const app =
+        $("#app");
 
-    if (!payment) {
-
-        showNotification(
-            "Paiement introuvable.",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    const proof =
-        getPaymentProof(payment);
-
-
-    if (!proof) {
-
-        showNotification(
-            "Aucune preuve disponible.",
-            "warning"
-        );
-
-        return;
-
-    }
-
-
-    let modal =
-        getElementByIds(
-            "proofModal",
-            "paymentProofModal"
-        );
-
-
-    if (!modal) {
-
-        modal =
-            document.createElement(
-                "div"
-            );
-
-        modal.id =
-            "proofModal";
-
-        modal.className =
-            "proof-modal";
-
-
-        document.body.appendChild(
-            modal
-        );
-
-    }
-
-
-    modal.innerHTML = `
-
-        <div
-            class="proof-overlay"
-            data-close-proof="true"
-        ></div>
-
-
-        <div class="proof-content">
-
-            <button
-                type="button"
-                data-close-proof="true"
-                class="proof-close"
-            >
-                ×
-            </button>
-
-
-            <h2>
-                Preuve du paiement #${id}
-            </h2>
-
-
-            <img
-                src="${escapeAttribute(proof)}"
-                alt="Preuve du paiement"
-            >
-
-        </div>
-
-    `;
-
-
-    modal.style.display =
-        "block";
-
-
-    modal
-        .querySelectorAll(
-            "[data-close-proof]"
-        )
-        .forEach(
-
-            element => {
-
-                element.addEventListener(
-
-                    "click",
-
-                    function() {
-
-                        modal.style.display =
-                            "none";
-
-                    }
-
-                );
-
-            }
-
-        );
-
-}
-
-
-/* =========================================================
-   34. RECHERCHE PAIEMENTS
-========================================================= */
-
-function filterPayments(value) {
-
-    const query =
-        String(
-            value || ""
-        )
-        .trim()
-        .toLowerCase();
-
-
-    if (!query) {
-
-        paiementsFiltres =
-            [...paiements];
-
-    } else {
-
-        paiementsFiltres =
-            paiements.filter(
-
-                payment => {
-
-                    const content = [
-
-                        getPaymentId(payment),
-
-                        getPaymentName(payment),
-
-                        getPaymentEmail(payment),
-
-                        getPaymentPhone(payment),
-
-                        getPaymentReference(payment),
-
-                        getPaymentMethod(payment),
-
-                        getPaymentStatus(payment)
-
-                    ]
-                    .join(" ")
-                    .toLowerCase();
-
-
-                    return content.includes(
-                        query
-                    );
-
-                }
-
-            );
-
-    }
-
-
-    renderPayments(
-        paiementsFiltres
-    );
-
-}
-
-
-/* =========================================================
-   35. FILTRE PAR STATUT
-========================================================= */
-
-function filterPaymentsByStatus(
-    status
-) {
-
-    const normalized =
-        String(
-            status || "all"
-        ).toLowerCase();
-
-
-    if (
-        normalized === "all" ||
-        normalized === "tous" ||
-        normalized === ""
-    ) {
-
-        paiementsFiltres =
-            [...paiements];
-
-    } else {
-
-        paiementsFiltres =
-            paiements.filter(
-
-                payment =>
-
-                    normalizeStatus(
-                        getPaymentStatus(payment)
-                    ) === normalized
-
-            );
-
-    }
-
-
-    renderPayments(
-        paiementsFiltres
-    );
-
-}
-
-
-/* =========================================================
-   36. CHARGER UTILISATEURS
-========================================================= */
-
-async function loadUsers(
-
-    silent = false
-
-) {
-
-    if (chargementUtilisateurs) {
-
-        return;
-
-    }
-
-
-    chargementUtilisateurs =
-        true;
+    const errorBox =
+        $("#accessError");
 
 
     try {
 
-        const response =
-            await apiRequest(
-                ROUTES.utilisateurs
-            );
+        /*
+         * Première vérification :
+         * session admin.
+         */
 
+        const authenticated =
+            await checkAdminSession();
 
-        utilisateurs =
-            extractList(
-                response
-            );
 
+        if (!authenticated) {
 
-        utilisateursFiltres =
-            [...utilisateurs];
+            if (loader) {
 
-
-        renderUsers(
-            utilisateursFiltres
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "Erreur utilisateurs :",
-            error
-        );
-
-
-        if (!silent) {
-
-            showNotification(
-
-                error.message ||
-                "Impossible de charger les utilisateurs.",
-
-                "error"
-
-            );
-
-        }
-
-    } finally {
-
-        chargementUtilisateurs =
-            false;
-
-    }
-
-}
-
-
-/* =========================================================
-   37. RENDRE UTILISATEURS
-========================================================= */
-
-function renderUsers(list) {
-
-    const tbody =
-        getElementByIds(
-
-            "usersTableBody",
-
-            "utilisateursTableBody",
-
-            "usersBody",
-
-            "utilisateursBody"
-
-        );
-
-
-    const container =
-        getElementByIds(
-
-            "usersContainer",
-
-            "utilisateursContainer",
-
-            "usersList",
-
-            "utilisateursList"
-
-        );
-
-
-    if (
-        !tbody &&
-        !container
-    ) {
-
-        return;
-
-    }
-
-
-    if (!list.length) {
-
-        if (tbody) {
-
-            tbody.innerHTML = `
-
-                <tr>
-
-                    <td colspan="10">
-
-                        Aucun utilisateur trouvé.
-
-                    </td>
-
-                </tr>
-
-            `;
-
-        } else {
-
-            container.innerHTML = `
-
-                <div class="empty-state">
-
-                    Aucun utilisateur trouvé.
-
-                </div>
-
-            `;
-
-        }
-
-
-        return;
-
-    }
-
-
-    if (tbody) {
-
-        tbody.innerHTML =
-            list.map(
-                createUserRow
-            ).join("");
-
-
-        attachUserEvents();
-
-    } else {
-
-        container.innerHTML =
-            list.map(
-                createUserCard
-            ).join("");
-
-
-        attachUserEvents();
-
-    }
-
-}
-
-
-/* =========================================================
-   38. LIGNE UTILISATEUR
-========================================================= */
-
-function createUserRow(user) {
-
-    const id =
-        getUserId(user);
-
-
-    const premium =
-        isUserPremium(user);
-
-
-    const blocked =
-        isUserBlocked(user);
-
-
-    return `
-
-        <tr data-user-id="${id}">
-
-            <td>
-                #${id}
-            </td>
-
-            <td>
-                ${escapeHTML(
-                    getUserName(user)
-                )}
-            </td>
-
-            <td>
-                ${escapeHTML(
-                    getUserEmail(user)
-                )}
-            </td>
-
-            <td>
-                ${escapeHTML(
-                    getUserPhone(user)
-                )}
-            </td>
-
-            <td>
-
-                <span
-                    class="user-status ${
-                        premium
-                            ? "premium"
-                            : "normal"
-                    }"
-                >
-
-                    ${
-                        premium
-                            ? "Premium"
-                            : "Normal"
-                    }
-
-                </span>
-
-            </td>
-
-            <td>
-
-                <span
-                    class="user-status ${
-                        blocked
-                            ? "blocked"
-                            : "active"
-                    }"
-                >
-
-                    ${
-                        blocked
-                            ? "Bloqué"
-                            : "Actif"
-                    }
-
-                </span>
-
-            </td>
-
-            <td>
-
-                <button
-                    type="button"
-                    data-user-action="premium"
-                    data-id="${id}"
-                >
-                    ${
-                        premium
-                            ? "Gérer Premium"
-                            : "Activer Premium"
-                    }
-                </button>
-
-
-                <button
-                    type="button"
-                    data-user-action="block"
-                    data-id="${id}"
-                >
-                    ${
-                        blocked
-                            ? "Débloquer"
-                            : "Bloquer"
-                    }
-                </button>
-
-            </td>
-
-        </tr>
-
-    `;
-
-}
-
-
-/* =========================================================
-   39. CARTE UTILISATEUR
-========================================================= */
-
-function createUserCard(user) {
-
-    const id =
-        getUserId(user);
-
-
-    const premium =
-        isUserPremium(user);
-
-
-    const blocked =
-        isUserBlocked(user);
-
-
-    return `
-
-        <article
-            class="user-card"
-            data-user-id="${id}"
-        >
-
-            <h3>
-                ${escapeHTML(
-                    getUserName(user)
-                )}
-            </h3>
-
-
-            <p>
-                ${escapeHTML(
-                    getUserEmail(user)
-                )}
-            </p>
-
-
-            <p>
-                ${escapeHTML(
-                    getUserPhone(user)
-                )}
-            </p>
-
-
-            <p>
-                ${
-                    premium
-                        ? "Premium"
-                        : "Normal"
-                }
-            </p>
-
-
-            <p>
-                ${
-                    blocked
-                        ? "Bloqué"
-                        : "Actif"
-                }
-            </p>
-
-
-            <button
-                type="button"
-                data-user-action="premium"
-                data-id="${id}"
-            >
-                ${
-                    premium
-                        ? "Gérer Premium"
-                        : "Activer Premium"
-                }
-            </button>
-
-
-            <button
-                type="button"
-                data-user-action="block"
-                data-id="${id}"
-            >
-                ${
-                    blocked
-                        ? "Débloquer"
-                        : "Bloquer"
-                }
-            </button>
-
-        </article>
-
-    `;
-
-}
-
-
-/* =========================================================
-   40. ÉVÉNEMENTS UTILISATEURS
-========================================================= */
-
-function attachUserEvents() {
-
-    $$(
-        "[data-user-action]"
-    ).forEach(
-
-        function(button) {
-
-            if (
-                button.dataset.listenerAttached
-            ) {
-
-                return;
+                loader.style.display =
+                    "none";
 
             }
 
 
-            button.dataset.listenerAttached =
-                "true";
+            if (errorBox) {
 
+                errorBox.style.display =
+                    "flex";
 
-            button.addEventListener(
+            }
 
-                "click",
-
-                async function() {
-
-                    const action =
-                        button.dataset
-                            .userAction;
-
-
-                    const id =
-                        Number(
-                            button.dataset.id
-                        );
-
-
-                    if (
-                        action === "premium"
-                    ) {
-
-                        await managePremium(
-                            id,
-                            button
-                        );
-
-                    }
-
-
-                    if (
-                        action === "block"
-                    ) {
-
-                        await manageBlock(
-                            id,
-                            button
-                        );
-
-                    }
-
-                }
-
-            );
-
-        }
-
-    );
-
-}
-
-
-/* =========================================================
-   41. GESTION PREMIUM
-========================================================= */
-
-async function managePremium(
-
-    id,
-
-    button = null
-
-) {
-
-    const user =
-        utilisateurs.find(
-
-            item =>
-                Number(
-                    getUserId(item)
-                ) === Number(id)
-
-        );
-
-
-    const currentlyPremium =
-        user
-            ? isUserPremium(user)
-            : false;
-
-
-    if (currentlyPremium) {
-
-        const disable =
-            window.confirm(
-
-                `Voulez-vous désactiver le Premium de l'utilisateur #${id} ?`
-
-            );
-
-
-        if (!disable) {
 
             return;
 
         }
 
 
-        setLoading(
-            button,
-            true,
-            "Désactivation..."
-        );
+        /*
+         * Afficher dashboard.
+         */
 
+        if (app) {
 
-        try {
-
-            await apiRequest(
-
-                `${API_URL}/api/admin/users/${id}/premium`,
-
-                {
-
-                    method:
-                        "PATCH",
-
-                    body:
-                        JSON.stringify({
-
-                            enabled:
-                                false
-
-                        })
-
-                }
-
-            );
-
-
-            showNotification(
-                "Premium désactivé."
-            );
-
-
-            await reloadDashboardData();
-
-
-        } catch (error) {
-
-            showNotification(
-                error.message,
-                "error"
-            );
-
-        } finally {
-
-            setLoading(
-                button,
-                false
-            );
+            app.style.display =
+                "block";
 
         }
 
 
-        return;
+        if (loader) {
 
-    }
+            loader.style.display =
+                "none";
+
+        }
 
 
-    const input =
-        window.prompt(
+        /*
+         * Chargement initial.
+         */
 
-            "Combien de jours Premium voulez-vous donner ?",
+        await Promise.allSettled([
 
-            "30"
+            loadStatistics(),
 
+            loadUsers(),
+
+            loadPayments(),
+
+            loadDashboard()
+
+        ]);
+
+
+    } catch (error) {
+
+        console.error(
+            "Initialisation dashboard :",
+            error
         );
 
 
-    if (input === null) {
+        if (loader) {
 
-        return;
+            loader.style.display =
+                "none";
+
+        }
+
+
+        if (errorBox) {
+
+            errorBox.style.display =
+                "flex";
+
+        }
+
+
+        const message =
+            $("#accessErrorMessage");
+
+
+        if (message) {
+
+            message.textContent =
+                error.message ||
+                "Impossible de charger le dashboard.";
+
+        }
 
     }
 
+}
 
-    const days =
-        Number(input);
+
+/* =========================================================
+   37. UTILITAIRES
+========================================================= */
+
+function setText(
+    id,
+    value
+) {
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+
+    if (element) {
+
+        element.textContent =
+            value;
+
+    }
+
+}
+
+
+function formatNumber(
+    value
+) {
+
+    const number =
+        Number(
+            value
+        );
 
 
     if (
-        !Number.isInteger(days) ||
-        days <= 0
+        !Number.isFinite(number)
     ) {
 
-        showNotification(
-
-            "Nombre de jours Premium invalide.",
-
-            "error"
-
-        );
-
-        return;
+        return "0";
 
     }
 
 
-    setLoading(
-        button,
-        true,
-        "Activation..."
+    return number.toLocaleString(
+        "fr-FR"
     );
-
-
-    try {
-
-        await apiRequest(
-
-            `${API_URL}/api/admin/users/${id}/premium`,
-
-            {
-
-                method:
-                    "PATCH",
-
-                body:
-                    JSON.stringify({
-
-                        enabled:
-                            true,
-
-                        days:
-                            days,
-
-                        premium_days:
-                            days
-
-                    })
-
-            }
-
-        );
-
-
-        showNotification(
-            `Premium activé pour ${days} jours.`
-        );
-
-
-        await reloadDashboardData();
-
-
-    } catch (error) {
-
-        showNotification(
-            error.message,
-            "error"
-        );
-
-    } finally {
-
-        setLoading(
-            button,
-            false
-        );
-
-    }
 
 }
 
 
-/* =========================================================
-   42. BLOQUER / DÉBLOQUER
-========================================================= */
-
-async function manageBlock(
-
-    id,
-
-    button = null
-
+function formatMoney(
+    value,
+    currency = "USD"
 ) {
 
-    const user =
-        utilisateurs.find(
-
-            item =>
-                Number(
-                    getUserId(item)
-                ) === Number(id)
-
+    const number =
+        Number(
+            value
         );
 
 
-    const currentlyBlocked =
-        user
-            ? isUserBlocked(user)
-            : false;
+    if (
+        !Number.isFinite(number)
+    ) {
 
-
-    const newValue =
-        !currentlyBlocked;
-
-
-    const confirmed =
-        window.confirm(
-
-            newValue
-
-                ? `Bloquer l'utilisateur #${id} ?`
-
-                : `Débloquer l'utilisateur #${id} ?`
-
-        );
-
-
-    if (!confirmed) {
-
-        return;
+        return `0 ${currency}`;
 
     }
 
 
-    setLoading(
-        button,
-        true,
-        newValue
-            ? "Blocage..."
-            : "Déblocage..."
-    );
-
-
-    try {
-
-        await apiRequest(
-
-            `${API_URL}/api/admin/users/${id}/block`,
-
+    return (
+        number.toLocaleString(
+            "fr-FR",
             {
-
-                method:
-                    "PATCH",
-
-                body:
-                    JSON.stringify({
-
-                        blocked:
-                            newValue
-
-                    })
-
+                minimumFractionDigits:
+                    2,
+                maximumFractionDigits:
+                    2
             }
-
-        );
-
-
-        showNotification(
-
-            newValue
-                ? "Utilisateur bloqué."
-                : "Utilisateur débloqué."
-
-        );
-
-
-        await reloadDashboardData();
-
-
-    } catch (error) {
-
-        showNotification(
-            error.message,
-            "error"
-        );
-
-    } finally {
-
-        setLoading(
-            button,
-            false
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   43. RECHERCHE UTILISATEURS
-========================================================= */
-
-function filterUsers(value) {
-
-    const query =
-        String(
-            value || ""
         )
-        .trim()
-        .toLowerCase();
-
-
-    if (!query) {
-
-        utilisateursFiltres =
-            [...utilisateurs];
-
-    } else {
-
-        utilisateursFiltres =
-            utilisateurs.filter(
-
-                user => {
-
-                    const content = [
-
-                        getUserId(user),
-
-                        getUserName(user),
-
-                        getUserEmail(user),
-
-                        getUserPhone(user)
-
-                    ]
-                    .join(" ")
-                    .toLowerCase();
-
-
-                    return content.includes(
-                        query
-                    );
-
-                }
-
-            );
-
-    }
-
-
-    renderUsers(
-        utilisateursFiltres
+        +
+        " "
+        +
+        currency
     );
 
 }
 
 
-/* =========================================================
-   44. ÉCHAPPEMENT HTML
-========================================================= */
+function formatDate(
+    value
+) {
 
-function escapeHTML(value) {
+    if (!value) {
+
+        return "-";
+
+    }
+
+
+    const date =
+        new Date(
+            value
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return String(
+            value
+        );
+
+    }
+
+
+    return date.toLocaleString(
+        "fr-FR",
+        {
+            day:
+                "2-digit",
+
+            month:
+                "2-digit",
+
+            year:
+                "numeric",
+
+            hour:
+                "2-digit",
+
+            minute:
+                "2-digit"
+
+        }
+    );
+
+}
+
+
+function getBooleanValue(
+    value
+) {
+
+    if (
+        value === true ||
+        value === 1 ||
+        value === "1" ||
+        value === "true" ||
+        value === "TRUE"
+    ) {
+
+        return true;
+
+    }
+
+
+    return false;
+
+}
+
+
+function getInitials(
+    name
+) {
+
+    const text =
+        String(
+            name ||
+            ""
+        )
+        .trim();
+
+
+    if (!text) {
+
+        return "U";
+
+    }
+
+
+    const parts =
+        text.split(
+            /\s+/
+        );
+
+
+    if (
+        parts.length === 1
+    ) {
+
+        return parts[0]
+            .substring(
+                0,
+                2
+            )
+            .toUpperCase();
+
+    }
+
+
+    return (
+        parts[0][0] +
+        parts[1][0]
+    )
+    .toUpperCase();
+
+}
+
+
+function escapeHtml(
+    value
+) {
 
     if (
         value === null ||
@@ -8463,613 +7805,338 @@ function escapeHTML(value) {
     }
 
 
-    return String(value)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+    return String(
+        value
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
 }
 
 
-/* =========================================================
-   45. ÉCHAPPEMENT ATTRIBUT
-========================================================= */
+function escapeAttribute(
+    value
+) {
 
-function escapeAttribute(value) {
-
-    return escapeHTML(
+    return escapeHtml(
         value
     );
 
 }
 
 
-/* =========================================================
-   46. RECHARGEMENT COMPLET
-========================================================= */
-
-async function reloadDashboardData() {
-
-    await Promise.allSettled([
-
-        loadStatistics(),
-
-        loadPayments(true),
-
-        loadUsers(true)
-
-    ]);
-
-}
-
-
-/* =========================================================
-   47. ACTUALISATION AUTOMATIQUE
-========================================================= */
-
-function startAutoRefresh() {
-
-    if (refreshTimer) {
-
-        clearInterval(
-            refreshTimer
-        );
-
-    }
-
-
-    refreshTimer =
-        setInterval(
-
-            async function() {
-
-                if (
-                    document.hidden
-                ) {
-
-                    return;
-
-                }
-
-
-                await loadPayments(
-                    true
-                );
-
-
-                await loadStatistics();
-
-            },
-
-            REFRESH_INTERVAL
-
-        );
-
-}
-
-
-/* =========================================================
-   48. ARRÊT AUTO REFRESH
-========================================================= */
-
-function stopAutoRefresh() {
-
-    if (refreshTimer) {
-
-        clearInterval(
-            refreshTimer
-        );
-
-        refreshTimer =
-            null;
-
-    }
-
-}
-
-
-/* =========================================================
-   49. BOUTON ACTUALISER
-========================================================= */
-
-function attachRefreshButtons() {
-
-    const buttons =
-        $$(
-            "[data-action='refresh'], " +
-            "#refreshDashboard, " +
-            "#refreshPayments, " +
-            "#btnRefresh"
-        );
-
-
-    buttons.forEach(
-
-        function(button) {
-
-            if (
-                button.dataset.listenerAttached
-            ) {
-
-                return;
-
-            }
-
-
-            button.dataset.listenerAttached =
-                "true";
-
-
-            button.addEventListener(
-
-                "click",
-
-                async function() {
-
-                    setLoading(
-                        button,
-                        true,
-                        "Actualisation..."
-                    );
-
-
-                    try {
-
-                        await reloadDashboardData();
-
-
-                        showNotification(
-                            "Dashboard actualisé."
-                        );
-
-
-                    } finally {
-
-                        setLoading(
-                            button,
-                            false
-                        );
-
-                    }
-
-                }
-
-            );
-
-        }
-
-    );
-
-}
-
-
-/* =========================================================
-   50. CHAMP RECHERCHE PAIEMENTS
-========================================================= */
-
-function attachPaymentSearch() {
-
-    const inputs =
-        $$(
-            "#paymentSearch, " +
-            "#paiementSearch, " +
-            "#searchPayments, " +
-            "[data-payment-search]"
-        );
-
-
-    inputs.forEach(
-
-        function(input) {
-
-            if (
-                input.dataset.listenerAttached
-            ) {
-
-                return;
-
-            }
-
-
-            input.dataset.listenerAttached =
-                "true";
-
-
-            input.addEventListener(
-
-                "input",
-
-                function() {
-
-                    filterPayments(
-                        input.value
-                    );
-
-                }
-
-            );
-
-        }
-
-    );
-
-}
-
-
-/* =========================================================
-   51. CHAMP RECHERCHE UTILISATEURS
-========================================================= */
-
-function attachUserSearch() {
-
-    const inputs =
-        $$(
-            "#userSearch, " +
-            "#utilisateurSearch, " +
-            "#searchUsers, " +
-            "[data-user-search]"
-        );
-
-
-    inputs.forEach(
-
-        function(input) {
-
-            if (
-                input.dataset.listenerAttached
-            ) {
-
-                return;
-
-            }
-
-
-            input.dataset.listenerAttached =
-                "true";
-
-
-            input.addEventListener(
-
-                "input",
-
-                function() {
-
-                    filterUsers(
-                        input.value
-                    );
-
-                }
-
-            );
-
-        }
-
-    );
-
-}
-
-
-/* =========================================================
-   52. FILTRES STATUT
-========================================================= */
-
-function attachStatusFilters() {
-
-    const filters =
-        $$(
-            "#paymentStatusFilter, " +
-            "#paiementStatusFilter, " +
-            "[data-payment-status-filter]"
-        );
-
-
-    filters.forEach(
-
-        function(filter) {
-
-            if (
-                filter.dataset.listenerAttached
-            ) {
-
-                return;
-
-            }
-
-
-            filter.dataset.listenerAttached =
-                "true";
-
-
-            filter.addEventListener(
-
-                "change",
-
-                function() {
-
-                    filterPaymentsByStatus(
-                        filter.value
-                    );
-
-                }
-
-            );
-
-        }
-
-    );
-
-}
-
-
-/* =========================================================
-   53. VÉRIFICATION SESSION ADMIN
-========================================================= */
-
-function checkAdminSession() {
-
-    const token =
-        getAdminToken();
-
-
-    if (!token) {
-
-        console.warn(
-            "Aucun token administrateur trouvé."
-        );
-
-        /*
-           On ne redirige pas automatiquement ici.
-
-           Cela permet au dashboard de fonctionner
-           avec les systèmes d'authentification existants
-           qui utilisent un autre mécanisme.
-        */
-
-    }
-
-}
-
-
-/* =========================================================
-   54. JOURNAL LOCAL ADMIN
-========================================================= */
-
-function saveLocalAdminActivity(
-    action,
-    details
+function showTableMessage(
+    tbodyId,
+    message
 ) {
 
-    const key =
-        "bmj_admin_activity";
-
-
-    let history = [];
-
-
-    try {
-
-        history =
-            JSON.parse(
-                localStorage.getItem(
-                    key
-                ) || "[]"
-            );
-
-    } catch (_) {
-
-        history = [];
-
-    }
-
-
-    history.unshift({
-
-        action,
-
-        details,
-
-        date:
-            new Date().toISOString()
-
-    });
-
-
-    history =
-        history.slice(
-            0,
-            100
+    const tbody =
+        document.getElementById(
+            tbodyId
         );
 
 
-    localStorage.setItem(
-
-        key,
-
-        JSON.stringify(
-            history
-        )
-
-    );
-
-}
-
-
-/* =========================================================
-   55. VISIBILITÉ PAGE
-========================================================= */
-
-document.addEventListener(
-
-    "visibilitychange",
-
-    function() {
-
-        if (
-            document.hidden
-        ) {
-
-            stopAutoRefresh();
-
-        } else {
-
-            startAutoRefresh();
-
-            loadPayments(true);
-
-            loadStatistics();
-
-        }
-
-    }
-
-);
-
-
-/* =========================================================
-   56. INITIALISATION
-========================================================= */
-
-async function initDashboard() {
-
-    if (dashboardInitialise) {
+    if (!tbody) {
 
         return;
 
     }
 
 
-    dashboardInitialise =
-        true;
+    tbody.innerHTML = `
 
+        <tr>
 
-    console.log(
-        "======================================"
-    );
+            <td
+                colspan="10"
+                class="empty"
+            >
 
-    console.log(
-        "BMJ SERVICE ADMIN DASHBOARD"
-    );
+                ${escapeHtml(
+                    message
+                )}
 
-    console.log(
-        "Backend :",
-        API_URL
-    );
+            </td>
 
-    console.log(
-        "======================================"
-    );
+        </tr>
 
-
-    checkAdminSession();
-
-
-    attachRefreshButtons();
-
-    attachPaymentSearch();
-
-    attachUserSearch();
-
-    attachStatusFilters();
-
-
-    await reloadDashboardData();
-
-
-    startAutoRefresh();
-
-
-    console.log(
-        "Dashboard administrateur prêt."
-    );
+    `;
 
 }
 
 
 /* =========================================================
-   57. DÉMARRAGE
+   38. EVENEMENTS
 ========================================================= */
 
-if (
-    document.readyState ===
-    "loading"
-) {
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
 
-    document.addEventListener(
 
-        "DOMContentLoaded",
+        /*
+         * Navigation.
+         */
 
-        initDashboard
+        $$(".menu button[data-section]")
+            .forEach(
+                function(button) {
 
-    );
+                    button.addEventListener(
+                        "click",
+                        function() {
 
-} else {
+                            openSection(
+                                button.dataset.section
+                            );
 
-    initDashboard();
+                        }
+                    );
 
-}
+                }
+            );
+
+
+        /*
+         * Menu mobile.
+         */
+
+        const mobileMenu =
+            $("#mobileMenu");
+
+
+        const sidebar =
+            $("#sidebar");
+
+
+        if (
+            mobileMenu &&
+            sidebar
+        ) {
+
+            mobileMenu.addEventListener(
+                "click",
+                function() {
+
+                    sidebar.classList.toggle(
+                        "open"
+                    );
+
+                }
+            );
+
+        }
+
+
+        /*
+         * Déconnexion.
+         */
+
+        const logoutButton =
+            $("#logoutBtn");
+
+
+        if (logoutButton) {
+
+            logoutButton.addEventListener(
+                "click",
+                function() {
+
+                    if (
+                        confirm(
+                            "Voulez-vous vous déconnecter ?"
+                        )
+                    ) {
+
+                        logout();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /*
+         * Recherche utilisateurs.
+         */
+
+        const userSearch =
+            $("#userSearch");
+
+
+        if (userSearch) {
+
+            userSearch.addEventListener(
+                "input",
+                filterUsers
+            );
+
+        }
+
+
+        /*
+         * Recherche paiements.
+         */
+
+        const paymentSearch =
+            $("#paymentSearch");
+
+
+        if (paymentSearch) {
+
+            paymentSearch.addEventListener(
+                "input",
+                filterPayments
+            );
+
+        }
+
+
+        /*
+         * Filtre paiement.
+         */
+
+        const paymentStatus =
+            $("#paymentStatusFilter");
+
+
+        if (paymentStatus) {
+
+            paymentStatus.addEventListener(
+                "change",
+                filterPayments
+            );
+
+        }
+
+
+        /*
+         * Fermeture modal.
+         */
+
+        const closeButton =
+            $("#closeDetailModal");
+
+
+        if (closeButton) {
+
+            closeButton.addEventListener(
+                "click",
+                closeModal
+            );
+
+        }
+
+
+        const modal =
+            $("#detailModal");
+
+
+        if (modal) {
+
+            modal.addEventListener(
+                "click",
+                function(event) {
+
+                    if (
+                        event.target ===
+                        modal
+                    ) {
+
+                        closeModal();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /*
+         * Initialisation.
+         */
+
+        initializeDashboard();
+
+    }
+);
 
 
 /* =========================================================
-   58. EXPORT GLOBAL
+   39. EXPOSER FONCTIONS AU HTML
 ========================================================= */
 
-window.BMJ_ADMIN = {
+window.refreshAll =
+    refreshAll;
 
-    loadStatistics,
+window.loadStatistics =
+    loadStatistics;
 
-    loadPayments,
+window.loadUsers =
+    loadUsers;
 
-    loadUsers,
+window.loadPayments =
+    loadPayments;
 
-    reloadDashboardData,
+window.viewUser =
+    viewUser;
 
-    validatePayment,
+window.viewPayment =
+    viewPayment;
 
-    refusePayment,
+window.validatePayment =
+    validatePayment;
 
-    deletePayment,
+window.refusePayment =
+    refusePayment;
 
-    viewPayment,
+window.togglePremium =
+    togglePremium;
 
-    showPaymentProof,
+window.toggleBlock =
+    toggleBlock;
 
-    filterPayments,
+window.deletePayment =
+    deletePayment;
 
-    filterPaymentsByStatus,
+window.filterUsers =
+    filterUsers;
 
-    filterUsers,
+window.filterPayments =
+    filterPayments;
 
-    managePremium,
+window.openSection =
+    openSection;
 
-    manageBlock,
+window.closeModal =
+    closeModal;
 
-    startAutoRefresh,
+window.goToLogin =
+    goToLogin;
 
-    stopAutoRefresh
-
-};
+window.logout =
+    logout;
 
 
 /* =========================================================
