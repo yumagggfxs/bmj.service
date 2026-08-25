@@ -4545,19 +4545,17 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <small>© 2026 BMJ SERVICE - Tous droits réservés.</small>
     </footer>
 <script>
-    /*==================================================
+
+/*==================================================
         BMJ SERVICE
         SCRIPT TABLEAU DE BORD
-        VERSION : 13.0.0
+        VERSION : 14.0.0
 
         SESSION UNIQUE :
         bmj_session
 
-        COMPATIBILITE :
-        bmj_current_user
-        bmj_user
-        currentUser
-        user
+        API :
+        https://back-end-h602.onrender.com
 ==================================================*/
 
 
@@ -4570,7 +4568,14 @@ const BMJ_API_URL =
 
 
 /*==================================================
-        2. UTILITAIRES
+        2. UTILISATEUR COURANT
+==================================================*/
+
+let utilisateurBMJ = null;
+
+
+/*==================================================
+        3. OUTILS
 ==================================================*/
 
 function convertirBoolean(value) {
@@ -4600,41 +4605,46 @@ function normaliserTexte(value) {
 
 
 /*==================================================
-        3. LIRE SESSION BMJ
+        4. SESSION
 ==================================================*/
 
 function obtenirSessionBMJ() {
 
     try {
 
-        const session =
+        const valeur =
             localStorage.getItem(
                 "bmj_session"
             );
 
 
-        if (session) {
+        if (!valeur) {
 
-            const data =
-                JSON.parse(session);
+            return null;
+
+        }
 
 
-            if (
-                data &&
-                data.authenticated === true &&
-                data.user
-            ) {
+        const session =
+            JSON.parse(
+                valeur
+            );
 
-                return data;
 
-            }
+        if (
+            session &&
+            session.authenticated === true &&
+            session.user
+        ) {
+
+            return session;
 
         }
 
     } catch (error) {
 
         console.warn(
-            "Session BMJ invalide :",
+            "Session BMJ invalide.",
             error
         );
 
@@ -4647,13 +4657,14 @@ function obtenirSessionBMJ() {
 
 
 /*==================================================
-        4. RECUPERER UTILISATEUR
+        5. UTILISATEUR LOCAL
 ==================================================*/
 
 function obtenirUtilisateurLocal() {
 
     /*
-        SOURCE PRINCIPALE
+        LA SESSION BMJ EST TOUJOURS
+        PRIORITAIRE.
     */
 
     const session =
@@ -4704,26 +4715,25 @@ function obtenirUtilisateurLocal() {
             }
 
 
-            const utilisateur =
+            const user =
                 JSON.parse(
                     valeur
                 );
 
 
             if (
-                utilisateur &&
-                typeof utilisateur ===
-                "object"
+                user &&
+                typeof user === "object"
             ) {
 
-                return utilisateur;
+                return user;
 
             }
 
         } catch (error) {
 
             console.warn(
-                "Session invalide :",
+                "Ancienne session invalide :",
                 cle
             );
 
@@ -4738,7 +4748,7 @@ function obtenirUtilisateurLocal() {
 
 
 /*==================================================
-        5. NORMALISER UTILISATEUR
+        6. NORMALISATION
 ==================================================*/
 
 function normaliserUtilisateur(
@@ -4756,9 +4766,7 @@ function normaliserUtilisateur(
 
 
     const user = {
-
         ...utilisateur
-
     };
 
 
@@ -4809,6 +4817,10 @@ function normaliserUtilisateur(
         "images/user.png";
 
 
+    /*
+        PREMIUM
+    */
+
     user.premium =
         convertirBoolean(
             utilisateur.premium
@@ -4822,16 +4834,21 @@ function normaliserUtilisateur(
 
 
     /*
-        Si le serveur utilise premium_until
+        DATE PREMIUM
     */
 
+    user.premium_until =
+        utilisateur.premium_until ??
+        null;
+
+
     if (
-        utilisateur.premium_until
+        user.premium_until
     ) {
 
         const datePremium =
             new Date(
-                utilisateur.premium_until
+                user.premium_until
             );
 
 
@@ -4864,10 +4881,9 @@ function normaliserUtilisateur(
         user.isPremium;
 
 
-    user.premium_until =
-        utilisateur.premium_until ??
-        null;
-
+    /*
+        PROGRESSION
+    */
 
     user.progression =
         Number(
@@ -4881,6 +4897,10 @@ function normaliserUtilisateur(
         utilisateur.progressions ??
         {};
 
+
+    /*
+        TOKEN
+    */
 
     user.token =
         utilisateur.token ??
@@ -4897,7 +4917,7 @@ function normaliserUtilisateur(
 
 
 /*==================================================
-        6. SAUVEGARDER UTILISATEUR
+        7. SAUVEGARDER SESSION
 ==================================================*/
 
 function sauvegarderUtilisateur(
@@ -4918,10 +4938,6 @@ function sauvegarderUtilisateur(
 
 
     try {
-
-        /*
-            SESSION PRINCIPALE
-        */
 
         const ancienneSession =
             obtenirSessionBMJ();
@@ -4951,7 +4967,8 @@ function sauvegarderUtilisateur(
 
             premium: user.premium,
 
-            is_premium: user.is_premium,
+            is_premium:
+                user.is_premium,
 
             premium_until:
                 user.premium_until,
@@ -4971,6 +4988,10 @@ function sauvegarderUtilisateur(
 
         };
 
+
+        /*
+            SESSION PRINCIPALE
+        */
 
         localStorage.setItem(
             "bmj_session",
@@ -4994,19 +5015,14 @@ function sauvegarderUtilisateur(
         );
 
 
-        localStorage.setItem(
-            "currentUser",
-            JSON.stringify(user)
-        );
+        /*
+            ID
+        */
 
-
-        localStorage.setItem(
-            "user",
-            JSON.stringify(user)
-        );
-
-
-        if (user.id !== null) {
+        if (
+            user.id !== null &&
+            user.id !== undefined
+        ) {
 
             localStorage.setItem(
                 "bmj_user_id",
@@ -5015,6 +5031,10 @@ function sauvegarderUtilisateur(
 
         }
 
+
+        /*
+            TOKEN
+        */
 
         if (user.token) {
 
@@ -5036,7 +5056,7 @@ function sauvegarderUtilisateur(
     } catch (error) {
 
         console.error(
-            "Erreur sauvegarde utilisateur :",
+            "Erreur sauvegarde session :",
             error
         );
 
@@ -5048,20 +5068,77 @@ function sauvegarderUtilisateur(
 
 
 /*==================================================
-        7. UTILISATEUR COURANT
+        8. EXTRAIRE USER REPONSE SERVEUR
 ==================================================*/
 
-let utilisateurBMJ = null;
+function extraireUtilisateurServeur(
+    result
+) {
+
+    if (
+        !result ||
+        typeof result !== "object"
+    ) {
+
+        return null;
+
+    }
+
+
+    let data =
+        result.data ??
+        result.user ??
+        result.utilisateur ??
+        null;
+
+
+    if (
+        data &&
+        data.user
+    ) {
+
+        data =
+            data.user;
+
+    }
+
+
+    if (
+        data &&
+        data.utilisateur
+    ) {
+
+        data =
+            data.utilisateur;
+
+    }
+
+
+    if (
+        !data ||
+        typeof data !== "object"
+    ) {
+
+        return null;
+
+    }
+
+
+    return data;
+
+}
 
 
 /*==================================================
-        8. SYNCHRONISATION SERVEUR
+        9. SYNCHRONISATION SERVEUR
 ==================================================*/
 
 async function synchroniserUtilisateur() {
 
     const localUser =
-        obtenirUtilisateurLocal();
+        normaliserUtilisateur(
+            obtenirUtilisateurLocal()
+        );
 
 
     if (!localUser) {
@@ -5071,55 +5148,131 @@ async function synchroniserUtilisateur() {
     }
 
 
-    const utilisateur =
-        normaliserUtilisateur(
-            localUser
-        );
+    /*
+        IDENTITE OBLIGATOIRE
+    */
+
+    const identifiant =
+        localUser.id ??
+        localUser.id_bmj ??
+        localUser.email;
 
 
-    if (!utilisateur) {
+    if (!identifiant) {
 
-        return null;
+        return localUser;
 
     }
 
 
     /*
-        Sans ID, on conserve la session.
+        ROUTES POSSIBLES
     */
 
-    if (
-        utilisateur.id === null ||
-        utilisateur.id === undefined
-    ) {
+    const routes = [];
 
-        sauvegarderUtilisateur(
-            utilisateur
+
+    /*
+        ID NUMERIQUE
+    */
+
+    if (localUser.id) {
+
+        routes.push(
+            `/api/apprenants/${encodeURIComponent(
+                localUser.id
+            )}`
         );
 
-        return utilisateur;
+        routes.push(
+            `/api/utilisateurs/${encodeURIComponent(
+                localUser.id
+            )}`
+        );
+
+        routes.push(
+            `/api/users/${encodeURIComponent(
+                localUser.id
+            )}`
+        );
 
     }
 
 
-    const routes = [
+    /*
+        ID BMJ
+    */
 
-        `/api/utilisateurs/${encodeURIComponent(
-            utilisateur.id
-        )}`,
+    if (localUser.id_bmj) {
 
-        `/api/users/${encodeURIComponent(
-            utilisateur.id
-        )}`
+        routes.push(
+            `/api/apprenants/bmj/${encodeURIComponent(
+                localUser.id_bmj
+            )}`
+        );
 
-    ];
+        routes.push(
+            `/api/utilisateurs/bmj/${encodeURIComponent(
+                localUser.id_bmj
+            )}`
+        );
+
+    }
+
+
+    /*
+        EMAIL
+    */
+
+    if (localUser.email) {
+
+        routes.push(
+            `/api/apprenants/email/${encodeURIComponent(
+                localUser.email
+            )}`
+        );
+
+        routes.push(
+            `/api/utilisateurs/email/${encodeURIComponent(
+                localUser.email
+            )}`
+        );
+
+    }
+
+
+    /*
+        SUPPRIMER DOUBLONS
+    */
+
+    const routesUniques =
+        [...new Set(routes)];
 
 
     for (
-        const route of routes
+        const route of routesUniques
     ) {
 
         try {
+
+            const headers = {
+
+                "Accept":
+                    "application/json"
+
+            };
+
+
+            if (
+                localUser.token
+            ) {
+
+                headers.Authorization =
+                    "Bearer " +
+                    localUser.token;
+
+            }
+
 
             const response =
                 await fetch(
@@ -5128,23 +5281,7 @@ async function synchroniserUtilisateur() {
 
                         method: "GET",
 
-                        headers: {
-
-                            "Accept":
-                                "application/json",
-
-                            ...(utilisateur.token
-                                ? {
-                                    "Authorization":
-                                        "Bearer " +
-                                        utilisateur.token
-                                }
-                                : {})
-
-                        },
-
-                        credentials:
-                            "include"
+                        headers: headers
 
                     }
                 );
@@ -5162,7 +5299,6 @@ async function synchroniserUtilisateur() {
 
 
             if (
-                !result ||
                 result.success !== true
             ) {
 
@@ -5171,25 +5307,26 @@ async function synchroniserUtilisateur() {
             }
 
 
-            let data =
-                result.data;
+            const serveur =
+                extraireUtilisateurServeur(
+                    result
+                );
 
 
-            if (
-                data &&
-                data.user
-            ) {
+            if (!serveur) {
 
-                data =
-                    data.user;
+                continue;
 
             }
 
 
-            if (
-                !data ||
-                typeof data !== "object"
-            ) {
+            const serveurNormalise =
+                normaliserUtilisateur(
+                    serveur
+                );
+
+
+            if (!serveurNormalise) {
 
                 continue;
 
@@ -5197,50 +5334,80 @@ async function synchroniserUtilisateur() {
 
 
             /*
-                IMPORTANT :
-
-                Les données serveur complètent
-                l'utilisateur connecté.
-
-                Elles ne changent pas
-                l'identité avec un autre compte.
-            */
-
-            const utilisateurFinal =
-                normaliserUtilisateur({
-
-                    ...utilisateur,
-
-                    ...data
-
-                });
-
-
-            /*
-                Protection identité.
-
-                On refuse une réponse serveur
-                qui correspondrait à un autre compte.
+                VERIFICATION IDENTITE
             */
 
             if (
-                utilisateur.id &&
-                data.id &&
-                String(
-                    utilisateur.id
-                ) !== String(
-                    data.id
-                )
+                localUser.id &&
+                serveurNormalise.id &&
+                String(localUser.id) !==
+                String(serveurNormalise.id)
             ) {
 
                 console.warn(
-                    "Identité serveur différente. Session locale conservée."
+                    "Le serveur a retourné un autre utilisateur."
                 );
 
                 continue;
 
             }
 
+
+            if (
+                localUser.email &&
+                serveurNormalise.email &&
+                localUser.email.toLowerCase() !==
+                serveurNormalise.email.toLowerCase()
+            ) {
+
+                console.warn(
+                    "Email serveur différent de la session."
+                );
+
+                continue;
+
+            }
+
+
+            /*
+                SERVEUR = SOURCE DE VERITE
+            */
+
+            const utilisateurFinal =
+                normaliserUtilisateur({
+
+                    ...localUser,
+
+                    ...serveurNormalise
+
+                });
+
+
+            /*
+                IMPORTANT :
+
+                Le statut Premium venant
+                du serveur écrase l'ancien
+                statut local.
+            */
+
+            utilisateurFinal.premium =
+                serveurNormalise.premium;
+
+            utilisateurFinal.is_premium =
+                serveurNormalise.is_premium;
+
+            utilisateurFinal.isPremium =
+                serveurNormalise.isPremium;
+
+
+            utilisateurFinal.premium_until =
+                serveurNormalise.premium_until;
+
+
+            /*
+                SAUVEGARDE
+            */
 
             sauvegarderUtilisateur(
                 utilisateurFinal
@@ -5252,7 +5419,8 @@ async function synchroniserUtilisateur() {
         } catch (error) {
 
             console.warn(
-                "Synchronisation impossible :",
+                "Route serveur inaccessible :",
+                route,
                 error
             );
 
@@ -5262,22 +5430,23 @@ async function synchroniserUtilisateur() {
 
 
     /*
-        Même si le serveur ne répond pas,
-        on garde la session.
+        SERVEUR INACCESSIBLE
+
+        On conserve l'utilisateur.
     */
 
     sauvegarderUtilisateur(
-        utilisateur
+        localUser
     );
 
 
-    return utilisateur;
+    return localUser;
 
 }
 
 
 /*==================================================
-        9. AFFICHAGE UTILISATEUR
+        10. AFFICHER UTILISATEUR
 ==================================================*/
 
 function afficherInformationsUtilisateur(
@@ -5285,39 +5454,41 @@ function afficherInformationsUtilisateur(
 ) {
 
     if (!utilisateur) {
+
         return;
+
     }
 
 
-    const nomUtilisateur =
+    const nom =
         document.getElementById(
             "nomUtilisateur"
         );
 
 
-    if (nomUtilisateur) {
+    if (nom) {
 
-        nomUtilisateur.textContent =
+        nom.textContent =
             utilisateur.nom ||
             "Utilisateur";
 
     }
 
 
-    const photoUtilisateur =
+    const photo =
         document.getElementById(
             "photoUtilisateur"
         );
 
 
-    if (photoUtilisateur) {
+    if (photo) {
 
-        photoUtilisateur.src =
+        photo.src =
             utilisateur.photo ||
             "images/user.png";
 
 
-        photoUtilisateur.onerror =
+        photo.onerror =
             function() {
 
                 this.src =
@@ -5352,33 +5523,35 @@ function afficherInformationsUtilisateur(
     }
 
 
-    const roleUtilisateur =
+    const role =
         document.getElementById(
             "roleUtilisateur"
         );
 
 
-    if (roleUtilisateur) {
+    if (role) {
 
-        roleUtilisateur.textContent =
+        role.textContent =
             utilisateur.domaine ||
             "Apprenant";
 
     }
 
 
-    const badgeStatut =
+    const badge =
         document.getElementById(
             "badgeStatut"
         );
 
 
-    if (badgeStatut) {
+    if (badge) {
 
-        badgeStatut.innerHTML =
-            utilisateur.isPremium
+        if (
+            utilisateur.isPremium === true
+        ) {
 
-            ? `
+            badge.innerHTML = `
+
                 <span
                     style="
                         background:#dcfce7;
@@ -5389,9 +5562,13 @@ function afficherInformationsUtilisateur(
                 >
                     ⭐ Premium
                 </span>
-              `
 
-            : `
+            `;
+
+        } else {
+
+            badge.innerHTML = `
+
                 <span
                     style="
                         background:#f1f5f9;
@@ -5402,7 +5579,10 @@ function afficherInformationsUtilisateur(
                 >
                     👤 Standard
                 </span>
-              `;
+
+            `;
+
+        }
 
     }
 
@@ -5426,15 +5606,15 @@ function afficherInformationsUtilisateur(
     }
 
 
-    const domaineFormation =
+    const domaine =
         document.getElementById(
             "domaineFormation"
         );
 
 
-    if (domaineFormation) {
+    if (domaine) {
 
-        domaineFormation.textContent =
+        domaine.textContent =
             utilisateur.domaine ||
             "Aucun domaine";
 
@@ -5444,7 +5624,7 @@ function afficherInformationsUtilisateur(
 
 
 /*==================================================
-        10. PROGRESSION
+        11. PROGRESSION
 ==================================================*/
 
 function afficherProgression(
@@ -5452,7 +5632,9 @@ function afficherProgression(
 ) {
 
     if (!utilisateur) {
+
         return;
+
     }
 
 
@@ -5473,13 +5655,24 @@ function afficherProgression(
             );
 
 
-        progression =
+        const valeur =
             Number(
                 utilisateur.progressions[
                     domaine
                 ]
-            ) ||
-            progression;
+            );
+
+
+        if (
+            !Number.isNaN(
+                valeur
+            )
+        ) {
+
+            progression =
+                valeur;
+
+        }
 
     }
 
@@ -5496,29 +5689,29 @@ function afficherProgression(
         );
 
 
-    const progressBar =
+    const bar =
         document.getElementById(
             "progressBar"
         );
 
 
-    if (progressBar) {
+    if (bar) {
 
-        progressBar.style.width =
+        bar.style.width =
             progression + "%";
 
     }
 
 
-    const progressText =
+    const text =
         document.getElementById(
             "progressText"
         );
 
 
-    if (progressText) {
+    if (text) {
 
-        progressText.textContent =
+        text.textContent =
             progression + "%";
 
     }
@@ -5527,14 +5720,382 @@ function afficherProgression(
 
 
 /*==================================================
-        11. DECONNEXION
+        12. OUVRIR DOMAINE
+==================================================*/
+
+function ouvrirDomaine(
+    domaine
+) {
+
+    const utilisateur =
+        normaliserUtilisateur(
+            obtenirUtilisateurLocal()
+        );
+
+
+    if (!utilisateur) {
+
+        window.location.replace(
+            "connexion.html"
+        );
+
+        return;
+
+    }
+
+
+    const domaineNormalise =
+        normaliserTexte(
+            domaine
+        );
+
+
+    /*
+        FORMATIONS PREMIUM
+    */
+
+    const DOMAINES_PREMIUM = [
+
+        "informatique",
+
+        "cybersecurite"
+
+    ];
+
+
+    if (
+        DOMAINES_PREMIUM.includes(
+            domaineNormalise
+        ) &&
+        !utilisateur.isPremium
+    ) {
+
+        afficherPopupBMJ(
+
+            "Accès Premium",
+
+            `
+                Cette formation est réservée
+                aux utilisateurs <strong>Premium</strong>.
+                <br><br>
+                Activez votre compte Premium
+                pour continuer.
+            `,
+
+            "error"
+
+        );
+
+        return;
+
+    }
+
+
+    /*
+        MEMORISER DOMAINE
+    */
+
+    utilisateur.domaine =
+        domaine;
+
+
+    sauvegarderUtilisateur(
+        utilisateur
+    );
+
+
+    /*
+        REDIRECTION
+    */
+
+    const pages = {
+
+        "marketing":
+            "marketing.html",
+
+        "entrepreneuriat":
+            "entrepreneuriat.html",
+
+        "leadership":
+            "leadership.html",
+
+        "finance":
+            "finance.html",
+
+        "sante":
+            "sante_environnement.html",
+
+        "sante et environnement":
+            "sante_environnement.html",
+
+        "developpement":
+            "developpement_personnel.html",
+
+        "developpement personnel":
+            "developpement_personnel.html",
+
+        "informatique":
+            "informatique.html",
+
+        "education":
+            "education.html",
+
+        "communication":
+            "communication.html",
+
+        "gestion equipe":
+            "gestion_equipe.html",
+
+        "gestion_equipe":
+            "gestion_equipe.html",
+
+        "cybersecurite":
+            "cybersecurite.html"
+
+    };
+
+
+    window.location.href =
+        pages[domaineNormalise] ||
+        "formations.html";
+
+}
+
+
+/*==================================================
+        13. CONTINUER FORMATION
+==================================================*/
+
+function continuerFormation() {
+
+    const utilisateur =
+        normaliserUtilisateur(
+            obtenirUtilisateurLocal()
+        );
+
+
+    if (!utilisateur) {
+
+        window.location.replace(
+            "connexion.html"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        utilisateur.domaine
+    ) {
+
+        ouvrirDomaine(
+            utilisateur.domaine
+        );
+
+    } else {
+
+        window.location.href =
+            "formations.html";
+
+    }
+
+}
+
+
+/*==================================================
+        14. CERTIFICAT
+==================================================*/
+
+function ouvrirCertificat() {
+
+    const utilisateur =
+        normaliserUtilisateur(
+            obtenirUtilisateurLocal()
+        );
+
+
+    if (!utilisateur) {
+
+        window.location.replace(
+            "connexion.html"
+        );
+
+        return;
+
+    }
+
+
+    window.location.href =
+        "verification.html";
+
+}
+
+
+/*==================================================
+        15. POPUP
+==================================================*/
+
+function afficherPopupBMJ(
+    titre,
+    message,
+    type = "error",
+    callback = null
+) {
+
+    let modal =
+        document.getElementById(
+            "bmjModalAlerte"
+        );
+
+
+    if (!modal) {
+
+        modal =
+            document.createElement(
+                "div"
+            );
+
+
+        modal.id =
+            "bmjModalAlerte";
+
+
+        modal.innerHTML = `
+
+            <div
+                style="
+                    background:#fff;
+                    max-width:380px;
+                    width:90%;
+                    border-radius:20px;
+                    padding:30px;
+                    text-align:center;
+                    box-shadow:0 20px 60px rgba(0,0,0,.3);
+                "
+            >
+
+                <div
+                    id="bmjModalIcon"
+                    style="
+                        font-size:45px;
+                        margin-bottom:15px;
+                    "
+                >
+                    ⚠️
+                </div>
+
+                <h3
+                    id="bmjModalTitle"
+                    style="
+                        margin-bottom:10px;
+                    "
+                >
+                    Notification
+                </h3>
+
+                <p
+                    id="bmjModalText"
+                    style="
+                        color:#64748b;
+                        line-height:1.6;
+                        margin-bottom:20px;
+                    "
+                ></p>
+
+                <button
+                    id="bmjModalBtn"
+                    type="button"
+                    style="
+                        width:100%;
+                        padding:13px;
+                        border:none;
+                        border-radius:10px;
+                        background:#145A86;
+                        color:#fff;
+                        font-weight:700;
+                        cursor:pointer;
+                    "
+                >
+                    Compris
+                </button>
+
+            </div>
+
+        `;
+
+
+        modal.style.cssText = `
+
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,.55);
+            backdrop-filter:blur(5px);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            z-index:99999;
+            padding:20px;
+
+        `;
+
+
+        document.body.appendChild(
+            modal
+        );
+
+    }
+
+
+    document.getElementById(
+        "bmjModalTitle"
+    ).textContent =
+        titre;
+
+
+    document.getElementById(
+        "bmjModalText"
+    ).innerHTML =
+        message;
+
+
+    document.getElementById(
+        "bmjModalIcon"
+    ).textContent =
+        type === "success"
+            ? "✅"
+            : "⚠️";
+
+
+    modal.style.display =
+        "flex";
+
+
+    document.getElementById(
+        "bmjModalBtn"
+    ).onclick =
+        function() {
+
+            modal.style.display =
+                "none";
+
+
+            if (callback) {
+
+                callback();
+
+            }
+
+        };
+
+}
+
+
+/*==================================================
+        16. DECONNEXION
 ==================================================*/
 
 function deconnexion() {
-
-    /*
-        SUPPRESSION DE LA SESSION
-    */
 
     const cles = [
 
@@ -5579,7 +6140,7 @@ function deconnexion() {
 
 
 /*==================================================
-        12. BOUTON LOGOUT
+        17. LOGOUT
 ==================================================*/
 
 function initialiserDeconnexion() {
@@ -5591,7 +6152,9 @@ function initialiserDeconnexion() {
 
 
     if (!logout) {
+
         return;
+
     }
 
 
@@ -5610,7 +6173,7 @@ function initialiserDeconnexion() {
 
 
 /*==================================================
-        13. MENU MOBILE
+        18. MENU MOBILE
 ==================================================*/
 
 function initialiserMenuMobile() {
@@ -5652,46 +6215,75 @@ function initialiserMenuMobile() {
 
 
 /*==================================================
-        14. PROTECTION DASHBOARD
+        19. NAVIGATION SIDEBAR
+==================================================*/
+
+function initialiserNavigation() {
+
+    const liens =
+        document.querySelectorAll(
+            ".sidebar nav a"
+        );
+
+
+    liens.forEach(
+        function(lien) {
+
+            lien.addEventListener(
+                "click",
+                function() {
+
+                    /*
+                        Fermer menu mobile
+                    */
+
+                    const sidebar =
+                        document.getElementById(
+                            "sidebar"
+                        );
+
+
+                    if (sidebar) {
+
+                        sidebar.classList.remove(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/*==================================================
+        20. PROTECTION DASHBOARD
 ==================================================*/
 
 async function initialiserDashboard() {
 
     /*
-        IMPORTANT :
-
-        On récupère d'abord exactement
-        la session créée par connexion.html.
+        SESSION PRINCIPALE
     */
 
     let utilisateur =
         obtenirUtilisateurLocal();
 
 
-    /*
-        AUCUNE SESSION
-    */
-
     if (!utilisateur) {
-
-        console.warn(
-            "Aucune session BMJ trouvée."
-        );
-
 
         window.location.replace(
             "connexion.html"
         );
 
-
         return;
 
     }
 
-
-    /*
-        NORMALISATION
-    */
 
     utilisateur =
         normaliserUtilisateur(
@@ -5700,11 +6292,6 @@ async function initialiserDashboard() {
 
 
     if (!utilisateur) {
-
-        console.warn(
-            "Session BMJ invalide."
-        );
-
 
         localStorage.removeItem(
             "bmj_session"
@@ -5715,14 +6302,13 @@ async function initialiserDashboard() {
             "connexion.html"
         );
 
-
         return;
 
     }
 
 
     /*
-        SESSION EN MEMOIRE
+        SESSION MEMOIRE
     */
 
     utilisateurBMJ =
@@ -5730,19 +6316,7 @@ async function initialiserDashboard() {
 
 
     /*
-        IMPORTANT :
-
-        On sauvegarde immédiatement
-        le même utilisateur.
-    */
-
-    sauvegarderUtilisateur(
-        utilisateur
-    );
-
-
-    /*
-        AFFICHAGE IMMÉDIAT
+        AFFICHAGE IMMEDIAT
     */
 
     afficherInformationsUtilisateur(
@@ -5763,30 +6337,37 @@ async function initialiserDashboard() {
 
     initialiserMenuMobile();
 
+    initialiserNavigation();
+
 
     /*
-        SYNCHRONISATION SERVEUR
+        SERVEUR
+
+        Le serveur doit ensuite
+        actualiser les informations.
     */
 
     try {
 
-        const serveur =
+        const utilisateurServeur =
             await synchroniserUtilisateur();
 
 
-        if (serveur) {
+        if (
+            utilisateurServeur
+        ) {
 
             utilisateurBMJ =
-                serveur;
+                utilisateurServeur;
 
 
             afficherInformationsUtilisateur(
-                serveur
+                utilisateurServeur
             );
 
 
             afficherProgression(
-                serveur
+                utilisateurServeur
             );
 
         }
@@ -5794,7 +6375,7 @@ async function initialiserDashboard() {
     } catch (error) {
 
         console.warn(
-            "Serveur indisponible. Session locale conservée.",
+            "Synchronisation serveur impossible.",
             error
         );
 
@@ -5804,7 +6385,7 @@ async function initialiserDashboard() {
 
 
 /*==================================================
-        15. DEMARRAGE
+        21. DEMARRAGE
 ==================================================*/
 
 if (
@@ -5825,7 +6406,7 @@ if (
 
 
 /*==================================================
-        16. EXPORT
+        22. EXPORT GLOBAL
 ==================================================*/
 
 window.bmjDashboard = {
@@ -5842,9 +6423,18 @@ window.bmjDashboard = {
 
     normaliserUtilisateur,
 
+    ouvrirDomaine,
+
+    continuerFormation,
+
+    ouvrirCertificat,
+
+    afficherPopupBMJ,
+
     deconnexion
 
 };
+
 </script>
 <!-- Modale Moderne BMJ SERVICE (Vérification Certificat) -->
 <div id="bmjModalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
