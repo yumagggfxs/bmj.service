@@ -1272,65 +1272,61 @@
     ========================================================= -->
 <script>
 
-/* =========================================================
-   BMJ SERVICE
-   SCRIPT COMPLET DE CONNEXION
-   =========================================================
+/*==================================================
+        BMJ SERVICE
+        CONNEXION UTILISATEUR
+        VERSION : 13.0.0
 
-   VERSION : 6.0.0
-
-   OBJECTIFS :
-   ---------------------------------------------------------
-   - Utiliser la même session que dashboard.html
-   - Utiliser bmj_current_user
-   - Compatibilité bmj_user
-   - Utiliser POST /api/connexion
-   - Compatible avec les différentes réponses API
-   - Support localStorage / sessionStorage
-   - "Se souvenir de moi"
-   - Ne jamais enregistrer le mot de passe
-   - Empêcher la boucle connexion → dashboard → connexion
-   - Rediriger directement vers dashboard.html
-   - Gérer Render temporairement lent
-   ========================================================= */
+        LOGIQUE :
+        - Connexion PostgreSQL via API
+        - Email ou identifiant BMJ
+        - Même session que le dashboard
+        - bmj_session
+        - bmj_current_user
+        - bmj_user
+        - bmj_token
+        - Redirection dashboard.html
+==================================================*/
 
 
-/* =========================================================
-   1. CONFIGURATION API
-   ========================================================= */
+/*==================================================
+        1. CONFIGURATION API
+==================================================*/
 
-const API_URL =
-    "https://back-end-h602.onrender.com";
-
-
-/* =========================================================
-   2. CONFIGURATION SESSION
-   ========================================================= */
-
-const SESSION_KEY =
-    "bmj_current_user";
-
-const OLD_SESSION_KEY =
-    "bmj_user";
-
-const LOGIN_KEY =
-    "bmj_logged_in";
+const BMJ_API_URL =
+    "https://TON-BACKEND-RENDER.onrender.com";
 
 
-/* =========================================================
-   3. ELEMENTS HTML
-   ========================================================= */
+/*
+    IMPORTANT :
+
+    Remplace uniquement :
+
+    https://TON-BACKEND-RENDER.onrender.com
+
+    par l'URL réelle de ton backend Render.
+
+    Exemple :
+
+    const BMJ_API_URL =
+        "https://bmj-service-backend.onrender.com";
+*/
+
+
+/*==================================================
+        2. ELEMENTS
+==================================================*/
 
 const loginForm =
     document.getElementById("loginForm");
 
-const identifiantInput =
+const identifiant =
     document.getElementById("identifiant");
 
-const passwordInput =
+const password =
     document.getElementById("password");
 
-const rememberInput =
+const remember =
     document.getElementById("remember");
 
 const btnConnexion =
@@ -1339,7 +1335,7 @@ const btnConnexion =
 const buttonText =
     document.getElementById("buttonText");
 
-const messageBox =
+const message =
     document.getElementById("message");
 
 const passwordToggle =
@@ -1349,1196 +1345,908 @@ const passwordIcon =
     document.getElementById("passwordIcon");
 
 
-/* =========================================================
-   4. OUTILS JSON
-   ========================================================= */
-
-function lireJSON(storage, key) {
-
-    try {
-
-        const valeur =
-            storage.getItem(key);
-
-        if (!valeur) {
-            return null;
-        }
-
-        return JSON.parse(valeur);
-
-    } catch (erreur) {
-
-        console.error(
-            "[BMJ LOGIN] JSON invalide :",
-            erreur
-        );
-
-        storage.removeItem(key);
-
-        return null;
-    }
-}
-
-
-/* =========================================================
-   5. CONVERSION BOOLEEN
-   ========================================================= */
-
-function convertirBooleen(valeur) {
-
-    return (
-        valeur === true ||
-        valeur === 1 ||
-        valeur === "1" ||
-        valeur === "true" ||
-        valeur === "TRUE"
-    );
-}
-
-
-/* =========================================================
-   6. NORMALISATION TEXTE
-   ========================================================= */
-
-function normaliserTexte(valeur) {
-
-    return String(valeur || "")
-        .trim()
-        .toLowerCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-}
-
-
-/* =========================================================
-   7. AFFICHER MESSAGE
-   ========================================================= */
+/*==================================================
+        3. AFFICHER MESSAGE
+==================================================*/
 
 function afficherMessage(
     texte,
     type = "error"
 ) {
 
-    if (!messageBox) {
+    if (!message) {
         return;
     }
 
-    messageBox.className = "";
+    message.className =
+        "";
 
-    messageBox.id = "message";
-
-    messageBox.classList.add(type);
-
-    messageBox.innerHTML = texte;
-
-    messageBox.style.display = "block";
-}
-
-
-/* =========================================================
-   8. CACHER MESSAGE
-   ========================================================= */
-
-function cacherMessage() {
-
-    if (!messageBox) {
-        return;
-    }
-
-    messageBox.style.display = "none";
-
-    messageBox.innerHTML = "";
-
-    messageBox.className = "";
-
-}
-
-
-/* =========================================================
-   9. UTILISATEUR DEJA CONNECTE
-   ========================================================= */
-
-function recupererUtilisateurSession() {
-
-    let utilisateur = null;
-
-
-    /* -----------------------------------------------------
-       1. localStorage nouvelle clé
-       ----------------------------------------------------- */
-
-    utilisateur =
-        lireJSON(
-            localStorage,
-            SESSION_KEY
-        );
-
-
-    /* -----------------------------------------------------
-       2. localStorage ancienne clé
-       ----------------------------------------------------- */
-
-    if (!utilisateur) {
-
-        utilisateur =
-            lireJSON(
-                localStorage,
-                OLD_SESSION_KEY
-            );
-    }
-
-
-    /* -----------------------------------------------------
-       3. sessionStorage nouvelle clé
-       ----------------------------------------------------- */
-
-    if (!utilisateur) {
-
-        utilisateur =
-            lireJSON(
-                sessionStorage,
-                SESSION_KEY
-            );
-    }
-
-
-    /* -----------------------------------------------------
-       4. sessionStorage ancienne clé
-       ----------------------------------------------------- */
-
-    if (!utilisateur) {
-
-        utilisateur =
-            lireJSON(
-                sessionStorage,
-                OLD_SESSION_KEY
-            );
-    }
-
-
-    return utilisateur;
-}
-
-
-/* =========================================================
-   10. VERIFIER SESSION EXISTANTE
-   ========================================================= */
-
-function verifierSessionExistante() {
-
-    const utilisateur =
-        recupererUtilisateurSession();
-
-    if (!utilisateur) {
-        return false;
-    }
-
-
-    /* -----------------------------------------------------
-       Vérification minimale
-       ----------------------------------------------------- */
-
-    const possedeIdentite =
-        utilisateur.id ||
-        utilisateur.email ||
-        utilisateur.telephone ||
-        utilisateur.nom;
-
-
-    if (!possedeIdentite) {
-
-        supprimerSession();
-
-        return false;
-    }
-
-
-    console.log(
-        "[BMJ LOGIN] Session existante détectée :",
-        utilisateur
+    message.classList.add(
+        type
     );
 
+    message.innerHTML =
+        texte;
 
-    return true;
 }
 
 
-/* =========================================================
-   11. SAUVEGARDER UTILISATEUR
-   ========================================================= */
+/*==================================================
+        4. NORMALISER UTILISATEUR
+==================================================*/
 
-function sauvegarderUtilisateurSession(
-    utilisateur,
-    remember = true
+function normaliserUtilisateur(
+    data
 ) {
 
-    if (!utilisateur) {
-        return false;
-    }
+    if (
+        !data ||
+        typeof data !== "object"
+    ) {
 
-
-    /* -----------------------------------------------------
-       NE JAMAIS stocker le mot de passe
-       ----------------------------------------------------- */
-
-    const safeUser = {
-
-        id:
-            utilisateur.id ??
-            utilisateur.user_id ??
-            utilisateur.userId ??
-            null,
-
-        nom:
-            utilisateur.nom ??
-            utilisateur.name ??
-            utilisateur.full_name ??
-            "",
-
-        email:
-            utilisateur.email ??
-            "",
-
-        telephone:
-            utilisateur.telephone ??
-            utilisateur.phone ??
-            "",
-
-        domaine:
-            utilisateur.domaine ??
-            utilisateur.domain ??
-            "",
-
-        photo:
-            utilisateur.photo ??
-            utilisateur.image ??
-            "",
-
-        premium:
-            convertirBooleen(
-                utilisateur.premium
-            ),
-
-        is_premium:
-            convertirBooleen(
-                utilisateur.is_premium
-            ),
-
-        isPremium:
-            convertirBooleen(
-                utilisateur.isPremium
-            ),
-
-        premium_until:
-            utilisateur.premium_until ??
-            null,
-
-        progression:
-            utilisateur.progression ??
-            0,
-
-        progressions:
-            utilisateur.progressions ??
-            {},
-
-        blocked:
-            convertirBooleen(
-                utilisateur.blocked
-            ),
-
-        is_blocked:
-            convertirBooleen(
-                utilisateur.is_blocked
-            ),
-
-        created_at:
-            utilisateur.created_at ??
-            null,
-
-        updated_at:
-            utilisateur.updated_at ??
-            null
-    };
-
-
-    /* -----------------------------------------------------
-       PREMIUM UNIFIE
-       ----------------------------------------------------- */
-
-    const premium =
-        safeUser.premium ||
-        safeUser.is_premium ||
-        safeUser.isPremium;
-
-
-    safeUser.premium =
-        premium;
-
-    safeUser.is_premium =
-        premium;
-
-    safeUser.isPremium =
-        premium;
-
-
-    /* -----------------------------------------------------
-       Nettoyer anciennes sessions
-       ----------------------------------------------------- */
-
-    localStorage.removeItem(
-        SESSION_KEY
-    );
-
-    localStorage.removeItem(
-        OLD_SESSION_KEY
-    );
-
-    localStorage.removeItem(
-        LOGIN_KEY
-    );
-
-    sessionStorage.removeItem(
-        SESSION_KEY
-    );
-
-    sessionStorage.removeItem(
-        OLD_SESSION_KEY
-    );
-
-    sessionStorage.removeItem(
-        LOGIN_KEY
-    );
-
-
-    /* -----------------------------------------------------
-       SESSION PERSISTANTE
-       ----------------------------------------------------- */
-
-    if (remember) {
-
-        localStorage.setItem(
-            SESSION_KEY,
-            JSON.stringify(safeUser)
-        );
-
-        localStorage.setItem(
-            LOGIN_KEY,
-            "true"
-        );
-
-    }
-
-
-    /* -----------------------------------------------------
-       SESSION TEMPORAIRE
-       ----------------------------------------------------- */
-
-    else {
-
-        sessionStorage.setItem(
-            SESSION_KEY,
-            JSON.stringify(safeUser)
-        );
-
-        sessionStorage.setItem(
-            LOGIN_KEY,
-            "true"
-        );
-    }
-
-
-    console.log(
-        "[BMJ LOGIN] Session enregistrée :",
-        safeUser
-    );
-
-
-    return true;
-}
-
-
-/* =========================================================
-   12. SUPPRIMER SESSION
-   ========================================================= */
-
-function supprimerSession() {
-
-    localStorage.removeItem(
-        SESSION_KEY
-    );
-
-    localStorage.removeItem(
-        OLD_SESSION_KEY
-    );
-
-    localStorage.removeItem(
-        LOGIN_KEY
-    );
-
-
-    sessionStorage.removeItem(
-        SESSION_KEY
-    );
-
-    sessionStorage.removeItem(
-        OLD_SESSION_KEY
-    );
-
-    sessionStorage.removeItem(
-        LOGIN_KEY
-    );
-}
-
-
-/* =========================================================
-   13. EXTRAIRE UTILISATEUR DE LA REPONSE API
-   ========================================================= */
-
-function extraireUtilisateur(resultat) {
-
-    if (!resultat) {
         return null;
+
     }
-
-
-    /* -----------------------------------------------------
-       Format :
-
-       {
-          success:true,
-          data:{
-              user:{...}
-          }
-       }
-       ----------------------------------------------------- */
-
-    if (
-        resultat.data &&
-        resultat.data.user
-    ) {
-
-        return resultat.data.user;
-    }
-
-
-    /* -----------------------------------------------------
-       Format :
-
-       {
-          success:true,
-          data:{...}
-       }
-       ----------------------------------------------------- */
-
-    if (
-        resultat.data &&
-        (
-            resultat.data.id ||
-            resultat.data.email ||
-            resultat.data.nom
-        )
-    ) {
-
-        return resultat.data;
-    }
-
-
-    /* -----------------------------------------------------
-       Format :
-
-       {
-          success:true,
-          user:{...}
-       }
-       ----------------------------------------------------- */
-
-    if (resultat.user) {
-
-        return resultat.user;
-    }
-
-
-    /* -----------------------------------------------------
-       Format direct :
-
-       {
-          success:true,
-          id:1,
-          email:"..."
-       }
-       ----------------------------------------------------- */
-
-    if (
-        resultat.id ||
-        resultat.email ||
-        resultat.nom
-    ) {
-
-        return resultat;
-    }
-
-
-    return null;
-}
-
-
-/* =========================================================
-   14. EXTRAIRE MESSAGE API
-   ========================================================= */
-
-function extraireMessage(resultat) {
-
-    if (!resultat) {
-        return "";
-    }
-
-
-    if (
-        typeof resultat.message ===
-        "string"
-    ) {
-
-        return resultat.message;
-    }
-
-
-    if (
-        typeof resultat.error ===
-        "string"
-    ) {
-
-        return resultat.error;
-    }
-
-
-    if (
-        resultat.data &&
-        typeof resultat.data.message ===
-        "string"
-    ) {
-
-        return resultat.data.message;
-    }
-
-
-    return "";
-}
-
-
-/* =========================================================
-   15. RECUPERER REPONSE JSON
-   ========================================================= */
-
-async function lireReponseJSON(response) {
-
-    const texte =
-        await response.text();
-
-
-    if (!texte) {
-
-        return {
-            success: response.ok
-        };
-    }
-
-
-    try {
-
-        return JSON.parse(texte);
-
-    } catch (erreur) {
-
-        console.error(
-            "[BMJ LOGIN] Réponse non JSON :",
-            texte
-        );
-
-        throw new Error(
-            "Le serveur a retourné une réponse invalide."
-        );
-    }
-}
-
-
-/* =========================================================
-   16. VERIFIER UTILISATEUR SERVEUR
-   ========================================================= */
-
-async function connexionServeur(
-    identifiant,
-    password
-) {
-
-    const url =
-        API_URL.replace(/\/+$/, "") +
-        "/api/connexion";
-
-
-    console.log(
-        "[BMJ LOGIN] Connexion vers :",
-        url
-    );
-
-
-    const response =
-        await fetch(
-            url,
-            {
-                method: "POST",
-
-                headers: {
-
-                    "Content-Type":
-                        "application/json",
-
-                    "Accept":
-                        "application/json"
-                },
-
-                body:
-                    JSON.stringify({
-
-                        identifiant:
-                            identifiant,
-
-                        email:
-                            identifiant,
-
-                        username:
-                            identifiant,
-
-                        password:
-                            password
-                    }),
-
-                cache:
-                    "no-store"
-            }
-        );
-
-
-    const resultat =
-        await lireReponseJSON(
-            response
-        );
-
-
-    console.log(
-        "[BMJ LOGIN] Réponse serveur :",
-        resultat
-    );
-
-
-    if (
-        !response.ok ||
-        resultat.success === false
-    ) {
-
-        const message =
-            extraireMessage(
-                resultat
-            );
-
-
-        throw new Error(
-            message ||
-            "Identifiant ou mot de passe incorrect."
-        );
-    }
-
-
-    const utilisateur =
-        extraireUtilisateur(
-            resultat
-        );
-
-
-    if (!utilisateur) {
-
-        throw new Error(
-            "Connexion réussie mais les informations de l'utilisateur sont absentes."
-        );
-    }
-
-
-    return utilisateur;
-}
-
-
-/* =========================================================
-   17. REDIRECTION DASHBOARD
-   ========================================================= */
-
-function allerDashboard() {
-
-    console.log(
-        "[BMJ LOGIN] Redirection vers dashboard.html"
-    );
 
 
     /*
-       replace() au lieu de href
+        Certains serveurs retournent :
 
-       Cela évite que la page de connexion
-       reste dans l'historique du navigateur.
+        {
+            success:true,
+            data:{...}
+        }
+
+        ou :
+
+        {
+            success:true,
+            user:{...}
+        }
     */
 
-    window.location.replace(
-        "dashboard.html"
-    );
+    let utilisateur =
+        data;
+
+
+    if (
+        data.user &&
+        typeof data.user === "object"
+    ) {
+
+        utilisateur =
+            data.user;
+
+    }
+
+
+    if (
+        data.data &&
+        typeof data.data === "object"
+    ) {
+
+        if (
+            data.data.user &&
+            typeof data.data.user === "object"
+        ) {
+
+            utilisateur =
+                data.data.user;
+
+        } else {
+
+            utilisateur =
+                data.data;
+
+        }
+
+    }
+
+
+    /*
+        Création d'un objet unique.
+    */
+
+    const user = {
+
+        ...utilisateur
+
+    };
+
+
+    /* ID */
+
+    user.id =
+        utilisateur.id ??
+        utilisateur.user_id ??
+        utilisateur.userId ??
+        utilisateur.id_utilisateur ??
+        null;
+
+
+    /* IDENTIFIANT BMJ */
+
+    user.id_bmj =
+        utilisateur.id_bmj ??
+        utilisateur.idBMJ ??
+        utilisateur.bmj_id ??
+        utilisateur.bmjId ??
+        "";
+
+
+    /* NOM */
+
+    user.nom =
+        utilisateur.nom ??
+        utilisateur.name ??
+        utilisateur.username ??
+        "";
+
+
+    /* EMAIL */
+
+    user.email =
+        utilisateur.email ??
+        "";
+
+
+    /* TELEPHONE */
+
+    user.telephone =
+        utilisateur.telephone ??
+        utilisateur.phone ??
+        "";
+
+
+    /* DOMAINE */
+
+    user.domaine =
+        utilisateur.domaine ??
+        utilisateur.domain ??
+        "";
+
+
+    /* PHOTO */
+
+    user.photo =
+        utilisateur.photo ??
+        utilisateur.avatar ??
+        utilisateur.image ??
+        "images/user.png";
+
+
+    /* PREMIUM */
+
+    user.premium =
+        utilisateur.premium ??
+        utilisateur.is_premium ??
+        false;
+
+
+    user.is_premium =
+        utilisateur.is_premium ??
+        utilisateur.premium ??
+        false;
+
+
+    /* PREMIUM UNTIL */
+
+    user.premium_until =
+        utilisateur.premium_until ??
+        null;
+
+
+    /* PROGRESSION */
+
+    user.progression =
+        Number(
+            utilisateur.progression ??
+            utilisateur.progress ??
+            0
+        );
+
+
+    user.progressions =
+        utilisateur.progressions ??
+        {};
+
+
+    /* TOKEN */
+
+    user.token =
+        utilisateur.token ??
+        utilisateur.access_token ??
+        null;
+
+
+    /* DATE */
+
+    user.created_at =
+        utilisateur.created_at ??
+        null;
+
+
+    return user;
+
 }
 
 
-/* =========================================================
-   18. CONNEXION
-   ========================================================= */
+/*==================================================
+        5. SAUVEGARDER SESSION BMJ
+==================================================*/
 
-async function effectuerConnexion() {
+function sauvegarderSessionBMJ(
+    utilisateur,
+    token = null
+) {
 
-    cacherMessage();
+    if (
+        !utilisateur ||
+        typeof utilisateur !== "object"
+    ) {
 
+        return false;
 
-    const identifiant =
-        identifiantInput
-            ? identifiantInput.value.trim()
-            : "";
-
-
-    const password =
-        passwordInput
-            ? passwordInput.value
-            : "";
-
-
-    const remember =
-        rememberInput
-            ? rememberInput.checked
-            : true;
-
-
-    /* -----------------------------------------------------
-       Validation identifiant
-       ----------------------------------------------------- */
-
-    if (!identifiant) {
-
-        afficherMessage(
-            "Veuillez entrer votre adresse e-mail ou votre identifiant BMJ.",
-            "error"
-        );
-
-        if (identifiantInput) {
-            identifiantInput.focus();
-        }
-
-        return;
     }
 
 
-    /* -----------------------------------------------------
-       Validation mot de passe
-       ----------------------------------------------------- */
+    /*
+        Ajouter le token au compte
+        si le serveur en retourne un.
+    */
 
-    if (!password) {
+    if (token) {
 
-        afficherMessage(
-            "Veuillez entrer votre mot de passe.",
-            "error"
-        );
+        utilisateur.token =
+            token;
 
-        if (passwordInput) {
-            passwordInput.focus();
-        }
-
-        return;
     }
 
 
-    /* -----------------------------------------------------
-       Etat chargement
-       ----------------------------------------------------- */
+    /*
+        Objet session unique.
+    */
 
-    if (btnConnexion) {
+    const session = {
 
-        btnConnexion.disabled = true;
+        authenticated: true,
 
-        btnConnexion.innerHTML =
-            '<span class="spinner"></span>' +
-            '<span>Connexion...</span>';
-    }
+        connected: true,
 
+        user: utilisateur,
 
-    afficherMessage(
-        "Connexion à votre espace BMJ SERVICE...",
-        "info"
-    );
+        id:
+            utilisateur.id ?? null,
+
+        id_bmj:
+            utilisateur.id_bmj ?? "",
+
+        nom:
+            utilisateur.nom ?? "",
+
+        email:
+            utilisateur.email ?? "",
+
+        telephone:
+            utilisateur.telephone ?? "",
+
+        domaine:
+            utilisateur.domaine ?? "",
+
+        photo:
+            utilisateur.photo ??
+            "images/user.png",
+
+        premium:
+            utilisateur.premium ?? false,
+
+        is_premium:
+            utilisateur.is_premium ?? false,
+
+        premium_until:
+            utilisateur.premium_until ?? null,
+
+        progression:
+            utilisateur.progression ?? 0,
+
+        progressions:
+            utilisateur.progressions ?? {},
+
+        token:
+            utilisateur.token ?? null,
+
+        login_at:
+            new Date().toISOString()
+
+    };
 
 
     try {
 
-        /* =================================================
-           APPEL API
-           ================================================= */
+        /*
+            SESSION PRINCIPALE
+        */
 
-        const utilisateur =
-            await connexionServeur(
-                identifiant,
-                password
-            );
-
-
-        /* =================================================
-           VERIFICATION COMPTE BLOQUE
-           ================================================= */
-
-        const bloque =
-            convertirBooleen(
-                utilisateur.blocked
-            ) ||
-            convertirBooleen(
-                utilisateur.is_blocked
-            );
-
-
-        if (bloque) {
-
-            supprimerSession();
-
-
-            throw new Error(
-                "Votre compte est actuellement bloqué. Veuillez contacter le support BMJ SERVICE."
-            );
-        }
-
-
-        /* =================================================
-           SAUVEGARDE SESSION
-           ================================================= */
-
-        const sauvegarde =
-            sauvegarderUtilisateurSession(
-                utilisateur,
-                remember
-            );
-
-
-        if (!sauvegarde) {
-
-            throw new Error(
-                "Impossible d'enregistrer votre session."
-            );
-        }
-
-
-        /* =================================================
-           MESSAGE SUCCES
-           ================================================= */
-
-        afficherMessage(
-            "Connexion réussie. Ouverture de votre tableau de bord...",
-            "success"
+        localStorage.setItem(
+            "bmj_session",
+            JSON.stringify(session)
         );
 
 
-        /* =================================================
-           REDIRECTION
-           ================================================= */
+        /*
+            UTILISATEUR PRINCIPAL
+        */
 
-        setTimeout(
-            function () {
-
-                allerDashboard();
-
-            },
-            400
+        localStorage.setItem(
+            "bmj_current_user",
+            JSON.stringify(utilisateur)
         );
 
 
-    } catch (erreur) {
+        /*
+            COMPATIBILITE
+        */
 
-        console.error(
-            "[BMJ LOGIN] Erreur :",
-            erreur
+        localStorage.setItem(
+            "bmj_user",
+            JSON.stringify(utilisateur)
         );
 
 
-        /* -------------------------------------------------
-           Ne jamais conserver une session partielle
-           ------------------------------------------------- */
-
-        supprimerSession();
-
-
-        let message =
-            erreur &&
-            erreur.message
-                ? erreur.message
-                : "Impossible de se connecter au serveur.";
+        localStorage.setItem(
+            "currentUser",
+            JSON.stringify(utilisateur)
+        );
 
 
-        /* -------------------------------------------------
-           Messages plus propres
-           ------------------------------------------------- */
+        localStorage.setItem(
+            "user",
+            JSON.stringify(utilisateur)
+        );
 
-        const messageNormalise =
-            normaliserTexte(
-                message
-            );
 
+        /*
+            ID
+        */
 
         if (
-            messageNormalise.includes(
-                "failed to fetch"
-            ) ||
-            messageNormalise.includes(
-                "networkerror"
-            ) ||
-            messageNormalise.includes(
-                "network error"
-            )
+            utilisateur.id !== null &&
+            utilisateur.id !== undefined
         ) {
 
-            message =
-                "Impossible de contacter le serveur BMJ SERVICE. Vérifiez votre connexion Internet puis réessayez.";
+            localStorage.setItem(
+                "bmj_user_id",
+                String(
+                    utilisateur.id
+                )
+            );
+
         }
 
 
-        afficherMessage(
-            message,
-            "error"
+        /*
+            TOKEN
+        */
+
+        if (
+            utilisateur.token
+        ) {
+
+            localStorage.setItem(
+                "bmj_token",
+                utilisateur.token
+            );
+
+            localStorage.setItem(
+                "token",
+                utilisateur.token
+            );
+
+        }
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Erreur sauvegarde session :",
+            error
         );
 
-
-        /* -------------------------------------------------
-           Restaurer bouton
-           ------------------------------------------------- */
-
-        if (btnConnexion) {
-
-            btnConnexion.disabled = false;
-
-            btnConnexion.innerHTML =
-                '<i class="fa-solid fa-right-to-bracket"></i>' +
-                '<span id="buttonText">Se connecter</span>';
-        }
+        return false;
 
     }
+
 }
 
 
-/* =========================================================
-   19. EVENEMENT FORMULAIRE
-   ========================================================= */
+/*==================================================
+        6. EFFACER ANCIENNE SESSION
+==================================================*/
 
-if (loginForm) {
+function nettoyerAncienneSession() {
 
-    loginForm.addEventListener(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-            effectuerConnexion();
-
-        }
+    localStorage.removeItem(
+        "bmj_session"
     );
+
+    localStorage.removeItem(
+        "bmj_current_user"
+    );
+
+    localStorage.removeItem(
+        "bmj_user"
+    );
+
+    localStorage.removeItem(
+        "currentUser"
+    );
+
+    localStorage.removeItem(
+        "user"
+    );
+
+    localStorage.removeItem(
+        "bmj_token"
+    );
+
+    localStorage.removeItem(
+        "token"
+    );
+
+    localStorage.removeItem(
+        "bmj_user_id"
+    );
+
 }
 
 
-/* =========================================================
-   20. AFFICHER / MASQUER MOT DE PASSE
-   ========================================================= */
+/*==================================================
+        7. AFFICHER / MASQUER MOT DE PASSE
+==================================================*/
 
 if (passwordToggle) {
 
     passwordToggle.addEventListener(
         "click",
-        function () {
+        function() {
 
-            if (!passwordInput) {
+            const visible =
+                password.type ===
+                "text";
+
+
+            if (visible) {
+
+                password.type =
+                    "password";
+
+                passwordIcon.className =
+                    "fa-solid fa-eye";
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    "Afficher le mot de passe"
+                );
+
+            } else {
+
+                password.type =
+                    "text";
+
+                passwordIcon.className =
+                    "fa-solid fa-eye-slash";
+
+                passwordToggle.setAttribute(
+                    "aria-label",
+                    "Masquer le mot de passe"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/*==================================================
+        8. CONNEXION
+==================================================*/
+
+if (loginForm) {
+
+    loginForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const login =
+                identifiant.value.trim();
+
+            const motDePasse =
+                password.value;
+
+
+            /*
+                VALIDATION
+            */
+
+            if (!login) {
+
+                afficherMessage(
+                    "Veuillez saisir votre adresse e-mail ou votre identifiant BMJ.",
+                    "error"
+                );
+
+                identifiant.focus();
+
+                return;
+
+            }
+
+
+            if (!motDePasse) {
+
+                afficherMessage(
+                    "Veuillez saisir votre mot de passe.",
+                    "error"
+                );
+
+                password.focus();
+
+                return;
+
+            }
+
+
+            /*
+                ETAT CHARGEMENT
+            */
+
+            btnConnexion.disabled =
+                true;
+
+            buttonText.innerHTML = `
+
+                <span class="spinner"></span>
+
+                Connexion...
+
+            `;
+
+
+            afficherMessage(
+                "Vérification de vos informations...",
+                "info"
+            );
+
+
+            try {
+
+                /*
+                    IMPORTANT :
+
+                    On utilise /api/connexion
+                    comme route principale.
+                */
+
+                const response =
+                    await fetch(
+                        BMJ_API_URL +
+                        "/api/connexion",
+                        {
+
+                            method: "POST",
+
+                            headers: {
+
+                                "Content-Type":
+                                    "application/json",
+
+                                "Accept":
+                                    "application/json"
+
+                            },
+
+                            credentials:
+                                "include",
+
+                            body:
+                                JSON.stringify({
+
+                                    identifiant:
+                                        login,
+
+                                    email:
+                                        login,
+
+                                    username:
+                                        login,
+
+                                    password:
+                                        motDePasse
+
+                                })
+
+                        }
+                    );
+
+
+                /*
+                    Lecture réponse
+                */
+
+                let result =
+                    null;
+
+
+                try {
+
+                    result =
+                        await response.json();
+
+                } catch (jsonError) {
+
+                    throw new Error(
+                        "Le serveur a retourné une réponse invalide."
+                    );
+
+                }
+
+
+                console.log(
+                    "Réponse connexion BMJ :",
+                    result
+                );
+
+
+                /*
+                    ECHEC SERVEUR
+                */
+
+                if (
+                    !response.ok ||
+                    !result ||
+                    result.success !== true
+                ) {
+
+                    throw new Error(
+                        result?.message ||
+                        result?.error ||
+                        "Identifiants incorrects."
+                    );
+
+                }
+
+
+                /*
+                    RECUPERATION UTILISATEUR
+                */
+
+                const utilisateur =
+                    normaliserUtilisateur(
+                        result
+                    );
+
+
+                if (!utilisateur) {
+
+                    throw new Error(
+                        "Le serveur a accepté la connexion mais n'a pas retourné les données de l'utilisateur."
+                    );
+
+                }
+
+
+                /*
+                    TOKEN
+                */
+
+                const token =
+                    result.token ??
+                    result.access_token ??
+                    result.data?.token ??
+                    result.data?.access_token ??
+                    utilisateur.token ??
+                    null;
+
+
+                if (token) {
+
+                    utilisateur.token =
+                        token;
+
+                }
+
+
+                /*
+                    VERIFICATION IDENTITE
+                */
+
+                if (
+                    !utilisateur.id &&
+                    !utilisateur.email &&
+                    !utilisateur.id_bmj
+                ) {
+
+                    throw new Error(
+                        "Impossible d'identifier le compte connecté."
+                    );
+
+                }
+
+
+                /*
+                    NETTOYAGE ANCIENNE SESSION
+                */
+
+                nettoyerAncienneSession();
+
+
+                /*
+                    SAUVEGARDE NOUVELLE SESSION
+                */
+
+                const sessionOk =
+                    sauvegarderSessionBMJ(
+                        utilisateur,
+                        token
+                    );
+
+
+                if (!sessionOk) {
+
+                    throw new Error(
+                        "Impossible d'enregistrer votre session sur cet appareil."
+                    );
+
+                }
+
+
+                /*
+                    MEMOIRE SESSION
+                */
+
+                sessionStorage.setItem(
+                    "bmj_session_active",
+                    "true"
+                );
+
+
+                /*
+                    AFFICHAGE SUCCES
+                */
+
+                afficherMessage(
+                    `
+                    <strong>Connexion réussie.</strong><br>
+                    Bienvenue ${(
+                        utilisateur.nom ||
+                        "sur BMJ SERVICE"
+                    )}.
+                    `,
+                    "success"
+                );
+
+
+                /*
+                    REDIRECTION
+
+                    On utilise replace afin
+                    d'éviter de revenir sur
+                    la connexion avec le bouton
+                    précédent.
+                */
+
+                setTimeout(
+                    function() {
+
+                        window.location.replace(
+                            "dashboard.html"
+                        );
+
+                    },
+                    500
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur connexion BMJ :",
+                    error
+                );
+
+
+                afficherMessage(
+                    error.message ||
+                    "Impossible de contacter le serveur.",
+                    "error"
+                );
+
+
+                btnConnexion.disabled =
+                    false;
+
+
+                buttonText.innerHTML = `
+
+                    <i class="fa-solid fa-right-to-bracket"></i>
+
+                    Se connecter
+
+                `;
+
+            }
+
+        }
+    );
+
+}
+
+
+/*==================================================
+        9. VERIFIER SESSION DEJA ACTIVE
+==================================================*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        try {
+
+            const session =
+                localStorage.getItem(
+                    "bmj_session"
+                );
+
+
+            if (!session) {
                 return;
             }
 
 
-            const actuellementPassword =
-                passwordInput.type ===
-                "password";
+            const data =
+                JSON.parse(session);
 
-
-            passwordInput.type =
-                actuellementPassword
-                    ? "text"
-                    : "password";
-
-
-            if (passwordIcon) {
-
-                passwordIcon.className =
-                    actuellementPassword
-                        ? "fa-solid fa-eye-slash"
-                        : "fa-solid fa-eye";
-            }
-
-
-            passwordToggle.setAttribute(
-                "aria-label",
-                actuellementPassword
-                    ? "Masquer le mot de passe"
-                    : "Afficher le mot de passe"
-            );
-
-        }
-    );
-}
-
-
-/* =========================================================
-   21. ENTER SUR LE MOT DE PASSE
-   ========================================================= */
-
-if (passwordInput) {
-
-    passwordInput.addEventListener(
-        "keydown",
-        function (event) {
 
             if (
-                event.key === "Enter"
+                data &&
+                data.authenticated === true &&
+                data.user
             ) {
 
-                event.preventDefault();
+                /*
+                    L'utilisateur est déjà connecté.
+                */
 
-                if (loginForm) {
+                /*
+                    Ne pas rediriger automatiquement
+                    pendant qu'il remplit le formulaire.
+                    On affiche simplement une indication.
+                */
 
-                    loginForm.requestSubmit();
-                }
+                console.log(
+                    "Session BMJ déjà présente :",
+                    data.user
+                );
+
             }
-        }
-    );
-}
 
+        } catch (error) {
 
-/* =========================================================
-   22. VERIFICATION SESSION AU CHARGEMENT
-   ========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        console.log(
-            "[BMJ LOGIN] Page de connexion initialisée."
-        );
-
-
-        /*
-           Si l'utilisateur est déjà connecté,
-           on ne lui demande pas de se reconnecter.
-
-           IMPORTANT :
-           On vérifie uniquement la présence
-           d'une session valide locale.
-
-           On ne fait PAS d'appel PostgreSQL
-           ici afin d'éviter le problème :
-
-           connexion
-           ↓
-           dashboard
-           ↓
-           connexion
-        */
-
-        if (
-            verifierSessionExistante()
-        ) {
-
-            console.log(
-                "[BMJ LOGIN] Utilisateur déjà connecté."
+            localStorage.removeItem(
+                "bmj_session"
             );
 
-
-            /*
-               Redirection directe.
-            */
-
-            allerDashboard();
-
-            return;
-        }
-
-
-        console.log(
-            "[BMJ LOGIN] Aucune session active."
-        );
-
-
-        /*
-           Focus automatique.
-        */
-
-        if (identifiantInput) {
-
-            setTimeout(
-                function () {
-
-                    identifiantInput.focus();
-
-                },
-                100
-            );
         }
 
     }
 );
-
-
-/* =========================================================
-   23. PROTECTION CONTRE LE RETOUR NAVIGATEUR
-   ========================================================= */
-
-window.addEventListener(
-    "pageshow",
-    function (event) {
-
-        /*
-           Si la page revient depuis le cache
-           navigateur et qu'une session existe,
-           retourner au dashboard.
-        */
-
-        if (
-            event.persisted &&
-            verifierSessionExistante()
-        ) {
-
-            allerDashboard();
-        }
-    }
-);
-
-
-/* =========================================================
-   24. EXPOSER FONCTIONS
-   ========================================================= */
-
-window.effectuerConnexion =
-    effectuerConnexion;
-
-window.sauvegarderUtilisateurSession =
-    sauvegarderUtilisateurSession;
-
-window.recupererUtilisateurSession =
-    recupererUtilisateurSession;
-
-window.supprimerSession =
-    supprimerSession;
-
-
-/* =========================================================
-   FIN SCRIPT CONNEXION BMJ SERVICE
-   ========================================================= */
 
 </script>
 
