@@ -10,14 +10,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-        Demande de paiement - BMJ SERVICE
-    </title>
-
-
-    <!-- ==================================================
-         GOOGLE FONT
-    ================================================== -->
+    <title>Paiement Premium - BMJ SERVICE</title>
 
     <link
         rel="preconnect"
@@ -26,7 +19,7 @@
 
     <link
         rel="preconnect"
-        href="https://fonts.gstatic.com"
+        href="https://fonts.googleapis.com"
         crossorigin
     >
 
@@ -35,2517 +28,3787 @@
         rel="stylesheet"
     >
 
-
-    <!-- ==================================================
-         FONT AWESOME
-    ================================================== -->
-
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     >
 
+<style>
+
+/* =========================================================
+   BMJ SERVICE
+   PREMIUM PAYMENT
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", Arial, sans-serif;
+}
 
-    <style>
+:root {
+    --blue: #145a86;
+    --blue-dark: #0b4568;
+    --blue-light: #edf7fc;
+
+    --green: #14965f;
+    --green-light: #eefaf4;
+
+    --gold: #dca72e;
+    --gold-light: #fff7e4;
+
+    --orange: #c78320;
+    --orange-light: #fff7e9;
+
+    --red: #d74646;
+    --red-light: #fff1f1;
+
+    --dark: #172b38;
+    --text: #536672;
+    --muted: #82919a;
+
+    --border: #e1eaf0;
+    --background: #f3f7fa;
+    --white: #ffffff;
+
+    --shadow:
+        0 25px 80px rgba(17, 62, 88, .13);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    padding: 25px 14px 60px;
+
+    background:
+        radial-gradient(
+            circle at 0% 0%,
+            rgba(20,90,134,.14),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 100% 100%,
+            rgba(20,150,95,.08),
+            transparent 25%
+        ),
+        var(--background);
+
+    color: var(--dark);
+}
+
+button,
+input {
+    font-family: inherit;
+}
 
-        /*==================================================
-                BMJ SERVICE PAYMENT STYLE
-        ==================================================*/
+button {
+    outline: none;
+}
 
-        * {
+/* =========================================================
+   WRAPPER
+========================================================= */
 
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+.payment-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
-            font-family:
-                'Poppins',
-                Arial,
-                sans-serif;
+.payment-card {
+    width: 100%;
+    max-width: 900px;
 
-        }
+    background: var(--white);
 
+    border-radius: 32px;
+    overflow: hidden;
 
-        html {
+    box-shadow: var(--shadow);
 
-            scroll-behavior: smooth;
+    border: 1px solid rgba(20,90,134,.07);
 
-        }
+    position: relative;
+}
 
+.payment-card::before {
+    content: "";
 
-        body {
+    position: absolute;
 
-            background: #f4f7fb;
+    top: 0;
+    left: 0;
 
-            color: #333;
+    width: 100%;
+    height: 5px;
 
-            overflow-x: hidden;
+    background:
+        linear-gradient(
+            90deg,
+            #145a86,
+            #278abd,
+            #14965f
+        );
+}
 
-        }
+/* =========================================================
+   HEADER
+========================================================= */
 
+.payment-header {
+    padding: 44px 35px 30px;
+    text-align: center;
 
-        button,
-        input,
-        select,
-        textarea {
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f7fbfd
+        );
+}
 
-            font-family:
-                'Poppins',
-                Arial,
-                sans-serif;
+.logo-container {
+    width: 82px;
+    height: 82px;
 
-        }
+    margin: 0 auto 18px;
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        button {
+    border-radius: 26px;
 
-            cursor: pointer;
+    color: white;
 
-            border: none;
+    background:
+        linear-gradient(
+            145deg,
+            #145a86,
+            #197bad
+        );
 
-            transition: .3s;
+    font-size: 31px;
 
-        }
+    box-shadow:
+        0 15px 35px rgba(20,90,134,.25);
+}
 
+.payment-header h1 {
+    font-size: 31px;
+    font-weight: 800;
 
-        /*==================================================
-                SIDEBAR
-        ==================================================*/
+    color: var(--dark);
 
-        .sidebar {
+    margin-bottom: 9px;
+}
 
-            position: fixed;
+.payment-header h1 span {
+    color: var(--blue);
+}
 
-            left: 0;
-            top: 0;
+.payment-header-description {
+    max-width: 680px;
 
-            width: 260px;
-            height: 100vh;
+    margin: auto;
 
-            background:
-                linear-gradient(
-                    180deg,
-                    #145A86,
-                    #08344f
-                );
+    color: var(--text);
 
-            padding: 25px 15px;
+    font-size: 11px;
+    line-height: 1.9;
+}
 
-            z-index: 1000;
+.premium-badge {
+    display: inline-flex;
 
-            box-shadow:
-                5px 0 25px rgba(0, 0, 0, .15);
+    align-items: center;
+    gap: 7px;
 
-        }
+    margin-top: 17px;
 
+    padding: 8px 15px;
 
-        .sidebar-logo {
+    border-radius: 30px;
 
-            display: flex;
+    background: var(--gold-light);
 
-            align-items: center;
+    color: #a87315;
 
-            gap: 12px;
+    font-size: 9px;
+    font-weight: 800;
 
-            margin-bottom: 35px;
+    border: 1px solid #f3dda7;
+}
 
-            padding-left: 10px;
+/* =========================================================
+   CONTENT
+========================================================= */
 
-        }
+.payment-content {
+    padding: 0 35px 38px;
+}
 
+/* =========================================================
+   USER
+========================================================= */
 
-        .sidebar-logo img {
+.user-box {
+    display: flex;
 
-            width: 55px;
-            height: 55px;
+    align-items: center;
+    gap: 14px;
 
-            border-radius: 50%;
+    padding: 16px;
 
-            object-fit: cover;
+    margin-bottom: 20px;
 
-            border:
-                3px solid #D4AF37;
+    border-radius: 19px;
 
-        }
+    background:
+        linear-gradient(
+            135deg,
+            #f5fbfe,
+            #edf7fc
+        );
 
+    border: 1px solid #dcebf3;
+}
 
-        .sidebar-logo h2 {
+.user-icon {
+    width: 50px;
+    height: 50px;
 
-            color: white;
+    min-width: 50px;
 
-            font-size: 22px;
+    display: flex;
 
-        }
+    align-items: center;
+    justify-content: center;
 
+    border-radius: 16px;
 
-        .sidebar-logo span {
+    background: var(--blue);
 
-            color: #D4AF37;
+    color: white;
 
-        }
+    font-size: 18px;
+}
 
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
 
-        .sidebar nav a {
+.user-info strong {
+    font-size: 13px;
+}
 
-            display: flex;
+.user-info span {
+    font-size: 9px;
+    color: var(--muted);
+}
 
-            align-items: center;
+/* =========================================================
+   PRICE
+========================================================= */
 
-            gap: 15px;
+.price-box {
+    position: relative;
 
-            padding: 15px 18px;
+    overflow: hidden;
 
-            margin: 8px 0;
+    padding: 29px 20px;
 
-            color: white;
+    border-radius: 25px;
 
-            border-radius: 15px;
+    text-align: center;
 
-            text-decoration: none;
+    color: white;
 
-            font-size: 15px;
+    background:
+        linear-gradient(
+            135deg,
+            #0d4f78,
+            #1a7caf
+        );
 
-            transition: .3s;
+    box-shadow:
+        0 18px 38px rgba(20,90,134,.21);
 
-        }
+    margin-bottom: 27px;
+}
 
+.price-label {
+    position: relative;
 
-        .sidebar nav a i {
+    font-size: 10px;
 
-            width: 25px;
+    letter-spacing: 1px;
 
-            font-size: 18px;
+    opacity: .82;
+}
 
-        }
+.price {
+    position: relative;
 
+    font-size: 46px;
 
-        .sidebar nav a:hover,
-        .sidebar nav a.active {
+    font-weight: 800;
 
-            background: #D4AF37;
+    line-height: 1.3;
+}
 
-            color: #145A86;
+.price-small {
+    position: relative;
 
-            transform: translateX(8px);
+    font-size: 10px;
 
-        }
+    opacity: .85;
+}
 
+/* =========================================================
+   BENEFITS
+========================================================= */
 
-        /*==================================================
-                HEADER
-        ==================================================*/
+.benefits {
+    display: grid;
 
-        header {
+    grid-template-columns:
+        repeat(3, 1fr);
 
-            position: fixed;
+    gap: 10px;
 
-            top: 0;
+    margin-bottom: 30px;
+}
 
-            left: 260px;
+.benefit {
+    padding: 16px 10px;
 
-            width: calc(100% - 260px);
+    text-align: center;
 
-            height: 80px;
+    border-radius: 17px;
 
-            background: white;
+    background: #fafcfd;
 
-            display: flex;
+    border: 1px solid var(--border);
+}
 
-            align-items: center;
+.benefit i {
+    color: var(--blue);
 
-            justify-content: space-between;
+    font-size: 17px;
 
-            padding:
-                0 30px;
+    margin-bottom: 7px;
+}
 
-            z-index: 900;
+.benefit strong {
+    display: block;
 
-            box-shadow:
-                0 3px 20px rgba(0, 0, 0, .08);
+    font-size: 9px;
 
-        }
+    margin-bottom: 3px;
+}
 
+.benefit span {
+    display: block;
 
-        .header-title {
+    font-size: 8px;
 
-            display: flex;
+    color: var(--muted);
 
-            align-items: center;
+    line-height: 1.5;
+}
 
-            gap: 12px;
+/* =========================================================
+   PROCESS
+========================================================= */
 
-        }
+.process-title {
+    text-align: center;
+    margin-bottom: 16px;
+}
 
+.process-title h2 {
+    font-size: 18px;
+    font-weight: 800;
+}
 
-        .header-title i {
+.process-title p {
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 3px;
+}
 
-            color: #145A86;
+.process {
+    display: grid;
 
-            font-size: 24px;
+    grid-template-columns:
+        repeat(4, 1fr);
 
-        }
+    gap: 10px;
 
+    margin-bottom: 30px;
+}
 
-        .header-title h1 {
+.process-item {
+    text-align: center;
+    position: relative;
+}
 
-            font-size: 22px;
+.process-number {
+    width: 40px;
+    height: 40px;
 
-            color: #145A86;
+    margin: 0 auto 8px;
 
-        }
+    display: flex;
 
+    align-items: center;
+    justify-content: center;
 
-        .header-user {
+    border-radius: 50%;
 
-            display: flex;
+    background: var(--blue-light);
 
-            align-items: center;
+    color: var(--blue);
 
-            gap: 12px;
+    font-size: 11px;
 
-        }
+    font-weight: 800;
+}
 
+.process-item.active .process-number {
+    background: var(--blue);
+    color: white;
+}
 
-        .user-icon {
+.process-item strong {
+    display: block;
+    font-size: 9px;
+}
 
-            width: 42px;
-            height: 42px;
+.process-item span {
+    display: block;
 
-            border-radius: 50%;
+    font-size: 7px;
 
-            background:
-                #145A86;
+    color: var(--muted);
 
-            color: white;
+    margin-top: 3px;
+}
 
-            display: flex;
+/* =========================================================
+   STEPS
+========================================================= */
 
-            align-items: center;
+.payment-step {
+    animation: fadeUp .35s ease;
+}
 
-            justify-content: center;
+@keyframes fadeUp {
 
-        }
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
 
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
-        .user-name {
+}
 
-            font-size: 14px;
+.step-label {
+    color: var(--blue);
 
-            font-weight: 600;
+    font-size: 9px;
 
-            color: #333;
+    font-weight: 800;
 
-        }
+    letter-spacing: .8px;
 
+    margin-bottom: 5px;
+}
 
-        /*==================================================
-                MOBILE MENU
-        ==================================================*/
+.step-title {
+    font-size: 21px;
+    font-weight: 800;
+}
 
-        .menu-btn {
+.step-description {
+    font-size: 9.5px;
 
-            display: none;
+    line-height: 1.85;
 
-            width: 42px;
-            height: 42px;
+    color: var(--muted);
 
-            background: #145A86;
+    margin-top: 6px;
 
-            color: white;
+    margin-bottom: 20px;
+}
 
-            border-radius: 10px;
+/* =========================================================
+   BEFORE PAYMENT
+========================================================= */
 
-            font-size: 19px;
+.before-paying {
+    padding: 20px;
 
-        }
+    border-radius: 21px;
 
+    background: var(--gold-light);
 
-        /*==================================================
-                MAIN
-        ==================================================*/
+    border: 1px solid #f3dfb0;
 
-        main {
+    margin-bottom: 20px;
+}
 
-            margin-left: 260px;
+.before-paying-title {
+    display: flex;
 
-            padding:
-                110px 35px 40px;
+    align-items: center;
 
-            min-height: 100vh;
+    gap: 8px;
 
-        }
+    color: #996b17;
 
+    font-size: 11px;
 
-        .container {
+    font-weight: 800;
 
-            max-width: 1100px;
+    margin-bottom: 13px;
+}
 
-            margin: auto;
+.before-paying-item {
+    display: flex;
 
-        }
+    align-items: flex-start;
 
+    gap: 9px;
 
-        /*==================================================
-                HERO
-        ==================================================*/
+    margin-bottom: 10px;
+}
 
-        .payment-hero {
+.before-paying-item:last-child {
+    margin-bottom: 0;
+}
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #145A86,
-                    #08344f
-                );
+.before-paying-item i {
+    margin-top: 4px;
 
-            color: white;
+    color: #b47c19;
 
-            border-radius: 24px;
+    font-size: 9px;
+}
 
-            padding: 32px;
+.before-paying-item p {
+    color: #765d2b;
 
-            margin-bottom: 25px;
+    font-size: 8.5px;
 
-            position: relative;
+    line-height: 1.75;
+}
 
-            overflow: hidden;
+/* =========================================================
+   METHODS
+========================================================= */
 
-            box-shadow:
-                0 15px 35px
-                rgba(20, 90, 134, .20);
+.method-options {
+    display: grid;
 
-        }
+    grid-template-columns:
+        repeat(2, 1fr);
 
+    gap: 15px;
 
-        .payment-hero::after {
+    margin-bottom: 17px;
+}
 
-            content: "";
+.method-btn {
+    min-height: 205px;
 
-            position: absolute;
+    border-radius: 23px;
 
-            width: 230px;
-            height: 230px;
+    padding: 22px;
 
-            border-radius: 50%;
+    background: white;
 
-            background:
-                rgba(212, 175, 55, .12);
+    border: 2px solid var(--border);
 
-            right: -70px;
-            top: -90px;
+    display: flex;
 
-        }
+    flex-direction: column;
 
+    align-items: center;
 
-        .payment-hero h2 {
+    justify-content: center;
 
-            font-size: 28px;
+    text-align: center;
 
-            margin-bottom: 8px;
+    transition: .25s ease;
+}
 
-            position: relative;
+.method-btn.available {
+    cursor: pointer;
+}
 
-            z-index: 2;
+.method-btn.available:hover {
+    transform: translateY(-4px);
 
-        }
+    border-color: var(--blue);
 
+    box-shadow:
+        0 15px 30px rgba(20,90,134,.10);
+}
 
-        .payment-hero p {
+.method-icon {
+    width: 58px;
+    height: 58px;
 
-            font-size: 14px;
+    display: flex;
 
-            opacity: .92;
+    align-items: center;
+    justify-content: center;
 
-            max-width: 700px;
+    border-radius: 18px;
 
-            position: relative;
+    background: var(--blue-light);
 
-            z-index: 2;
+    color: var(--blue);
 
-        }
+    font-size: 24px;
 
+    margin-bottom: 11px;
+}
 
-        .secure-badge {
+.method-btn strong {
+    font-size: 13px;
+    margin-bottom: 6px;
+}
 
-            display: inline-flex;
+.method-btn p {
+    color: var(--muted);
 
-            align-items: center;
+    font-size: 8.5px;
 
-            gap: 8px;
+    line-height: 1.7;
 
-            margin-top: 18px;
+    max-width: 250px;
+}
 
-            padding: 8px 14px;
+.available-tag {
+    margin-top: 10px;
 
-            background:
-                rgba(255,255,255,.12);
+    padding: 5px 10px;
 
-            border:
-                1px solid
-                rgba(255,255,255,.20);
+    border-radius: 20px;
 
-            border-radius: 30px;
+    background: var(--green-light);
 
-            font-size: 12px;
+    color: var(--green);
 
-        }
+    font-size: 8px;
 
+    font-weight: 800;
+}
 
-        /*==================================================
-                GRID
-        ==================================================*/
+.method-btn.unavailable {
+    cursor: not-allowed;
 
-        .payment-grid {
+    opacity: .68;
 
-            display: grid;
+    background: #fafafa;
+}
 
-            grid-template-columns:
-                1fr 1.15fr;
+.unavailable-tag {
+    margin-top: 10px;
 
-            gap: 25px;
+    padding: 6px 11px;
 
-            align-items: start;
+    border-radius: 20px;
 
-        }
+    background: var(--orange-light);
 
+    color: var(--orange);
 
-        /*==================================================
-                CARD
-        ==================================================*/
+    font-size: 8px;
 
-        .card {
+    font-weight: 800;
+}
 
-            background: white;
+/* =========================================================
+   SECONDARY
+========================================================= */
 
-            border-radius: 22px;
+.btn-secondary {
+    width: 100%;
 
-            padding: 25px;
+    padding: 14px;
 
-            box-shadow:
-                0 8px 30px
-                rgba(0, 0, 0, .07);
+    border-radius: 16px;
 
-            border:
-                1px solid #edf1f5;
+    border: 1px solid var(--border);
 
-        }
+    background: #f9fbfc;
 
+    color: var(--text);
 
-        .card-title {
+    font-size: 9px;
 
-            display: flex;
+    font-weight: 700;
 
-            align-items: center;
+    cursor: pointer;
+}
 
-            gap: 12px;
+.btn-secondary:hover {
+    color: var(--blue);
+    border-color: #c9dce6;
+}
 
-            color: #145A86;
+/* =========================================================
+   BACK
+========================================================= */
 
-            font-size: 19px;
+.back-link {
+    border: none;
 
-            font-weight: 700;
+    background: transparent;
 
-            margin-bottom: 20px;
+    color: var(--blue);
 
-        }
+    font-size: 9px;
 
+    font-weight: 700;
 
-        .card-title i {
+    cursor: pointer;
 
-            width: 42px;
-            height: 42px;
+    display: inline-flex;
 
-            border-radius: 12px;
+    align-items: center;
 
-            background:
-                rgba(20, 90, 134, .10);
+    gap: 7px;
 
-            display: flex;
+    margin-bottom: 15px;
+}
 
-            align-items: center;
+/* =========================================================
+   OPERATORS
+========================================================= */
 
-            justify-content: center;
+.operators-grid {
+    display: grid;
 
-            color: #145A86;
+    grid-template-columns:
+        repeat(3, 1fr);
 
-        }
+    gap: 13px;
 
+    margin-bottom: 22px;
+}
 
-        /*==================================================
-                OPERATORS
-        ==================================================*/
+.operator-card {
+    min-height: 150px;
 
-        .operators {
+    padding: 15px 10px;
 
-            display: grid;
+    border-radius: 20px;
 
-            gap: 12px;
+    background: white;
 
-        }
+    border: 2px solid var(--border);
 
+    display: flex;
 
-        .operator {
+    flex-direction: column;
 
-            width: 100%;
+    align-items: center;
 
-            background: white;
+    justify-content: center;
 
-            border:
-                2px solid #edf1f5;
+    gap: 7px;
 
-            border-radius: 16px;
+    cursor: pointer;
 
-            padding: 14px;
+    transition: .25s ease;
+}
 
-            display: flex;
+.operator-card:hover:not(.disabled) {
+    transform: translateY(-3px);
+    border-color: var(--blue);
+}
 
-            align-items: center;
+.operator-card.selected {
+    border-color: var(--blue);
+    background: #f2f9fd;
+}
 
-            gap: 13px;
+.operator-card img {
+    width: 53px;
+    height: 53px;
 
-            text-align: left;
+    object-fit: contain;
 
-            position: relative;
+    border-radius: 14px;
+}
 
-        }
+.operator-name {
+    font-size: 9px;
+    font-weight: 800;
+}
 
+.operator-status {
+    color: var(--green);
 
-        .operator:hover:not(.disabled) {
+    font-size: 7.5px;
 
-            border-color: #D4AF37;
+    font-weight: 700;
+}
 
-            transform: translateY(-2px);
+.operator-status.unavailable {
+    color: var(--orange);
+}
 
-            box-shadow:
-                0 8px 20px
-                rgba(20, 90, 134, .10);
+.operator-card.disabled {
+    cursor: not-allowed;
+    opacity: .55;
+}
 
-        }
+/* =========================================================
+   GUIDE
+========================================================= */
 
+.payment-guide {
+    padding: 21px;
 
-        .operator.selected {
+    border-radius: 22px;
 
-            border-color: #145A86;
+    background: #f8fbfd;
 
-            background:
-                rgba(20, 90, 134, .05);
+    border: 1px solid var(--border);
 
-            box-shadow:
-                0 0 0 3px
-                rgba(20, 90, 134, .08);
+    margin-bottom: 20px;
+}
 
-        }
+.payment-guide h3 {
+    font-size: 12px;
+    margin-bottom: 15px;
+}
 
+.guide-row {
+    display: flex;
 
-        .operator img {
+    gap: 12px;
 
-            width: 48px;
-            height: 48px;
+    margin-bottom: 17px;
+}
 
-            object-fit: contain;
+.guide-row:last-child {
+    margin-bottom: 0;
+}
 
-            border-radius: 12px;
+.guide-number {
+    width: 31px;
+    height: 31px;
 
-            background: #f5f5f5;
+    min-width: 31px;
 
-            padding: 5px;
+    border-radius: 50%;
 
-        }
+    background: var(--blue);
 
+    color: white;
 
-        .operator-info {
+    display: flex;
 
-            flex: 1;
+    align-items: center;
 
-        }
+    justify-content: center;
 
+    font-size: 9px;
 
-        .operator-name {
+    font-weight: 800;
+}
 
-            display: block;
+.guide-text strong {
+    display: block;
 
-            font-weight: 700;
+    font-size: 9.5px;
 
-            color: #333;
+    margin-bottom: 4px;
+}
 
-            font-size: 14px;
+.guide-text p {
+    font-size: 8px;
 
-        }
+    line-height: 1.75;
 
+    color: var(--muted);
+}
 
-        .operator-number {
+/* =========================================================
+   RECEIVER
+========================================================= */
 
-            display: block;
+.payment-number-box {
+    padding: 25px 20px;
 
-            margin-top: 3px;
+    text-align: center;
 
-            color: #145A86;
+    border-radius: 23px;
 
-            font-size: 13px;
+    background:
+        linear-gradient(
+            135deg,
+            #f4fbfe,
+            #edf7fc
+        );
 
-            font-weight: 600;
+    border: 1px solid #d8eaf3;
 
-        }
+    margin-bottom: 20px;
+}
 
+.number-caption {
+    color: var(--muted);
 
-        .status {
+    font-size: 8px;
 
-            display: inline-block;
+    text-transform: uppercase;
 
-            margin-top: 5px;
+    letter-spacing: .7px;
 
-            font-size: 11px;
+    margin-bottom: 5px;
+}
 
-            font-weight: 600;
+.amount-warning {
+    color: var(--dark);
 
-            color: #198754;
+    font-size: 10px;
 
-        }
+    margin-bottom: 10px;
+}
 
+.amount-warning strong {
+    color: var(--blue);
+}
 
-        .status.off {
+.payment-number {
+    font-size: 31px;
 
-            color: #999;
+    font-weight: 800;
 
-        }
+    letter-spacing: 1px;
 
+    color: var(--blue);
+}
 
-        .check {
+.receiver-name {
+    display: inline-flex;
 
-            width: 25px;
-            height: 25px;
+    align-items: center;
 
-            border-radius: 50%;
+    gap: 7px;
 
-            border:
-                2px solid #ddd;
+    margin-top: 8px;
 
-            display: flex;
+    padding: 7px 14px;
 
-            align-items: center;
+    border-radius: 20px;
 
-            justify-content: center;
+    background: white;
 
-            color: transparent;
+    border: 1px solid #dceaf0;
 
-            font-size: 12px;
+    color: var(--dark);
 
-        }
+    font-size: 10px;
 
+    font-weight: 800;
+}
 
-        .operator.selected .check {
+.receiver-name i {
+    color: var(--green);
+}
 
-            background: #145A86;
+.number-warning {
+    margin-top: 11px;
 
-            border-color: #145A86;
+    color: var(--orange);
 
-            color: white;
+    font-size: 8px;
 
-        }
+    font-weight: 600;
 
+    line-height: 1.6;
+}
 
-        .operator.disabled {
+/* =========================================================
+   UPLOAD
+========================================================= */
 
-            opacity: .55;
+.upload-container {
+    padding: 22px;
 
-            cursor: not-allowed;
+    border-radius: 23px;
 
-            background: #f8f8f8;
+    background: #f9fbfc;
 
-        }
+    border: 1px solid var(--border);
+}
 
+.upload-explanation {
+    padding: 15px;
 
-        /*==================================================
-                PAYMENT NUMBER
-        ==================================================*/
+    border-radius: 17px;
 
-        .number-box {
+    background: white;
 
-            display: none;
+    border: 1px solid var(--border);
 
-            margin-top: 15px;
+    margin-bottom: 16px;
+}
 
-            padding: 16px;
+.upload-explanation strong {
+    display: block;
 
-            border-radius: 15px;
+    font-size: 10px;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #f8fbfd,
-                    #fff
-                );
+    margin-bottom: 5px;
+}
 
-            border:
-                1px solid
-                rgba(20, 90, 134, .15);
+.upload-explanation p {
+    color: var(--muted);
 
-        }
+    font-size: 8px;
 
+    line-height: 1.75;
+}
 
-        .number-box.show {
+.file-drop-area {
+    min-height: 175px;
 
-            display: block;
+    padding: 22px;
 
-        }
+    border: 2px dashed #bfd5e1;
 
+    border-radius: 20px;
 
-        .number-label {
+    background: white;
 
-            font-size: 11px;
+    display: flex;
 
-            color: #777;
+    flex-direction: column;
 
-            margin-bottom: 5px;
+    align-items: center;
 
-        }
+    justify-content: center;
 
+    text-align: center;
 
-        .number-value {
+    cursor: pointer;
 
-            display: flex;
+    transition: .25s ease;
+}
 
-            justify-content: space-between;
+.file-drop-area:hover {
+    border-color: var(--blue);
+    background: #f7fcff;
+}
 
-            align-items: center;
+.file-icon {
+    width: 58px;
+    height: 58px;
 
-            gap: 10px;
+    display: flex;
 
-            color: #145A86;
+    align-items: center;
 
-            font-size: 22px;
+    justify-content: center;
 
-            font-weight: 800;
+    border-radius: 18px;
 
-        }
+    background: var(--blue-light);
 
+    color: var(--blue);
 
-        .copy-btn {
+    font-size: 24px;
 
-            background: #D4AF37;
+    margin-bottom: 11px;
+}
 
-            color: #145A86;
+.file-drop-area strong {
+    font-size: 10px;
+}
 
-            padding: 8px 12px;
+.file-drop-area span {
+    color: var(--muted);
 
-            border-radius: 9px;
+    font-size: 8px;
 
-            font-size: 12px;
+    margin-top: 5px;
+}
 
-            font-weight: 700;
+#capturePaiement {
+    display: none;
+}
 
-        }
+/* =========================================================
+   PREVIEW
+========================================================= */
 
+.preview-container {
+    display: none;
 
-        /*==================================================
-                FORM
-        ==================================================*/
+    margin-top: 15px;
 
-        .form-group {
+    padding: 13px;
 
-            margin-bottom: 17px;
+    border-radius: 18px;
 
-        }
+    background: white;
 
+    border: 1px solid var(--border);
 
-        .form-group label {
+    text-align: center;
+}
 
-            display: block;
+.preview-container.show {
+    display: block;
+}
 
-            margin-bottom: 7px;
+.preview-title {
+    font-size: 9px;
 
-            font-size: 13px;
+    font-weight: 700;
 
-            font-weight: 600;
+    margin-bottom: 8px;
+}
 
-            color: #444;
+#capture-preview {
+    max-width: 100%;
+    max-height: 360px;
 
-        }
+    border-radius: 12px;
+}
 
+/* =========================================================
+   SUBMIT
+========================================================= */
 
-        .input-wrap {
+.btn-submit {
+    width: 100%;
 
-            position: relative;
+    margin-top: 15px;
 
-        }
+    padding: 17px;
 
+    border: none;
 
-        .input-wrap i {
+    border-radius: 17px;
 
-            position: absolute;
+    display: flex;
 
-            left: 14px;
+    align-items: center;
 
-            top: 50%;
+    justify-content: center;
 
-            transform:
-                translateY(-50%);
+    gap: 9px;
 
-            color: #145A86;
+    background:
+        linear-gradient(
+            135deg,
+            #145a86,
+            #197cae
+        );
 
-            font-size: 15px;
+    color: white;
 
-        }
+    font-size: 10px;
 
+    font-weight: 800;
 
-        .input-wrap input,
-        .input-wrap select,
-        .input-wrap textarea {
+    cursor: pointer;
 
-            width: 100%;
+    box-shadow:
+        0 12px 25px rgba(20,90,134,.20);
+}
 
-            border:
-                1px solid #dfe5eb;
+.btn-submit:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
 
-            border-radius: 12px;
+/* =========================================================
+   WAITING
+========================================================= */
 
-            padding:
-                13px 14px 13px 42px;
+.waiting-box {
+    display: none;
 
-            outline: none;
+    text-align: center;
 
-            background: #fff;
+    padding: 35px 15px 20px;
+}
 
-            color: #333;
+.waiting-icon {
+    width: 78px;
+    height: 78px;
 
-            font-size: 13px;
+    margin: 0 auto 18px;
 
-            transition: .3s;
+    border-radius: 50%;
 
-        }
+    display: flex;
 
+    align-items: center;
+    justify-content: center;
 
-        .input-wrap textarea {
+    background: var(--green-light);
 
-            min-height: 95px;
+    color: var(--green);
 
-            resize: vertical;
+    font-size: 31px;
+}
 
-            padding-left: 42px;
+.waiting-title {
+    font-size: 22px;
 
-        }
+    font-weight: 800;
 
+    color: var(--dark);
 
-        .input-wrap input:focus,
-        .input-wrap select:focus,
-        .input-wrap textarea:focus {
+    margin-bottom: 9px;
+}
 
-            border-color: #145A86;
+.waiting-description {
+    max-width: 620px;
 
-            box-shadow:
-                0 0 0 3px
-                rgba(20, 90, 134, .08);
+    margin: auto;
 
-        }
+    color: var(--muted);
 
+    font-size: 9.5px;
 
-        .form-row {
+    line-height: 1.85;
+}
 
-            display: grid;
+.waiting-status {
+    display: inline-flex;
 
-            grid-template-columns:
-                1fr 1fr;
+    align-items: center;
 
-            gap: 14px;
+    gap: 7px;
 
-        }
+    margin-top: 18px;
 
+    padding: 9px 15px;
 
-        /*==================================================
-                USER INFO
-        ==================================================*/
+    border-radius: 30px;
 
-        .user-info {
+    background: var(--orange-light);
 
-            display: flex;
+    color: var(--orange);
 
-            align-items: center;
+    font-size: 8px;
 
-            gap: 12px;
+    font-weight: 800;
+}
 
-            padding: 13px;
+/* =========================================================
+   TIMER
+========================================================= */
 
-            margin-bottom: 20px;
+.timer-box {
+    margin: 22px auto;
 
-            background:
-                #f4f7fb;
+    max-width: 430px;
 
-            border-radius: 14px;
+    padding: 20px;
 
-        }
+    border-radius: 22px;
 
+    background: #f8fbfd;
 
-        .user-info-icon {
+    border: 1px solid var(--border);
+}
 
-            width: 42px;
-            height: 42px;
+.timer-label {
+    color: var(--muted);
 
-            border-radius: 50%;
+    font-size: 8px;
 
-            background: #145A86;
+    margin-bottom: 7px;
+}
 
-            color: white;
+.timer {
+    font-size: 34px;
 
-            display: flex;
+    font-weight: 800;
 
-            align-items: center;
+    color: var(--blue);
 
-            justify-content: center;
+    letter-spacing: 2px;
+}
 
-        }
+.timer-description {
+    color: var(--muted);
 
+    font-size: 8px;
 
-        .user-info strong {
+    line-height: 1.7;
 
-            display: block;
+    margin-top: 7px;
+}
 
-            font-size: 13px;
+/* =========================================================
+   SUPPORT
+========================================================= */
 
-        }
+.support-box {
+    display: none;
 
+    margin-top: 20px;
 
-        .user-info span {
+    padding: 23px;
 
-            display: block;
+    border-radius: 22px;
 
-            color: #777;
+    background: var(--orange-light);
 
-            font-size: 11px;
+    border: 1px solid #f2dcae;
 
-            margin-top: 2px;
+    text-align: center;
+}
 
-        }
+.support-box h3 {
+    color: #986916;
 
+    font-size: 13px;
 
-        /*==================================================
-                FILE
-        ==================================================*/
+    margin-bottom: 8px;
+}
 
-        .file-box {
+.support-box p {
+    color: #765d2b;
 
-            border:
-                2px dashed #dce3ea;
+    font-size: 8.5px;
 
-            border-radius: 14px;
+    line-height: 1.8;
 
-            padding: 18px;
+    margin-bottom: 15px;
+}
 
-            text-align: center;
+.support-number {
+    font-weight: 800;
+    color: #8d6112;
+}
 
-            cursor: pointer;
+.support-button {
+    display: inline-flex;
 
-            transition: .3s;
+    align-items: center;
+    justify-content: center;
 
-        }
+    gap: 8px;
 
+    padding: 13px 19px;
 
-        .file-box:hover {
+    border-radius: 15px;
 
-            border-color: #145A86;
+    background: #14965f;
 
-            background:
-                rgba(20, 90, 134, .03);
+    color: white;
 
-        }
+    text-decoration: none;
 
+    font-size: 9px;
 
-        .file-box i {
+    font-weight: 800;
 
-            color: #145A86;
+    box-shadow:
+        0 10px 22px rgba(20,150,95,.20);
 
-            font-size: 25px;
+    transition: .2s ease;
+}
 
-            margin-bottom: 7px;
+.support-button:hover {
+    transform: translateY(-2px);
+}
 
-        }
+/* =========================================================
+   INFO
+========================================================= */
 
+.info-box {
+    display: flex;
 
-        .file-box strong {
+    gap: 12px;
 
-            display: block;
+    padding: 17px;
 
-            font-size: 12px;
+    margin-top: 20px;
 
-        }
+    border-radius: 18px;
 
+    background: #f8fafb;
 
-        .file-box small {
+    border: 1px solid var(--border);
+}
 
-            display: block;
+.info-icon {
+    width: 38px;
+    height: 38px;
 
-            color: #888;
+    min-width: 38px;
 
-            margin-top: 4px;
+    display: flex;
 
-            font-size: 10px;
+    align-items: center;
 
-        }
+    justify-content: center;
 
+    border-radius: 12px;
 
-        #proof {
+    background: var(--blue-light);
 
-            display: none;
+    color: var(--blue);
+}
 
-        }
+.info-content strong {
+    display: block;
 
+    font-size: 10px;
 
-        .file-name {
+    margin-bottom: 4px;
+}
 
-            margin-top: 8px;
+.info-content p {
+    font-size: 8px;
 
-            color: #145A86;
+    line-height: 1.7;
 
-            font-size: 11px;
+    color: var(--muted);
+}
 
-            font-weight: 600;
+/* =========================================================
+   ALERT
+========================================================= */
 
-        }
+.payment-alert {
+    display: none;
 
+    align-items: flex-start;
 
-        /*==================================================
-                SUBMIT
-        ==================================================*/
+    gap: 9px;
 
-        .submit-btn {
+    padding: 14px 15px;
 
-            width: 100%;
+    margin-bottom: 17px;
 
-            padding: 15px;
+    border-radius: 15px;
 
-            border-radius: 14px;
+    font-size: 9px;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #145A86,
-                    #08344f
-                );
+    line-height: 1.65;
+}
 
-            color: white;
+.payment-alert.show {
+    display: flex;
+}
 
-            font-size: 14px;
+.payment-alert.error {
+    color: #a83232;
 
-            font-weight: 700;
+    background: var(--red-light);
 
-            display: flex;
+    border: 1px solid #ffd5d5;
+}
 
-            justify-content: center;
+.payment-alert.success {
+    color: #137348;
 
-            align-items: center;
+    background: var(--green-light);
 
-            gap: 10px;
+    border: 1px solid #ccebdc;
+}
 
-            box-shadow:
-                0 8px 20px
-                rgba(20, 90, 134, .20);
+/* =========================================================
+   SECURITY
+========================================================= */
 
-        }
+.security-note {
+    margin-top: 25px;
 
+    padding-top: 20px;
 
-        .submit-btn:hover {
+    border-top: 1px solid #edf1f4;
 
-            transform: translateY(-2px);
+    display: flex;
 
-            box-shadow:
-                0 12px 25px
-                rgba(20, 90, 134, .25);
+    align-items: center;
 
-        }
+    justify-content: center;
 
+    gap: 7px;
 
-        .submit-btn:disabled {
+    color: #84929a;
 
-            opacity: .65;
+    font-size: 8px;
 
-            cursor: not-allowed;
+    text-align: center;
+}
 
-            transform: none;
+.security-note i {
+    color: var(--green);
+}
 
-        }
+.footer {
+    text-align: center;
 
+    margin-top: 12px;
 
-        /*==================================================
-                MESSAGE
-        ==================================================*/
+    color: #9aa6ad;
 
-        .message {
+    font-size: 8px;
+}
 
-            display: none;
+/* =========================================================
+   MOBILE
+========================================================= */
 
-            padding: 13px 15px;
+@media(max-width:700px) {
 
-            border-radius: 12px;
+    body {
+        padding: 10px 7px 35px;
+    }
 
-            margin-bottom: 15px;
+    .payment-card {
+        border-radius: 25px;
+    }
 
-            font-size: 12px;
+    .payment-header {
+        padding: 34px 20px 24px;
+    }
 
-            font-weight: 600;
+    .payment-content {
+        padding: 0 20px 28px;
+    }
 
-        }
+    .payment-header h1 {
+        font-size: 25px;
+    }
 
+    .payment-header-description {
+        font-size: 9.5px;
+    }
 
-        .message.show {
+    .benefits {
+        grid-template-columns: 1fr;
+    }
 
-            display: block;
+    .process {
+        grid-template-columns:
+            repeat(2, 1fr);
 
-        }
+        gap: 20px;
+    }
 
+    .method-options {
+        grid-template-columns: 1fr;
+    }
 
-        .message.success {
+    .operators-grid {
+        grid-template-columns:
+            repeat(3, 1fr);
 
-            background: #eaf8ef;
+        gap: 7px;
+    }
 
-            color: #147a3e;
+    .operator-card {
+        min-height: 125px;
 
-            border:
-                1px solid #bce7ca;
+        padding: 10px 5px;
+    }
 
-        }
+    .operator-card img {
+        width: 43px;
+        height: 43px;
+    }
 
+    .operator-name {
+        font-size: 7.5px;
+    }
 
-        .message.error {
+    .payment-number {
+        font-size: 26px;
+    }
 
-            background: #fff0f0;
+}
 
-            color: #b42318;
+@media(max-width:390px) {
 
-            border:
-                1px solid #f2c2c2;
+    .operators-grid {
+        grid-template-columns: 1fr;
+    }
 
-        }
+    .operator-card {
+        min-height: 85px;
 
+        flex-direction: row;
 
-        /*==================================================
-                INSTRUCTIONS
-        ==================================================*/
+        justify-content: flex-start;
 
-        .steps {
+        padding: 10px 15px;
+    }
 
-            display: grid;
+    .operator-card img {
+        width: 40px;
+        height: 40px;
+    }
 
-            gap: 12px;
+}
 
-        }
-
-
-        .step {
-
-            display: flex;
-
-            gap: 12px;
-
-            align-items: flex-start;
-
-        }
-
-
-        .step-number {
-
-            flex-shrink: 0;
-
-            width: 30px;
-            height: 30px;
-
-            border-radius: 50%;
-
-            background: #145A86;
-
-            color: white;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 12px;
-
-            font-weight: 700;
-
-        }
-
-
-        .step p {
-
-            font-size: 12px;
-
-            color: #666;
-
-            line-height: 1.6;
-
-        }
-
-
-        .step strong {
-
-            color: #145A86;
-
-        }
-
-
-        /*==================================================
-                FOOTER
-        ==================================================*/
-
-        footer {
-
-            text-align: center;
-
-            padding: 25px;
-
-            color: #888;
-
-            font-size: 11px;
-
-        }
-
-
-        footer span {
-
-            color: #145A86;
-
-            font-weight: 700;
-
-        }
-
-
-        /*==================================================
-                LOADING
-        ==================================================*/
-
-        .spinner {
-
-            width: 17px;
-            height: 17px;
-
-            border:
-                2px solid
-                rgba(255,255,255,.35);
-
-            border-top-color: white;
-
-            border-radius: 50%;
-
-            animation:
-                spin .7s linear infinite;
-
-        }
-
-
-        @keyframes spin {
-
-            to {
-
-                transform: rotate(360deg);
-
-            }
-
-        }
-
-
-        /*==================================================
-                RESPONSIVE
-        ==================================================*/
-
-        @media (max-width: 900px) {
-
-            .sidebar {
-
-                transform:
-                    translateX(-100%);
-
-                transition: .3s;
-
-            }
-
-
-            .sidebar.open {
-
-                transform:
-                    translateX(0);
-
-            }
-
-
-            header {
-
-                left: 0;
-
-                width: 100%;
-
-                padding:
-                    0 18px;
-
-            }
-
-
-            .menu-btn {
-
-                display: block;
-
-            }
-
-
-            main {
-
-                margin-left: 0;
-
-                padding:
-                    100px 18px 30px;
-
-            }
-
-
-            .payment-grid {
-
-                grid-template-columns: 1fr;
-
-            }
-
-        }
-
-
-        @media (max-width: 600px) {
-
-            .header-title h1 {
-
-                font-size: 17px;
-
-            }
-
-
-            .user-name {
-
-                display: none;
-
-            }
-
-
-            .payment-hero {
-
-                padding: 24px;
-
-                border-radius: 20px;
-
-            }
-
-
-            .payment-hero h2 {
-
-                font-size: 22px;
-
-            }
-
-
-            .card {
-
-                padding: 19px;
-
-                border-radius: 18px;
-
-            }
-
-
-            .form-row {
-
-                grid-template-columns: 1fr;
-
-                gap: 0;
-
-            }
-
-
-            .number-value {
-
-                font-size: 18px;
-
-            }
-
-        }
-
-    </style>
+</style>
 
 </head>
 
-
 <body>
 
+<div class="payment-wrapper">
 
-    <!-- ==================================================
-         SIDEBAR
-    ================================================== -->
+<div class="payment-card">
 
-    <aside
-        class="sidebar"
-        id="sidebar"
-    >
+<header class="payment-header">
 
-        <div class="sidebar-logo">
+    <div class="logo-container">
+        <i class="fa-solid fa-crown"></i>
+    </div>
 
-            <img
-                src="images/logo.png"
-                alt="BMJ SERVICE"
-                onerror="this.style.display='none'"
-            >
+    <h1>
+        Passez à <span>BMJ Premium</span>
+    </h1>
 
-            <h2>
-                BMJ <span>SERVICE</span>
-            </h2>
+    <p class="payment-header-description">
+
+        Activez votre statut Premium BMJ SERVICE
+        avec un paiement unique de 15 USD.
+        Effectuez votre paiement, importez votre
+        preuve et transmettez directement votre
+        demande au serveur BMJ SERVICE.
+
+    </p>
+
+    <div class="premium-badge">
+
+        <i class="fa-solid fa-star"></i>
+
+        ACTIVATION PREMIUM BMJ SERVICE
+
+    </div>
+
+</header>
+
+<div class="payment-content">
+
+<!-- USER -->
+
+<div class="user-box">
+
+    <div class="user-icon">
+        <i class="fa-solid fa-user"></i>
+    </div>
+
+    <div class="user-info">
+
+        <strong id="userName">
+            Chargement de votre compte...
+        </strong>
+
+        <span id="userEmail">
+            Vérification des informations...
+        </span>
+
+    </div>
+
+</div>
+
+<!-- PRICE -->
+
+<div class="price-box">
+
+    <div class="price-label">
+        TARIF UNIQUE D'ACTIVATION
+    </div>
+
+    <div class="price">
+        15 USD
+    </div>
+
+    <div class="price-small">
+        Paiement unique • Aucun abonnement mensuel
+    </div>
+
+</div>
+
+<!-- BENEFITS -->
+
+<div class="benefits">
+
+    <div class="benefit">
+
+        <i class="fa-solid fa-crown"></i>
+
+        <strong>
+            Statut Premium
+        </strong>
+
+        <span>
+            Votre compte passe au statut Premium
+            après validation de votre paiement.
+        </span>
+
+    </div>
+
+    <div class="benefit">
+
+        <i class="fa-solid fa-unlock-keyhole"></i>
+
+        <strong>
+            Fonctionnalités Premium
+        </strong>
+
+        <span>
+            Accédez aux fonctionnalités réservées
+            aux membres Premium.
+        </span>
+
+    </div>
+
+    <div class="benefit">
+
+        <i class="fa-solid fa-shield-halved"></i>
+
+        <strong>
+            Validation sécurisée
+        </strong>
+
+        <span>
+            Votre preuve est transmise au serveur
+            pour vérification administrative.
+        </span>
+
+    </div>
+
+</div>
+
+<!-- PROCESS -->
+
+<div class="process-title">
+
+    <h2>
+        Les 4 étapes de votre activation
+    </h2>
+
+    <p>
+        Suivez attentivement chaque étape.
+    </p>
+
+</div>
+
+<div class="process">
+
+    <div class="process-item active">
+
+        <div class="process-number">1</div>
+
+        <strong>
+            Choisir
+        </strong>
+
+        <span>
+            Sélectionner Mobile Money
+        </span>
+
+    </div>
+
+    <div class="process-item">
+
+        <div class="process-number">2</div>
+
+        <strong>
+            Payer
+        </strong>
+
+        <span>
+            Envoyer exactement 15 USD
+        </span>
+
+    </div>
+
+    <div class="process-item">
+
+        <div class="process-number">3</div>
+
+        <strong>
+            Envoyer
+        </strong>
+
+        <span>
+            Importer le reçu
+        </span>
+
+    </div>
+
+    <div class="process-item">
+
+        <div class="process-number">4</div>
+
+        <strong>
+            Valider
+        </strong>
+
+        <span>
+            Attendre la vérification
+        </span>
+
+    </div>
+
+</div>
+
+<!-- ALERT -->
+
+<div
+    id="paymentAlert"
+    class="payment-alert"
+>
+
+    <i class="fa-solid fa-circle-info"></i>
+
+    <span id="paymentAlertText"></span>
+
+</div>
+
+<!-- STEP CHOICE -->
+
+<div
+    id="step-choice"
+    class="payment-step"
+>
+
+    <div class="step-label">
+        ÉTAPE 1 — CHOIX DU PAIEMENT
+    </div>
+
+    <h2 class="step-title">
+        Choisissez votre moyen de paiement
+    </h2>
+
+    <p class="step-description">
+
+        Mobile Money est actuellement le moyen
+        de paiement disponible pour l'activation
+        Premium.
+
+    </p>
+
+    <div class="before-paying">
+
+        <div class="before-paying-title">
+
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
+            Vérifications importantes avant paiement
 
         </div>
 
+        <div class="before-paying-item">
 
-        <nav>
+            <i class="fa-solid fa-check"></i>
 
-            <a href="dashboard.html">
+            <p>
+                Vérifiez que le compte affiché
+                correspond bien à votre compte BMJ SERVICE.
+            </p>
 
-                <i class="fa-solid fa-house"></i>
+        </div>
 
-                <span>
-                    Tableau de bord
-                </span>
+        <div class="before-paying-item">
 
-            </a>
+            <i class="fa-solid fa-check"></i>
 
+            <p>
+                Envoyez exactement
+                <strong>15 USD</strong>.
+            </p>
 
-            <a
-                href="paiement.html"
-                class="active"
-            >
+        </div>
+
+        <div class="before-paying-item">
+
+            <i class="fa-solid fa-check"></i>
+
+            <p>
+                Vérifiez attentivement le numéro
+                et le nom du bénéficiaire.
+            </p>
+
+        </div>
+
+        <div class="before-paying-item">
+
+            <i class="fa-solid fa-check"></i>
+
+            <p>
+                Conservez votre reçu après le paiement.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="method-options">
+
+        <button
+            type="button"
+            class="method-btn available"
+            id="mobileMoneyButton"
+        >
+
+            <div class="method-icon">
+
+                <i class="fa-solid fa-mobile-screen-button"></i>
+
+            </div>
+
+            <strong>
+                Mobile Money
+            </strong>
+
+            <p>
+                Effectuez votre paiement depuis
+                votre portefeuille Mobile Money.
+                <strong>Airtel Money est disponible.</strong>
+            </p>
+
+            <span class="available-tag">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                Disponible maintenant
+
+            </span>
+
+        </button>
+
+        <button
+            type="button"
+            class="method-btn unavailable"
+            id="cardButton"
+        >
+
+            <div class="method-icon">
 
                 <i class="fa-solid fa-credit-card"></i>
 
-                <span>
-                    Paiement Premium
-                </span>
+            </div>
 
-            </a>
+            <strong>
+                Visa / Mastercard
+            </strong>
 
+            <p>
+                Cette option n'est pas encore
+                disponible sur BMJ SERVICE.
+            </p>
 
-            <a href="profil.html">
+            <span class="unavailable-tag">
 
-                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-lock"></i>
 
-                <span>
-                    Mon profil
-                </span>
+                Indisponible
 
-            </a>
+            </span>
 
+        </button>
 
-            <a href="index.html">
+    </div>
 
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    <button
+        type="button"
+        class="btn-secondary"
+        id="statusButton"
+    >
 
-                <span>
-                    Déconnexion
-                </span>
+        <i class="fa-solid fa-clock-rotate-left"></i>
 
-            </a>
+        Vérifier une demande précédente
 
-        </nav>
+    </button>
 
-    </aside>
+</div>
 
+<!-- STEP MOBILE -->
 
-    <!-- ==================================================
-         HEADER
-    ================================================== -->
+<div
+    id="step-mobile"
+    class="payment-step"
+    style="display:none;"
+>
 
-    <header>
+    <button
+        type="button"
+        class="back-link"
+        id="backButton"
+    >
 
-        <div class="header-title">
+        <i class="fa-solid fa-arrow-left"></i>
 
-            <button
-                class="menu-btn"
-                id="menuBtn"
-                type="button"
+        Retour au choix du paiement
+
+    </button>
+
+    <div class="step-label">
+        ÉTAPE 2 — PAIEMENT MOBILE MONEY
+    </div>
+
+    <h2 class="step-title">
+        Sélectionnez votre opérateur
+    </h2>
+
+    <p class="step-description">
+
+        Airtel Money est actuellement le seul
+        opérateur disponible.
+
+    </p>
+
+    <div class="operators-grid">
+
+        <button
+            type="button"
+            class="operator-card"
+            data-operator="Airtel Money"
+            data-number="0993585711"
+        >
+
+            <img
+                src="images/airtel.png"
+                alt="Airtel Money"
+                onerror="this.style.display='none'"
             >
 
-                <i class="fa-solid fa-bars"></i>
+            <span class="operator-name">
+                Airtel Money
+            </span>
 
-            </button>
+            <span class="operator-status">
+                Disponible maintenant
+            </span>
 
+        </button>
 
-            <i class="fa-solid fa-wallet"></i>
+        <button
+            type="button"
+            class="operator-card disabled"
+        >
 
-            <h1>
-                Demande de paiement
-            </h1>
+            <img
+                src="images/orange.webp"
+                alt="Orange Money"
+                onerror="this.style.display='none'"
+            >
 
-        </div>
+            <span class="operator-name">
+                Orange Money
+            </span>
 
+            <span class="operator-status unavailable">
+                Bientôt disponible
+            </span>
 
-        <div class="header-user">
+        </button>
 
-            <div class="user-icon">
+        <button
+            type="button"
+            class="operator-card disabled"
+        >
 
-                <i class="fa-solid fa-user"></i>
+            <img
+                src="images/mpesa.webp"
+                alt="M-Pesa"
+                onerror="this.style.display='none'"
+            >
 
-            </div>
+            <span class="operator-name">
+                M-Pesa
+            </span>
 
-            <div class="user-name" id="headerUserName">
-                Utilisateur
-            </div>
+            <span class="operator-status unavailable">
+                Bientôt disponible
+            </span>
 
-        </div>
+        </button>
 
-    </header>
+    </div>
 
+    <div class="payment-guide">
 
-    <!-- ==================================================
-         MAIN
-    ================================================== -->
+        <h3>
+            <i class="fa-solid fa-list-check"></i>
+            Comment effectuer le paiement ?
+        </h3>
 
-    <main>
+        <div class="guide-row">
 
-        <div class="container">
+            <div class="guide-number">1</div>
 
+            <div class="guide-text">
 
-            <!-- ==================================================
-                 HERO
-            ================================================== -->
-
-            <section class="payment-hero">
-
-                <h2>
-                    Activez votre Premium
-                </h2>
+                <strong>
+                    Sélectionnez Airtel Money
+                </strong>
 
                 <p>
-                    Effectuez votre paiement via votre opérateur
-                    Mobile Money, puis envoyez les informations
-                    de la transaction afin que notre équipe puisse
-                    vérifier votre demande.
+                    Appuyez sur la carte Airtel Money
+                    pour afficher les informations
+                    du bénéficiaire.
                 </p>
-
-                <div class="secure-badge">
-
-                    <i class="fa-solid fa-shield-halved"></i>
-
-                    Paiement vérifié manuellement par BMJ SERVICE
-
-                </div>
-
-            </section>
-
-
-            <!-- ==================================================
-                 GRID
-            ================================================== -->
-
-            <div class="payment-grid">
-
-
-                <!-- ==================================================
-                     COLONNE GAUCHE
-                ================================================== -->
-
-                <div>
-
-
-                    <!-- ==================================================
-                         OPERATEURS
-                    ================================================== -->
-
-                    <section class="card">
-
-                        <div class="card-title">
-
-                            <i class="fa-solid fa-mobile-screen-button"></i>
-
-                            <span>
-                                Choisissez votre opérateur
-                            </span>
-
-                        </div>
-
-
-                        <div class="operators">
-
-
-                            <!-- AIRTEL -->
-
-                            <button
-                                type="button"
-                                class="operator"
-                                data-operator="Airtel Money"
-                                data-number="0993585711"
-                            >
-
-                                <img
-                                    src="images/airtel.png"
-                                    alt="Airtel Money"
-                                    onerror="this.style.display='none'"
-                                >
-
-                                <div class="operator-info">
-
-                                    <span class="operator-name">
-                                        Airtel Money
-                                    </span>
-
-                                    <span class="operator-number">
-                                        0993585711
-                                    </span>
-
-                                    <span class="status">
-                                        <i class="fa-solid fa-circle"></i>
-                                        Disponible
-                                    </span>
-
-                                </div>
-
-
-                                <span class="check">
-
-                                    <i class="fa-solid fa-check"></i>
-
-                                </span>
-
-                            </button>
-
-
-                            <!-- ORANGE -->
-
-                            <button
-                                type="button"
-                                class="operator disabled"
-                                data-operator="Orange Money"
-                                data-number=""
-                                disabled
-                            >
-
-                                <img
-                                    src="images/orange.webp"
-                                    alt="Orange Money"
-                                    onerror="this.style.display='none'"
-                                >
-
-                                <div class="operator-info">
-
-                                    <span class="operator-name">
-                                        Orange Money
-                                    </span>
-
-                                    <span class="status off">
-                                        Bientôt disponible
-                                    </span>
-
-                                </div>
-
-
-                                <span class="check">
-
-                                    <i class="fa-solid fa-lock"></i>
-
-                                </span>
-
-                            </button>
-
-
-                            <!-- M-PESA -->
-
-                            <button
-                                type="button"
-                                class="operator disabled"
-                                data-operator="M-Pesa"
-                                data-number=""
-                                disabled
-                            >
-
-                                <img
-                                    src="images/mpesa.webp"
-                                    alt="M-Pesa"
-                                    onerror="this.style.display='none'"
-                                >
-
-                                <div class="operator-info">
-
-                                    <span class="operator-name">
-                                        M-Pesa
-                                    </span>
-
-                                    <span class="status off">
-                                        Bientôt disponible
-                                    </span>
-
-                                </div>
-
-
-                                <span class="check">
-
-                                    <i class="fa-solid fa-lock"></i>
-
-                                </span>
-
-                            </button>
-
-                        </div>
-
-
-                        <!-- NUMERO -->
-
-                        <div
-                            class="number-box"
-                            id="numberBox"
-                        >
-
-                            <div class="number-label">
-
-                                Numéro de paiement
-
-                            </div>
-
-
-                            <div class="number-value">
-
-                                <span id="operatorNumber">
-                                    0993585711
-                                </span>
-
-
-                                <button
-                                    type="button"
-                                    class="copy-btn"
-                                    id="copyNumber"
-                                >
-
-                                    <i class="fa-regular fa-copy"></i>
-
-                                    Copier
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </section>
-
-
-                    <!-- ==================================================
-                         INSTRUCTIONS
-                    ================================================== -->
-
-                    <section
-                        class="card"
-                        style="margin-top:25px;"
-                    >
-
-                        <div class="card-title">
-
-                            <i class="fa-solid fa-list-check"></i>
-
-                            <span>
-                                Comment procéder ?
-                            </span>
-
-                        </div>
-
-
-                        <div class="steps">
-
-                            <div class="step">
-
-                                <div class="step-number">
-                                    1
-                                </div>
-
-                                <p>
-                                    Choisissez
-                                    <strong>Airtel Money</strong>
-                                    et utilisez le numéro
-                                    <strong>0993585711</strong>.
-                                </p>
-
-                            </div>
-
-
-                            <div class="step">
-
-                                <div class="step-number">
-                                    2
-                                </div>
-
-                                <p>
-                                    Effectuez le montant du
-                                    Premium avec votre compte
-                                    Mobile Money.
-                                </p>
-
-                            </div>
-
-
-                            <div class="step">
-
-                                <div class="step-number">
-                                    3
-                                </div>
-
-                                <p>
-                                    Notez votre
-                                    <strong>référence de transaction</strong>
-                                    après le paiement.
-                                </p>
-
-                            </div>
-
-
-                            <div class="step">
-
-                                <div class="step-number">
-                                    4
-                                </div>
-
-                                <p>
-                                    Envoyez votre demande avec
-                                    une preuve du paiement.
-                                </p>
-
-                            </div>
-
-
-                            <div class="step">
-
-                                <div class="step-number">
-                                    5
-                                </div>
-
-                                <p>
-                                    L'administrateur vérifiera
-                                    votre paiement avant
-                                    d'activer votre Premium.
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </section>
-
-                </div>
-
-
-                <!-- ==================================================
-                     COLONNE DROITE
-                ================================================== -->
-
-                <section class="card">
-
-                    <div class="card-title">
-
-                        <i class="fa-solid fa-paper-plane"></i>
-
-                        <span>
-                            Envoyer la demande
-                        </span>
-
-                    </div>
-
-
-                    <!-- UTILISATEUR -->
-
-                    <div class="user-info">
-
-                        <div class="user-info-icon">
-
-                            <i class="fa-solid fa-user"></i>
-
-                        </div>
-
-                        <div>
-
-                            <strong id="userName">
-                                Chargement...
-                            </strong>
-
-                            <span id="userEmail">
-                                Chargement...
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- MESSAGE -->
-
-                    <div
-                        class="message"
-                        id="message"
-                    ></div>
-
-
-                    <form
-                        id="paymentForm"
-                        novalidate
-                    >
-
-
-                        <!-- MONTANT -->
-
-                        <div class="form-row">
-
-                            <div class="form-group">
-
-                                <label for="amount">
-                                    Montant
-                                </label>
-
-                                <div class="input-wrap">
-
-                                    <i class="fa-solid fa-dollar-sign"></i>
-
-                                    <input
-                                        type="number"
-                                        id="amount"
-                                        name="amount"
-                                        min="1"
-                                        step="0.01"
-                                        placeholder="Ex : 10"
-                                        required
-                                    >
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- DEVISE -->
-
-                            <div class="form-group">
-
-                                <label for="currency">
-                                    Devise
-                                </label>
-
-                                <div class="input-wrap">
-
-                                    <i class="fa-solid fa-coins"></i>
-
-                                    <select
-                                        id="currency"
-                                        name="currency"
-                                    >
-
-                                        <option value="USD">
-                                            USD
-                                        </option>
-
-                                        <option value="CDF">
-                                            CDF
-                                        </option>
-
-                                    </select>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- OPERATEUR -->
-
-                        <div class="form-group">
-
-                            <label for="method">
-                                Opérateur sélectionné
-                            </label>
-
-                            <div class="input-wrap">
-
-                                <i class="fa-solid fa-mobile-screen"></i>
-
-                                <input
-                                    type="text"
-                                    id="method"
-                                    name="method"
-                                    placeholder="Choisissez un opérateur"
-                                    readonly
-                                    required
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- REFERENCE -->
-
-                        <div class="form-group">
-
-                            <label for="reference">
-
-                                Référence de transaction
-
-                            </label>
-
-                            <div class="input-wrap">
-
-                                <i class="fa-solid fa-hashtag"></i>
-
-                                <input
-                                    type="text"
-                                    id="reference"
-                                    name="reference"
-                                    placeholder="Ex : TXN123456789"
-                                    maxlength="100"
-                                    required
-                                >
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- PREUVE -->
-
-                        <div class="form-group">
-
-                            <label>
-                                Preuve de paiement
-                            </label>
-
-
-                            <label
-                                for="proof"
-                                class="file-box"
-                            >
-
-                                <i class="fa-solid fa-cloud-arrow-up"></i>
-
-                                <strong>
-                                    Cliquez pour choisir une capture
-                                </strong>
-
-                                <small>
-                                    JPG, JPEG, PNG — maximum 5 MB
-                                </small>
-
-                                <div
-                                    class="file-name"
-                                    id="fileName"
-                                ></div>
-
-                            </label>
-
-
-                            <input
-                                type="file"
-                                id="proof"
-                                name="proof"
-                                accept="image/jpeg,image/jpg,image/png"
-                            >
-
-                        </div>
-
-
-                        <!-- NOTES -->
-
-                        <div class="form-group">
-
-                            <label for="notes">
-                                Message facultatif
-                            </label>
-
-                            <div class="input-wrap">
-
-                                <i class="fa-solid fa-message"></i>
-
-                                <textarea
-                                    id="notes"
-                                    name="notes"
-                                    placeholder="Informations supplémentaires..."
-                                ></textarea>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- PREMIUM DAYS -->
-
-                        <input
-                            type="hidden"
-                            id="premiumDays"
-                            value="30"
-                        >
-
-
-                        <!-- SUBMIT -->
-
-                        <button
-                            type="submit"
-                            class="submit-btn"
-                            id="submitBtn"
-                        >
-
-                            <i class="fa-solid fa-paper-plane"></i>
-
-                            <span>
-                                Envoyer ma demande
-                            </span>
-
-                        </button>
-
-                    </form>
-
-                </section>
 
             </div>
 
+        </div>
+
+        <div class="guide-row">
+
+            <div class="guide-number">2</div>
+
+            <div class="guide-text">
+
+                <strong>
+                    Vérifiez le bénéficiaire
+                </strong>
+
+                <p>
+                    Numéro :
+                    <strong>0993585711</strong>
+                    <br>
+                    Nom :
+                    <strong>MUNYO CLOIRE</strong>
+                </p>
+
+            </div>
 
         </div>
 
-    </main>
+        <div class="guide-row">
+
+            <div class="guide-number">3</div>
+
+            <div class="guide-text">
+
+                <strong>
+                    Envoyez exactement 15 USD
+                </strong>
+
+                <p>
+                    Ne validez pas un montant différent.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="guide-row">
+
+            <div class="guide-number">4</div>
+
+            <div class="guide-text">
+
+                <strong>
+                    Conservez le reçu
+                </strong>
+
+                <p>
+                    Vous devrez importer une capture
+                    lisible du reçu.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="payment-number-box">
+
+        <div class="number-caption">
+            INFORMATIONS DU BÉNÉFICIAIRE
+        </div>
+
+        <div class="amount-warning">
+
+            Montant exact :
+            <strong>15 USD</strong>
+
+        </div>
+
+        <div
+            id="selected-number"
+            class="payment-number"
+        >
+            Sélectionnez Airtel Money
+        </div>
+
+        <div class="receiver-name">
+
+            <i class="fa-solid fa-user-check"></i>
+
+            <span>
+                MUNYO CLOIRE
+            </span>
+
+        </div>
+
+        <div class="number-warning">
+
+            Vérifiez le numéro
+            <strong>0993585711</strong>
+            et le nom
+            <strong>MUNYO CLOIRE</strong>
+            avant de confirmer.
+
+        </div>
+
+    </div>
+
+    <!-- UPLOAD -->
+
+    <div
+        id="upload-section"
+        class="upload-container"
+    >
+
+        <div class="step-label">
+            ÉTAPE 3 — PREUVE DE PAIEMENT
+        </div>
+
+        <h2 class="step-title">
+            Importez votre reçu
+        </h2>
+
+        <p class="step-description">
+
+            Après avoir effectué le paiement,
+            sélectionnez la capture d'écran
+            de votre reçu.
+
+        </p>
+
+        <div class="upload-explanation">
+
+            <strong>
+                Votre preuve doit être lisible
+            </strong>
+
+            <p>
+                Le serveur BMJ SERVICE recevra
+                directement votre preuve avec
+                les informations de votre compte
+                et les informations du paiement.
+            </p>
+
+        </div>
+
+        <label
+            class="file-drop-area"
+            for="capturePaiement"
+        >
+
+            <div class="file-icon">
+
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+
+            </div>
+
+            <strong id="file-label">
+
+                Cliquez ici pour sélectionner
+                votre reçu
+
+            </strong>
+
+            <span>
+                JPG, PNG ou WEBP • Maximum 5 MB
+            </span>
+
+            <input
+                type="file"
+                id="capturePaiement"
+                accept="image/jpeg,image/png,image/webp"
+            >
+
+        </label>
+
+        <div
+            id="preview-container"
+            class="preview-container"
+        >
+
+            <div class="preview-title">
+                Aperçu de votre preuve
+            </div>
+
+            <img
+                id="capture-preview"
+                src=""
+                alt="Aperçu du reçu"
+            >
+
+        </div>
+
+        <button
+            type="button"
+            class="btn-submit"
+            id="submitPaymentButton"
+        >
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+            Envoyer la demande au serveur
+
+        </button>
+
+    </div>
+
+    <div class="info-box">
+
+        <div class="info-icon">
+
+            <i class="fa-solid fa-server"></i>
+
+        </div>
+
+        <div class="info-content">
+
+            <strong>
+                Transmission au serveur
+            </strong>
+
+            <p>
+                Votre demande, vos identifiants
+                et votre preuve de paiement sont
+                transmis directement au serveur
+                BMJ SERVICE pour être enregistrés
+                et vérifiés par l'administration.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- LOADING -->
+
+<div
+    id="step-loading"
+    class="payment-step"
+    style="display:none;"
+>
+
+    <div
+        class="waiting-box"
+        style="display:block;"
+    >
+
+        <div class="waiting-icon">
+
+            <i class="fa-solid fa-server"></i>
+
+        </div>
+
+        <h2 class="waiting-title">
+            Transmission au serveur
+        </h2>
+
+        <p class="waiting-description">
+
+            Votre demande et votre preuve
+            de paiement sont en cours
+            de transmission au serveur
+            BMJ SERVICE.
+
+            <br><br>
+
+            Veuillez patienter quelques secondes.
+
+        </p>
+
+        <div class="waiting-status">
+
+            <i class="fa-solid fa-spinner fa-spin"></i>
+
+            ENVOI EN COURS
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- WAITING -->
+
+<div
+    id="step-waiting"
+    class="waiting-box"
+>
+
+    <div class="waiting-icon">
+
+        <i class="fa-solid fa-clock"></i>
+
+    </div>
+
+    <h2 class="waiting-title">
+        Demande enregistrée
+    </h2>
+
+    <p class="waiting-description">
+
+        Votre demande de paiement a bien été
+        transmise au serveur BMJ SERVICE.
+
+        <br><br>
+
+        Votre preuve sera examinée par
+        l'administration avant l'activation
+        de votre statut Premium.
+
+        <br><br>
+
+        <strong>
+            Ne renvoyez pas une deuxième demande.
+        </strong>
+
+    </p>
+
+    <div class="waiting-status">
+
+        <i class="fa-solid fa-hourglass-half"></i>
+
+        EN ATTENTE DE VALIDATION
+
+    </div>
+
+    <div class="timer-box">
+
+        <div class="timer-label">
+            TEMPS INDICATIF
+        </div>
+
+        <div
+            id="paymentTimer"
+            class="timer"
+        >
+            05:00
+        </div>
+
+        <div class="timer-description">
+
+            L'administration peut examiner
+            votre demande depuis le tableau
+            de bord BMJ SERVICE.
+
+        </div>
+
+    </div>
+
+    <div
+        id="supportBox"
+        class="support-box"
+    >
+
+        <h3>
+
+            <i class="fa-solid fa-headset"></i>
+
+            Besoin d'assistance ?
+
+        </h3>
+
+        <p>
+
+            Votre demande est toujours en attente.
+
+            <br><br>
+
+            WhatsApp :
+            <span class="support-number">
+                0859424813
+            </span>
+
+        </p>
+
+        <a
+            id="supportButton"
+            class="support-button"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+
+            <i class="fa-brands fa-whatsapp"></i>
+
+            Contacter le support
+
+        </a>
+
+    </div>
+
+</div>
+
+<div class="security-note">
+
+    <i class="fa-solid fa-lock"></i>
+
+    Vos informations sont transmises
+    directement au serveur BMJ SERVICE.
+
+</div>
+
+<div class="footer">
+
+    BMJ SERVICE • Paiement Premium
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* =========================================================
+   BMJ SERVICE
+   PREMIUM PAYMENT
+   VERSION SERVEUR
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        /* =====================================================
+           CONFIGURATION SERVEUR
+        ====================================================== */
+
+        /*
+         * IMPORTANT :
+         * Remplace cette adresse par l'URL exacte
+         * de ton serveur Render.
+         */
+
+        const API_URL =
+            "https://back-end-h602.onrender.com";
 
 
-    <!-- ==================================================
-         FOOTER
-    ================================================== -->
+        /* =====================================================
+           PAIEMENT
+        ====================================================== */
 
-    <footer>
+        const PAYMENT_AMOUNT = "15";
 
-        © 2026
-        <span>BMJ SERVICE</span>
-        — Tous droits réservés.
+        const PAYMENT_CURRENCY = "USD";
 
-    </footer>
+        const PAYMENT_OPERATOR = "Airtel Money";
+
+        const PAYMENT_NUMBER = "0993585711";
+
+        const PAYMENT_RECEIVER = "MUNYO CLOIRE";
+
+        const SUPPORT_NUMBER =
+            "243859424813";
+
+        const WAITING_TIME =
+            5 * 60;
 
 
+        /* =====================================================
+           ELEMENTS
+        ====================================================== */
 
-    <script>
+        const stepChoice =
+            document.getElementById(
+                "step-choice"
+            );
 
-      /* ==================================================
-            CONFIGURATION API
-        ================================================== */
-        const API_URL = "https://back-end-h602.onrender.com";
+        const stepMobile =
+            document.getElementById(
+                "step-mobile"
+            );
 
-        /* ==================================================
-            ELEMENTS
-        ================================================== */
-        const sidebar = document.getElementById("sidebar");
-        const menuBtn = document.getElementById("menuBtn");
-        const operators = document.querySelectorAll(".operator:not(.disabled)");
-        const methodInput = document.getElementById("method");
-        const numberBox = document.getElementById("numberBox");
-        const operatorNumber = document.getElementById("operatorNumber");
-        const copyNumber = document.getElementById("copyNumber");
-        const proofInput = document.getElementById("proof");
-        const fileName = document.getElementById("fileName");
-        const paymentForm = document.getElementById("paymentForm");
-        const submitBtn = document.getElementById("submitBtn");
-        const message = document.getElementById("message");
+        const stepLoading =
+            document.getElementById(
+                "step-loading"
+            );
 
-        /* ==================================================
-            MENU MOBILE
-        ================================================== */
-        if (menuBtn) {
-            menuBtn.addEventListener("click", function () {
-                sidebar.classList.toggle("open");
+        const stepWaiting =
+            document.getElementById(
+                "step-waiting"
+            );
+
+        const mobileMoneyButton =
+            document.getElementById(
+                "mobileMoneyButton"
+            );
+
+        const cardButton =
+            document.getElementById(
+                "cardButton"
+            );
+
+        const backButton =
+            document.getElementById(
+                "backButton"
+            );
+
+        const statusButton =
+            document.getElementById(
+                "statusButton"
+            );
+
+        const operatorCards =
+            document.querySelectorAll(
+                ".operator-card"
+            );
+
+        const selectedNumber =
+            document.getElementById(
+                "selected-number"
+            );
+
+        const capturePaiement =
+            document.getElementById(
+                "capturePaiement"
+            );
+
+        const capturePreview =
+            document.getElementById(
+                "capture-preview"
+            );
+
+        const previewContainer =
+            document.getElementById(
+                "preview-container"
+            );
+
+        const fileLabel =
+            document.getElementById(
+                "file-label"
+            );
+
+        const submitPaymentButton =
+            document.getElementById(
+                "submitPaymentButton"
+            );
+
+        const userName =
+            document.getElementById(
+                "userName"
+            );
+
+        const userEmail =
+            document.getElementById(
+                "userEmail"
+            );
+
+        const paymentAlert =
+            document.getElementById(
+                "paymentAlert"
+            );
+
+        const paymentAlertText =
+            document.getElementById(
+                "paymentAlertText"
+            );
+
+        const paymentTimer =
+            document.getElementById(
+                "paymentTimer"
+            );
+
+        const supportBox =
+            document.getElementById(
+                "supportBox"
+            );
+
+        const supportButton =
+            document.getElementById(
+                "supportButton"
+            );
+
+
+        /* =====================================================
+           VARIABLES
+        ====================================================== */
+
+        let selectedOperator = "";
+
+        let selectedPhone = "";
+
+        let selectedFile = null;
+
+        let timerInterval = null;
+
+
+        /* =====================================================
+           SUPPORT WHATSAPP
+        ====================================================== */
+
+        const whatsappMessage =
+            encodeURIComponent(
+                "Bonjour BMJ SERVICE, ma demande Premium est en attente. J'ai besoin d'assistance."
+            );
+
+        supportButton.href =
+            "https://wa.me/" +
+            SUPPORT_NUMBER +
+            "?text=" +
+            whatsappMessage;
+
+
+        /* =====================================================
+           ALERT
+        ====================================================== */
+
+        function showAlert(
+            message,
+            type = "error"
+        ) {
+
+            paymentAlert.className =
+                "payment-alert show " +
+                type;
+
+            paymentAlertText.textContent =
+                message;
+
+            paymentAlert.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
             });
+
         }
 
-        /* ==================================================
-            UTILISATEUR CONNECTÉ
-        ================================================== */
-        function getConnectedUser() {
-            const possibleKeys = ["user", "currentUser", "userData", "bmj_user", "loggedUser", "utilisateur"];
 
-            for (const key of possibleKeys) {
+        function hideAlert() {
+
+            paymentAlert.className =
+                "payment-alert";
+
+            paymentAlertText.textContent =
+                "";
+
+        }
+
+
+        /* =====================================================
+           UTILISATEUR
+        ====================================================== */
+
+        function getUser() {
+
+            const keys = [
+                "bmj_user",
+                "bmjUser",
+                "currentUser",
+                "user",
+                "loggedUser"
+            ];
+
+            for (
+                const key of keys
+            ) {
+
                 try {
-                    const value = localStorage.getItem(key);
-                    if (!value) continue;
 
-                    const parsed = JSON.parse(value);
-                    if (parsed && typeof parsed === "object") {
+                    const raw =
+                        localStorage.getItem(
+                            key
+                        );
+
+                    if (!raw) {
+                        continue;
+                    }
+
+                    const parsed =
+                        JSON.parse(raw);
+
+                    if (parsed) {
                         return parsed;
                     }
-                } catch (_) {}
+
+                }
+                catch (error) {
+
+                    console.warn(
+                        "Erreur lecture utilisateur",
+                        error
+                    );
+
+                }
+
             }
 
-            // Fallback: si l'utilisateur est stocké sous forme de simple string (email)
-            return { email: localStorage.getItem("userEmail") || localStorage.getItem("email") || "client@bmjservice.com" };
+            return null;
         }
 
-        const currentUser = getConnectedUser();
 
-        /* ==================================================
-            EXTRACTION ID UTILISATEUR
-        ================================================== */
-        function getUserId(user) {
-            if (!user) return "USER-" + Date.now();
-            return user.id ?? user.user_id ?? user.userId ?? user.userid ?? user.id_user ?? ("USER-" + Date.now());
-        }
+        /* =====================================================
+           CHARGER UTILISATEUR
+        ====================================================== */
 
-        /* ==================================================
-            AFFICHAGE UTILISATEUR
-        ================================================== */
-        function displayUser() {
-            const nameElement = document.getElementById("userName");
-            const emailElement = document.getElementById("userEmail");
-            const headerElement = document.getElementById("headerUserName");
+        function loadUser() {
 
-            if (!currentUser) {
-                if (nameElement) nameElement.textContent = "Utilisateur non connecté";
-                if (emailElement) emailElement.textContent = "Veuillez vous connecter";
-                if (headerElement) headerElement.textContent = "Invité";
+            const user =
+                getUser();
+
+            if (!user) {
+
+                userName.textContent =
+                    "Utilisateur BMJ SERVICE";
+
+                userEmail.textContent =
+                    "Compte non identifié";
+
                 return;
             }
 
-            const name = currentUser.nom ?? currentUser.name ?? currentUser.username ?? "Utilisateur";
-            const email = currentUser.email ?? currentUser.user_email ?? "Client BMJ";
+            userName.textContent =
+                user.nom ||
+                user.name ||
+                user.username ||
+                "Utilisateur BMJ SERVICE";
 
-            if (nameElement) nameElement.textContent = name;
-            if (emailElement) emailElement.textContent = email;
-            if (headerElement) headerElement.textContent = name;
+            userEmail.textContent =
+                user.email ||
+                user.telephone ||
+                user.phone ||
+                "Compte BMJ SERVICE";
         }
 
-        displayUser();
 
-        /* ==================================================
-            OPERATEUR
-        ================================================== */
-        operators.forEach(function (operator) {
-            operator.addEventListener("click", function () {
-                operators.forEach(function (item) {
-                    item.classList.remove("selected");
-                });
+        loadUser();
 
-                operator.classList.add("selected");
 
-                const operatorName = operator.dataset.operator;
-                const operatorPhone = operator.dataset.number;
+        /* =====================================================
+           AFFICHAGE
+        ====================================================== */
 
-                methodInput.value = operatorName;
-                operatorNumber.textContent = operatorPhone;
-                numberBox.classList.add("show");
-            });
-        });
+        function hideAllSteps() {
 
-        /* ==================================================
-            COPIER NUMERO
-        ================================================== */
-        copyNumber.addEventListener("click", async function () {
-            const number = operatorNumber.textContent;
-            try {
-                await navigator.clipboard.writeText(number);
-                copyNumber.innerHTML = '<i class="fa-solid fa-check"></i> Copié';
-                setTimeout(function () {
-                    copyNumber.innerHTML = '<i class="fa-regular fa-copy"></i> Copier';
-                }, 1800);
-            } catch (err) {
-                alert("Numéro : " + number);
-            }
-        });
+            stepChoice.style.display =
+                "none";
 
-        /* ==================================================
-            FICHIER
-        ================================================== */
-        proofInput.addEventListener("change", function () {
-            const file = proofInput.files[0];
-            if (!file) {
-                fileName.textContent = "";
-                return;
-            }
-            fileName.textContent = "✓ " + file.name;
-        });
+            stepMobile.style.display =
+                "none";
 
-        /* ==================================================
-            MESSAGE
-        ================================================== */
-        function showMessage(text, type) {
-            message.textContent = text;
-            message.className = "message show " + type;
-            message.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            stepLoading.style.display =
+                "none";
+
+            stepWaiting.style.display =
+                "none";
         }
 
-        function hideMessage() {
-            message.className = "message";
-            message.textContent = "";
-        }
 
-        /* ==================================================
-            IMAGE -> BASE64
-        ================================================== */
-        function fileToBase64(file) {
-            return new Promise(function (resolve, reject) {
-                const reader = new FileReader();
-                reader.onload = function () { resolve(reader.result); };
-                reader.onerror = function () { reject(new Error("Impossible de lire la preuve.")); };
-                reader.readAsDataURL(file);
+        function showChoice() {
+
+            hideAllSteps();
+
+            stepChoice.style.display =
+                "block";
+
+            hideAlert();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
             });
         }
 
-        /* ==================================================
-            REPONSE API
-        ================================================== */
-        async function parseApiResponse(response) {
-            const text = await response.text();
-            let data = null;
-            try {
-                data = JSON.parse(text);
-            } catch (_) {
-                data = null;
-            }
 
-            if (!response.ok) {
-                const serverMessage = data?.message || data?.error || text || ("Erreur HTTP " + response.status);
-                throw new Error(serverMessage);
-            }
+        function showMobile() {
 
-            if (!data) {
-                throw new Error("Réponse invalide du serveur.");
-            }
+            hideAllSteps();
 
-            if (data.success === false) {
-                throw new Error(data.message || data.error || "Le serveur a refusé la demande.");
-            }
+            stepMobile.style.display =
+                "block";
 
-            return data;
+            hideAlert();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
         }
 
-        /* ==================================================
-            ENVOI PAIEMENT
-        ================================================== */
-        paymentForm.addEventListener("submit", async function (event) {
-            event.preventDefault();
-            hideMessage();
 
-            /* ==========================================
-               OPERATEUR
-            ========================================== */
-            const selectedOperator = document.querySelector(".operator.selected");
-            if (!selectedOperator) {
-                showMessage("Veuillez choisir un opérateur de paiement (Airtel Money, etc.).", "error");
-                return;
+        function showLoading() {
+
+            hideAllSteps();
+
+            stepLoading.style.display =
+                "block";
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+
+        function showWaiting() {
+
+            hideAllSteps();
+
+            stepWaiting.style.display =
+                "block";
+
+            hideAlert();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+
+
+        /* =====================================================
+           MOBILE MONEY
+        ====================================================== */
+
+        mobileMoneyButton.addEventListener(
+            "click",
+            function () {
+
+                showMobile();
+
             }
+        );
 
-            const method = selectedOperator.dataset.operator;
-            const number = selectedOperator.dataset.number;
 
-            if (!method || !number) {
-                showMessage("Opérateur invalide.", "error");
-                return;
+        /* =====================================================
+           VISA
+        ====================================================== */
+
+        cardButton.addEventListener(
+            "click",
+            function () {
+
+                showAlert(
+                    "Le paiement Visa / Mastercard n'est pas encore disponible. Utilisez Airtel Money.",
+                    "error"
+                );
+
             }
+        );
 
-            /* ==========================================
-               MONTANT
-            ========================================== */
-            const amountInput = document.getElementById("amount");
-            const amount = Number(amountInput.value);
 
-            if (!Number.isFinite(amount) || amount <= 0) {
-                showMessage("Veuillez entrer un montant valide.", "error");
-                return;
+        /* =====================================================
+           RETOUR
+        ====================================================== */
+
+        backButton.addEventListener(
+            "click",
+            function () {
+
+                showChoice();
+
             }
+        );
 
-            /* ==========================================
-               REFERENCE
-            ========================================== */
-            const referenceInput = document.getElementById("reference");
-            const reference = referenceInput ? referenceInput.value.trim() : "REF-" + Date.now();
 
-            /* ==========================================
-               PREUVE
-            ========================================== */
-            const proofFile = proofInput.files[0];
-            let proofBase64 = null;
+        /* =====================================================
+           OPERATEURS
+        ====================================================== */
 
-            if (proofFile) {
-                if (!["image/jpeg", "image/jpg", "image/png"].includes(proofFile.type)) {
-                    showMessage("La preuve doit être une image JPG, JPEG ou PNG.", "error");
+        operatorCards.forEach(
+            function (card) {
+
+                card.addEventListener(
+                    "click",
+                    function () {
+
+                        if (
+                            card.classList.contains(
+                                "disabled"
+                            )
+                        ) {
+
+                            showAlert(
+                                "Cet opérateur n'est pas encore disponible.",
+                                "error"
+                            );
+
+                            return;
+                        }
+
+
+                        operatorCards.forEach(
+                            function (item) {
+
+                                item.classList.remove(
+                                    "selected"
+                                );
+
+                            }
+                        );
+
+
+                        card.classList.add(
+                            "selected"
+                        );
+
+
+                        selectedOperator =
+                            card.dataset.operator ||
+                            PAYMENT_OPERATOR;
+
+
+                        selectedPhone =
+                            card.dataset.number ||
+                            PAYMENT_NUMBER;
+
+
+                        selectedNumber.textContent =
+                            selectedPhone;
+
+
+                        hideAlert();
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           FICHIER
+        ====================================================== */
+
+        capturePaiement.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    capturePaiement.files &&
+                    capturePaiement.files[0];
+
+
+                if (!file) {
                     return;
                 }
 
-                if (proofFile.size > 5 * 1024 * 1024) {
-                    showMessage("La preuve ne doit pas dépasser 5 MB.", "error");
+
+                const allowedTypes = [
+                    "image/jpeg",
+                    "image/png",
+                    "image/webp"
+                ];
+
+
+                if (
+                    !allowedTypes.includes(
+                        file.type
+                    )
+                ) {
+
+                    showAlert(
+                        "Format non accepté. Utilisez JPG, PNG ou WEBP.",
+                        "error"
+                    );
+
+                    capturePaiement.value =
+                        "";
+
+                    selectedFile =
+                        null;
+
                     return;
                 }
 
-                try {
-                    proofBase64 = await fileToBase64(proofFile);
-                } catch (err) {
-                    showMessage(err.message, "error");
+
+                if (
+                    file.size >
+                    5 * 1024 * 1024
+                ) {
+
+                    showAlert(
+                        "La preuve dépasse 5 MB. Choisissez une image plus légère.",
+                        "error"
+                    );
+
+                    capturePaiement.value =
+                        "";
+
+                    selectedFile =
+                        null;
+
                     return;
                 }
+
+
+                selectedFile =
+                    file;
+
+
+                fileLabel.textContent =
+                    file.name;
+
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    function (event) {
+
+                        capturePreview.src =
+                            event.target.result;
+
+                        previewContainer.classList.add(
+                            "show"
+                        );
+
+                    };
+
+
+                reader.readAsDataURL(
+                    file
+                );
+
+
+                hideAlert();
+
             }
+        );
 
-            /* ==========================================
-               DONNEES
-            ========================================== */
-            const userId = getUserId(currentUser);
-            const userEmail = currentUser?.email ?? currentUser?.user_email ?? "client@bmjservice.com";
-            const userPhone = currentUser?.telephone ?? currentUser?.phone ?? currentUser?.tel ?? "";
-            const userName = currentUser?.nom ?? currentUser?.name ?? "Client";
-            const currencyEl = document.getElementById("currency");
-            const notesEl = document.getElementById("notes");
 
-            const payload = {
-                user_id: userId,
-                nom: userName,
-                email: userEmail,
-                telephone: userPhone,
-                amount: amount,
-                montant: amount,
-                currency: currencyEl ? currencyEl.value : "USD",
-                method: method,
-                methode: method,
-                mode_paiement: method,
-                reference: reference,
-                transaction_id: reference,
-                preuve: proofBase64,
-                proof: proofBase64,
-                premium_days: 30,
-                notes: notesEl ? notesEl.value.trim() : null
+        /* =====================================================
+           SAUVEGARDE LOCALE
+        ====================================================== */
+
+        function savePendingPayment(
+            data
+        ) {
+
+            const pending = {
+
+                ...data,
+
+                status:
+                    "pending",
+
+                created_at:
+                    new Date()
+                    .toISOString(),
+
+                expires_at:
+                    Date.now() +
+                    WAITING_TIME * 1000
+
             };
 
-            /* ==========================================
-               BOUTON LOADING
-            ========================================== */
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner"></span><span>Envoi en cours...</span>';
+
+            localStorage.setItem(
+                "bmj_payment_pending",
+                JSON.stringify(
+                    pending
+                )
+            );
+
+
+            return pending;
+        }
+
+
+        function getPendingPayment() {
 
             try {
-                const response = await fetch(API_URL + "/api/paiements", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Accept": "application/json"
-                    },
-                    body: JSON.stringify(payload)
-                });
 
-                const data = await parseApiResponse(response);
+                const raw =
+                    localStorage.getItem(
+                        "bmj_payment_pending"
+                    );
 
-                showMessage("✓ Votre demande de paiement a été envoyée avec succès. Elle est en attente de vérification.", "success");
-
-                paymentForm.reset();
-                methodInput.value = "";
-                numberBox.classList.remove("show");
-                operators.forEach(function (item) {
-                    item.classList.remove("selected");
-                });
-                fileName.textContent = "";
-
-            } catch (err) {
-                let errorMessage = err.message || "Impossible d'envoyer la demande de paiement.";
-
-                if (errorMessage.toLowerCase().includes("failed to fetch")) {
-                    errorMessage = "Impossible de contacter le serveur Render. Vérifiez votre connexion Internet.";
+                if (!raw) {
+                    return null;
                 }
 
-                showMessage(errorMessage, "error");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i><span>Envoyer ma demande</span>';
-            }
-        });
-    </script>
+                return JSON.parse(
+                    raw
+                );
 
+            }
+            catch (error) {
+
+                return null;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           TIMER
+        ====================================================== */
+
+        function startTimer(
+            expiration
+        ) {
+
+            if (timerInterval) {
+
+                clearInterval(
+                    timerInterval
+                );
+
+            }
+
+
+            supportBox.style.display =
+                "none";
+
+
+            function updateTimer() {
+
+                const remaining =
+                    Math.max(
+                        0,
+                        expiration -
+                        Date.now()
+                    );
+
+
+                const totalSeconds =
+                    Math.floor(
+                        remaining / 1000
+                    );
+
+
+                const minutes =
+                    Math.floor(
+                        totalSeconds / 60
+                    );
+
+
+                const seconds =
+                    totalSeconds % 60;
+
+
+                paymentTimer.textContent =
+                    String(minutes)
+                        .padStart(2, "0") +
+                    ":" +
+                    String(seconds)
+                        .padStart(2, "0");
+
+
+                if (
+                    remaining <= 0
+                ) {
+
+                    clearInterval(
+                        timerInterval
+                    );
+
+                    supportBox.style.display =
+                        "block";
+
+                }
+
+            }
+
+
+            updateTimer();
+
+
+            timerInterval =
+                setInterval(
+                    updateTimer,
+                    1000
+                );
+        }
+
+
+        /* =====================================================
+           RESTAURER DEMANDE
+        ====================================================== */
+
+        function restorePendingPayment() {
+
+            const pending =
+                getPendingPayment();
+
+
+            if (
+                !pending ||
+                pending.status !==
+                "pending"
+            ) {
+
+                return false;
+            }
+
+
+            showWaiting();
+
+
+            const expiration =
+                Number(
+                    pending.expires_at
+                );
+
+
+            if (
+                expiration &&
+                expiration > Date.now()
+            ) {
+
+                startTimer(
+                    expiration
+                );
+
+            }
+            else {
+
+                paymentTimer.textContent =
+                    "05:00";
+
+                supportBox.style.display =
+                    "block";
+
+            }
+
+
+            return true;
+        }
+
+
+        /* =====================================================
+           ENVOI DU PAIEMENT AU SERVEUR
+        ====================================================== */
+
+        submitPaymentButton.addEventListener(
+            "click",
+            async function () {
+
+                hideAlert();
+
+
+                /* =============================================
+                   VERIFICATION API
+                ============================================= */
+
+                if (
+                    !API_URL ||
+                    API_URL.includes(
+                        "TON-SERVEUR"
+                    )
+                ) {
+
+                    showAlert(
+                        "L'adresse de votre serveur n'est pas encore configurée dans API_URL.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                /* =============================================
+                   OPERATEUR
+                ============================================= */
+
+                if (
+                    !selectedOperator
+                ) {
+
+                    showAlert(
+                        "Veuillez sélectionner Airtel Money.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                /* =============================================
+                   NUMERO
+                ============================================= */
+
+                if (
+                    !selectedPhone
+                ) {
+
+                    showAlert(
+                        "Le numéro de paiement est introuvable. Sélectionnez Airtel Money à nouveau.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                /* =============================================
+                   PREUVE
+                ============================================= */
+
+                if (
+                    !selectedFile
+                ) {
+
+                    showAlert(
+                        "Veuillez importer votre preuve de paiement.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                /* =============================================
+                   UTILISATEUR
+                ============================================= */
+
+                const user =
+                    getUser();
+
+
+                if (!user) {
+
+                    showAlert(
+                        "Impossible d'identifier votre compte BMJ SERVICE. Connectez-vous à votre compte avant d'effectuer le paiement.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                const nom =
+                    user.nom ||
+                    user.name ||
+                    user.username ||
+                    "";
+
+
+                const email =
+                    user.email ||
+                    "";
+
+
+                const telephone =
+                    user.telephone ||
+                    user.phone ||
+                    "";
+
+
+                if (
+                    !nom &&
+                    !email &&
+                    !telephone
+                ) {
+
+                    showAlert(
+                        "Les informations de votre compte sont incomplètes.",
+                        "error"
+                    );
+
+                    return;
+                }
+
+
+                /* =============================================
+                   FORM DATA
+                ============================================= */
+
+                const formData =
+                    new FormData();
+
+
+                formData.append(
+                    "nom",
+                    nom
+                );
+
+
+                formData.append(
+                    "email",
+                    email
+                );
+
+
+                formData.append(
+                    "telephone",
+                    telephone
+                );
+
+
+                formData.append(
+                    "operator",
+                    selectedOperator
+                );
+
+
+                formData.append(
+                    "payment_number",
+                    selectedPhone
+                );
+
+
+                formData.append(
+                    "receiver_name",
+                    PAYMENT_RECEIVER
+                );
+
+
+                formData.append(
+                    "amount",
+                    PAYMENT_AMOUNT
+                );
+
+
+                formData.append(
+                    "currency",
+                    PAYMENT_CURRENCY
+                );
+
+
+                formData.append(
+                    "capture",
+                    selectedFile,
+                    selectedFile.name
+                );
+
+
+                /* =============================================
+                   DESACTIVER BOUTON
+                ============================================= */
+
+                submitPaymentButton.disabled =
+                    true;
+
+
+                showLoading();
+
+
+                try {
+
+                    /* =========================================
+                       ENVOI REEL
+                    ========================================== */
+
+                    const response =
+                        await fetch(
+                            API_URL +
+                            "/api/paiements",
+                            {
+                                method: "POST",
+                                body: formData
+                            }
+                        );
+
+
+                    let result;
+
+
+                    try {
+
+                        result =
+                            await response.json();
+
+                    }
+                    catch (jsonError) {
+
+                        throw new Error(
+                            "Le serveur a renvoyé une réponse invalide."
+                        );
+
+                    }
+
+
+                    console.log(
+                        "Réponse serveur paiement :",
+                        result
+                    );
+
+
+                    if (
+                        !response.ok ||
+                        !result.success
+                    ) {
+
+                        throw new Error(
+                            result.message ||
+                            result.error ||
+                            "Le serveur a refusé la demande de paiement."
+                        );
+
+                    }
+
+
+                    /* =========================================
+                       DONNEES DE CONFIRMATION
+                    ========================================== */
+
+                    const paymentData = {
+
+                        id:
+                            result.data?.id ||
+                            result.payment?.id ||
+                            null,
+
+                        nom:
+                            nom,
+
+                        email:
+                            email,
+
+                        telephone:
+                            telephone,
+
+                        operator:
+                            selectedOperator,
+
+                        payment_number:
+                            selectedPhone,
+
+                        receiver_name:
+                            PAYMENT_RECEIVER,
+
+                        amount:
+                            PAYMENT_AMOUNT,
+
+                        currency:
+                            PAYMENT_CURRENCY,
+
+                        status:
+                            result.data?.status ||
+                            result.payment?.status ||
+                            "pending",
+
+                        created_at:
+                            new Date()
+                            .toISOString(),
+
+                        expires_at:
+                            Date.now() +
+                            WAITING_TIME * 1000
+
+                    };
+
+
+                    /* =========================================
+                       SAUVEGARDE LOCALE
+                    ========================================== */
+
+                    savePendingPayment(
+                        paymentData
+                    );
+
+
+                    /* =========================================
+                       AFFICHAGE
+                    ========================================== */
+
+                    showWaiting();
+
+
+                    startTimer(
+                        paymentData.expires_at
+                    );
+
+
+                    showAlert(
+                        "Votre demande a été enregistrée avec succès sur le serveur BMJ SERVICE.",
+                        "success"
+                    );
+
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Erreur envoi paiement :",
+                        error
+                    );
+
+
+                    showMobile();
+
+
+                    showAlert(
+                        error.message ||
+                        "Impossible de contacter le serveur BMJ SERVICE. Vérifiez votre connexion puis réessayez.",
+                        "error"
+                    );
+
+                }
+                finally {
+
+                    submitPaymentButton.disabled =
+                        false;
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           STATUT
+        ====================================================== */
+
+        statusButton.addEventListener(
+            "click",
+            function () {
+
+                const restored =
+                    restorePendingPayment();
+
+
+                if (!restored) {
+
+                    showAlert(
+                        "Aucune demande Premium en attente n'a été trouvée sur cet appareil.",
+                        "error"
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =====================================================
+           CHARGEMENT
+        ====================================================== */
+
+        restorePendingPayment();
+
+    }
+
+);
+
+</script>
 
 </body>
 
