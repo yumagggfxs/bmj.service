@@ -10,19 +10,14 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <meta
-        name="theme-color"
-        content="#0b5ed7"
-    >
-
     <title>
         Demande de paiement - BMJ SERVICE
     </title>
 
 
-    <!-- =====================================================
-         POLICES
-    ====================================================== -->
+    <!-- ==================================================
+         GOOGLE FONT
+    ================================================== -->
 
     <link
         rel="preconnect"
@@ -41,9 +36,9 @@
     >
 
 
-    <!-- =====================================================
-         ICONES
-    ====================================================== -->
+    <!-- ==================================================
+         FONT AWESOME
+    ================================================== -->
 
     <link
         rel="stylesheet"
@@ -53,90 +48,206 @@
 
     <style>
 
+        /*==================================================
+                BMJ SERVICE PAYMENT STYLE
+        ==================================================*/
+
         * {
+
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+
+            font-family:
+                'Poppins',
+                Arial,
+                sans-serif;
+
         }
 
 
-        :root {
+        html {
 
-            --primary: #0b5ed7;
-            --primary-dark: #084298;
+            scroll-behavior: smooth;
 
-            --success: #16a34a;
-            --danger: #dc2626;
-
-            --text: #172033;
-            --muted: #6b7280;
-
-            --background: #f4f7fb;
-            --white: #ffffff;
-
-            --border: #e5e7eb;
-
-            --shadow:
-                0 12px 35px
-                rgba(15, 23, 42, 0.08);
-
-            --radius: 18px;
         }
 
 
         body {
 
-            font-family: "Poppins", sans-serif;
+            background: #f4f7fb;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #f4f8ff 0%,
-                    #eef4fb 100%
-                );
+            color: #333;
 
-            color: var(--text);
+            overflow-x: hidden;
 
-            min-height: 100vh;
         }
 
 
-        /* =====================================================
-           HEADER
-        ====================================================== */
+        button,
+        input,
+        select,
+        textarea {
 
-        .header {
+            font-family:
+                'Poppins',
+                Arial,
+                sans-serif;
 
-            width: 100%;
+        }
+
+
+        button {
+
+            cursor: pointer;
+
+            border: none;
+
+            transition: .3s;
+
+        }
+
+
+        /*==================================================
+                SIDEBAR
+        ==================================================*/
+
+        .sidebar {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 260px;
+            height: 100vh;
 
             background:
                 linear-gradient(
-                    135deg,
-                    #084298,
-                    #0b5ed7
+                    180deg,
+                    #145A86,
+                    #08344f
                 );
+
+            padding: 25px 15px;
+
+            z-index: 1000;
+
+            box-shadow:
+                5px 0 25px rgba(0, 0, 0, .15);
+
+        }
+
+
+        .sidebar-logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 35px;
+
+            padding-left: 10px;
+
+        }
+
+
+        .sidebar-logo img {
+
+            width: 55px;
+            height: 55px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border:
+                3px solid #D4AF37;
+
+        }
+
+
+        .sidebar-logo h2 {
 
             color: white;
 
-            padding: 18px 22px;
+            font-size: 22px;
 
-            position: sticky;
-
-            top: 0;
-
-            z-index: 100;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0, 0, 0, .12);
         }
 
 
-        .header-content {
+        .sidebar-logo span {
 
-            max-width: 1050px;
+            color: #D4AF37;
 
-            margin: auto;
+        }
+
+
+        .sidebar nav a {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            padding: 15px 18px;
+
+            margin: 8px 0;
+
+            color: white;
+
+            border-radius: 15px;
+
+            text-decoration: none;
+
+            font-size: 15px;
+
+            transition: .3s;
+
+        }
+
+
+        .sidebar nav a i {
+
+            width: 25px;
+
+            font-size: 18px;
+
+        }
+
+
+        .sidebar nav a:hover,
+        .sidebar nav a.active {
+
+            background: #D4AF37;
+
+            color: #145A86;
+
+            transform: translateX(8px);
+
+        }
+
+
+        /*==================================================
+                HEADER
+        ==================================================*/
+
+        header {
+
+            position: fixed;
+
+            top: 0;
+
+            left: 260px;
+
+            width: calc(100% - 260px);
+
+            height: 80px;
+
+            background: white;
 
             display: flex;
 
@@ -144,30 +255,68 @@
 
             justify-content: space-between;
 
-            gap: 15px;
+            padding:
+                0 30px;
+
+            z-index: 900;
+
+            box-shadow:
+                0 3px 20px rgba(0, 0, 0, .08);
+
         }
 
 
-        .brand {
+        .header-title {
 
             display: flex;
 
             align-items: center;
 
             gap: 12px;
+
         }
 
 
-        .brand-icon {
+        .header-title i {
 
-            width: 44px;
+            color: #145A86;
 
-            height: 44px;
+            font-size: 24px;
 
-            border-radius: 13px;
+        }
+
+
+        .header-title h1 {
+
+            font-size: 22px;
+
+            color: #145A86;
+
+        }
+
+
+        .header-user {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .user-icon {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
 
             background:
-                rgba(255,255,255,.15);
+                #145A86;
+
+            color: white;
 
             display: flex;
 
@@ -175,208 +324,241 @@
 
             justify-content: center;
 
-            font-size: 20px;
         }
 
 
-        .brand-text strong {
+        .user-name {
 
-            display: block;
-
-            font-size: 18px;
-
-            font-weight: 800;
-        }
-
-
-        .brand-text span {
-
-            font-size: 11px;
-
-            opacity: .85;
-        }
-
-
-        .back-button {
-
-            border: 1px solid
-                rgba(255,255,255,.25);
-
-            background:
-                rgba(255,255,255,.12);
-
-            color: white;
-
-            text-decoration: none;
-
-            padding: 10px 14px;
-
-            border-radius: 11px;
-
-            font-size: 13px;
+            font-size: 14px;
 
             font-weight: 600;
 
-            display: flex;
+            color: #333;
 
-            align-items: center;
-
-            gap: 7px;
-
-            transition: .2s;
         }
 
 
-        .back-button:hover {
+        /*==================================================
+                MOBILE MENU
+        ==================================================*/
 
-            background:
-                rgba(255,255,255,.2);
+        .menu-btn {
+
+            display: none;
+
+            width: 42px;
+            height: 42px;
+
+            background: #145A86;
+
+            color: white;
+
+            border-radius: 10px;
+
+            font-size: 19px;
+
         }
 
 
+        /*==================================================
+                MAIN
+        ==================================================*/
 
-        /* =====================================================
-           CONTENEUR
-        ====================================================== */
+        main {
+
+            margin-left: 260px;
+
+            padding:
+                110px 35px 40px;
+
+            min-height: 100vh;
+
+        }
+
 
         .container {
 
-            width: calc(100% - 30px);
+            max-width: 1100px;
 
-            max-width: 1050px;
+            margin: auto;
 
-            margin: 30px auto 50px;
         }
 
 
-        /* =====================================================
-           INTRODUCTION
-        ====================================================== */
+        /*==================================================
+                HERO
+        ==================================================*/
 
-        .intro {
-
-            text-align: center;
-
-            margin-bottom: 25px;
-        }
-
-
-        .intro-icon {
-
-            width: 64px;
-
-            height: 64px;
-
-            margin: auto auto 15px;
-
-            border-radius: 20px;
+        .payment-hero {
 
             background:
                 linear-gradient(
                     135deg,
-                    #dbeafe,
-                    #eff6ff
+                    #145A86,
+                    #08344f
                 );
 
-            color: var(--primary);
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            font-size: 27px;
-        }
-
-
-        .intro h1 {
-
-            font-size: 28px;
-
-            font-weight: 800;
-
-            margin-bottom: 7px;
-        }
-
-
-        .intro p {
-
-            color: var(--muted);
-
-            font-size: 14px;
-
-            max-width: 650px;
-
-            margin: auto;
-
-            line-height: 1.7;
-        }
-
-
-
-        /* =====================================================
-           CARTE PRINCIPALE
-        ====================================================== */
-
-        .payment-card {
-
-            background: var(--white);
+            color: white;
 
             border-radius: 24px;
 
-            padding: 28px;
+            padding: 32px;
 
-            box-shadow: var(--shadow);
+            margin-bottom: 25px;
 
-            border: 1px solid
-                rgba(226,232,240,.8);
+            position: relative;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 15px 35px
+                rgba(20, 90, 134, .20);
+
         }
 
 
+        .payment-hero::after {
 
-        /* =====================================================
-           ETAPES
-        ====================================================== */
+            content: "";
 
-        .steps {
+            position: absolute;
 
-            display: grid;
+            width: 230px;
+            height: 230px;
 
-            grid-template-columns:
-                repeat(4, 1fr);
+            border-radius: 50%;
 
-            gap: 10px;
+            background:
+                rgba(212, 175, 55, .12);
 
-            margin-bottom: 30px;
+            right: -70px;
+            top: -90px;
+
         }
 
 
-        .step {
+        .payment-hero h2 {
 
-            display: flex;
+            font-size: 28px;
+
+            margin-bottom: 8px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .payment-hero p {
+
+            font-size: 14px;
+
+            opacity: .92;
+
+            max-width: 700px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        .secure-badge {
+
+            display: inline-flex;
 
             align-items: center;
 
             gap: 8px;
 
-            color: #9ca3af;
+            margin-top: 18px;
+
+            padding: 8px 14px;
+
+            background:
+                rgba(255,255,255,.12);
+
+            border:
+                1px solid
+                rgba(255,255,255,.20);
+
+            border-radius: 30px;
 
             font-size: 12px;
 
-            font-weight: 600;
         }
 
 
-        .step-number {
+        /*==================================================
+                GRID
+        ==================================================*/
 
-            width: 30px;
+        .payment-grid {
 
-            height: 30px;
+            display: grid;
 
-            border-radius: 50%;
+            grid-template-columns:
+                1fr 1.15fr;
 
-            background: #f1f5f9;
+            gap: 25px;
+
+            align-items: start;
+
+        }
+
+
+        /*==================================================
+                CARD
+        ==================================================*/
+
+        .card {
+
+            background: white;
+
+            border-radius: 22px;
+
+            padding: 25px;
+
+            box-shadow:
+                0 8px 30px
+                rgba(0, 0, 0, .07);
+
+            border:
+                1px solid #edf1f5;
+
+        }
+
+
+        .card-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: #145A86;
+
+            font-size: 19px;
+
+            font-weight: 700;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .card-title i {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 12px;
+
+            background:
+                rgba(20, 90, 134, .10);
 
             display: flex;
 
@@ -384,123 +566,181 @@
 
             justify-content: center;
 
-            flex-shrink: 0;
+            color: #145A86;
+
         }
 
 
-        .step.active {
-
-            color: var(--primary);
-        }
-
-
-        .step.active
-        .step-number {
-
-            background: var(--primary);
-
-            color: white;
-        }
-
-
-
-        /* =====================================================
-           TITRES
-        ====================================================== */
-
-        .section {
-
-            margin-top: 28px;
-        }
-
-
-        .title {
-
-            font-size: 17px;
-
-            font-weight: 800;
-
-            margin-bottom: 15px;
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 9px;
-        }
-
-
-        .title i {
-
-            color: var(--primary);
-
-            font-size: 17px;
-        }
-
-
-
-        /* =====================================================
-           OPERATEURS
-        ====================================================== */
+        /*==================================================
+                OPERATORS
+        ==================================================*/
 
         .operators {
 
             display: grid;
 
-            grid-template-columns:
-                repeat(3, 1fr);
+            gap: 12px;
 
-            gap: 14px;
         }
 
 
         .operator {
 
-            border: 2px solid var(--border);
+            width: 100%;
 
             background: white;
 
-            border-radius: 17px;
+            border:
+                2px solid #edf1f5;
 
-            padding: 17px;
+            border-radius: 16px;
 
-            cursor: pointer;
+            padding: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 13px;
 
             text-align: left;
 
             position: relative;
 
-            transition:
-                transform .2s,
-                border-color .2s,
-                box-shadow .2s;
         }
 
 
         .operator:hover:not(.disabled) {
 
+            border-color: #D4AF37;
+
             transform: translateY(-2px);
 
-            border-color:
-                #93c5fd;
-
             box-shadow:
-                0 8px 22px
-                rgba(37,99,235,.10);
+                0 8px 20px
+                rgba(20, 90, 134, .10);
+
         }
 
 
         .operator.selected {
 
-            border-color:
-                var(--primary);
+            border-color: #145A86;
 
             background:
-                #eff6ff;
+                rgba(20, 90, 134, .05);
 
             box-shadow:
-                0 8px 25px
-                rgba(11,94,215,.13);
+                0 0 0 3px
+                rgba(20, 90, 134, .08);
+
+        }
+
+
+        .operator img {
+
+            width: 48px;
+            height: 48px;
+
+            object-fit: contain;
+
+            border-radius: 12px;
+
+            background: #f5f5f5;
+
+            padding: 5px;
+
+        }
+
+
+        .operator-info {
+
+            flex: 1;
+
+        }
+
+
+        .operator-name {
+
+            display: block;
+
+            font-weight: 700;
+
+            color: #333;
+
+            font-size: 14px;
+
+        }
+
+
+        .operator-number {
+
+            display: block;
+
+            margin-top: 3px;
+
+            color: #145A86;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+        }
+
+
+        .status {
+
+            display: inline-block;
+
+            margin-top: 5px;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            color: #198754;
+
+        }
+
+
+        .status.off {
+
+            color: #999;
+
+        }
+
+
+        .check {
+
+            width: 25px;
+            height: 25px;
+
+            border-radius: 50%;
+
+            border:
+                2px solid #ddd;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: transparent;
+
+            font-size: 12px;
+
+        }
+
+
+        .operator.selected .check {
+
+            background: #145A86;
+
+            border-color: #145A86;
+
+            color: white;
+
         }
 
 
@@ -510,451 +750,241 @@
 
             cursor: not-allowed;
 
-            background: #f8fafc;
+            background: #f8f8f8;
+
         }
 
 
-        .operator img {
+        /*==================================================
+                PAYMENT NUMBER
+        ==================================================*/
 
-            width: 48px;
-
-            height: 48px;
-
-            object-fit: contain;
-
-            border-radius: 12px;
-
-            margin-bottom: 10px;
-
-            display: block;
-        }
-
-
-        .operator-name {
-
-            display: block;
-
-            font-size: 14px;
-
-            font-weight: 800;
-
-            color: var(--text);
-
-            margin-bottom: 5px;
-        }
-
-
-        .status {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 5px;
-
-            font-size: 11px;
-
-            color: var(--success);
-
-            font-weight: 700;
-        }
-
-
-        .status::before {
-
-            content: "";
-
-            width: 7px;
-
-            height: 7px;
-
-            border-radius: 50%;
-
-            background: currentColor;
-        }
-
-
-        .status.off {
-
-            color: #9ca3af;
-        }
-
-
-        .selected-check {
-
-            position: absolute;
-
-            top: 13px;
-
-            right: 13px;
-
-            width: 25px;
-
-            height: 25px;
-
-            border-radius: 50%;
-
-            background: var(--primary);
-
-            color: white;
+        .number-box {
 
             display: none;
 
-            align-items: center;
+            margin-top: 15px;
 
-            justify-content: center;
+            padding: 16px;
 
-            font-size: 12px;
-        }
-
-
-        .operator.selected
-        .selected-check {
-
-            display: flex;
-        }
-
-
-
-        /* =====================================================
-           INFORMATIONS OPERATEUR
-        ====================================================== */
-
-        .operator-info {
-
-            display: none;
-
-            margin-top: 18px;
-
-            padding: 18px;
-
-            border-radius: 16px;
+            border-radius: 15px;
 
             background:
                 linear-gradient(
                     135deg,
-                    #eff6ff,
-                    #f8fbff
+                    #f8fbfd,
+                    #fff
                 );
 
-            border: 1px solid
-                #bfdbfe;
+            border:
+                1px solid
+                rgba(20, 90, 134, .15);
+
         }
 
 
-        .operator-info.show {
+        .number-box.show {
 
             display: block;
 
-            animation:
-                fadeIn .25s ease;
         }
 
 
-        @keyframes fadeIn {
-
-            from {
-
-                opacity: 0;
-
-                transform:
-                    translateY(5px);
-
-            }
-
-            to {
-
-                opacity: 1;
-
-                transform:
-                    translateY(0);
-
-            }
-
-        }
-
-
-        .operator-info-title {
-
-            font-size: 12px;
-
-            color: var(--muted);
-
-            margin-bottom: 5px;
-        }
-
-
-        .payment-number {
-
-            font-size: 24px;
-
-            font-weight: 800;
-
-            color: var(--primary);
-
-            letter-spacing: 1px;
-
-            display: inline-block;
-
-            margin-right: 8px;
-        }
-
-
-        .copy-button {
-
-            border: none;
-
-            background: var(--primary);
-
-            color: white;
-
-            border-radius: 9px;
-
-            padding: 8px 11px;
-
-            cursor: pointer;
+        .number-label {
 
             font-size: 11px;
 
-            font-weight: 700;
+            color: #777;
+
+            margin-bottom: 5px;
+
         }
 
 
-
-        /* =====================================================
-           FORMULAIRE
-        ====================================================== */
-
-        .form-grid {
-
-            display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
-            gap: 17px;
-        }
-
-
-        .form-group {
+        .number-value {
 
             display: flex;
 
-            flex-direction: column;
+            justify-content: space-between;
 
-            gap: 7px;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #145A86;
+
+            font-size: 22px;
+
+            font-weight: 800;
+
         }
 
 
-        .form-group.full {
+        .copy-btn {
 
-            grid-column:
-                1 / -1;
-        }
+            background: #D4AF37;
 
+            color: #145A86;
 
-        label {
+            padding: 8px 12px;
+
+            border-radius: 9px;
 
             font-size: 12px;
 
             font-weight: 700;
 
-            color: #374151;
         }
 
 
-        input,
-        textarea {
+        /*==================================================
+                FORM
+        ==================================================*/
 
-            width: 100%;
+        .form-group {
 
-            border: 1px solid
-                #dbe1ea;
+            margin-bottom: 17px;
 
-            background: #fbfdff;
+        }
 
-            border-radius: 12px;
 
-            padding: 13px 14px;
+        .form-group label {
 
-            outline: none;
+            display: block;
 
-            font-family:
-                "Poppins",
-                sans-serif;
+            margin-bottom: 7px;
 
             font-size: 13px;
 
-            color: var(--text);
+            font-weight: 600;
 
-            transition: .2s;
+            color: #444;
+
         }
 
 
-        input:focus,
-        textarea:focus {
-
-            border-color:
-                var(--primary);
-
-            background: white;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(11,94,215,.08);
-        }
-
-
-        input[readonly] {
-
-            background: #f1f5f9;
-
-            color: #64748b;
-
-            cursor: not-allowed;
-        }
-
-
-        textarea {
-
-            min-height: 90px;
-
-            resize: vertical;
-        }
-
-
-        .input-help {
-
-            font-size: 10px;
-
-            color: #9ca3af;
-        }
-
-
-
-        /* =====================================================
-           MONTANT
-        ====================================================== */
-
-        .amount-wrapper {
+        .input-wrap {
 
             position: relative;
+
         }
 
 
-        .amount-wrapper input {
-
-            padding-right: 65px;
-
-            font-size: 18px;
-
-            font-weight: 700;
-        }
-
-
-        .currency {
+        .input-wrap i {
 
             position: absolute;
 
-            right: 13px;
+            left: 14px;
 
             top: 50%;
 
             transform:
                 translateY(-50%);
 
-            font-size: 12px;
+            color: #145A86;
 
-            font-weight: 800;
+            font-size: 15px;
 
-            color: var(--primary);
         }
 
 
-
-        /* =====================================================
-           INSTRUCTIONS
-        ====================================================== */
-
-        .instructions {
-
-            margin-top: 25px;
-
-            background:
-                #fffbeb;
-
-            border:
-                1px solid #fde68a;
-
-            border-radius: 15px;
-
-            padding: 17px;
-        }
-
-
-        .instructions-title {
-
-            font-size: 13px;
-
-            font-weight: 800;
-
-            color: #92400e;
-
-            margin-bottom: 8px;
-        }
-
-
-        .instructions ol {
-
-            padding-left: 20px;
-
-            color: #78350f;
-
-            font-size: 12px;
-
-            line-height: 1.8;
-        }
-
-
-
-        /* =====================================================
-           BOUTON
-        ====================================================== */
-
-        .submit-area {
-
-            margin-top: 28px;
-        }
-
-
-        .submit-button {
+        .input-wrap input,
+        .input-wrap select,
+        .input-wrap textarea {
 
             width: 100%;
 
-            border: none;
+            border:
+                1px solid #dfe5eb;
+
+            border-radius: 12px;
+
+            padding:
+                13px 14px 13px 42px;
+
+            outline: none;
+
+            background: #fff;
+
+            color: #333;
+
+            font-size: 13px;
+
+            transition: .3s;
+
+        }
+
+
+        .input-wrap textarea {
+
+            min-height: 95px;
+
+            resize: vertical;
+
+            padding-left: 42px;
+
+        }
+
+
+        .input-wrap input:focus,
+        .input-wrap select:focus,
+        .input-wrap textarea:focus {
+
+            border-color: #145A86;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(20, 90, 134, .08);
+
+        }
+
+
+        .form-row {
+
+            display: grid;
+
+            grid-template-columns:
+                1fr 1fr;
+
+            gap: 14px;
+
+        }
+
+
+        /*==================================================
+                USER INFO
+        ==================================================*/
+
+        .user-info {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 13px;
+
+            margin-bottom: 20px;
+
+            background:
+                #f4f7fb;
 
             border-radius: 14px;
 
-            padding: 15px;
+        }
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #0b5ed7,
-                    #084298
-                );
+
+        .user-info-icon {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            background: #145A86;
 
             color: white;
-
-            font-family:
-                "Poppins",
-                sans-serif;
-
-            font-size: 14px;
-
-            font-weight: 800;
-
-            cursor: pointer;
 
             display: flex;
 
@@ -962,292 +992,474 @@
 
             justify-content: center;
 
-            gap: 9px;
+        }
 
-            transition: .2s;
+
+        .user-info strong {
+
+            display: block;
+
+            font-size: 13px;
+
+        }
+
+
+        .user-info span {
+
+            display: block;
+
+            color: #777;
+
+            font-size: 11px;
+
+            margin-top: 2px;
+
+        }
+
+
+        /*==================================================
+                FILE
+        ==================================================*/
+
+        .file-box {
+
+            border:
+                2px dashed #dce3ea;
+
+            border-radius: 14px;
+
+            padding: 18px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition: .3s;
+
+        }
+
+
+        .file-box:hover {
+
+            border-color: #145A86;
+
+            background:
+                rgba(20, 90, 134, .03);
+
+        }
+
+
+        .file-box i {
+
+            color: #145A86;
+
+            font-size: 25px;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .file-box strong {
+
+            display: block;
+
+            font-size: 12px;
+
+        }
+
+
+        .file-box small {
+
+            display: block;
+
+            color: #888;
+
+            margin-top: 4px;
+
+            font-size: 10px;
+
+        }
+
+
+        #proof {
+
+            display: none;
+
+        }
+
+
+        .file-name {
+
+            margin-top: 8px;
+
+            color: #145A86;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+        }
+
+
+        /*==================================================
+                SUBMIT
+        ==================================================*/
+
+        .submit-btn {
+
+            width: 100%;
+
+            padding: 15px;
+
+            border-radius: 14px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #145A86,
+                    #08344f
+                );
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 10px;
 
             box-shadow:
                 0 8px 20px
-                rgba(11,94,215,.20);
+                rgba(20, 90, 134, .20);
+
         }
 
 
-        .submit-button:hover {
+        .submit-btn:hover {
 
-            transform:
-                translateY(-1px);
+            transform: translateY(-2px);
 
             box-shadow:
                 0 12px 25px
-                rgba(11,94,215,.28);
+                rgba(20, 90, 134, .25);
+
         }
 
 
-        .submit-button:disabled {
+        .submit-btn:disabled {
 
-            opacity: .6;
+            opacity: .65;
 
             cursor: not-allowed;
 
             transform: none;
 
-            box-shadow: none;
         }
 
 
-
-        /* =====================================================
-           MESSAGES
-        ====================================================== */
+        /*==================================================
+                MESSAGE
+        ==================================================*/
 
         .message {
 
             display: none;
 
-            margin-bottom: 20px;
-
-            border-radius: 13px;
-
             padding: 13px 15px;
+
+            border-radius: 12px;
+
+            margin-bottom: 15px;
 
             font-size: 12px;
 
             font-weight: 600;
 
-            line-height: 1.6;
         }
 
 
         .message.show {
 
             display: block;
+
         }
 
 
         .message.success {
 
-            background:
-                #ecfdf5;
+            background: #eaf8ef;
+
+            color: #147a3e;
 
             border:
-                1px solid #a7f3d0;
+                1px solid #bce7ca;
 
-            color:
-                #047857;
         }
 
 
         .message.error {
 
-            background:
-                #fef2f2;
+            background: #fff0f0;
+
+            color: #b42318;
 
             border:
-                1px solid #fecaca;
+                1px solid #f2c2c2;
 
-            color:
-                #b91c1c;
         }
 
 
+        /*==================================================
+                INSTRUCTIONS
+        ==================================================*/
 
-        /* =====================================================
-           LOADER
-        ====================================================== */
+        .steps {
 
-        .loader {
+            display: grid;
+
+            gap: 12px;
+
+        }
+
+
+        .step {
+
+            display: flex;
+
+            gap: 12px;
+
+            align-items: flex-start;
+
+        }
+
+
+        .step-number {
+
+            flex-shrink: 0;
+
+            width: 30px;
+            height: 30px;
+
+            border-radius: 50%;
+
+            background: #145A86;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .step p {
+
+            font-size: 12px;
+
+            color: #666;
+
+            line-height: 1.6;
+
+        }
+
+
+        .step strong {
+
+            color: #145A86;
+
+        }
+
+
+        /*==================================================
+                FOOTER
+        ==================================================*/
+
+        footer {
+
+            text-align: center;
+
+            padding: 25px;
+
+            color: #888;
+
+            font-size: 11px;
+
+        }
+
+
+        footer span {
+
+            color: #145A86;
+
+            font-weight: 700;
+
+        }
+
+
+        /*==================================================
+                LOADING
+        ==================================================*/
+
+        .spinner {
 
             width: 17px;
-
             height: 17px;
 
             border:
                 2px solid
-                rgba(255,255,255,.4);
+                rgba(255,255,255,.35);
 
-            border-top-color:
-                white;
+            border-top-color: white;
 
             border-radius: 50%;
 
             animation:
                 spin .7s linear infinite;
+
         }
 
 
         @keyframes spin {
 
             to {
+
                 transform: rotate(360deg);
+
             }
 
         }
 
 
+        /*==================================================
+                RESPONSIVE
+        ==================================================*/
 
-        /* =====================================================
-           SECURITE
-        ====================================================== */
+        @media (max-width: 900px) {
 
-        .secure {
+            .sidebar {
 
-            text-align: center;
+                transform:
+                    translateX(-100%);
 
-            color: #94a3b8;
+                transition: .3s;
 
-            font-size: 10px;
-
-            margin-top: 15px;
-
-            display: flex;
-
-            justify-content: center;
-
-            align-items: center;
-
-            gap: 5px;
-        }
-
-
-
-        /* =====================================================
-           RESPONSIVE
-        ====================================================== */
-
-        @media (max-width: 750px) {
-
-            .container {
-
-                width:
-                    calc(100% - 20px);
-
-                margin-top: 20px;
             }
 
 
-            .payment-card {
+            .sidebar.open {
 
-                padding: 20px 16px;
+                transform:
+                    translateX(0);
 
-                border-radius: 20px;
             }
 
 
-            .operators {
+            header {
 
-                grid-template-columns:
-                    1fr;
+                left: 0;
+
+                width: 100%;
+
+                padding:
+                    0 18px;
+
             }
 
 
-            .operator {
+            .menu-btn {
 
-                display: grid;
+                display: block;
 
-                grid-template-columns:
-                    55px 1fr auto;
-
-                align-items: center;
-
-                gap: 12px;
             }
 
 
-            .operator img {
+            main {
 
-                margin: 0;
+                margin-left: 0;
+
+                padding:
+                    100px 18px 30px;
+
             }
 
 
-            .operator-name {
+            .payment-grid {
 
-                margin: 0;
-            }
+                grid-template-columns: 1fr;
 
-
-            .selected-check {
-
-                position: static;
-
-                margin-left: auto;
-            }
-
-
-            .form-grid {
-
-                grid-template-columns:
-                    1fr;
-            }
-
-
-            .form-group.full {
-
-                grid-column: auto;
-            }
-
-
-            .steps {
-
-                grid-template-columns:
-                    repeat(4, 1fr);
-
-                gap: 4px;
-            }
-
-
-            .step {
-
-                justify-content: center;
-
-                font-size: 0;
-            }
-
-
-            .step-number {
-
-                width: 32px;
-
-                height: 32px;
-            }
-
-
-            .intro h1 {
-
-                font-size: 23px;
-            }
-
-
-            .payment-number {
-
-                font-size: 20px;
             }
 
         }
 
 
-        @media (max-width: 430px) {
+        @media (max-width: 600px) {
 
-            .header {
+            .header-title h1 {
 
-                padding: 14px;
+                font-size: 17px;
+
             }
 
 
-            .brand-text strong {
-
-                font-size: 15px;
-            }
-
-
-            .back-button span {
+            .user-name {
 
                 display: none;
+
             }
 
 
-            .intro {
+            .payment-hero {
 
-                margin-bottom: 20px;
+                padding: 24px;
+
+                border-radius: 20px;
+
+            }
+
+
+            .payment-hero h2 {
+
+                font-size: 22px;
+
+            }
+
+
+            .card {
+
+                padding: 19px;
+
+                border-radius: 18px;
+
+            }
+
+
+            .form-row {
+
+                grid-template-columns: 1fr;
+
+                gap: 0;
+
+            }
+
+
+            .number-value {
+
+                font-size: 18px;
+
             }
 
         }
@@ -1260,456 +1472,497 @@
 <body>
 
 
-    <!-- =====================================================
-         HEADER
-    ====================================================== -->
+    <!-- ==================================================
+         SIDEBAR
+    ================================================== -->
 
-    <header class="header">
+    <aside
+        class="sidebar"
+        id="sidebar"
+    >
 
-        <div class="header-content">
+        <div class="sidebar-logo">
 
-            <div class="brand">
-
-                <div class="brand-icon">
-
-                    <i class="fa-solid fa-wallet"></i>
-
-                </div>
-
-                <div class="brand-text">
-
-                    <strong>
-                        BMJ SERVICE
-                    </strong>
-
-                    <span>
-                        Demande de paiement Premium
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <a
-                href="dashboard.html"
-                class="back-button"
+            <img
+                src="images/logo.png"
+                alt="BMJ SERVICE"
+                onerror="this.style.display='none'"
             >
 
-                <i class="fa-solid fa-arrow-left"></i>
+            <h2>
+                BMJ <span>SERVICE</span>
+            </h2>
+
+        </div>
+
+
+        <nav>
+
+            <a href="dashboard.html">
+
+                <i class="fa-solid fa-house"></i>
 
                 <span>
-                    Retour
+                    Tableau de bord
                 </span>
 
             </a>
+
+
+            <a
+                href="paiement.html"
+                class="active"
+            >
+
+                <i class="fa-solid fa-credit-card"></i>
+
+                <span>
+                    Paiement Premium
+                </span>
+
+            </a>
+
+
+            <a href="profil.html">
+
+                <i class="fa-solid fa-user"></i>
+
+                <span>
+                    Mon profil
+                </span>
+
+            </a>
+
+
+            <a href="index.html">
+
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
+                <span>
+                    Déconnexion
+                </span>
+
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- ==================================================
+         HEADER
+    ================================================== -->
+
+    <header>
+
+        <div class="header-title">
+
+            <button
+                class="menu-btn"
+                id="menuBtn"
+                type="button"
+            >
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+
+            <i class="fa-solid fa-wallet"></i>
+
+            <h1>
+                Demande de paiement
+            </h1>
+
+        </div>
+
+
+        <div class="header-user">
+
+            <div class="user-icon">
+
+                <i class="fa-solid fa-user"></i>
+
+            </div>
+
+            <div class="user-name" id="headerUserName">
+                Utilisateur
+            </div>
 
         </div>
 
     </header>
 
 
+    <!-- ==================================================
+         MAIN
+    ================================================== -->
 
-    <!-- =====================================================
-         CONTENU
-    ====================================================== -->
+    <main>
 
-    <main class="container">
-
-
-        <div class="intro">
-
-            <div class="intro-icon">
-
-                <i class="fa-solid fa-credit-card"></i>
-
-            </div>
+        <div class="container">
 
 
-            <h1>
-                Demande de paiement
-            </h1>
-
-
-            <p>
-
-                Effectuez votre paiement via un opérateur
-                disponible puis envoyez votre demande.
-                Votre compte Premium sera activé après
-                vérification par notre administration.
-
-            </p>
-
-        </div>
-
-
-
-        <div class="payment-card">
-
-
-            <!-- =================================================
-                 ETAPES
+            <!-- ==================================================
+                 HERO
             ================================================== -->
 
-            <div class="steps">
+            <section class="payment-hero">
 
-                <div class="step active">
-
-                    <div class="step-number">
-                        1
-                    </div>
-
-                    Opérateur
-
-                </div>
-
-
-                <div class="step active">
-
-                    <div class="step-number">
-                        2
-                    </div>
-
-                    Paiement
-
-                </div>
-
-
-                <div class="step active">
-
-                    <div class="step-number">
-                        3
-                    </div>
-
-                    Preuve
-
-                </div>
-
-
-                <div class="step active">
-
-                    <div class="step-number">
-                        4
-                    </div>
-
-                    Validation
-
-                </div>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 MESSAGE
-            ================================================== -->
-
-            <div
-                id="message"
-                class="message"
-            ></div>
-
-
-
-            <!-- =================================================
-                 OPERATEURS
-            ================================================== -->
-
-            <section class="section">
-
-                <h2 class="title">
-
-                    <i class="fa-solid fa-mobile-screen-button"></i>
-
-                    Choisissez votre opérateur
-
+                <h2>
+                    Activez votre Premium
                 </h2>
 
+                <p>
+                    Effectuez votre paiement via votre opérateur
+                    Mobile Money, puis envoyez les informations
+                    de la transaction afin que notre équipe puisse
+                    vérifier votre demande.
+                </p>
 
-                <div class="operators">
+                <div class="secure-badge">
 
+                    <i class="fa-solid fa-shield-halved"></i>
 
-                    <!-- =========================================
-                         AIRTEL
-                    ========================================== -->
-
-                    <button
-                        type="button"
-                        class="operator"
-                        data-operator="Airtel Money"
-                        data-number="0993585711"
-                    >
-
-                        <img
-                            src="images/airtel.png"
-                            alt="Airtel Money"
-                            onerror="
-                                this.style.display='none'
-                            "
-                        >
-
-
-                        <div>
-
-                            <span class="operator-name">
-                                Airtel Money
-                            </span>
-
-                            <span class="status">
-                                Disponible
-                            </span>
-
-                        </div>
-
-
-                        <span class="selected-check">
-
-                            <i class="fa-solid fa-check"></i>
-
-                        </span>
-
-                    </button>
-
-
-
-                    <!-- =========================================
-                         ORANGE
-                    ========================================== -->
-
-                    <button
-                        type="button"
-                        class="operator disabled"
-                        data-operator="Orange Money"
-                        data-number=""
-                    >
-
-                        <img
-                            src="images/orange.webp"
-                            alt="Orange Money"
-                            onerror="
-                                this.style.display='none'
-                            "
-                        >
-
-
-                        <div>
-
-                            <span class="operator-name">
-                                Orange Money
-                            </span>
-
-                            <span class="status off">
-                                Bientôt
-                            </span>
-
-                        </div>
-
-
-                        <span class="selected-check">
-
-                            <i class="fa-solid fa-check"></i>
-
-                        </span>
-
-                    </button>
-
-
-
-                    <!-- =========================================
-                         M-PESA
-                    ========================================== -->
-
-                    <button
-                        type="button"
-                        class="operator disabled"
-                        data-operator="M-Pesa"
-                        data-number=""
-                    >
-
-                        <img
-                            src="images/mpesa.webp"
-                            alt="M-Pesa"
-                            onerror="
-                                this.style.display='none'
-                            "
-                        >
-
-
-                        <div>
-
-                            <span class="operator-name">
-                                M-Pesa
-                            </span>
-
-                            <span class="status off">
-                                Bientôt
-                            </span>
-
-                        </div>
-
-
-                        <span class="selected-check">
-
-                            <i class="fa-solid fa-check"></i>
-
-                        </span>
-
-                    </button>
+                    Paiement vérifié manuellement par BMJ SERVICE
 
                 </div>
 
+            </section>
 
 
-                <!-- =================================================
-                     NUMERO
+            <!-- ==================================================
+                 GRID
+            ================================================== -->
+
+            <div class="payment-grid">
+
+
+                <!-- ==================================================
+                     COLONNE GAUCHE
                 ================================================== -->
 
-                <div
-                    id="operatorInfo"
-                    class="operator-info"
-                >
-
-                    <div class="operator-info-title">
-
-                        Numéro à utiliser pour le paiement
-
-                    </div>
+                <div>
 
 
-                    <span
-                        id="paymentNumber"
-                        class="payment-number"
+                    <!-- ==================================================
+                         OPERATEURS
+                    ================================================== -->
+
+                    <section class="card">
+
+                        <div class="card-title">
+
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+
+                            <span>
+                                Choisissez votre opérateur
+                            </span>
+
+                        </div>
+
+
+                        <div class="operators">
+
+
+                            <!-- AIRTEL -->
+
+                            <button
+                                type="button"
+                                class="operator"
+                                data-operator="Airtel Money"
+                                data-number="0993585711"
+                            >
+
+                                <img
+                                    src="images/airtel.png"
+                                    alt="Airtel Money"
+                                    onerror="this.style.display='none'"
+                                >
+
+                                <div class="operator-info">
+
+                                    <span class="operator-name">
+                                        Airtel Money
+                                    </span>
+
+                                    <span class="operator-number">
+                                        0993585711
+                                    </span>
+
+                                    <span class="status">
+                                        <i class="fa-solid fa-circle"></i>
+                                        Disponible
+                                    </span>
+
+                                </div>
+
+
+                                <span class="check">
+
+                                    <i class="fa-solid fa-check"></i>
+
+                                </span>
+
+                            </button>
+
+
+                            <!-- ORANGE -->
+
+                            <button
+                                type="button"
+                                class="operator disabled"
+                                data-operator="Orange Money"
+                                data-number=""
+                                disabled
+                            >
+
+                                <img
+                                    src="images/orange.webp"
+                                    alt="Orange Money"
+                                    onerror="this.style.display='none'"
+                                >
+
+                                <div class="operator-info">
+
+                                    <span class="operator-name">
+                                        Orange Money
+                                    </span>
+
+                                    <span class="status off">
+                                        Bientôt disponible
+                                    </span>
+
+                                </div>
+
+
+                                <span class="check">
+
+                                    <i class="fa-solid fa-lock"></i>
+
+                                </span>
+
+                            </button>
+
+
+                            <!-- M-PESA -->
+
+                            <button
+                                type="button"
+                                class="operator disabled"
+                                data-operator="M-Pesa"
+                                data-number=""
+                                disabled
+                            >
+
+                                <img
+                                    src="images/mpesa.webp"
+                                    alt="M-Pesa"
+                                    onerror="this.style.display='none'"
+                                >
+
+                                <div class="operator-info">
+
+                                    <span class="operator-name">
+                                        M-Pesa
+                                    </span>
+
+                                    <span class="status off">
+                                        Bientôt disponible
+                                    </span>
+
+                                </div>
+
+
+                                <span class="check">
+
+                                    <i class="fa-solid fa-lock"></i>
+
+                                </span>
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- NUMERO -->
+
+                        <div
+                            class="number-box"
+                            id="numberBox"
+                        >
+
+                            <div class="number-label">
+
+                                Numéro de paiement
+
+                            </div>
+
+
+                            <div class="number-value">
+
+                                <span id="operatorNumber">
+                                    0993585711
+                                </span>
+
+
+                                <button
+                                    type="button"
+                                    class="copy-btn"
+                                    id="copyNumber"
+                                >
+
+                                    <i class="fa-regular fa-copy"></i>
+
+                                    Copier
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- ==================================================
+                         INSTRUCTIONS
+                    ================================================== -->
+
+                    <section
+                        class="card"
+                        style="margin-top:25px;"
                     >
-                        —
-                    </span>
+
+                        <div class="card-title">
+
+                            <i class="fa-solid fa-list-check"></i>
+
+                            <span>
+                                Comment procéder ?
+                            </span>
+
+                        </div>
 
 
-                    <button
-                        type="button"
-                        id="copyNumber"
-                        class="copy-button"
-                    >
+                        <div class="steps">
 
-                        <i class="fa-regular fa-copy"></i>
+                            <div class="step">
 
-                        Copier
+                                <div class="step-number">
+                                    1
+                                </div>
 
-                    </button>
+                                <p>
+                                    Choisissez
+                                    <strong>Airtel Money</strong>
+                                    et utilisez le numéro
+                                    <strong>0993585711</strong>.
+                                </p>
+
+                            </div>
+
+
+                            <div class="step">
+
+                                <div class="step-number">
+                                    2
+                                </div>
+
+                                <p>
+                                    Effectuez le montant du
+                                    Premium avec votre compte
+                                    Mobile Money.
+                                </p>
+
+                            </div>
+
+
+                            <div class="step">
+
+                                <div class="step-number">
+                                    3
+                                </div>
+
+                                <p>
+                                    Notez votre
+                                    <strong>référence de transaction</strong>
+                                    après le paiement.
+                                </p>
+
+                            </div>
+
+
+                            <div class="step">
+
+                                <div class="step-number">
+                                    4
+                                </div>
+
+                                <p>
+                                    Envoyez votre demande avec
+                                    une preuve du paiement.
+                                </p>
+
+                            </div>
+
+
+                            <div class="step">
+
+                                <div class="step-number">
+                                    5
+                                </div>
+
+                                <p>
+                                    L'administrateur vérifiera
+                                    votre paiement avant
+                                    d'activer votre Premium.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </section>
 
                 </div>
 
-            </section>
 
+                <!-- ==================================================
+                     COLONNE DROITE
+                ================================================== -->
 
+                <section class="card">
 
-            <!-- =================================================
-                 FORMULAIRE
-            ================================================== -->
+                    <div class="card-title">
 
-            <section class="section">
+                        <i class="fa-solid fa-paper-plane"></i>
 
-                <h2 class="title">
-
-                    <i class="fa-solid fa-file-invoice"></i>
-
-                    Informations du paiement
-
-                </h2>
-
-
-                <div class="form-grid">
-
-
-                    <!-- =========================================
-                         NOM
-                    ========================================== -->
-
-                    <div class="form-group">
-
-                        <label for="nom">
-                            Nom complet
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nom"
-                            placeholder="Votre nom"
-                            readonly
-                        >
+                        <span>
+                            Envoyer la demande
+                        </span>
 
                     </div>
 
 
+                    <!-- UTILISATEUR -->
 
-                    <!-- =========================================
-                         EMAIL
-                    ========================================== -->
+                    <div class="user-info">
 
-                    <div class="form-group">
+                        <div class="user-info-icon">
 
-                        <label for="email">
-                            Adresse email
-                        </label>
+                            <i class="fa-solid fa-user"></i>
 
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="Votre email"
-                            readonly
-                        >
+                        </div>
 
-                    </div>
+                        <div>
 
+                            <strong id="userName">
+                                Chargement...
+                            </strong>
 
-
-                    <!-- =========================================
-                         TELEPHONE
-                    ========================================== -->
-
-                    <div class="form-group">
-
-                        <label for="telephone">
-                            Téléphone
-                        </label>
-
-                        <input
-                            type="tel"
-                            id="telephone"
-                            placeholder="Votre téléphone"
-                            readonly
-                        >
-
-                    </div>
-
-
-
-                    <!-- =========================================
-                         MONTANT
-                    ========================================== -->
-
-                    <div class="form-group">
-
-                        <label for="amount">
-                            Montant payé
-                        </label>
-
-
-                        <div class="amount-wrapper">
-
-                            <input
-                                type="number"
-                                id="amount"
-                                min="1"
-                                step="0.01"
-                                placeholder="0.00"
-                                required
-                            >
-
-                            <span
-                                class="currency"
-                                id="currencyLabel"
-                            >
-                                USD
+                            <span id="userEmail">
+                                Chargement...
                             </span>
 
                         </div>
@@ -1717,179 +1970,230 @@
                     </div>
 
 
+                    <!-- MESSAGE -->
 
-                    <!-- =========================================
-                         REFERENCE
-                    ========================================== -->
-
-                    <div class="form-group full">
-
-                        <label for="reference">
-
-                            Référence / numéro de transaction
-
-                        </label>
+                    <div
+                        class="message"
+                        id="message"
+                    ></div>
 
 
-                        <input
-                            type="text"
-                            id="reference"
-                            placeholder="Ex : TXN123456789"
-                            required
-                        >
+                    <form
+                        id="paymentForm"
+                        novalidate
+                    >
 
 
-                        <span class="input-help">
+                        <!-- MONTANT -->
 
-                            Saisissez le numéro de transaction
-                            reçu après votre paiement.
+                        <div class="form-row">
 
-                        </span>
+                            <div class="form-group">
 
-                    </div>
+                                <label for="amount">
+                                    Montant
+                                </label>
 
+                                <div class="input-wrap">
 
+                                    <i class="fa-solid fa-dollar-sign"></i>
 
-                    <!-- =========================================
-                         PREUVE
-                    ========================================== -->
+                                    <input
+                                        type="number"
+                                        id="amount"
+                                        name="amount"
+                                        min="1"
+                                        step="0.01"
+                                        placeholder="Ex : 10"
+                                        required
+                                    >
 
-                    <div class="form-group full">
+                                </div>
 
-                        <label for="proof">
-
-                            Preuve de paiement
-
-                        </label>
-
-
-                        <input
-                            type="file"
-                            id="proofFile"
-                            accept="image/*"
-                        >
+                            </div>
 
 
-                        <span class="input-help">
+                            <!-- DEVISE -->
 
-                            Capture d'écran de votre paiement.
-                            Format recommandé : JPG, PNG ou WEBP.
+                            <div class="form-group">
 
-                        </span>
+                                <label for="currency">
+                                    Devise
+                                </label>
 
-                    </div>
+                                <div class="input-wrap">
+
+                                    <i class="fa-solid fa-coins"></i>
+
+                                    <select
+                                        id="currency"
+                                        name="currency"
+                                    >
+
+                                        <option value="USD">
+                                            USD
+                                        </option>
+
+                                        <option value="CDF">
+                                            CDF
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
 
+                        <!-- OPERATEUR -->
 
-                    <!-- =========================================
-                         NOTES
-                    ========================================== -->
+                        <div class="form-group">
 
-                    <div class="form-group full">
+                            <label for="method">
+                                Opérateur sélectionné
+                            </label>
 
-                        <label for="notes">
+                            <div class="input-wrap">
 
-                            Message
-                            <span
-                                style="
-                                    color:#9ca3af;
-                                    font-weight:400;
-                                "
+                                <i class="fa-solid fa-mobile-screen"></i>
+
+                                <input
+                                    type="text"
+                                    id="method"
+                                    name="method"
+                                    placeholder="Choisissez un opérateur"
+                                    readonly
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- REFERENCE -->
+
+                        <div class="form-group">
+
+                            <label for="reference">
+
+                                Référence de transaction
+
+                            </label>
+
+                            <div class="input-wrap">
+
+                                <i class="fa-solid fa-hashtag"></i>
+
+                                <input
+                                    type="text"
+                                    id="reference"
+                                    name="reference"
+                                    placeholder="Ex : TXN123456789"
+                                    maxlength="100"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PREUVE -->
+
+                        <div class="form-group">
+
+                            <label>
+                                Preuve de paiement
+                            </label>
+
+
+                            <label
+                                for="proof"
+                                class="file-box"
                             >
-                                (facultatif)
+
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                                <strong>
+                                    Cliquez pour choisir une capture
+                                </strong>
+
+                                <small>
+                                    JPG, JPEG, PNG — maximum 5 MB
+                                </small>
+
+                                <div
+                                    class="file-name"
+                                    id="fileName"
+                                ></div>
+
+                            </label>
+
+
+                            <input
+                                type="file"
+                                id="proof"
+                                name="proof"
+                                accept="image/jpeg,image/jpg,image/png"
+                            >
+
+                        </div>
+
+
+                        <!-- NOTES -->
+
+                        <div class="form-group">
+
+                            <label for="notes">
+                                Message facultatif
+                            </label>
+
+                            <div class="input-wrap">
+
+                                <i class="fa-solid fa-message"></i>
+
+                                <textarea
+                                    id="notes"
+                                    name="notes"
+                                    placeholder="Informations supplémentaires..."
+                                ></textarea>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PREMIUM DAYS -->
+
+                        <input
+                            type="hidden"
+                            id="premiumDays"
+                            value="30"
+                        >
+
+
+                        <!-- SUBMIT -->
+
+                        <button
+                            type="submit"
+                            class="submit-btn"
+                            id="submitBtn"
+                        >
+
+                            <i class="fa-solid fa-paper-plane"></i>
+
+                            <span>
+                                Envoyer ma demande
                             </span>
 
-                        </label>
+                        </button>
 
+                    </form>
 
-                        <textarea
-                            id="notes"
-                            placeholder="Informations supplémentaires..."
-                        ></textarea>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =================================================
-                 INSTRUCTIONS
-            ================================================== -->
-
-            <div class="instructions">
-
-                <div class="instructions-title">
-
-                    <i class="fa-solid fa-circle-info"></i>
-
-                    Comment procéder ?
-
-                </div>
-
-
-                <ol>
-
-                    <li>
-                        Choisissez votre opérateur disponible.
-                    </li>
-
-                    <li>
-                        Envoyez le montant au numéro affiché.
-                    </li>
-
-                    <li>
-                        Conservez votre référence de transaction.
-                    </li>
-
-                    <li>
-                        Ajoutez votre preuve de paiement.
-                    </li>
-
-                    <li>
-                        Envoyez la demande et attendez
-                        la validation de l'administration.
-                    </li>
-
-                </ol>
-
-            </div>
-
-
-
-            <!-- =================================================
-                 BOUTON
-            ================================================== -->
-
-            <div class="submit-area">
-
-                <button
-                    type="button"
-                    id="submitButton"
-                    class="submit-button"
-                >
-
-                    <i
-                        class="fa-solid fa-paper-plane"
-                    ></i>
-
-                    <span>
-                        Envoyer la demande de paiement
-                    </span>
-
-                </button>
-
-            </div>
-
-
-            <div class="secure">
-
-                <i class="fa-solid fa-lock"></i>
-
-                Votre demande est enregistrée
-                de manière sécurisée.
+                </section>
 
             </div>
 
@@ -1899,898 +2203,512 @@
     </main>
 
 
+    <!-- ==================================================
+         FOOTER
+    ================================================== -->
 
-<script>
+    <footer>
 
-/* ============================================================
-   BMJ SERVICE
-   DEMANDE DE PAIEMENT
-============================================================ */
+        © 2026
+        <span>BMJ SERVICE</span>
+        — Tous droits réservés.
 
-
-/* ============================================================
-   URL API
-============================================================ */
-
-const API_URL =
-    "https://bmj-service-backend.onrender.com";
-
-
-/*
- * IMPORTANT :
- * Si ton URL Render est différente,
- * remplace uniquement API_URL.
- */
-
-
-/* ============================================================
-   ELEMENTS
-============================================================ */
-
-const operators =
-    document.querySelectorAll(
-        ".operator:not(.disabled)"
-    );
-
-
-const operatorInfo =
-    document.getElementById(
-        "operatorInfo"
-    );
-
-
-const paymentNumber =
-    document.getElementById(
-        "paymentNumber"
-    );
-
-
-const copyNumber =
-    document.getElementById(
-        "copyNumber"
-    );
-
-
-const messageBox =
-    document.getElementById(
-        "message"
-    );
-
-
-const submitButton =
-    document.getElementById(
-        "submitButton"
-    );
-
-
-const nomInput =
-    document.getElementById(
-        "nom"
-    );
-
-
-const emailInput =
-    document.getElementById(
-        "email"
-    );
-
-
-const telephoneInput =
-    document.getElementById(
-        "telephone"
-    );
-
-
-const amountInput =
-    document.getElementById(
-        "amount"
-    );
-
-
-const referenceInput =
-    document.getElementById(
-        "reference"
-    );
-
-
-const proofFile =
-    document.getElementById(
-        "proofFile"
-    );
-
-
-const notesInput =
-    document.getElementById(
-        "notes"
-    );
-
-
-/* ============================================================
-   OPERATEUR SELECTIONNE
-============================================================ */
-
-let selectedOperator =
-    null;
-
-
-let selectedNumber =
-    null;
+    </footer>
 
 
 
-/* ============================================================
-   UTILISATEUR CONNECTE
-============================================================ */
+    <script>
 
-let currentUser =
-    null;
+        /* ==================================================
+           CONFIGURATION API
+        ================================================== */
 
+        /*
+         * IMPORTANT :
+         * Mets ici l'adresse EXACTE de ton backend Render.
+         *
+         * Exemple :
+         *
+         * const API_URL =
+         * "https://bmj-backend.onrender.com";
+         *
+         */
 
-
-/* ============================================================
-   RECUPERER UTILISATEUR
-============================================================ */
-
-function getCurrentUser() {
-
-    const possibleKeys = [
-
-        "user",
-        "currentUser",
-        "bmj_user",
-        "userData",
-        "utilisateur",
-        "bmjUser"
-
-    ];
+        const API_URL =
+            "https://back-end-h602.onrender.com";
 
 
-    for (
-        const key of possibleKeys
-    ) {
+        /* ==================================================
+           ELEMENTS
+        ================================================== */
 
-        const value =
-            localStorage.getItem(key);
+        const sidebar =
+            document.getElementById("sidebar");
 
 
-        if (!value) {
-            continue;
+        const menuBtn =
+            document.getElementById("menuBtn");
+
+
+        const operators =
+            document.querySelectorAll(
+                ".operator:not(.disabled)"
+            );
+
+
+        const methodInput =
+            document.getElementById("method");
+
+
+        const numberBox =
+            document.getElementById("numberBox");
+
+
+        const operatorNumber =
+            document.getElementById(
+                "operatorNumber"
+            );
+
+
+        const copyNumber =
+            document.getElementById(
+                "copyNumber"
+            );
+
+
+        const proofInput =
+            document.getElementById("proof");
+
+
+        const fileName =
+            document.getElementById("fileName");
+
+
+        const paymentForm =
+            document.getElementById(
+                "paymentForm"
+            );
+
+
+        const submitBtn =
+            document.getElementById(
+                "submitBtn"
+            );
+
+
+        const message =
+            document.getElementById(
+                "message"
+            );
+
+
+        /* ==================================================
+           MENU MOBILE
+        ================================================== */
+
+        if (menuBtn) {
+
+            menuBtn.addEventListener(
+                "click",
+                function () {
+
+                    sidebar.classList.toggle(
+                        "open"
+                    );
+
+                }
+            );
+
         }
 
 
-        try {
+        /* ==================================================
+           UTILISATEUR CONNECTÉ
+        ================================================== */
 
-            const parsed =
-                JSON.parse(value);
+        function getConnectedUser() {
+
+            const possibleKeys = [
+
+                "user",
+                "currentUser",
+                "userData",
+                "bmj_user",
+                "loggedUser",
+                "utilisateur"
+
+            ];
 
 
-            if (
-                parsed &&
-                typeof parsed === "object"
+            for (
+                const key of possibleKeys
             ) {
 
-                return parsed;
-
-            }
-
-        } catch (error) {
-
-            console.warn(
-                "Impossible de lire",
-                key
-            );
-
-        }
-
-    }
-
-
-    return null;
-}
-
-
-
-/* ============================================================
-   AFFICHER MESSAGE
-============================================================ */
-
-function showMessage(
-    text,
-    type
-) {
-
-    messageBox.textContent =
-        text;
-
-
-    messageBox.className =
-        "message show " +
-        type;
-
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
-}
-
-
-
-/* ============================================================
-   CACHER MESSAGE
-============================================================ */
-
-function hideMessage() {
-
-    messageBox.className =
-        "message";
-
-    messageBox.textContent =
-        "";
-
-}
-
-
-
-/* ============================================================
-   REMPLIR UTILISATEUR
-============================================================ */
-
-function loadUser() {
-
-    currentUser =
-        getCurrentUser();
-
-
-    if (!currentUser) {
-
-        showMessage(
-
-            "Vous devez être connecté pour envoyer une demande de paiement.",
-
-            "error"
-
-        );
-
-        submitButton.disabled =
-            true;
-
-        return;
-
-    }
-
-
-    /*
-     * Plusieurs formats sont acceptés
-     * afin de rester compatible avec
-     * ton système actuel.
-     */
-
-    const userId =
-
-        currentUser.id ??
-        currentUser.user_id ??
-        currentUser.userId ??
-        null;
-
-
-    const nom =
-
-        currentUser.nom ??
-        currentUser.name ??
-        currentUser.fullname ??
-        "";
-
-
-    const email =
-
-        currentUser.email ??
-        currentUser.user_email ??
-        "";
-
-
-    const telephone =
-
-        currentUser.telephone ??
-        currentUser.phone ??
-        currentUser.tel ??
-        "";
-
-
-    /*
-     * Stockage pour la soumission.
-     */
-
-    if (userId !== null) {
-
-        currentUser.id =
-            userId;
-
-    }
-
-
-    nomInput.value =
-        nom;
-
-
-    emailInput.value =
-        email;
-
-
-    telephoneInput.value =
-        telephone;
-
-}
-
-
-
-/* ============================================================
-   SELECTION OPERATEUR
-============================================================ */
-
-operators.forEach(
-    function(operator) {
-
-        operator.addEventListener(
-            "click",
-            function() {
-
-                operators.forEach(
-                    function(item) {
-
-                        item.classList.remove(
-                            "selected"
+                try {
+
+                    const value =
+                        localStorage.getItem(
+                            key
                         );
 
+
+                    if (!value) {
+                        continue;
                     }
-                );
 
 
-                operator.classList.add(
-                    "selected"
-                );
+                    const parsed =
+                        JSON.parse(value);
 
 
-                selectedOperator =
-                    operator.dataset.operator;
+                    if (
+                        parsed &&
+                        typeof parsed === "object"
+                    ) {
 
+                        return parsed;
 
-                selectedNumber =
-                    operator.dataset.number;
+                    }
 
+                } catch (_) {
 
-                paymentNumber.textContent =
-                    selectedNumber;
+                    /*
+                     * Certains projets stockent
+                     * directement un email ou un ID.
+                     */
 
-
-                operatorInfo.classList.add(
-                    "show"
-                );
-
-
-                hideMessage();
+                }
 
             }
-        );
-
-    }
-);
 
 
-
-/* ============================================================
-   COPIER NUMERO
-============================================================ */
-
-copyNumber.addEventListener(
-    "click",
-    async function() {
-
-        if (!selectedNumber) {
-
-            return;
+            return null;
 
         }
 
 
-        try {
+        const currentUser =
+            getConnectedUser();
 
-            await navigator.clipboard.writeText(
-                selectedNumber
+
+        /* ==================================================
+           EXTRACTION ID UTILISATEUR
+        ================================================== */
+
+        function getUserId(user) {
+
+            if (!user) {
+                return null;
+            }
+
+
+            return (
+                user.id ??
+                user.user_id ??
+                user.userId ??
+                user.userid ??
+                user.id_user ??
+                null
+            );
+
+        }
+
+
+        const connectedUserId =
+            getUserId(
+                currentUser
             );
 
 
-            copyNumber.innerHTML =
-                '<i class="fa-solid fa-check"></i> Copié';
+        /* ==================================================
+           AFFICHAGE UTILISATEUR
+        ================================================== */
 
+        function displayUser() {
 
-            setTimeout(
-                function() {
-
-                    copyNumber.innerHTML =
-                        '<i class="fa-regular fa-copy"></i> Copier';
-
-                },
-                1500
-            );
-
-        } catch (error) {
-
-            /*
-             * Fallback ancien navigateur.
-             */
-
-            const temporary =
-                document.createElement(
-                    "input"
+            const nameElement =
+                document.getElementById(
+                    "userName"
                 );
 
 
-            temporary.value =
-                selectedNumber;
+            const emailElement =
+                document.getElementById(
+                    "userEmail"
+                );
 
 
-            document.body.appendChild(
-                temporary
-            );
+            const headerElement =
+                document.getElementById(
+                    "headerUserName"
+                );
 
 
-            temporary.select();
+            if (!currentUser) {
 
+                nameElement.textContent =
+                    "Utilisateur non connecté";
 
-            document.execCommand(
-                "copy"
-            );
+                emailElement.textContent =
+                    "Veuillez vous connecter";
 
-
-            temporary.remove();
-
-
-            copyNumber.textContent =
-                "Copié";
-
-
-            setTimeout(
-                function() {
-
-                    copyNumber.textContent =
-                        "Copier";
-
-                },
-                1500
-            );
-
-        }
-
-    }
-);
-
-
-
-/* ============================================================
-   CONVERTIR IMAGE EN BASE64
-============================================================ */
-
-function fileToBase64(file) {
-
-    return new Promise(
-        function(resolve, reject) {
-
-            if (!file) {
-
-                resolve(null);
+                headerElement.textContent =
+                    "Invité";
 
                 return;
 
             }
 
 
-            const reader =
-                new FileReader();
+            const name =
+                currentUser.nom ??
+                currentUser.name ??
+                "Utilisateur";
 
 
-            reader.onload =
-                function() {
-
-                    resolve(
-                        reader.result
-                    );
-
-                };
+            const email =
+                currentUser.email ??
+                currentUser.user_email ??
+                "";
 
 
-            reader.onerror =
-                function() {
-
-                    reject(
-                        new Error(
-                            "Impossible de lire la preuve."
-                        )
-                    );
-
-                };
+            nameElement.textContent =
+                name;
 
 
-            reader.readAsDataURL(
-                file
-            );
-
-        }
-    );
-
-}
+            emailElement.textContent =
+                email;
 
 
-
-/* ============================================================
-   ENVOI DEMANDE
-============================================================ */
-
-submitButton.addEventListener(
-    "click",
-    async function() {
-
-        hideMessage();
-
-
-        /* =====================================================
-           VERIFICATION UTILISATEUR
-        ====================================================== */
-
-        if (!currentUser) {
-
-            showMessage(
-
-                "Vous devez être connecté pour envoyer une demande.",
-
-                "error"
-
-            );
-
-            return;
+            headerElement.textContent =
+                name;
 
         }
 
 
+        displayUser();
 
-        /* =====================================================
+
+        /* ==================================================
            OPERATEUR
-        ====================================================== */
+        ================================================== */
 
-        if (!selectedOperator) {
+        operators.forEach(
+            function (operator) {
 
-            showMessage(
+                operator.addEventListener(
+                    "click",
+                    function () {
 
-                "Veuillez choisir un opérateur de paiement.",
+                        operators.forEach(
+                            function (item) {
 
-                "error"
+                                item.classList.remove(
+                                    "selected"
+                                );
 
-            );
+                            }
+                        );
 
-            return;
 
-        }
+                        operator.classList.add(
+                            "selected"
+                        );
 
 
+                        const operatorName =
+                            operator.dataset.operator;
 
-        /* =====================================================
-           MONTANT
-        ====================================================== */
 
-        const amount =
-            Number(
-                amountInput.value
-            );
+                        const operatorPhone =
+                            operator.dataset.number;
 
 
-        if (
-            !Number.isFinite(amount) ||
-            amount <= 0
-        ) {
+                        methodInput.value =
+                            operatorName;
 
-            showMessage(
 
-                "Veuillez saisir un montant valide.",
+                        operatorNumber.textContent =
+                            operatorPhone;
 
-                "error"
 
-            );
+                        numberBox.classList.add(
+                            "show"
+                        );
 
-            amountInput.focus();
+                    }
+                );
 
-            return;
+            }
+        );
 
-        }
 
+        /* ==================================================
+           COPIER NUMERO
+        ================================================== */
 
+        copyNumber.addEventListener(
+            "click",
+            async function () {
 
-        /* =====================================================
-           REFERENCE
-        ====================================================== */
+                const number =
+                    operatorNumber.textContent;
 
-        const reference =
-            referenceInput.value.trim();
 
+                try {
 
-        if (!reference) {
+                    await navigator.clipboard.writeText(
+                        number
+                    );
 
-            showMessage(
 
-                "Veuillez saisir la référence ou le numéro de transaction.",
+                    copyNumber.innerHTML =
+                        '<i class="fa-solid fa-check"></i> Copié';
 
-                "error"
 
-            );
+                    setTimeout(
+                        function () {
 
-            referenceInput.focus();
+                            copyNumber.innerHTML =
+                                '<i class="fa-regular fa-copy"></i> Copier';
 
-            return;
+                        },
+                        1800
+                    );
 
-        }
+                } catch (err) {
 
+                    alert(
+                        "Numéro : " + number
+                    );
 
+                }
 
-        /* =====================================================
-           ID UTILISATEUR
-        ====================================================== */
+            }
+        );
 
-        const userId =
 
-            currentUser.id ??
-            currentUser.user_id ??
-            currentUser.userId ??
-            null;
+        /* ==================================================
+           FICHIER
+        ================================================== */
 
-
-        const email =
-
-            currentUser.email ??
-            currentUser.user_email ??
-            emailInput.value.trim();
-
-
-        const telephone =
-
-            currentUser.telephone ??
-            currentUser.phone ??
-            currentUser.tel ??
-            telephoneInput.value.trim();
-
-
-        const nom =
-
-            currentUser.nom ??
-            currentUser.name ??
-            nomInput.value.trim();
-
-
-
-        /*
-         * Au minimum, le backend peut retrouver
-         * l'utilisateur par ID, email ou téléphone.
-         */
-
-        if (
-            !userId &&
-            !email &&
-            !telephone
-        ) {
-
-            showMessage(
-
-                "Impossible d'identifier votre compte. Veuillez vous reconnecter.",
-
-                "error"
-
-            );
-
-            return;
-
-        }
-
-
-
-        /* =====================================================
-           PREUVE
-        ====================================================== */
-
-        let proof = null;
-
-
-        try {
-
-            if (
-                proofFile.files &&
-                proofFile.files.length
-            ) {
+        proofInput.addEventListener(
+            "change",
+            function () {
 
                 const file =
-                    proofFile.files[0];
+                    proofInput.files[0];
 
 
-                /*
-                 * Limite raisonnable :
-                 * 5 MB.
-                 */
+                if (!file) {
 
-                if (
-                    file.size >
-                    5 * 1024 * 1024
-                ) {
-
-                    showMessage(
-
-                        "La preuve de paiement ne doit pas dépasser 5 MB.",
-
-                        "error"
-
-                    );
+                    fileName.textContent =
+                        "";
 
                     return;
 
                 }
 
 
-                proof =
-                    await fileToBase64(
-                        file
-                    );
+                fileName.textContent =
+                    "✓ " + file.name;
 
             }
+        );
 
-        } catch (error) {
 
-            showMessage(
+        /* ==================================================
+           MESSAGE
+        ================================================== */
 
-                "Impossible de lire la preuve de paiement.",
+        function showMessage(
+            text,
+            type
+        ) {
 
-                "error"
+            message.textContent =
+                text;
 
-            );
+            message.className =
+                "message show " +
+                type;
 
-            return;
+
+            message.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest"
+            });
 
         }
 
 
+        function hideMessage() {
 
-        /* =====================================================
-           DONNEES
-        ====================================================== */
+            message.className =
+                "message";
 
-        const payload = {
+            message.textContent =
+                "";
 
-            user_id:
-                userId,
-
-            nom:
-                nom,
-
-            email:
-                email,
-
-            telephone:
-                telephone,
-
-            amount:
-                amount,
-
-            montant:
-                amount,
-
-            currency:
-                "USD",
-
-            methode:
-                selectedOperator,
-
-            method:
-                selectedOperator,
-
-            reference:
-                reference,
-
-            transaction_id:
-                reference,
-
-            preuve:
-                proof,
-
-            proof:
-                proof,
-
-            premium_days:
-                30,
-
-            notes:
-                notesInput.value.trim() ||
-                null
-
-        };
+        }
 
 
+        /* ==================================================
+           IMAGE -> BASE64
+        ================================================== */
 
-        /* =====================================================
-           LOADING
-        ====================================================== */
+        function fileToBase64(file) {
 
-        submitButton.disabled =
-            true;
+            return new Promise(
+                function (resolve, reject) {
 
-
-        submitButton.innerHTML = `
-
-            <span class="loader"></span>
-
-            Envoi de la demande...
-
-        `;
+                    const reader =
+                        new FileReader();
 
 
+                    reader.onload =
+                        function () {
 
-        try {
+                            resolve(
+                                reader.result
+                            );
 
-            console.log(
-                "ENVOI DEMANDE PAIEMENT:",
-                {
-                    ...payload,
+                        };
 
-                    preuve:
-                        proof
-                            ? "[BASE64]"
-                            : null,
 
-                    proof:
-                        proof
-                            ? "[BASE64]"
-                            : null
+                    reader.onerror =
+                        function () {
+
+                            reject(
+                                new Error(
+                                    "Impossible de lire la preuve."
+                                )
+                            );
+
+                        };
+
+
+                    reader.readAsDataURL(
+                        file
+                    );
 
                 }
             );
 
-
-            /* =================================================
-               REQUETE API
-            ================================================= */
-
-            const response =
-                await fetch(
-
-                    API_URL +
-                    "/api/paiements",
-
-                    {
-
-                        method:
-                            "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                                "application/json",
-
-                            "Accept":
-                                "application/json"
-
-                        },
-
-                        body:
-                            JSON.stringify(
-                                payload
-                            )
-
-                    }
-
-                );
+        }
 
 
-            /* =================================================
-               REPONSE
-            ================================================= */
+        /* ==================================================
+           REPONSE API
+        ================================================== */
+
+        async function parseApiResponse(
+            response
+        ) {
+
+            const text =
+                await response.text();
+
 
             let data = null;
 
@@ -2798,183 +2716,525 @@ submitButton.addEventListener(
             try {
 
                 data =
-                    await response.json();
+                    JSON.parse(text);
 
-            } catch (jsonError) {
+            } catch (_) {
+
+                data = null;
+
+            }
+
+
+            if (!response.ok) {
+
+                const serverMessage =
+                    data?.message ||
+                    data?.error ||
+                    text ||
+                    (
+                        "Erreur HTTP " +
+                        response.status
+                    );
+
 
                 throw new Error(
-                    "Le serveur a envoyé une réponse invalide."
+                    serverMessage
                 );
 
             }
 
 
+            if (!data) {
 
-            console.log(
-                "REPONSE SERVEUR:",
-                data
-            );
+                throw new Error(
+                    "Réponse invalide du serveur."
+                );
 
+            }
 
 
             if (
-                !response.ok ||
                 data.success === false
             ) {
 
                 throw new Error(
-
                     data.message ||
                     data.error ||
-                    "Impossible d'envoyer la demande de paiement."
-
+                    "Le serveur a refusé la demande."
                 );
 
             }
 
 
-
-            /* =================================================
-               SUCCES
-            ================================================= */
-
-            showMessage(
-
-                "Votre demande de paiement a été envoyée avec succès. Elle est maintenant en attente de validation par l'administration.",
-
-                "success"
-
-            );
-
-
-            /*
-             * Nettoyage des champs
-             */
-
-            referenceInput.value =
-                "";
-
-
-            notesInput.value =
-                "";
-
-
-            proofFile.value =
-                "";
-
-
-            amountInput.value =
-                "";
-
-
-            /*
-             * Désélection opérateur.
-             */
-
-            operators.forEach(
-                function(item) {
-
-                    item.classList.remove(
-                        "selected"
-                    );
-
-                }
-            );
-
-
-            selectedOperator =
-                null;
-
-
-            selectedNumber =
-                null;
-
-
-            operatorInfo.classList.remove(
-                "show"
-            );
-
-
-            /*
-             * Redirection facultative après
-             * quelques secondes.
-             *
-             * Si tu as une page confirmation.html,
-             * elle sera utilisée.
-             */
-
-            setTimeout(
-                function() {
-
-                    /*
-                     * Décommente si tu veux
-                     * rediriger automatiquement :
-                     *
-                     * window.location.href =
-                     * "confirmation.html";
-                     */
-
-                },
-                2500
-            );
-
-
-        } catch (error) {
-
-            console.error(
-                "ERREUR ENVOI PAIEMENT:",
-                error
-            );
-
-
-            showMessage(
-
-                error.message ||
-                "Impossible d'envoyer la demande de paiement.",
-
-                "error"
-
-            );
-
-        } finally {
-
-            submitButton.disabled =
-                false;
-
-
-            submitButton.innerHTML = `
-
-                <i
-                    class="fa-solid fa-paper-plane"
-                ></i>
-
-                <span>
-                    Envoyer la demande de paiement
-                </span>
-
-            `;
+            return data;
 
         }
 
-    }
-);
+
+        /* ==================================================
+           ENVOI PAIEMENT
+        ================================================== */
+
+        paymentForm.addEventListener(
+            "submit",
+            async function (event) {
+
+                event.preventDefault();
+
+                hideMessage();
 
 
+                /* ==========================================
+                   UTILISATEUR
+                ========================================== */
 
-/* ============================================================
-   INITIALISATION
-============================================================ */
+                if (!currentUser) {
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
+                    showMessage(
+                        "Vous devez être connecté avant d'envoyer une demande de paiement.",
+                        "error"
+                    );
 
-        loadUser();
+                    return;
 
-    }
-);
+                }
 
-</script>
+
+                const userId =
+                    getUserId(
+                        currentUser
+                    );
+
+
+                const userEmail =
+                    currentUser.email ??
+                    currentUser.user_email ??
+                    "";
+
+
+                const userPhone =
+                    currentUser.telephone ??
+                    currentUser.phone ??
+                    currentUser.tel ??
+                    "";
+
+
+                if (
+                    !userId &&
+                    !userEmail &&
+                    !userPhone
+                ) {
+
+                    showMessage(
+                        "Impossible d'identifier votre compte. Veuillez vous reconnecter.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                /* ==========================================
+                   OPERATEUR
+                ========================================== */
+
+                const selectedOperator =
+                    document.querySelector(
+                        ".operator.selected"
+                    );
+
+
+                if (!selectedOperator) {
+
+                    showMessage(
+                        "Veuillez choisir Airtel Money.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                const method =
+                    selectedOperator.dataset.operator;
+
+
+                const number =
+                    selectedOperator.dataset.number;
+
+
+                if (
+                    method !== "Airtel Money" ||
+                    !number
+                ) {
+
+                    showMessage(
+                        "Cet opérateur n'est pas encore disponible.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                /* ==========================================
+                   MONTANT
+                ========================================== */
+
+                const amount =
+                    Number(
+                        document.getElementById(
+                            "amount"
+                        ).value
+                    );
+
+
+                if (
+                    !Number.isFinite(amount) ||
+                    amount <= 0
+                ) {
+
+                    showMessage(
+                        "Veuillez entrer un montant valide.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                /* ==========================================
+                   REFERENCE
+                ========================================== */
+
+                const reference =
+                    document.getElementById(
+                        "reference"
+                    ).value.trim();
+
+
+                if (!reference) {
+
+                    showMessage(
+                        "Veuillez entrer la référence de votre transaction.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                /* ==========================================
+                   PREUVE
+                ========================================== */
+
+                const proofFile =
+                    proofInput.files[0];
+
+
+                let proofBase64 =
+                    null;
+
+
+                if (proofFile) {
+
+                    if (
+                        ![
+                            "image/jpeg",
+                            "image/jpg",
+                            "image/png"
+                        ].includes(
+                            proofFile.type
+                        )
+                    ) {
+
+                        showMessage(
+                            "La preuve doit être une image JPG, JPEG ou PNG.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    if (
+                        proofFile.size >
+                        5 * 1024 * 1024
+                    ) {
+
+                        showMessage(
+                            "La preuve ne doit pas dépasser 5 MB.",
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+
+                    try {
+
+                        proofBase64 =
+                            await fileToBase64(
+                                proofFile
+                            );
+
+                    } catch (err) {
+
+                        showMessage(
+                            err.message,
+                            "error"
+                        );
+
+                        return;
+
+                    }
+
+                }
+
+
+                /* ==========================================
+                   DONNEES
+                ========================================== */
+
+                const payload = {
+
+                    user_id:
+                        userId || null,
+
+                    nom:
+                        currentUser.nom ??
+                        currentUser.name ??
+                        null,
+
+                    email:
+                        userEmail || null,
+
+                    telephone:
+                        userPhone || null,
+
+                    amount:
+                        amount,
+
+                    montant:
+                        amount,
+
+                    currency:
+                        document.getElementById(
+                            "currency"
+                        ).value,
+
+                    method:
+                        method,
+
+                    methode:
+                        method,
+
+                    mode_paiement:
+                        method,
+
+                    reference:
+                        reference,
+
+                    transaction_id:
+                        reference,
+
+                    preuve:
+                        proofBase64,
+
+                    proof:
+                        proofBase64,
+
+                    premium_days:
+                        30,
+
+                    notes:
+                        document.getElementById(
+                            "notes"
+                        ).value.trim() ||
+                        null
+
+                };
+
+
+                /* ==========================================
+                   VERIFICATION API
+                ========================================== */
+
+                if (
+                    !API_URL ||
+                    API_URL.includes(
+                        "TON-BACKEND"
+                    )
+                ) {
+
+                    showMessage(
+                        "Configure d'abord l'adresse réelle de ton backend Render dans API_URL.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                /* ==========================================
+                   BOUTON LOADING
+                ========================================== */
+
+                submitBtn.disabled =
+                    true;
+
+
+                submitBtn.innerHTML =
+
+                    '<span class="spinner"></span>' +
+
+                    '<span>Envoi en cours...</span>';
+
+
+                try {
+
+                    console.log(
+                        "Envoi demande paiement :",
+                        payload
+                    );
+
+
+                    const response =
+                        await fetch(
+                            API_URL +
+                            "/api/paiements",
+                            {
+
+                                method:
+                                    "POST",
+
+                                headers: {
+
+                                    "Content-Type":
+                                        "application/json",
+
+                                    "Accept":
+                                        "application/json"
+
+                                },
+
+                                body:
+                                    JSON.stringify(
+                                        payload
+                                    )
+
+                            }
+                        );
+
+
+                    const data =
+                        await parseApiResponse(
+                            response
+                        );
+
+
+                    console.log(
+                        "Réponse paiement :",
+                        data
+                    );
+
+
+                    showMessage(
+                        "✓ Votre demande de paiement a été envoyée avec succès. Elle est maintenant en attente de vérification par l'administrateur.",
+                        "success"
+                    );
+
+
+                    paymentForm.reset();
+
+
+                    methodInput.value =
+                        "";
+
+
+                    numberBox.classList.remove(
+                        "show"
+                    );
+
+
+                    operators.forEach(
+                        function (item) {
+
+                            item.classList.remove(
+                                "selected"
+                            );
+
+                        }
+                    );
+
+
+                    fileName.textContent =
+                        "";
+
+
+                } catch (err) {
+
+                    console.error(
+                        "ERREUR ENVOI PAIEMENT :",
+                        err
+                    );
+
+
+                    let errorMessage =
+                        err.message ||
+                        "Impossible d'envoyer la demande de paiement.";
+
+
+                    /*
+                     * Erreur réseau réelle :
+                     * Failed to fetch
+                     */
+
+                    if (
+                        errorMessage
+                            .toLowerCase()
+                            .includes(
+                                "failed to fetch"
+                            )
+                    ) {
+
+                        errorMessage =
+                            "Impossible de contacter le serveur. Vérifiez l'adresse du backend Render, le CORS et votre connexion Internet.";
+
+                    }
+
+
+                    showMessage(
+                        errorMessage,
+                        "error"
+                    );
+
+                } finally {
+
+                    submitBtn.disabled =
+                        false;
+
+
+                    submitBtn.innerHTML =
+
+                        '<i class="fa-solid fa-paper-plane"></i>' +
+
+                        '<span>Envoyer ma demande</span>';
+
+                }
+
+            }
+        );
+
+    </script>
 
 
 </body>
