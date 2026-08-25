@@ -4544,59 +4544,49 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
         <small>© 2026 BMJ SERVICE - Tous droits réservés.</small>
     </footer>
-
 <script>
-   /*==================================================
+    /*==================================================
         BMJ SERVICE
         SCRIPT TABLEAU DE BORD
-        VERSION SERVEUR : 12.0.0
+        VERSION : 13.0.0
 
-        LOGIQUE :
-        - Connexion serveur
-        - Utilisateur local
-        - Synchronisation PostgreSQL
-        - Premium serveur
-        - Email professionnel
-        - Progression
-        - Formations
-        - Déconnexion
+        SESSION UNIQUE :
+        bmj_session
+
+        COMPATIBILITE :
+        bmj_current_user
+        bmj_user
+        currentUser
+        user
 ==================================================*/
 
 
 /*==================================================
-        1. CONFIGURATION API
+        1. API
 ==================================================*/
 
 const BMJ_API_URL =
     "https://TON-BACKEND-RENDER.onrender.com";
 
 
-/*
-    IMPORTANT :
-
-    Remplace uniquement cette adresse par l'URL
-    réelle de ton backend Render.
-
-    Exemple :
-
-    const BMJ_API_URL =
-        "https://bmj-service-backend.onrender.com";
-*/
-
-
 /*==================================================
-        2. DOMAINES PROFESSIONNELS
+        2. UTILITAIRES
 ==================================================*/
 
-const DOMAINES_PRO = [
-    "contactbmj.com",
-    "directionbmj.com"
-];
+function convertirBoolean(value) {
 
+    return (
+        value === true ||
+        value === 1 ||
+        value === "1" ||
+        value === "true" ||
+        value === "TRUE" ||
+        value === "yes" ||
+        value === "oui"
+    );
 
-/*==================================================
-        3. OUTILS GÉNÉRAUX
-==================================================*/
+}
+
 
 function normaliserTexte(value) {
 
@@ -4609,83 +4599,131 @@ function normaliserTexte(value) {
 }
 
 
-function estEmailProfessionnel(email) {
+/*==================================================
+        3. LIRE SESSION BMJ
+==================================================*/
 
-    if (!email) {
-        return false;
+function obtenirSessionBMJ() {
+
+    try {
+
+        const session =
+            localStorage.getItem(
+                "bmj_session"
+            );
+
+
+        if (session) {
+
+            const data =
+                JSON.parse(session);
+
+
+            if (
+                data &&
+                data.authenticated === true &&
+                data.user
+            ) {
+
+                return data;
+
+            }
+
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "Session BMJ invalide :",
+            error
+        );
+
     }
 
-    const parts =
-        String(email)
-            .trim()
-            .toLowerCase()
-            .split("@");
 
-    if (parts.length < 2) {
-        return false;
-    }
-
-    const domaine =
-        parts[parts.length - 1];
-
-    return DOMAINES_PRO.includes(domaine);
+    return null;
 
 }
 
 
-function convertirBoolean(value) {
-
-    if (
-        value === true ||
-        value === 1 ||
-        value === "1" ||
-        value === "true" ||
-        value === "TRUE" ||
-        value === "yes" ||
-        value === "oui"
-    ) {
-        return true;
-    }
-
-    return false;
-
-}
-
+/*==================================================
+        4. RECUPERER UTILISATEUR
+==================================================*/
 
 function obtenirUtilisateurLocal() {
 
+    /*
+        SOURCE PRINCIPALE
+    */
+
+    const session =
+        obtenirSessionBMJ();
+
+
+    if (
+        session &&
+        session.user
+    ) {
+
+        return session.user;
+
+    }
+
+
+    /*
+        COMPATIBILITE ANCIENNES SESSIONS
+    */
+
     const sources = [
+
         "bmj_current_user",
+
         "bmj_user",
+
         "currentUser",
+
         "user"
+
     ];
 
-    for (const cle of sources) {
+
+    for (
+        const cle of sources
+    ) {
 
         try {
 
-            const data =
-                localStorage.getItem(cle);
+            const valeur =
+                localStorage.getItem(
+                    cle
+                );
 
-            if (!data) {
+
+            if (!valeur) {
                 continue;
             }
 
+
             const utilisateur =
-                JSON.parse(data);
+                JSON.parse(
+                    valeur
+                );
+
 
             if (
                 utilisateur &&
-                typeof utilisateur === "object"
+                typeof utilisateur ===
+                "object"
             ) {
+
                 return utilisateur;
+
             }
 
         } catch (error) {
 
             console.warn(
-                "Données utilisateur invalides :",
+                "Session invalide :",
                 cle
             );
 
@@ -4693,298 +4731,14 @@ function obtenirUtilisateurLocal() {
 
     }
 
+
     return null;
 
 }
 
 
-function sauvegarderUtilisateur(utilisateur) {
-
-    if (
-        !utilisateur ||
-        typeof utilisateur !== "object"
-    ) {
-        return false;
-    }
-
-    try {
-
-        localStorage.setItem(
-            "bmj_current_user",
-            JSON.stringify(utilisateur)
-        );
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            "Impossible de sauvegarder l'utilisateur :",
-            error
-        );
-
-        return false;
-    }
-
-}
-
-
 /*==================================================
-        4. POPUP BMJ
-==================================================*/
-
-function afficherPopupBMJ(
-    titre,
-    message,
-    type = "error",
-    callback = null
-) {
-
-    let overlay =
-        document.getElementById(
-            "bmjModalAlerte"
-        );
-
-
-    if (!overlay) {
-
-        overlay =
-            document.createElement("div");
-
-        overlay.id =
-            "bmjModalAlerte";
-
-
-        overlay.innerHTML = `
-
-            <div class="bmj-modal-box">
-
-                <div
-                    id="bmjModalIcon"
-                    class="bmj-modal-icon"
-                >
-                    ✨
-                </div>
-
-                <h3 id="bmjModalTitle">
-                    Notification
-                </h3>
-
-                <p id="bmjModalText"></p>
-
-                <button
-                    type="button"
-                    id="bmjModalBtn"
-                    class="bmj-modal-btn"
-                >
-                    Compris
-                </button>
-
-            </div>
-
-        `;
-
-
-        document.body.appendChild(
-            overlay
-        );
-
-
-        const style =
-            document.createElement("style");
-
-
-        style.innerHTML = `
-
-            #bmjModalAlerte {
-
-                position: fixed;
-
-                top: 0;
-                left: 0;
-
-                width: 100%;
-                height: 100%;
-
-                background:
-                    rgba(15,23,42,.60);
-
-                backdrop-filter:
-                    blur(8px);
-
-                display: flex;
-
-                align-items: center;
-
-                justify-content: center;
-
-                z-index: 99999;
-
-                opacity: 0;
-
-                visibility: hidden;
-
-                transition:
-                    all .3s ease;
-
-                padding: 20px;
-            }
-
-
-            #bmjModalAlerte.active {
-
-                opacity: 1;
-
-                visibility: visible;
-            }
-
-
-            .bmj-modal-box {
-
-                background: #fff;
-
-                width: 100%;
-
-                max-width: 350px;
-
-                border-radius: 20px;
-
-                padding: 30px;
-
-                text-align: center;
-
-                box-shadow:
-                    0 25px 50px -12px
-                    rgba(0,0,0,.25);
-
-                transform:
-                    translateY(20px);
-
-                transition: .3s;
-            }
-
-
-            #bmjModalAlerte.active
-            .bmj-modal-box {
-
-                transform:
-                    translateY(0);
-            }
-
-
-            .bmj-modal-icon {
-
-                font-size: 3rem;
-
-                margin-bottom: 15px;
-            }
-
-
-            #bmjModalTitle {
-
-                color: #1e293b;
-
-                margin:
-                    0 0 10px 0;
-            }
-
-
-            #bmjModalText {
-
-                color: #64748b;
-
-                margin-bottom: 20px;
-
-                line-height: 1.5;
-            }
-
-
-            .bmj-modal-btn {
-
-                width: 100%;
-
-                padding: 14px;
-
-                border-radius: 12px;
-
-                border: none;
-
-                background: #2563eb;
-
-                color: #fff;
-
-                font-weight: bold;
-
-                cursor: pointer;
-            }
-
-        `;
-
-
-        document.head.appendChild(
-            style
-        );
-
-    }
-
-
-    document.getElementById(
-        "bmjModalTitle"
-    ).textContent = titre;
-
-
-    document.getElementById(
-        "bmjModalText"
-    ).innerHTML = message;
-
-
-    document.getElementById(
-        "bmjModalIcon"
-    ).innerHTML =
-        type === "success"
-            ? "✅"
-            : "⚠️";
-
-
-    document.getElementById(
-        "bmjModalBtn"
-    ).style.background =
-        type === "success"
-            ? "#16a34a"
-            : "#2563eb";
-
-
-    overlay.classList.add(
-        "active"
-    );
-
-
-    document.getElementById(
-        "bmjModalBtn"
-    ).onclick = function() {
-
-        overlay.classList.remove(
-            "active"
-        );
-
-        if (callback) {
-            callback();
-        }
-
-    };
-
-}
-
-
-/*==================================================
-        5. UTILISATEUR CONNECTÉ
-==================================================*/
-
-let utilisateurBMJ = null;
-
-
-/*==================================================
-        6. NORMALISATION UTILISATEUR
+        5. NORMALISER UTILISATEUR
 ==================================================*/
 
 function normaliserUtilisateur(
@@ -4995,29 +4749,34 @@ function normaliserUtilisateur(
         !utilisateur ||
         typeof utilisateur !== "object"
     ) {
+
         return null;
+
     }
 
 
     const user = {
+
         ...utilisateur
+
     };
 
-
-    /*
-        ID
-    */
 
     user.id =
         utilisateur.id ??
         utilisateur.user_id ??
         utilisateur.userId ??
+        utilisateur.id_utilisateur ??
         null;
 
 
-    /*
-        NOM
-    */
+    user.id_bmj =
+        utilisateur.id_bmj ??
+        utilisateur.idBMJ ??
+        utilisateur.bmj_id ??
+        utilisateur.bmjId ??
+        "";
+
 
     user.nom =
         utilisateur.nom ??
@@ -5026,18 +4785,10 @@ function normaliserUtilisateur(
         "";
 
 
-    /*
-        EMAIL
-    */
-
     user.email =
         utilisateur.email ??
         "";
 
-
-    /*
-        TELEPHONE
-    */
 
     user.telephone =
         utilisateur.telephone ??
@@ -5045,19 +4796,11 @@ function normaliserUtilisateur(
         "";
 
 
-    /*
-        DOMAINE
-    */
-
     user.domaine =
         utilisateur.domaine ??
         utilisateur.domain ??
         "";
 
-
-    /*
-        PHOTO
-    */
 
     user.photo =
         utilisateur.photo ??
@@ -5066,35 +4809,21 @@ function normaliserUtilisateur(
         "images/user.png";
 
 
-    /*
-        PREMIUM
-    */
-
-    const premiumServeur =
+    user.premium =
         convertirBoolean(
             utilisateur.premium
         );
 
 
-    const premiumServeur2 =
+    user.is_premium =
         convertirBoolean(
             utilisateur.is_premium
         );
 
 
-    const emailPro =
-        estEmailProfessionnel(
-            user.email
-        );
-
-
     /*
-        DATE PREMIUM
+        Si le serveur utilise premium_until
     */
-
-    let premiumValide =
-        false;
-
 
     if (
         utilisateur.premium_until
@@ -5109,37 +4838,22 @@ function normaliserUtilisateur(
         if (
             !Number.isNaN(
                 datePremium.getTime()
-            )
+            ) &&
+            datePremium > new Date()
         ) {
 
-            premiumValide =
-                datePremium > new Date();
+            user.premium = true;
+
+            user.is_premium = true;
 
         }
 
     }
 
 
-    /*
-        LOGIQUE PREMIUM
-
-        Premium serveur valide
-        OU
-        email professionnel
-    */
-
     user.isPremium =
-        emailPro ||
-        (
-            (
-                premiumServeur ||
-                premiumServeur2
-            ) &&
-            (
-                premiumValide ||
-                !utilisateur.premium_until
-            )
-        );
+        user.premium ||
+        user.is_premium;
 
 
     user.premium =
@@ -5150,9 +4864,10 @@ function normaliserUtilisateur(
         user.isPremium;
 
 
-    /*
-        PROGRESSION
-    */
+    user.premium_until =
+        utilisateur.premium_until ??
+        null;
+
 
     user.progression =
         Number(
@@ -5166,19 +4881,6 @@ function normaliserUtilisateur(
         utilisateur.progressions ??
         {};
 
-
-    /*
-        PREMIUM UNTIL
-    */
-
-    user.premium_until =
-        utilisateur.premium_until ??
-        null;
-
-
-    /*
-        TOKEN SI PRÉSENT
-    */
 
     user.token =
         utilisateur.token ??
@@ -5195,7 +4897,165 @@ function normaliserUtilisateur(
 
 
 /*==================================================
-        7. SYNCHRONISATION AVEC LE SERVEUR
+        6. SAUVEGARDER UTILISATEUR
+==================================================*/
+
+function sauvegarderUtilisateur(
+    utilisateur
+) {
+
+    const user =
+        normaliserUtilisateur(
+            utilisateur
+        );
+
+
+    if (!user) {
+
+        return false;
+
+    }
+
+
+    try {
+
+        /*
+            SESSION PRINCIPALE
+        */
+
+        const ancienneSession =
+            obtenirSessionBMJ();
+
+
+        const session = {
+
+            authenticated: true,
+
+            connected: true,
+
+            user: user,
+
+            id: user.id,
+
+            id_bmj: user.id_bmj,
+
+            nom: user.nom,
+
+            email: user.email,
+
+            telephone: user.telephone,
+
+            domaine: user.domaine,
+
+            photo: user.photo,
+
+            premium: user.premium,
+
+            is_premium: user.is_premium,
+
+            premium_until:
+                user.premium_until,
+
+            progression:
+                user.progression,
+
+            progressions:
+                user.progressions,
+
+            token:
+                user.token,
+
+            login_at:
+                ancienneSession?.login_at ??
+                new Date().toISOString()
+
+        };
+
+
+        localStorage.setItem(
+            "bmj_session",
+            JSON.stringify(session)
+        );
+
+
+        /*
+            COMPATIBILITE
+        */
+
+        localStorage.setItem(
+            "bmj_current_user",
+            JSON.stringify(user)
+        );
+
+
+        localStorage.setItem(
+            "bmj_user",
+            JSON.stringify(user)
+        );
+
+
+        localStorage.setItem(
+            "currentUser",
+            JSON.stringify(user)
+        );
+
+
+        localStorage.setItem(
+            "user",
+            JSON.stringify(user)
+        );
+
+
+        if (user.id !== null) {
+
+            localStorage.setItem(
+                "bmj_user_id",
+                String(user.id)
+            );
+
+        }
+
+
+        if (user.token) {
+
+            localStorage.setItem(
+                "bmj_token",
+                user.token
+            );
+
+            localStorage.setItem(
+                "token",
+                user.token
+            );
+
+        }
+
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Erreur sauvegarde utilisateur :",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/*==================================================
+        7. UTILISATEUR COURANT
+==================================================*/
+
+let utilisateurBMJ = null;
+
+
+/*==================================================
+        8. SYNCHRONISATION SERVEUR
 ==================================================*/
 
 async function synchroniserUtilisateur() {
@@ -5225,11 +5085,13 @@ async function synchroniserUtilisateur() {
 
 
     /*
-        Si aucun ID, on utilise
-        simplement les données locales.
+        Sans ID, on conserve la session.
     */
 
-    if (!utilisateur.id) {
+    if (
+        utilisateur.id === null ||
+        utilisateur.id === undefined
+    ) {
 
         sauvegarderUtilisateur(
             utilisateur
@@ -5239,10 +5101,6 @@ async function synchroniserUtilisateur() {
 
     }
 
-
-    /*
-        Routes compatibles avec ton serveur
-    */
 
     const routes = [
 
@@ -5257,7 +5115,9 @@ async function synchroniserUtilisateur() {
     ];
 
 
-    for (const route of routes) {
+    for (
+        const route of routes
+    ) {
 
         try {
 
@@ -5265,20 +5125,35 @@ async function synchroniserUtilisateur() {
                 await fetch(
                     BMJ_API_URL + route,
                     {
+
                         method: "GET",
 
                         headers: {
+
                             "Accept":
-                                "application/json"
+                                "application/json",
+
+                            ...(utilisateur.token
+                                ? {
+                                    "Authorization":
+                                        "Bearer " +
+                                        utilisateur.token
+                                }
+                                : {})
+
                         },
 
-                        credentials: "include"
+                        credentials:
+                            "include"
+
                     }
                 );
 
 
             if (!response.ok) {
+
                 continue;
+
             }
 
 
@@ -5290,7 +5165,9 @@ async function synchroniserUtilisateur() {
                 !result ||
                 result.success !== true
             ) {
+
                 continue;
+
             }
 
 
@@ -5298,16 +5175,14 @@ async function synchroniserUtilisateur() {
                 result.data;
 
 
-            /*
-                Certains serveurs peuvent
-                retourner data.user.
-            */
-
             if (
                 data &&
                 data.user
             ) {
-                data = data.user;
+
+                data =
+                    data.user;
+
             }
 
 
@@ -5315,12 +5190,20 @@ async function synchroniserUtilisateur() {
                 !data ||
                 typeof data !== "object"
             ) {
+
                 continue;
+
             }
 
 
             /*
-                Fusion locale + serveur
+                IMPORTANT :
+
+                Les données serveur complètent
+                l'utilisateur connecté.
+
+                Elles ne changent pas
+                l'identité avec un autre compte.
             */
 
             const utilisateurFinal =
@@ -5333,6 +5216,32 @@ async function synchroniserUtilisateur() {
                 });
 
 
+            /*
+                Protection identité.
+
+                On refuse une réponse serveur
+                qui correspondrait à un autre compte.
+            */
+
+            if (
+                utilisateur.id &&
+                data.id &&
+                String(
+                    utilisateur.id
+                ) !== String(
+                    data.id
+                )
+            ) {
+
+                console.warn(
+                    "Identité serveur différente. Session locale conservée."
+                );
+
+                continue;
+
+            }
+
+
             sauvegarderUtilisateur(
                 utilisateurFinal
             );
@@ -5343,7 +5252,7 @@ async function synchroniserUtilisateur() {
         } catch (error) {
 
             console.warn(
-                "Synchronisation serveur impossible :",
+                "Synchronisation impossible :",
                 error
             );
 
@@ -5353,11 +5262,8 @@ async function synchroniserUtilisateur() {
 
 
     /*
-        Le serveur n'a pas répondu.
-
-        On conserve l'utilisateur local
-        afin d'éviter le retour intempestif
-        vers connexion.html.
+        Même si le serveur ne répond pas,
+        on garde la session.
     */
 
     sauvegarderUtilisateur(
@@ -5371,7 +5277,7 @@ async function synchroniserUtilisateur() {
 
 
 /*==================================================
-        8. AFFICHER INFOS UTILISATEUR
+        9. AFFICHAGE UTILISATEUR
 ==================================================*/
 
 function afficherInformationsUtilisateur(
@@ -5382,10 +5288,6 @@ function afficherInformationsUtilisateur(
         return;
     }
 
-
-    /*
-        NOM HEADER
-    */
 
     const nomUtilisateur =
         document.getElementById(
@@ -5402,10 +5304,6 @@ function afficherInformationsUtilisateur(
     }
 
 
-    /*
-        PHOTO HEADER
-    */
-
     const photoUtilisateur =
         document.getElementById(
             "photoUtilisateur"
@@ -5418,6 +5316,7 @@ function afficherInformationsUtilisateur(
             utilisateur.photo ||
             "images/user.png";
 
+
         photoUtilisateur.onerror =
             function() {
 
@@ -5428,10 +5327,6 @@ function afficherInformationsUtilisateur(
 
     }
 
-
-    /*
-        PHOTO PROFIL
-    */
 
     const photoProfil =
         document.getElementById(
@@ -5445,6 +5340,7 @@ function afficherInformationsUtilisateur(
             utilisateur.photo ||
             "images/user.png";
 
+
         photoProfil.onerror =
             function() {
 
@@ -5455,10 +5351,6 @@ function afficherInformationsUtilisateur(
 
     }
 
-
-    /*
-        ROLE / DOMAINE
-    */
 
     const roleUtilisateur =
         document.getElementById(
@@ -5475,10 +5367,6 @@ function afficherInformationsUtilisateur(
     }
 
 
-    /*
-        BADGE
-    */
-
     const badgeStatut =
         document.getElementById(
             "badgeStatut"
@@ -5487,10 +5375,10 @@ function afficherInformationsUtilisateur(
 
     if (badgeStatut) {
 
-        if (utilisateur.isPremium) {
+        badgeStatut.innerHTML =
+            utilisateur.isPremium
 
-            badgeStatut.innerHTML = `
-
+            ? `
                 <span
                     style="
                         background:#dcfce7;
@@ -5501,13 +5389,9 @@ function afficherInformationsUtilisateur(
                 >
                     ⭐ Premium
                 </span>
+              `
 
-            `;
-
-        } else {
-
-            badgeStatut.innerHTML = `
-
+            : `
                 <span
                     style="
                         background:#f1f5f9;
@@ -5518,17 +5402,10 @@ function afficherInformationsUtilisateur(
                 >
                     👤 Standard
                 </span>
-
-            `;
-
-        }
+              `;
 
     }
 
-
-    /*
-        NOM COMPLET
-    */
 
     const nomComplet =
         document.getElementById(
@@ -5549,10 +5426,6 @@ function afficherInformationsUtilisateur(
     }
 
 
-    /*
-        DOMAINE FORMATION
-    */
-
     const domaineFormation =
         document.getElementById(
             "domaineFormation"
@@ -5571,7 +5444,7 @@ function afficherInformationsUtilisateur(
 
 
 /*==================================================
-        9. PROGRESSION
+        10. PROGRESSION
 ==================================================*/
 
 function afficherProgression(
@@ -5583,7 +5456,10 @@ function afficherProgression(
     }
 
 
-    let progression = 0;
+    let progression =
+        Number(
+            utilisateur.progression
+        ) || 0;
 
 
     if (
@@ -5591,7 +5467,7 @@ function afficherProgression(
         utilisateur.domaine
     ) {
 
-        const cleDomaine =
+        const domaine =
             normaliserTexte(
                 utilisateur.domaine
             );
@@ -5600,44 +5476,25 @@ function afficherProgression(
         progression =
             Number(
                 utilisateur.progressions[
-                    cleDomaine
+                    domaine
                 ]
             ) ||
-            Number(
-                utilisateur.progression
-            ) ||
-            0;
+            progression;
 
-    } else {
-
-        progression =
-            Number(
-                utilisateur.progression
-            ) ||
-            0;
-
-    }
-
-
-    if (progression < 0) {
-        progression = 0;
-    }
-
-
-    if (progression > 100) {
-        progression = 100;
     }
 
 
     progression =
-        Math.round(
-            progression
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Math.round(
+                    progression
+                )
+            )
         );
 
-
-    /*
-        BARRE
-    */
 
     const progressBar =
         document.getElementById(
@@ -5647,18 +5504,11 @@ function afficherProgression(
 
     if (progressBar) {
 
-        progressBar.style.transition =
-            "width .6s ease-in-out";
-
         progressBar.style.width =
             progression + "%";
 
     }
 
-
-    /*
-        TEXTE
-    */
 
     const progressText =
         document.getElementById(
@@ -5677,331 +5527,48 @@ function afficherProgression(
 
 
 /*==================================================
-        10. OUVRIR FORMATION
+        11. DECONNEXION
 ==================================================*/
 
-function ouvrirDomaine(
-    domaine
-) {
-
-    const utilisateur =
-        normaliserUtilisateur(
-            obtenirUtilisateurLocal()
-        );
-
-
-    if (!utilisateur) {
-
-        window.location.href =
-            "connexion.html";
-
-        return;
-
-    }
-
-
-    const domaineNormalise =
-        normaliserTexte(
-            domaine
-        );
-
+function deconnexion() {
 
     /*
-        DOMAINES RESTREINTS
-
-        Tu peux modifier cette liste.
+        SUPPRESSION DE LA SESSION
     */
 
-    const DOMAINES_RESTRICTED_FOR_STANDARD = [
+    const cles = [
 
-        "informatique",
+        "bmj_session",
 
-        "cybersecurite"
+        "bmj_current_user",
+
+        "bmj_user",
+
+        "currentUser",
+
+        "user",
+
+        "bmj_token",
+
+        "token",
+
+        "bmj_user_id"
 
     ];
 
 
-    if (
-        !utilisateur.isPremium &&
-        DOMAINES_RESTRICTED_FOR_STANDARD
-            .includes(
-                domaineNormalise
-            )
-    ) {
+    cles.forEach(
+        function(cle) {
 
-        afficherPopupBMJ(
+            localStorage.removeItem(
+                cle
+            );
 
-            "Accès restreint",
-
-            `
-                Ce module nécessite un compte
-                <strong>Premium</strong>.
-
-                <br><br>
-
-                Vous pouvez activer Premium
-                depuis votre espace de paiement.
-            `,
-
-            "error"
-
-        );
-
-        return;
-
-    }
-
-
-    /*
-        SAUVEGARDE DU DOMAINE
-    */
-
-    utilisateur.domaine =
-        domaine;
-
-
-    sauvegarderUtilisateur(
-        utilisateur
+        }
     );
 
 
-    /*
-        REDIRECTION
-    */
-
-    switch (domaineNormalise) {
-
-        case "marketing":
-
-            window.location.href =
-                "marketing.html";
-
-            break;
-
-
-        case "entrepreneuriat":
-
-            window.location.href =
-                "entrepreneuriat.html";
-
-            break;
-
-
-        case "leadership":
-
-            window.location.href =
-                "leadership.html";
-
-            break;
-
-
-        case "informatique":
-
-            window.location.href =
-                "informatique.html";
-
-            break;
-
-
-        case "finance":
-
-            window.location.href =
-                "finance.html";
-
-            break;
-
-
-        case "sante":
-
-        case "sante et environnement":
-
-            window.location.href =
-                "sante_environnement.html";
-
-            break;
-
-
-        case "developpement":
-
-        case "developpement personnel":
-
-            window.location.href =
-                "developpement_personnel.html";
-
-            break;
-
-
-        case "education":
-
-            window.location.href =
-                "education.html";
-
-            break;
-
-
-        case "communication":
-
-            window.location.href =
-                "communication.html";
-
-            break;
-
-
-        case "gestion equipe":
-
-        case "gestion_equipe":
-
-            window.location.href =
-                "gestion_equipe.html";
-
-            break;
-
-
-        case "cybersecurite":
-
-            window.location.href =
-                "cybersecurite.html";
-
-            break;
-
-
-        default:
-
-            window.location.href =
-                "formations.html";
-
-            break;
-
-    }
-
-}
-
-
-/*==================================================
-        11. CONTINUER FORMATION
-==================================================*/
-
-function continuerFormation() {
-
-    const utilisateur =
-        normaliserUtilisateur(
-            obtenirUtilisateurLocal()
-        );
-
-
-    if (!utilisateur) {
-
-        window.location.href =
-            "connexion.html";
-
-        return;
-
-    }
-
-
-    if (
-        utilisateur.domaine
-    ) {
-
-        ouvrirDomaine(
-            utilisateur.domaine
-        );
-
-    } else {
-
-        window.location.href =
-            "formations.html";
-
-    }
-
-}
-
-
-/*==================================================
-        12. CERTIFICAT
-==================================================*/
-
-function ouvrirCertificat() {
-
-    const utilisateur =
-        normaliserUtilisateur(
-            obtenirUtilisateurLocal()
-        );
-
-
-    if (!utilisateur) {
-
-        window.location.href =
-            "connexion.html";
-
-        return;
-
-    }
-
-
-    window.location.href =
-        "verification.html";
-
-}
-
-
-/*==================================================
-        13. DÉCONNEXION
-==================================================*/
-
-async function deconnexion() {
-
-    try {
-
-        /*
-            Le serveur possède :
-            POST /api/admin/logout
-
-            Cette route concerne surtout
-            l'administration.
-
-            Pour un utilisateur normal,
-            on détruit la session locale.
-        */
-
-        localStorage.removeItem(
-            "bmj_current_user"
-        );
-
-        localStorage.removeItem(
-            "bmj_user"
-        );
-
-        localStorage.removeItem(
-            "currentUser"
-        );
-
-        localStorage.removeItem(
-            "user"
-        );
-
-        localStorage.removeItem(
-            "bmj_token"
-        );
-
-        localStorage.removeItem(
-            "token"
-        );
-
-
-        sessionStorage.removeItem(
-            "bmj_current_user"
-        );
-
-
-    } catch (error) {
-
-        console.warn(
-            "Erreur lors de la déconnexion :",
-            error
-        );
-
-    }
+    sessionStorage.clear();
 
 
     window.location.replace(
@@ -6012,7 +5579,7 @@ async function deconnexion() {
 
 
 /*==================================================
-        14. BOUTON LOGOUT
+        12. BOUTON LOGOUT
 ==================================================*/
 
 function initialiserDeconnexion() {
@@ -6043,7 +5610,7 @@ function initialiserDeconnexion() {
 
 
 /*==================================================
-        15. MENU MOBILE
+        13. MENU MOBILE
 ==================================================*/
 
 function initialiserMenuMobile() {
@@ -6064,7 +5631,9 @@ function initialiserMenuMobile() {
         !menuBtn ||
         !sidebar
     ) {
+
         return;
+
     }
 
 
@@ -6083,7 +5652,7 @@ function initialiserMenuMobile() {
 
 
 /*==================================================
-        16. PROTECTION DASHBOARD
+        14. PROTECTION DASHBOARD
 ==================================================*/
 
 async function initialiserDashboard() {
@@ -6091,22 +5660,29 @@ async function initialiserDashboard() {
     /*
         IMPORTANT :
 
-        On NE redirige PAS immédiatement
-        vers connexion.html.
-
-        On vérifie d'abord les données
-        locales.
+        On récupère d'abord exactement
+        la session créée par connexion.html.
     */
 
     let utilisateur =
         obtenirUtilisateurLocal();
 
 
+    /*
+        AUCUNE SESSION
+    */
+
     if (!utilisateur) {
+
+        console.warn(
+            "Aucune session BMJ trouvée."
+        );
+
 
         window.location.replace(
             "connexion.html"
         );
+
 
         return;
 
@@ -6114,11 +5690,7 @@ async function initialiserDashboard() {
 
 
     /*
-        Normalisation immédiate.
-
-        Cela permet au dashboard de
-        s'afficher même si le serveur
-        met du temps à répondre.
+        NORMALISATION
     */
 
     utilisateur =
@@ -6129,28 +5701,39 @@ async function initialiserDashboard() {
 
     if (!utilisateur) {
 
-        localStorage.removeItem(
-            "bmj_current_user"
+        console.warn(
+            "Session BMJ invalide."
         );
+
+
+        localStorage.removeItem(
+            "bmj_session"
+        );
+
 
         window.location.replace(
             "connexion.html"
         );
+
 
         return;
 
     }
 
 
+    /*
+        SESSION EN MEMOIRE
+    */
+
     utilisateurBMJ =
         utilisateur;
 
 
     /*
-        SAUVEGARDE IMMÉDIATE
+        IMPORTANT :
 
-        Cela empêche la perte de session
-        pendant le chargement serveur.
+        On sauvegarde immédiatement
+        le même utilisateur.
     */
 
     sauvegarderUtilisateur(
@@ -6173,7 +5756,7 @@ async function initialiserDashboard() {
 
 
     /*
-        INITIALISATION UI
+        UI
     */
 
     initialiserDeconnexion();
@@ -6183,32 +5766,27 @@ async function initialiserDashboard() {
 
     /*
         SYNCHRONISATION SERVEUR
-
-        On attend le serveur après
-        avoir déjà affiché le dashboard.
     */
 
     try {
 
-        const utilisateurServeur =
+        const serveur =
             await synchroniserUtilisateur();
 
 
-        if (
-            utilisateurServeur
-        ) {
+        if (serveur) {
 
             utilisateurBMJ =
-                utilisateurServeur;
+                serveur;
 
 
             afficherInformationsUtilisateur(
-                utilisateurServeur
+                serveur
             );
 
 
             afficherProgression(
-                utilisateurServeur
+                serveur
             );
 
         }
@@ -6216,7 +5794,7 @@ async function initialiserDashboard() {
     } catch (error) {
 
         console.warn(
-            "Serveur indisponible. Données locales conservées.",
+            "Serveur indisponible. Session locale conservée.",
             error
         );
 
@@ -6226,7 +5804,7 @@ async function initialiserDashboard() {
 
 
 /*==================================================
-        17. DÉMARRAGE
+        15. DEMARRAGE
 ==================================================*/
 
 if (
@@ -6247,7 +5825,7 @@ if (
 
 
 /*==================================================
-        18. EXPORT GLOBAL
+        16. EXPORT
 ==================================================*/
 
 window.bmjDashboard = {
@@ -6255,19 +5833,14 @@ window.bmjDashboard = {
     obtenirUtilisateur:
         obtenirUtilisateurLocal,
 
+    obtenirSession:
+        obtenirSessionBMJ,
+
     sauvegarderUtilisateur,
 
     synchroniserUtilisateur,
 
     normaliserUtilisateur,
-
-    afficherPopupBMJ,
-
-    ouvrirDomaine,
-
-    continuerFormation,
-
-    ouvrirCertificat,
 
     deconnexion
 
