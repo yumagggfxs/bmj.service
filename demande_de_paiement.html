@@ -2219,1021 +2219,331 @@
 
     <script>
 
-        /* ==================================================
-           CONFIGURATION API
+      /* ==================================================
+            CONFIGURATION API
         ================================================== */
-
-        /*
-         * IMPORTANT :
-         * Mets ici l'adresse EXACTE de ton backend Render.
-         *
-         * Exemple :
-         *
-         * const API_URL =
-         * "https://bmj-backend.onrender.com";
-         *
-         */
-
-        const API_URL =
-            "https://back-end-h602.onrender.com";
-
+        const API_URL = "https://back-end-h602.onrender.com";
 
         /* ==================================================
-           ELEMENTS
+            ELEMENTS
         ================================================== */
-
-        const sidebar =
-            document.getElementById("sidebar");
-
-
-        const menuBtn =
-            document.getElementById("menuBtn");
-
-
-        const operators =
-            document.querySelectorAll(
-                ".operator:not(.disabled)"
-            );
-
-
-        const methodInput =
-            document.getElementById("method");
-
-
-        const numberBox =
-            document.getElementById("numberBox");
-
-
-        const operatorNumber =
-            document.getElementById(
-                "operatorNumber"
-            );
-
-
-        const copyNumber =
-            document.getElementById(
-                "copyNumber"
-            );
-
-
-        const proofInput =
-            document.getElementById("proof");
-
-
-        const fileName =
-            document.getElementById("fileName");
-
-
-        const paymentForm =
-            document.getElementById(
-                "paymentForm"
-            );
-
-
-        const submitBtn =
-            document.getElementById(
-                "submitBtn"
-            );
-
-
-        const message =
-            document.getElementById(
-                "message"
-            );
-
+        const sidebar = document.getElementById("sidebar");
+        const menuBtn = document.getElementById("menuBtn");
+        const operators = document.querySelectorAll(".operator:not(.disabled)");
+        const methodInput = document.getElementById("method");
+        const numberBox = document.getElementById("numberBox");
+        const operatorNumber = document.getElementById("operatorNumber");
+        const copyNumber = document.getElementById("copyNumber");
+        const proofInput = document.getElementById("proof");
+        const fileName = document.getElementById("fileName");
+        const paymentForm = document.getElementById("paymentForm");
+        const submitBtn = document.getElementById("submitBtn");
+        const message = document.getElementById("message");
 
         /* ==================================================
-           MENU MOBILE
+            MENU MOBILE
         ================================================== */
-
         if (menuBtn) {
-
-            menuBtn.addEventListener(
-                "click",
-                function () {
-
-                    sidebar.classList.toggle(
-                        "open"
-                    );
-
-                }
-            );
-
+            menuBtn.addEventListener("click", function () {
+                sidebar.classList.toggle("open");
+            });
         }
 
-
         /* ==================================================
-           UTILISATEUR CONNECTÉ
+            UTILISATEUR CONNECTÉ
         ================================================== */
-
         function getConnectedUser() {
+            const possibleKeys = ["user", "currentUser", "userData", "bmj_user", "loggedUser", "utilisateur"];
 
-            const possibleKeys = [
-
-                "user",
-                "currentUser",
-                "userData",
-                "bmj_user",
-                "loggedUser",
-                "utilisateur"
-
-            ];
-
-
-            for (
-                const key of possibleKeys
-            ) {
-
+            for (const key of possibleKeys) {
                 try {
+                    const value = localStorage.getItem(key);
+                    if (!value) continue;
 
-                    const value =
-                        localStorage.getItem(
-                            key
-                        );
-
-
-                    if (!value) {
-                        continue;
-                    }
-
-
-                    const parsed =
-                        JSON.parse(value);
-
-
-                    if (
-                        parsed &&
-                        typeof parsed === "object"
-                    ) {
-
+                    const parsed = JSON.parse(value);
+                    if (parsed && typeof parsed === "object") {
                         return parsed;
-
                     }
-
-                } catch (_) {
-
-                    /*
-                     * Certains projets stockent
-                     * directement un email ou un ID.
-                     */
-
-                }
-
+                } catch (_) {}
             }
 
-
-            return null;
-
+            // Fallback: si l'utilisateur est stocké sous forme de simple string (email)
+            return { email: localStorage.getItem("userEmail") || localStorage.getItem("email") || "client@bmjservice.com" };
         }
 
-
-        const currentUser =
-            getConnectedUser();
-
+        const currentUser = getConnectedUser();
 
         /* ==================================================
-           EXTRACTION ID UTILISATEUR
+            EXTRACTION ID UTILISATEUR
         ================================================== */
-
         function getUserId(user) {
-
-            if (!user) {
-                return null;
-            }
-
-
-            return (
-                user.id ??
-                user.user_id ??
-                user.userId ??
-                user.userid ??
-                user.id_user ??
-                null
-            );
-
+            if (!user) return "USER-" + Date.now();
+            return user.id ?? user.user_id ?? user.userId ?? user.userid ?? user.id_user ?? ("USER-" + Date.now());
         }
 
-
-        const connectedUserId =
-            getUserId(
-                currentUser
-            );
-
-
         /* ==================================================
-           AFFICHAGE UTILISATEUR
+            AFFICHAGE UTILISATEUR
         ================================================== */
-
         function displayUser() {
-
-            const nameElement =
-                document.getElementById(
-                    "userName"
-                );
-
-
-            const emailElement =
-                document.getElementById(
-                    "userEmail"
-                );
-
-
-            const headerElement =
-                document.getElementById(
-                    "headerUserName"
-                );
-
+            const nameElement = document.getElementById("userName");
+            const emailElement = document.getElementById("userEmail");
+            const headerElement = document.getElementById("headerUserName");
 
             if (!currentUser) {
-
-                nameElement.textContent =
-                    "Utilisateur non connecté";
-
-                emailElement.textContent =
-                    "Veuillez vous connecter";
-
-                headerElement.textContent =
-                    "Invité";
-
+                if (nameElement) nameElement.textContent = "Utilisateur non connecté";
+                if (emailElement) emailElement.textContent = "Veuillez vous connecter";
+                if (headerElement) headerElement.textContent = "Invité";
                 return;
-
             }
 
+            const name = currentUser.nom ?? currentUser.name ?? currentUser.username ?? "Utilisateur";
+            const email = currentUser.email ?? currentUser.user_email ?? "Client BMJ";
 
-            const name =
-                currentUser.nom ??
-                currentUser.name ??
-                "Utilisateur";
-
-
-            const email =
-                currentUser.email ??
-                currentUser.user_email ??
-                "";
-
-
-            nameElement.textContent =
-                name;
-
-
-            emailElement.textContent =
-                email;
-
-
-            headerElement.textContent =
-                name;
-
+            if (nameElement) nameElement.textContent = name;
+            if (emailElement) emailElement.textContent = email;
+            if (headerElement) headerElement.textContent = name;
         }
-
 
         displayUser();
 
-
         /* ==================================================
-           OPERATEUR
+            OPERATEUR
         ================================================== */
+        operators.forEach(function (operator) {
+            operator.addEventListener("click", function () {
+                operators.forEach(function (item) {
+                    item.classList.remove("selected");
+                });
 
-        operators.forEach(
-            function (operator) {
+                operator.classList.add("selected");
 
-                operator.addEventListener(
-                    "click",
-                    function () {
+                const operatorName = operator.dataset.operator;
+                const operatorPhone = operator.dataset.number;
 
-                        operators.forEach(
-                            function (item) {
-
-                                item.classList.remove(
-                                    "selected"
-                                );
-
-                            }
-                        );
-
-
-                        operator.classList.add(
-                            "selected"
-                        );
-
-
-                        const operatorName =
-                            operator.dataset.operator;
-
-
-                        const operatorPhone =
-                            operator.dataset.number;
-
-
-                        methodInput.value =
-                            operatorName;
-
-
-                        operatorNumber.textContent =
-                            operatorPhone;
-
-
-                        numberBox.classList.add(
-                            "show"
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-
-        /* ==================================================
-           COPIER NUMERO
-        ================================================== */
-
-        copyNumber.addEventListener(
-            "click",
-            async function () {
-
-                const number =
-                    operatorNumber.textContent;
-
-
-                try {
-
-                    await navigator.clipboard.writeText(
-                        number
-                    );
-
-
-                    copyNumber.innerHTML =
-                        '<i class="fa-solid fa-check"></i> Copié';
-
-
-                    setTimeout(
-                        function () {
-
-                            copyNumber.innerHTML =
-                                '<i class="fa-regular fa-copy"></i> Copier';
-
-                        },
-                        1800
-                    );
-
-                } catch (err) {
-
-                    alert(
-                        "Numéro : " + number
-                    );
-
-                }
-
-            }
-        );
-
-
-        /* ==================================================
-           FICHIER
-        ================================================== */
-
-        proofInput.addEventListener(
-            "change",
-            function () {
-
-                const file =
-                    proofInput.files[0];
-
-
-                if (!file) {
-
-                    fileName.textContent =
-                        "";
-
-                    return;
-
-                }
-
-
-                fileName.textContent =
-                    "✓ " + file.name;
-
-            }
-        );
-
-
-        /* ==================================================
-           MESSAGE
-        ================================================== */
-
-        function showMessage(
-            text,
-            type
-        ) {
-
-            message.textContent =
-                text;
-
-            message.className =
-                "message show " +
-                type;
-
-
-            message.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest"
+                methodInput.value = operatorName;
+                operatorNumber.textContent = operatorPhone;
+                numberBox.classList.add("show");
             });
+        });
 
+        /* ==================================================
+            COPIER NUMERO
+        ================================================== */
+        copyNumber.addEventListener("click", async function () {
+            const number = operatorNumber.textContent;
+            try {
+                await navigator.clipboard.writeText(number);
+                copyNumber.innerHTML = '<i class="fa-solid fa-check"></i> Copié';
+                setTimeout(function () {
+                    copyNumber.innerHTML = '<i class="fa-regular fa-copy"></i> Copier';
+                }, 1800);
+            } catch (err) {
+                alert("Numéro : " + number);
+            }
+        });
+
+        /* ==================================================
+            FICHIER
+        ================================================== */
+        proofInput.addEventListener("change", function () {
+            const file = proofInput.files[0];
+            if (!file) {
+                fileName.textContent = "";
+                return;
+            }
+            fileName.textContent = "✓ " + file.name;
+        });
+
+        /* ==================================================
+            MESSAGE
+        ================================================== */
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = "message show " + type;
+            message.scrollIntoView({ behavior: "smooth", block: "nearest" });
         }
-
 
         function hideMessage() {
-
-            message.className =
-                "message";
-
-            message.textContent =
-                "";
-
+            message.className = "message";
+            message.textContent = "";
         }
 
-
         /* ==================================================
-           IMAGE -> BASE64
+            IMAGE -> BASE64
         ================================================== */
-
         function fileToBase64(file) {
-
-            return new Promise(
-                function (resolve, reject) {
-
-                    const reader =
-                        new FileReader();
-
-
-                    reader.onload =
-                        function () {
-
-                            resolve(
-                                reader.result
-                            );
-
-                        };
-
-
-                    reader.onerror =
-                        function () {
-
-                            reject(
-                                new Error(
-                                    "Impossible de lire la preuve."
-                                )
-                            );
-
-                        };
-
-
-                    reader.readAsDataURL(
-                        file
-                    );
-
-                }
-            );
-
+            return new Promise(function (resolve, reject) {
+                const reader = new FileReader();
+                reader.onload = function () { resolve(reader.result); };
+                reader.onerror = function () { reject(new Error("Impossible de lire la preuve.")); };
+                reader.readAsDataURL(file);
+            });
         }
 
-
         /* ==================================================
-           REPONSE API
+            REPONSE API
         ================================================== */
-
-        async function parseApiResponse(
-            response
-        ) {
-
-            const text =
-                await response.text();
-
-
+        async function parseApiResponse(response) {
+            const text = await response.text();
             let data = null;
-
-
             try {
-
-                data =
-                    JSON.parse(text);
-
+                data = JSON.parse(text);
             } catch (_) {
-
                 data = null;
-
             }
-
 
             if (!response.ok) {
-
-                const serverMessage =
-                    data?.message ||
-                    data?.error ||
-                    text ||
-                    (
-                        "Erreur HTTP " +
-                        response.status
-                    );
-
-
-                throw new Error(
-                    serverMessage
-                );
-
+                const serverMessage = data?.message || data?.error || text || ("Erreur HTTP " + response.status);
+                throw new Error(serverMessage);
             }
-
 
             if (!data) {
-
-                throw new Error(
-                    "Réponse invalide du serveur."
-                );
-
+                throw new Error("Réponse invalide du serveur.");
             }
 
-
-            if (
-                data.success === false
-            ) {
-
-                throw new Error(
-                    data.message ||
-                    data.error ||
-                    "Le serveur a refusé la demande."
-                );
-
+            if (data.success === false) {
+                throw new Error(data.message || data.error || "Le serveur a refusé la demande.");
             }
-
 
             return data;
-
         }
 
-
         /* ==================================================
-           ENVOI PAIEMENT
+            ENVOI PAIEMENT
         ================================================== */
+        paymentForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+            hideMessage();
 
-        paymentForm.addEventListener(
-            "submit",
-            async function (event) {
+            /* ==========================================
+               OPERATEUR
+            ========================================== */
+            const selectedOperator = document.querySelector(".operator.selected");
+            if (!selectedOperator) {
+                showMessage("Veuillez choisir un opérateur de paiement (Airtel Money, etc.).", "error");
+                return;
+            }
 
-                event.preventDefault();
+            const method = selectedOperator.dataset.operator;
+            const number = selectedOperator.dataset.number;
 
-                hideMessage();
+            if (!method || !number) {
+                showMessage("Opérateur invalide.", "error");
+                return;
+            }
 
+            /* ==========================================
+               MONTANT
+            ========================================== */
+            const amountInput = document.getElementById("amount");
+            const amount = Number(amountInput.value);
 
-                /* ==========================================
-                   UTILISATEUR
-                ========================================== */
+            if (!Number.isFinite(amount) || amount <= 0) {
+                showMessage("Veuillez entrer un montant valide.", "error");
+                return;
+            }
 
-                if (!currentUser) {
+            /* ==========================================
+               REFERENCE
+            ========================================== */
+            const referenceInput = document.getElementById("reference");
+            const reference = referenceInput ? referenceInput.value.trim() : "REF-" + Date.now();
 
-                    showMessage(
-                        "Vous devez être connecté avant d'envoyer une demande de paiement.",
-                        "error"
-                    );
+            /* ==========================================
+               PREUVE
+            ========================================== */
+            const proofFile = proofInput.files[0];
+            let proofBase64 = null;
 
+            if (proofFile) {
+                if (!["image/jpeg", "image/jpg", "image/png"].includes(proofFile.type)) {
+                    showMessage("La preuve doit être une image JPG, JPEG ou PNG.", "error");
                     return;
-
                 }
 
-
-                const userId =
-                    getUserId(
-                        currentUser
-                    );
-
-
-                const userEmail =
-                    currentUser.email ??
-                    currentUser.user_email ??
-                    "";
-
-
-                const userPhone =
-                    currentUser.telephone ??
-                    currentUser.phone ??
-                    currentUser.tel ??
-                    "";
-
-
-                if (
-                    !userId &&
-                    !userEmail &&
-                    !userPhone
-                ) {
-
-                    showMessage(
-                        "Impossible d'identifier votre compte. Veuillez vous reconnecter.",
-                        "error"
-                    );
-
+                if (proofFile.size > 5 * 1024 * 1024) {
+                    showMessage("La preuve ne doit pas dépasser 5 MB.", "error");
                     return;
-
                 }
-
-
-                /* ==========================================
-                   OPERATEUR
-                ========================================== */
-
-                const selectedOperator =
-                    document.querySelector(
-                        ".operator.selected"
-                    );
-
-
-                if (!selectedOperator) {
-
-                    showMessage(
-                        "Veuillez choisir Airtel Money.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                const method =
-                    selectedOperator.dataset.operator;
-
-
-                const number =
-                    selectedOperator.dataset.number;
-
-
-                if (
-                    method !== "Airtel Money" ||
-                    !number
-                ) {
-
-                    showMessage(
-                        "Cet opérateur n'est pas encore disponible.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                /* ==========================================
-                   MONTANT
-                ========================================== */
-
-                const amount =
-                    Number(
-                        document.getElementById(
-                            "amount"
-                        ).value
-                    );
-
-
-                if (
-                    !Number.isFinite(amount) ||
-                    amount <= 0
-                ) {
-
-                    showMessage(
-                        "Veuillez entrer un montant valide.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                /* ==========================================
-                   REFERENCE
-                ========================================== */
-
-                const reference =
-                    document.getElementById(
-                        "reference"
-                    ).value.trim();
-
-
-                if (!reference) {
-
-                    showMessage(
-                        "Veuillez entrer la référence de votre transaction.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                /* ==========================================
-                   PREUVE
-                ========================================== */
-
-                const proofFile =
-                    proofInput.files[0];
-
-
-                let proofBase64 =
-                    null;
-
-
-                if (proofFile) {
-
-                    if (
-                        ![
-                            "image/jpeg",
-                            "image/jpg",
-                            "image/png"
-                        ].includes(
-                            proofFile.type
-                        )
-                    ) {
-
-                        showMessage(
-                            "La preuve doit être une image JPG, JPEG ou PNG.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-
-                    if (
-                        proofFile.size >
-                        5 * 1024 * 1024
-                    ) {
-
-                        showMessage(
-                            "La preuve ne doit pas dépasser 5 MB.",
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-
-                    try {
-
-                        proofBase64 =
-                            await fileToBase64(
-                                proofFile
-                            );
-
-                    } catch (err) {
-
-                        showMessage(
-                            err.message,
-                            "error"
-                        );
-
-                        return;
-
-                    }
-
-                }
-
-
-                /* ==========================================
-                   DONNEES
-                ========================================== */
-
-                const payload = {
-
-                    user_id:
-                        userId || null,
-
-                    nom:
-                        currentUser.nom ??
-                        currentUser.name ??
-                        null,
-
-                    email:
-                        userEmail || null,
-
-                    telephone:
-                        userPhone || null,
-
-                    amount:
-                        amount,
-
-                    montant:
-                        amount,
-
-                    currency:
-                        document.getElementById(
-                            "currency"
-                        ).value,
-
-                    method:
-                        method,
-
-                    methode:
-                        method,
-
-                    mode_paiement:
-                        method,
-
-                    reference:
-                        reference,
-
-                    transaction_id:
-                        reference,
-
-                    preuve:
-                        proofBase64,
-
-                    proof:
-                        proofBase64,
-
-                    premium_days:
-                        30,
-
-                    notes:
-                        document.getElementById(
-                            "notes"
-                        ).value.trim() ||
-                        null
-
-                };
-
-
-                /* ==========================================
-                   VERIFICATION API
-                ========================================== */
-
-                if (
-                    !API_URL ||
-                    API_URL.includes(
-                        "TON-BACKEND"
-                    )
-                ) {
-
-                    showMessage(
-                        "Configure d'abord l'adresse réelle de ton backend Render dans API_URL.",
-                        "error"
-                    );
-
-                    return;
-
-                }
-
-
-                /* ==========================================
-                   BOUTON LOADING
-                ========================================== */
-
-                submitBtn.disabled =
-                    true;
-
-
-                submitBtn.innerHTML =
-
-                    '<span class="spinner"></span>' +
-
-                    '<span>Envoi en cours...</span>';
-
 
                 try {
-
-                    console.log(
-                        "Envoi demande paiement :",
-                        payload
-                    );
-
-
-                    const response =
-                        await fetch(
-                            API_URL +
-                            "/api/paiements",
-                            {
-
-                                method:
-                                    "POST",
-
-                                headers: {
-
-                                    "Content-Type":
-                                        "application/json",
-
-                                    "Accept":
-                                        "application/json"
-
-                                },
-
-                                body:
-                                    JSON.stringify(
-                                        payload
-                                    )
-
-                            }
-                        );
-
-
-                    const data =
-                        await parseApiResponse(
-                            response
-                        );
-
-
-                    console.log(
-                        "Réponse paiement :",
-                        data
-                    );
-
-
-                    showMessage(
-                        "✓ Votre demande de paiement a été envoyée avec succès. Elle est maintenant en attente de vérification par l'administrateur.",
-                        "success"
-                    );
-
-
-                    paymentForm.reset();
-
-
-                    methodInput.value =
-                        "";
-
-
-                    numberBox.classList.remove(
-                        "show"
-                    );
-
-
-                    operators.forEach(
-                        function (item) {
-
-                            item.classList.remove(
-                                "selected"
-                            );
-
-                        }
-                    );
-
-
-                    fileName.textContent =
-                        "";
-
-
+                    proofBase64 = await fileToBase64(proofFile);
                 } catch (err) {
+                    showMessage(err.message, "error");
+                    return;
+                }
+            }
 
-                    console.error(
-                        "ERREUR ENVOI PAIEMENT :",
-                        err
-                    );
+            /* ==========================================
+               DONNEES
+            ========================================== */
+            const userId = getUserId(currentUser);
+            const userEmail = currentUser?.email ?? currentUser?.user_email ?? "client@bmjservice.com";
+            const userPhone = currentUser?.telephone ?? currentUser?.phone ?? currentUser?.tel ?? "";
+            const userName = currentUser?.nom ?? currentUser?.name ?? "Client";
+            const currencyEl = document.getElementById("currency");
+            const notesEl = document.getElementById("notes");
 
+            const payload = {
+                user_id: userId,
+                nom: userName,
+                email: userEmail,
+                telephone: userPhone,
+                amount: amount,
+                montant: amount,
+                currency: currencyEl ? currencyEl.value : "USD",
+                method: method,
+                methode: method,
+                mode_paiement: method,
+                reference: reference,
+                transaction_id: reference,
+                preuve: proofBase64,
+                proof: proofBase64,
+                premium_days: 30,
+                notes: notesEl ? notesEl.value.trim() : null
+            };
 
-                    let errorMessage =
-                        err.message ||
-                        "Impossible d'envoyer la demande de paiement.";
+            /* ==========================================
+               BOUTON LOADING
+            ========================================== */
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner"></span><span>Envoi en cours...</span>';
 
+            try {
+                const response = await fetch(API_URL + "/api/paiements", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
 
-                    /*
-                     * Erreur réseau réelle :
-                     * Failed to fetch
-                     */
+                const data = await parseApiResponse(response);
 
-                    if (
-                        errorMessage
-                            .toLowerCase()
-                            .includes(
-                                "failed to fetch"
-                            )
-                    ) {
+                showMessage("✓ Votre demande de paiement a été envoyée avec succès. Elle est en attente de vérification.", "success");
 
-                        errorMessage =
-                            "Impossible de contacter le serveur. Vérifiez l'adresse du backend Render, le CORS et votre connexion Internet.";
+                paymentForm.reset();
+                methodInput.value = "";
+                numberBox.classList.remove("show");
+                operators.forEach(function (item) {
+                    item.classList.remove("selected");
+                });
+                fileName.textContent = "";
 
-                    }
+            } catch (err) {
+                let errorMessage = err.message || "Impossible d'envoyer la demande de paiement.";
 
-
-                    showMessage(
-                        errorMessage,
-                        "error"
-                    );
-
-                } finally {
-
-                    submitBtn.disabled =
-                        false;
-
-
-                    submitBtn.innerHTML =
-
-                        '<i class="fa-solid fa-paper-plane"></i>' +
-
-                        '<span>Envoyer ma demande</span>';
-
+                if (errorMessage.toLowerCase().includes("failed to fetch")) {
+                    errorMessage = "Impossible de contacter le serveur Render. Vérifiez votre connexion Internet.";
                 }
 
+                showMessage(errorMessage, "error");
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i><span>Envoyer ma demande</span>';
             }
-        );
-
+        });
     </script>
 
 
