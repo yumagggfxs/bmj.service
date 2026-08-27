@@ -1943,23 +1943,22 @@ document.addEventListener(
     "DOMContentLoaded",
     function () {
 
-
         /* =====================================================
-           CONFIGURATION
+           1. CONFIGURATION API
         ===================================================== */
 
         const API_URL =
             "https://back-end-h602.onrender.com";
 
-        const API_PAYMENT =
-            API_URL + "/api/paiements";
+        const API_VERIFICATION =
+            API_URL + "/api/demandes-verification";
 
         const ADMIN_EMAIL =
             "musiwapataule@gmail.com";
 
 
         /* =====================================================
-           VARIABLES
+           2. VARIABLES
         ===================================================== */
 
         let selectedPlan = null;
@@ -1975,7 +1974,7 @@ document.addEventListener(
 
 
         /* =====================================================
-           ELEMENTS
+           3. ELEMENTS DOM
         ===================================================== */
 
         const plansPanel =
@@ -2048,18 +2047,15 @@ document.addEventListener(
                 "paymentForm"
             );
 
-
         const paymentPhone =
             document.getElementById(
                 "paymentPhone"
             );
 
-
         const sendPaymentBtn =
             document.getElementById(
                 "sendPaymentBtn"
             );
-
 
         const loading =
             document.getElementById(
@@ -2068,7 +2064,36 @@ document.addEventListener(
 
 
         /* =====================================================
-           TOAST
+           4. VERIFICATION DES ELEMENTS
+        ===================================================== */
+
+        if (!plansPanel) {
+            console.error(
+                "Element #plansPanel introuvable."
+            );
+        }
+
+        if (!methodsPanel) {
+            console.error(
+                "Element #methodsPanel introuvable."
+            );
+        }
+
+        if (!operatorsPanel) {
+            console.error(
+                "Element #operatorsPanel introuvable."
+            );
+        }
+
+        if (!proofPanel) {
+            console.error(
+                "Element #proofPanel introuvable."
+            );
+        }
+
+
+        /* =====================================================
+           5. TOAST
         ===================================================== */
 
         function showToast(message) {
@@ -2079,15 +2104,21 @@ document.addEventListener(
                 );
 
             if (!toast) {
+
+                alert(message);
+
                 return;
             }
+
 
             toast.textContent =
                 message;
 
+
             toast.classList.add(
                 "show"
             );
+
 
             setTimeout(
                 function () {
@@ -2104,10 +2135,15 @@ document.addEventListener(
 
 
         /* =====================================================
-           AFFICHER PANEL
+           6. AFFICHER UN PANEL
         ===================================================== */
 
         function showPanel(panel) {
+
+            if (!panel) {
+                return;
+            }
+
 
             document
                 .querySelectorAll(".panel")
@@ -2121,20 +2157,25 @@ document.addEventListener(
                     }
                 );
 
+
             panel.classList.add(
                 "active"
             );
 
+
             window.scrollTo({
+
                 top: 0,
+
                 behavior: "smooth"
+
             });
 
         }
 
 
         /* =====================================================
-           ETAPES
+           7. ETAPES
         ===================================================== */
 
         function updateSteps(step) {
@@ -2150,9 +2191,11 @@ document.addEventListener(
                         "step" + i
                     );
 
+
                 if (!element) {
                     continue;
                 }
+
 
                 element.classList.remove(
                     "active",
@@ -2183,7 +2226,7 @@ document.addEventListener(
 
 
         /* =====================================================
-           RECUPERATION UTILISATEUR
+           8. RECUPERATION UTILISATEUR
         ===================================================== */
 
         function getCurrentUser() {
@@ -2191,12 +2234,17 @@ document.addEventListener(
             let user = null;
 
 
+            /* -------------------------------------------------
+               NOUVEAU STOCKAGE
+            ------------------------------------------------- */
+
             try {
 
                 const stored =
                     localStorage.getItem(
                         "bmj_current_user"
                     );
+
 
                 if (stored) {
 
@@ -2210,12 +2258,16 @@ document.addEventListener(
             } catch (error) {
 
                 console.error(
-                    "Erreur utilisateur localStorage :",
+                    "Erreur bmj_current_user :",
                     error
                 );
 
             }
 
+
+            /* -------------------------------------------------
+               ANCIEN STOCKAGE
+            ------------------------------------------------- */
 
             if (!user) {
 
@@ -2225,6 +2277,7 @@ document.addEventListener(
                         localStorage.getItem(
                             "currentUser"
                         );
+
 
                     if (oldStored) {
 
@@ -2238,6 +2291,7 @@ document.addEventListener(
                 } catch (error) {
 
                     console.error(
+                        "Erreur currentUser :",
                         error
                     );
 
@@ -2252,7 +2306,7 @@ document.addEventListener(
 
 
         /* =====================================================
-           UTILISATEUR
+           9. UTILISATEUR CONNECTE
         ===================================================== */
 
         currentUser =
@@ -2267,63 +2321,114 @@ document.addEventListener(
                 "Utilisateur";
 
 
-            document.getElementById(
-                "headerUser"
-            ).textContent =
-                name;
+            const headerUser =
+                document.getElementById(
+                    "headerUser"
+                );
 
 
-            document.getElementById(
-                "userId"
-            ).textContent =
-                currentUser.id ||
-                currentUser.user_id ||
-                currentUser.userId ||
-                "—";
+            if (headerUser) {
+
+                headerUser.textContent =
+                    name;
+
+            }
 
 
-            document.getElementById(
-                "userName"
-            ).textContent =
-                currentUser.nom ||
-                currentUser.name ||
-                "—";
+            const userId =
+                document.getElementById(
+                    "userId"
+                );
 
 
-            document.getElementById(
-                "userEmail"
-            ).textContent =
-                currentUser.email ||
-                "—";
+            if (userId) {
+
+                userId.textContent =
+                    currentUser.id ||
+                    currentUser.user_id ||
+                    currentUser.userId ||
+                    "—";
+
+            }
 
 
-            document.getElementById(
-                "userPhone"
-            ).textContent =
-                currentUser.telephone ||
-                currentUser.phone ||
-                "—";
+            const userName =
+                document.getElementById(
+                    "userName"
+                );
 
 
-            document.getElementById(
-                "userDomain"
-            ).textContent =
-                currentUser.domaine ||
-                currentUser.domain ||
-                "—";
+            if (userName) {
+
+                userName.textContent =
+                    currentUser.nom ||
+                    currentUser.name ||
+                    "—";
+
+            }
+
+
+            const userEmail =
+                document.getElementById(
+                    "userEmail"
+                );
+
+
+            if (userEmail) {
+
+                userEmail.textContent =
+                    currentUser.email ||
+                    "—";
+
+            }
+
+
+            const userPhone =
+                document.getElementById(
+                    "userPhone"
+                );
+
+
+            if (userPhone) {
+
+                userPhone.textContent =
+                    currentUser.telephone ||
+                    currentUser.phone ||
+                    "—";
+
+            }
+
+
+            const userDomain =
+                document.getElementById(
+                    "userDomain"
+                );
+
+
+            if (userDomain) {
+
+                userDomain.textContent =
+                    currentUser.domaine ||
+                    currentUser.domain ||
+                    "—";
+
+            }
 
         }
 
 
         /* =====================================================
-           DOMAINE
+           10. DOMAINE UTILISATEUR
         ===================================================== */
 
         function getDomain() {
 
             if (!currentUser) {
+
                 return "Non précisé";
+
             }
+
 
             return (
                 currentUser.domaine ||
@@ -2335,52 +2440,7 @@ document.addEventListener(
 
 
         /* =====================================================
-           REFERENCE
-        ===================================================== */
-
-        function generateReference() {
-
-            const now =
-                new Date();
-
-
-            const year =
-                now.getFullYear();
-
-
-            const month =
-                String(
-                    now.getMonth() + 1
-                ).padStart(2, "0");
-
-
-            const day =
-                String(
-                    now.getDate()
-                ).padStart(2, "0");
-
-
-            const random =
-                Math.random()
-                    .toString(36)
-                    .substring(2, 8)
-                    .toUpperCase();
-
-
-            return (
-                "BMJ-PAY-" +
-                year +
-                month +
-                day +
-                "-" +
-                random
-            );
-
-        }
-
-
-        /* =====================================================
-           CHOIX ABONNEMENT
+           11. CHOIX FORMULE
         ===================================================== */
 
         function selectPlan(
@@ -2391,53 +2451,111 @@ document.addEventListener(
             selectedPlan =
                 plan;
 
+
             selectedAmount =
-                amount;
+                Number(amount);
 
 
-            document.getElementById(
-                "summaryPlan"
-            ).textContent =
-                plan;
+            const summaryPlan =
+                document.getElementById(
+                    "summaryPlan"
+                );
 
 
-            document.getElementById(
-                "summaryDomain"
-            ).textContent =
-                getDomain();
+            if (summaryPlan) {
+
+                summaryPlan.textContent =
+                    plan;
+
+            }
 
 
-            document.getElementById(
-                "summaryAmount"
-            ).textContent =
-                amount.toFixed(2) +
-                " USD";
+            const summaryDomain =
+                document.getElementById(
+                    "summaryDomain"
+                );
 
 
-            document.getElementById(
-                "paymentAmount"
-            ).textContent =
-                amount.toFixed(2) +
-                " USD";
+            if (summaryDomain) {
+
+                summaryDomain.textContent =
+                    getDomain();
+
+            }
 
 
-            document.getElementById(
-                "userPlan"
-            ).textContent =
-                plan;
+            const summaryAmount =
+                document.getElementById(
+                    "summaryAmount"
+                );
 
 
-            paymentReference =
-                generateReference();
+            if (summaryAmount) {
+
+                summaryAmount.textContent =
+                    selectedAmount.toFixed(2) +
+                    " USD";
+
+            }
 
 
-            document.getElementById(
-                "paymentReference"
-            ).textContent =
-                paymentReference;
+            const paymentAmount =
+                document.getElementById(
+                    "paymentAmount"
+                );
+
+
+            if (paymentAmount) {
+
+                paymentAmount.textContent =
+                    selectedAmount.toFixed(2) +
+                    " USD";
+
+            }
+
+
+            const userPlan =
+                document.getElementById(
+                    "userPlan"
+                );
+
+
+            if (userPlan) {
+
+                userPlan.textContent =
+                    plan;
+
+            }
+
+
+            /*
+               IMPORTANT :
+               La référence n'est PLUS générée ici.
+
+               Elle sera générée automatiquement
+               par PostgreSQL/backend lorsque la
+               demande sera réellement enregistrée.
+            */
+
+            paymentReference = null;
+
+
+            const referenceElement =
+                document.getElementById(
+                    "paymentReference"
+                );
+
+
+            if (referenceElement) {
+
+                referenceElement.textContent =
+                    "Générée automatiquement";
+
+            }
 
 
             updateSteps(2);
+
 
             showPanel(
                 methodsPanel
@@ -2446,448 +2564,644 @@ document.addEventListener(
         }
 
 
-        choose999.addEventListener(
-            "click",
-            function () {
+        /* =====================================================
+           12. FORMULE 9.99 USD
+        ===================================================== */
 
-                selectPlan(
-                    "Un seul domaine",
-                    9.99
-                );
+        if (choose999) {
 
-            }
-        );
+            choose999.addEventListener(
+                "click",
+                function () {
 
+                    selectPlan(
+                        "Un seul domaine",
+                        9.99
+                    );
 
-        choose4990.addEventListener(
-            "click",
-            function () {
+                }
+            );
 
-                selectPlan(
-                    "Tous les domaines",
-                    49.90
-                );
-
-            }
-        );
+        }
 
 
         /* =====================================================
-           MOBILE MONEY
+           13. FORMULE 49.90 USD
         ===================================================== */
 
-        mobileMoneyBtn.addEventListener(
-            "click",
-            function () {
+        if (choose4990) {
 
-                updateSteps(3);
+            choose4990.addEventListener(
+                "click",
+                function () {
 
-                showPanel(
-                    operatorsPanel
-                );
+                    selectPlan(
+                        "Tous les domaines",
+                        49.90
+                    );
 
-            }
-        );
+                }
+            );
+
+        }
 
 
         /* =====================================================
-           VISAPAY
+           14. MOBILE MONEY
         ===================================================== */
 
-        visaBtn.addEventListener(
-            "click",
-            function () {
+        if (mobileMoneyBtn) {
 
-                showToast(
-                    "VisaPay sera bientôt disponible. Merci d'avoir patienté."
-                );
+            mobileMoneyBtn.addEventListener(
+                "click",
+                function () {
 
-            }
-        );
+                    updateSteps(3);
+
+                    showPanel(
+                        operatorsPanel
+                    );
+
+                }
+            );
+
+        }
 
 
         /* =====================================================
-           AIRTEL
+           15. VISAPAY
         ===================================================== */
 
-        airtelOperator.addEventListener(
-            "click",
-            function () {
+        if (visaBtn) {
 
-                selectedOperator =
-                    "Airtel Money";
+            visaBtn.addEventListener(
+                "click",
+                function () {
 
-                updateSteps(4);
+                    showToast(
+                        "VisaPay sera bientôt disponible. Merci de patienter."
+                    );
 
-                showPanel(
-                    proofPanel
-                );
+                }
+            );
 
-            }
-        );
+        }
 
 
-        airtelOperator.addEventListener(
-            "keydown",
-            function (event) {
+        /* =====================================================
+           16. AIRTEL MONEY
+        ===================================================== */
 
-                if (
-                    event.key === "Enter" ||
-                    event.key === " "
-                ) {
+        if (airtelOperator) {
+
+            airtelOperator.addEventListener(
+                "click",
+                function () {
+
+                    selectedOperator =
+                        "Airtel Money";
+
+
+                    updateSteps(4);
+
+
+                    showPanel(
+                        proofPanel
+                    );
+
+                }
+            );
+
+
+            airtelOperator.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (
+                        event.key === "Enter" ||
+                        event.key === " "
+                    ) {
+
+                        event.preventDefault();
+
+                        airtelOperator.click();
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           17. RETOUR FORMULES
+        ===================================================== */
+
+        if (backToPlans) {
+
+            backToPlans.addEventListener(
+                "click",
+                function () {
+
+                    updateSteps(1);
+
+                    showPanel(
+                        plansPanel
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           18. RETOUR MOYENS DE PAIEMENT
+        ===================================================== */
+
+        if (backToMethods) {
+
+            backToMethods.addEventListener(
+                "click",
+                function () {
+
+                    updateSteps(2);
+
+                    showPanel(
+                        methodsPanel
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           19. RETOUR OPERATEURS
+        ===================================================== */
+
+        if (backToOperators) {
+
+            backToOperators.addEventListener(
+                "click",
+                function () {
+
+                    updateSteps(3);
+
+                    showPanel(
+                        operatorsPanel
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           20. VALIDATION TELEPHONE
+        ===================================================== */
+
+        if (paymentPhone) {
+
+            paymentPhone.addEventListener(
+                "input",
+                function () {
+
+                    this.value =
+                        this.value.replace(
+                            /[^0-9+ ]/g,
+                            ""
+                        );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           21. ENVOI DE LA DEMANDE
+        ===================================================== */
+
+        if (paymentForm) {
+
+            paymentForm.addEventListener(
+                "submit",
+                async function (event) {
 
                     event.preventDefault();
 
-                    airtelOperator.click();
-
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           RETOURS
-        ===================================================== */
-
-        backToPlans.addEventListener(
-            "click",
-            function () {
-
-                updateSteps(1);
-
-                showPanel(
-                    plansPanel
-                );
-
-            }
-        );
-
-
-        backToMethods.addEventListener(
-            "click",
-            function () {
-
-                updateSteps(2);
-
-                showPanel(
-                    methodsPanel
-                );
-
-            }
-        );
-
-
-        backToOperators.addEventListener(
-            "click",
-            function () {
-
-                updateSteps(3);
-
-                showPanel(
-                    operatorsPanel
-                );
-
-            }
-        );
-
-
-        /* =====================================================
-           VALIDATION TELEPHONE
-        ===================================================== */
-
-        paymentPhone.addEventListener(
-            "input",
-            function () {
-
-                this.value =
-                    this.value.replace(
-                        /[^0-9+ ]/g,
-                        ""
-                    );
-
-            }
-        );
-
-
-        /* =====================================================
-           ENVOI
-        ===================================================== */
-
-        paymentForm.addEventListener(
-            "submit",
-            async function (event) {
-
-                event.preventDefault();
-
-
-                if (!selectedPlan) {
-
-                    showToast(
-                        "Veuillez choisir une formule."
-                    );
-
-                    return;
-
-                }
-
-
-                if (!currentUser) {
-
-                    showToast(
-                        "Impossible de récupérer votre compte. Veuillez vous reconnecter."
-                    );
-
-                    return;
-
-                }
-
-
-                const phone =
-                    paymentPhone.value
-                        .trim();
-
-
-                if (!phone) {
-
-                    showToast(
-                        "Veuillez entrer le numéro ayant effectué le paiement."
-                    );
-
-                    paymentPhone.focus();
-
-                    return;
-
-                }
-
-
-                if (
-                    phone.replace(
-                        /[^0-9]/g,
-                        ""
-                    ).length < 8
-                ) {
-
-                    showToast(
-                        "Veuillez entrer un numéro de téléphone valide."
-                    );
-
-                    paymentPhone.focus();
-
-                    return;
-
-                }
-
-
-                if (!paymentReference) {
-
-                    paymentReference =
-                        generateReference();
-
-                }
-
-
-                /* =============================================
-                   INFORMATIONS
-                ============================================= */
-
-                const userId =
-                    currentUser.id ||
-                    currentUser.user_id ||
-                    currentUser.userId ||
-                    null;
-
-
-                const userName =
-                    currentUser.nom ||
-                    currentUser.name ||
-                    "";
-
-
-                const userEmail =
-                    currentUser.email ||
-                    "";
-
-
-                const userPhone =
-                    currentUser.telephone ||
-                    currentUser.phone ||
-                    "";
-
-
-                const domain =
-                    currentUser.domaine ||
-                    currentUser.domain ||
-                    "";
-
-
-                /* =============================================
-                   OBJET PAIEMENT
-                ============================================= */
-
-                const paymentData = {
-
-                    reference:
-                        paymentReference,
-
-                    user_id:
-                        userId,
-
-                    nom:
-                        userName,
-
-                    email:
-                        userEmail,
-
-                    telephone:
-                        userPhone,
-
-                    domaine:
-                        domain,
-
-                    formule:
-                        selectedPlan,
-
-                    montant:
-                        selectedAmount,
-
-                    devise:
-                        "USD",
-
-                    moyen_paiement:
-                        "Mobile Money",
-
-                    operateur:
-                        selectedOperator,
-
-                    numero_paiement:
-                        phone,
-
-                    statut:
-                        "en_attente",
-
-                    premium:
-                        false
-
-                };
-
-
-                /* =============================================
-                   DESACTIVER BOUTON
-                ============================================= */
-
-                sendPaymentBtn.disabled =
-                    true;
-
-
-                sendPaymentBtn.textContent =
-                    "Enregistrement...";
-
-
-                loading.style.display =
-                    "block";
-
-
-                try {
 
                     /* =========================================
-                       ENREGISTREMENT SERVEUR
+                       VERIFICATION FORMULE
                     ========================================= */
 
-                    const response =
-                        await fetch(
-                            API_PAYMENT,
-                            {
+                    if (!selectedPlan) {
 
-                                method:
-                                    "POST",
+                        showToast(
+                            "Veuillez choisir une formule."
+                        );
 
-                                headers: {
+                        return;
 
-                                    "Content-Type":
-                                        "application/json",
+                    }
 
-                                    "Accept":
-                                        "application/json"
 
-                                },
+                    /* =========================================
+                       VERIFICATION UTILISATEUR
+                    ========================================= */
 
-                                body:
-                                    JSON.stringify(
-                                        paymentData
-                                    )
+                    if (!currentUser) {
 
-                            }
+                        showToast(
+                            "Impossible de récupérer votre compte. Veuillez vous reconnecter."
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* =========================================
+                       TELEPHONE DU PAIEMENT
+                    ========================================= */
+
+                    const phone =
+                        paymentPhone
+                            ? paymentPhone.value.trim()
+                            : "";
+
+
+                    if (!phone) {
+
+                        showToast(
+                            "Veuillez entrer le numéro ayant effectué le paiement."
                         );
 
 
-                    let result = null;
+                        if (paymentPhone) {
+
+                            paymentPhone.focus();
+
+                        }
+
+
+                        return;
+
+                    }
+
+
+                    const cleanPhone =
+                        phone.replace(
+                            /[^0-9]/g,
+                            ""
+                        );
+
+
+                    if (
+                        cleanPhone.length < 8
+                    ) {
+
+                        showToast(
+                            "Veuillez entrer un numéro de téléphone valide."
+                        );
+
+
+                        if (paymentPhone) {
+
+                            paymentPhone.focus();
+
+                        }
+
+
+                        return;
+
+                    }
+
+
+                    /* =========================================
+                       IDENTIFIANTS UTILISATEUR
+                    ========================================= */
+
+                    const userId =
+                        currentUser.id ||
+                        currentUser.user_id ||
+                        currentUser.userId ||
+                        null;
+
+
+                    const userName =
+                        currentUser.nom ||
+                        currentUser.name ||
+                        "";
+
+
+                    const userEmail =
+                        currentUser.email ||
+                        "";
+
+
+                    const userPhone =
+                        currentUser.telephone ||
+                        currentUser.phone ||
+                        "";
+
+
+                    /* =========================================
+                       PREPARATION BOUTON
+                    ========================================= */
+
+                    if (sendPaymentBtn) {
+
+                        sendPaymentBtn.disabled =
+                            true;
+
+
+                        sendPaymentBtn.textContent =
+                            "Enregistrement...";
+
+                    }
+
+
+                    if (loading) {
+
+                        loading.style.display =
+                            "block";
+
+
+                        loading.textContent =
+                            "Enregistrement de votre demande...";
+
+                    }
+
+
+                    /* =========================================
+                       DONNEES ENVOYEES AU BACKEND
+                       -----------------------------------------
+                       IMPORTANT :
+                       On utilise exactement les noms
+                       attendus par :
+
+                       POST /api/demandes-verification
+                    ========================================= */
+
+                    const verificationData = {
+
+                        numero_payeur:
+                            phone,
+
+                        user_id:
+                            userId,
+
+                        nom:
+                            userName,
+
+                        email:
+                            userEmail
+
+                    };
+
+
+                    console.log(
+                        "Demande envoyée au serveur :",
+                        verificationData
+                    );
 
 
                     try {
 
-                        result =
-                            await response.json();
+                        /* =====================================
+                           APPEL API
+                        ===================================== */
 
-                    } catch (jsonError) {
+                        const response =
+                            await fetch(
+                                API_VERIFICATION,
+                                {
 
-                        throw new Error(
-                            "Le serveur n'a pas retourné une réponse JSON valide."
+                                    method:
+                                        "POST",
+
+                                    headers: {
+
+                                        "Content-Type":
+                                            "application/json",
+
+                                        "Accept":
+                                            "application/json"
+
+                                    },
+
+                                    body:
+                                        JSON.stringify(
+                                            verificationData
+                                        )
+
+                                }
+                            );
+
+
+                        /* =====================================
+                           REPONSE JSON
+                        ===================================== */
+
+                        let result = null;
+
+
+                        try {
+
+                            result =
+                                await response.json();
+
+                        } catch (jsonError) {
+
+                            console.error(
+                                "Réponse serveur invalide :",
+                                jsonError
+                            );
+
+
+                            throw new Error(
+                                "Le serveur n'a pas retourné une réponse JSON valide."
+                            );
+
+                        }
+
+
+                        console.log(
+                            "Réponse demande vérification :",
+                            result
                         );
 
-                    }
+
+                        /* =====================================
+                           VERIFICATION REPONSE
+                        ===================================== */
+
+                        if (
+                            !response.ok ||
+                            result.success !== true
+                        ) {
+
+                            throw new Error(
+
+                                result.message ||
+                                result.error ||
+                                "Impossible d'enregistrer la demande."
+
+                            );
+
+                        }
 
 
-                    console.log(
-                        "Réponse paiement :",
-                        result
-                    );
+                        /* =====================================
+                           RECUPERATION DES DONNEES SERVEUR
+                        ===================================== */
+
+                        const demande =
+                            result.data || {};
 
 
-                    if (
-                        !response.ok ||
-                        result.success !== true
-                    ) {
+                        /*
+                           C'est ici que nous récupérons
+                           la référence générée par le serveur.
+                        */
 
-                        throw new Error(
-                            result.message ||
-                            result.error ||
-                            "Impossible d'enregistrer la demande dans le serveur."
+                        paymentReference =
+                            demande.reference ||
+                            null;
+
+
+                        if (!paymentReference) {
+
+                            throw new Error(
+                                "La demande a été enregistrée mais le serveur n'a pas retourné de référence."
+                            );
+
+                        }
+
+
+                        /* =====================================
+                           AFFICHAGE REFERENCE
+                        ===================================== */
+
+                        const referenceElement =
+                            document.getElementById(
+                                "paymentReference"
+                            );
+
+
+                        if (referenceElement) {
+
+                            referenceElement.textContent =
+                                paymentReference;
+
+                        }
+
+
+                        /* =====================================
+                           SAUVEGARDE LOCALE
+                        ===================================== */
+
+                        const lastVerification = {
+
+                            id:
+                                demande.id ||
+                                null,
+
+                            reference:
+                                paymentReference,
+
+                            numero_payeur:
+                                demande.numero_payeur ||
+                                phone,
+
+                            user_id:
+                                demande.user_id ||
+                                userId,
+
+                            nom:
+                                demande.nom ||
+                                userName,
+
+                            email:
+                                demande.email ||
+                                userEmail,
+
+                            formule:
+                                selectedPlan,
+
+                            montant:
+                                selectedAmount,
+
+                            devise:
+                                "USD",
+
+                            moyen_paiement:
+                                "Mobile Money",
+
+                            operateur:
+                                selectedOperator,
+
+                            status:
+                                demande.status ||
+                                "pending",
+
+                            created_at:
+                                demande.created_at ||
+                                new Date().toISOString()
+
+                        };
+
+
+                        localStorage.setItem(
+
+                            "bmj_last_verification",
+
+                            JSON.stringify(
+                                lastVerification
+                            )
+
                         );
 
-                    }
+
+                        /*
+                           Compatibilité avec l'ancien
+                           système local.
+                        */
+
+                        localStorage.setItem(
+
+                            "bmj_last_payment",
+
+                            JSON.stringify(
+                                lastVerification
+                            )
+
+                        );
 
 
-                    /* =========================================
-                       SAUVEGARDE LOCALE DE LA DEMANDE
-                    ========================================= */
+                        /* =====================================
+                           EMAIL ADMINISTRATEUR
+                        ===================================== */
 
-                    localStorage.setItem(
-                        "bmj_last_payment",
-                        JSON.stringify(
-                            paymentData
-                        )
-                    );
+                        const subject =
+                            "Demande de vérification paiement Premium BMJ SERVICE - " +
+                            paymentReference;
 
 
-                    /* =========================================
-                       PREPARATION EMAIL
-                    ========================================= */
-
-                    const subject =
-                        "Demande de paiement Premium BMJ SERVICE - " +
-                        paymentReference;
-
-
-                    const body =
+                        const body =
 `
 Bonjour BMJ SERVICE,
 
-Je viens d'effectuer un paiement pour activer mon accès Premium.
+Je viens d'effectuer un paiement pour demander l'activation de mon accès Premium.
 
-==============================
-INFORMATIONS DE PAIEMENT
-==============================
+==================================================
+DEMANDE DE VÉRIFICATION
+==================================================
 
 Référence :
 ${paymentReference}
@@ -2907,9 +3221,9 @@ ${selectedOperator}
 Numéro ayant effectué le paiement :
 ${phone}
 
-==============================
+==================================================
 INFORMATIONS UTILISATEUR
-==============================
+==================================================
 
 ID utilisateur :
 ${userId || "Non renseigné"}
@@ -2924,11 +3238,14 @@ Téléphone du compte :
 ${userPhone || "Non renseigné"}
 
 Domaine :
-${domain || "Non renseigné"}
+${getDomain()}
 
-==============================
+==================================================
 
-Merci de vérifier mon paiement et d'activer mon statut Premium.
+Statut de la demande :
+En attente de vérification
+
+Merci de vérifier mon paiement et d'activer mon statut Premium si le paiement est confirmé.
 
 Cordialement,
 
@@ -2936,88 +3253,165 @@ ${userName || "Utilisateur BMJ SERVICE"}
 `;
 
 
-                    /* =========================================
-                       CREATION MAILTO
-                    ========================================= */
+                        /* =====================================
+                           MAILTO
+                        ===================================== */
 
-                    const mailto =
-                        "mailto:" +
-                        ADMIN_EMAIL +
-                        "?subject=" +
-                        encodeURIComponent(
-                            subject
-                        ) +
-                        "&body=" +
-                        encodeURIComponent(
-                            body
+                        const mailto =
+
+                            "mailto:" +
+                            ADMIN_EMAIL +
+                            "?subject=" +
+                            encodeURIComponent(
+                                subject
+                            ) +
+                            "&body=" +
+                            encodeURIComponent(
+                                body
+                            );
+
+
+                        /* =====================================
+                           MESSAGE SUCCES
+                        ===================================== */
+
+                        if (loading) {
+
+                            loading.textContent =
+                                "Demande enregistrée. Ouverture de votre application e-mail...";
+
+                        }
+
+
+                        showToast(
+
+                            "Votre demande a été enregistrée avec succès. Référence : " +
+                            paymentReference
+
                         );
 
 
-                    /* =========================================
-                       REDIRECTION VERIFICATION
-                    ========================================= */
+                        /* =====================================
+                           OUVERTURE EMAIL
+                        ===================================== */
 
-                    loading.textContent =
-                        "Ouverture de votre application e-mail...";
+                        setTimeout(
+                            function () {
 
+                                window.location.href =
+                                    mailto;
 
-                    /*
-                       mailto ouvre l'application e-mail
-                       définie par l'appareil/navigateur.
-                       La page ne demande aucune sélection.
-                    */
-
-                    window.location.href =
-                        mailto;
+                            },
+                            500
+                        );
 
 
-                    /*
-                       Après ouverture de l'application
-                       e-mail, on prépare la page de
-                       vérification.
-                    */
+                        /* =====================================
+                           REDIRECTION VERIFICATION
+                        ===================================== */
 
-                    setTimeout(
-                        function () {
+                        setTimeout(
+                            function () {
 
-                            window.location.href =
-                                "verificationdepaiement.html";
+                                window.location.href =
+                                    "verificationdepaiement.html";
 
-                        },
-                        1800
-                    );
+                            },
+                            2000
+                        );
 
 
-                } catch (error) {
+                    } catch (error) {
 
-                    console.error(
-                        "Erreur paiement :",
-                        error
-                    );
-
-
-                    loading.style.display =
-                        "none";
+                        console.error(
+                            "Erreur demande de vérification :",
+                            error
+                        );
 
 
-                    sendPaymentBtn.disabled =
-                        false;
+                        /* =====================================
+                           ARRET LOADING
+                        ===================================== */
+
+                        if (loading) {
+
+                            loading.style.display =
+                                "none";
+
+                        }
 
 
-                    sendPaymentBtn.textContent =
-                        "📧 Envoyer ma demande";
+                        /* =====================================
+                           REACTIVATION BOUTON
+                        ===================================== */
+
+                        if (sendPaymentBtn) {
+
+                            sendPaymentBtn.disabled =
+                                false;
 
 
-                    showToast(
-                        error.message ||
-                        "Impossible d'enregistrer la demande dans le serveur."
-                    );
+                            sendPaymentBtn.textContent =
+                                "📧 Envoyer ma demande";
+
+                        }
+
+
+                        /* =====================================
+                           MESSAGE ERREUR
+                        ===================================== */
+
+                        showToast(
+
+                            error.message ||
+                            "Impossible d'enregistrer la demande de vérification."
+
+                        );
+
+                    }
 
                 }
+            );
 
-            }
+        }
+
+
+        /* =====================================================
+           22. ETAT INITIAL
+        ===================================================== */
+
+        updateSteps(1);
+
+
+        if (plansPanel) {
+
+            showPanel(
+                plansPanel
+            );
+
+        }
+
+
+        console.log(
+            "================================================"
         );
 
+        console.log(
+            "BMJ SERVICE - PAGE PAIEMENT"
+        );
+
+        console.log(
+            "API vérification : " +
+            API_VERIFICATION
+        );
+
+        console.log(
+            "Statut : JavaScript chargé"
+        );
+
+        console.log(
+            "================================================"
+        );
 
     }
 
