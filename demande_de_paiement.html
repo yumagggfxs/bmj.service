@@ -1938,20 +1938,23 @@
 
 
 <script>
-
 document.addEventListener(
     "DOMContentLoaded",
     function () {
 
+
         /* =====================================================
-           1. CONFIGURATION API
+           1. CONFIGURATION
         ===================================================== */
 
         const API_URL =
             "https://back-end-h602.onrender.com";
 
+
         const API_VERIFICATION =
-            API_URL + "/api/demandes-verification";
+            API_URL +
+            "/api/demandes-verification";
+
 
         const ADMIN_EMAIL =
             "musiwapataule@gmail.com";
@@ -1961,20 +1964,24 @@ document.addEventListener(
            2. VARIABLES
         ===================================================== */
 
-        let selectedPlan = null;
+        let selectedPlan =
+            null;
 
-        let selectedAmount = null;
+        let selectedAmount =
+            null;
 
         let selectedOperator =
             "Airtel Money";
 
-        let currentUser = null;
+        let currentUser =
+            null;
 
-        let paymentReference = null;
+        let paymentReference =
+            null;
 
 
         /* =====================================================
-           3. ELEMENTS DOM
+           3. ELEMENTS
         ===================================================== */
 
         const plansPanel =
@@ -2064,31 +2071,28 @@ document.addEventListener(
 
 
         /* =====================================================
-           4. VERIFICATION DES ELEMENTS
+           4. TEXTE
         ===================================================== */
 
-        if (!plansPanel) {
-            console.error(
-                "Element #plansPanel introuvable."
-            );
-        }
+        function setText(
+            id,
+            value
+        ) {
 
-        if (!methodsPanel) {
-            console.error(
-                "Element #methodsPanel introuvable."
-            );
-        }
+            const element =
+                document.getElementById(
+                    id
+                );
 
-        if (!operatorsPanel) {
-            console.error(
-                "Element #operatorsPanel introuvable."
-            );
-        }
 
-        if (!proofPanel) {
-            console.error(
-                "Element #proofPanel introuvable."
-            );
+            if (element) {
+
+                element.textContent =
+                    value ??
+                    "—";
+
+            }
+
         }
 
 
@@ -2096,18 +2100,22 @@ document.addEventListener(
            5. TOAST
         ===================================================== */
 
-        function showToast(message) {
+        function showToast(
+            message
+        ) {
 
             const toast =
                 document.getElementById(
                     "toast"
                 );
 
+
             if (!toast) {
 
                 alert(message);
 
                 return;
+
             }
 
 
@@ -2135,18 +2143,24 @@ document.addEventListener(
 
 
         /* =====================================================
-           6. AFFICHER UN PANEL
+           6. AFFICHAGE PANELS
         ===================================================== */
 
-        function showPanel(panel) {
+        function showPanel(
+            panel
+        ) {
 
             if (!panel) {
+
                 return;
+
             }
 
 
             document
-                .querySelectorAll(".panel")
+                .querySelectorAll(
+                    ".panel"
+                )
                 .forEach(
                     function (item) {
 
@@ -2178,7 +2192,9 @@ document.addEventListener(
            7. ETAPES
         ===================================================== */
 
-        function updateSteps(step) {
+        function updateSteps(
+            step
+        ) {
 
             for (
                 let i = 1;
@@ -2193,7 +2209,9 @@ document.addEventListener(
 
 
                 if (!element) {
+
                     continue;
+
                 }
 
 
@@ -2226,17 +2244,16 @@ document.addEventListener(
 
 
         /* =====================================================
-           8. RECUPERATION UTILISATEUR
+           8. UTILISATEUR
         ===================================================== */
 
         function getCurrentUser() {
 
-            let user = null;
+            let user =
+                null;
 
 
-            /* -------------------------------------------------
-               NOUVEAU STOCKAGE
-            ------------------------------------------------- */
+            /* Nouveau format */
 
             try {
 
@@ -2265,9 +2282,7 @@ document.addEventListener(
             }
 
 
-            /* -------------------------------------------------
-               ANCIEN STOCKAGE
-            ------------------------------------------------- */
+            /* Ancien format */
 
             if (!user) {
 
@@ -2305,13 +2320,13 @@ document.addEventListener(
         }
 
 
-        /* =====================================================
-           9. UTILISATEUR CONNECTE
-        ===================================================== */
-
         currentUser =
             getCurrentUser();
 
+
+        /* =====================================================
+           9. AFFICHAGE UTILISATEUR
+        ===================================================== */
 
         if (currentUser) {
 
@@ -2321,104 +2336,61 @@ document.addEventListener(
                 "Utilisateur";
 
 
-            const headerUser =
-                document.getElementById(
-                    "headerUser"
-                );
+            setText(
+                "headerUser",
+                name
+            );
 
 
-            if (headerUser) {
+            setText(
+                "userId",
 
-                headerUser.textContent =
-                    name;
-
-            }
-
-
-            const userId =
-                document.getElementById(
-                    "userId"
-                );
+                currentUser.id ||
+                currentUser.user_id ||
+                currentUser.userId ||
+                "—"
+            );
 
 
-            if (userId) {
+            setText(
+                "userName",
 
-                userId.textContent =
-                    currentUser.id ||
-                    currentUser.user_id ||
-                    currentUser.userId ||
-                    "—";
-
-            }
+                currentUser.nom ||
+                currentUser.name ||
+                "—"
+            );
 
 
-            const userName =
-                document.getElementById(
-                    "userName"
-                );
+            setText(
+                "userEmail",
+
+                currentUser.email ||
+                "—"
+            );
 
 
-            if (userName) {
+            setText(
+                "userPhone",
 
-                userName.textContent =
-                    currentUser.nom ||
-                    currentUser.name ||
-                    "—";
-
-            }
-
-
-            const userEmail =
-                document.getElementById(
-                    "userEmail"
-                );
+                currentUser.telephone ||
+                currentUser.phone ||
+                "—"
+            );
 
 
-            if (userEmail) {
+            setText(
+                "userDomain",
 
-                userEmail.textContent =
-                    currentUser.email ||
-                    "—";
-
-            }
-
-
-            const userPhone =
-                document.getElementById(
-                    "userPhone"
-                );
-
-
-            if (userPhone) {
-
-                userPhone.textContent =
-                    currentUser.telephone ||
-                    currentUser.phone ||
-                    "—";
-
-            }
-
-
-            const userDomain =
-                document.getElementById(
-                    "userDomain"
-                );
-
-
-            if (userDomain) {
-
-                userDomain.textContent =
-                    currentUser.domaine ||
-                    currentUser.domain ||
-                    "—";
-
-            }
+                currentUser.domaine ||
+                currentUser.domain ||
+                "—"
+            );
 
         }
 
 
         /* =====================================================
-           10. DOMAINE UTILISATEUR
+           10. DOMAINE
         ===================================================== */
 
         function getDomain() {
@@ -2431,16 +2403,74 @@ document.addEventListener(
 
 
             return (
+
                 currentUser.domaine ||
                 currentUser.domain ||
                 "Non précisé"
+
             );
 
         }
 
 
         /* =====================================================
-           11. CHOIX FORMULE
+           11. REFERENCE LOCALE DE SECOURS
+        ===================================================== */
+
+        function generateLocalReference() {
+
+            const now =
+                new Date();
+
+
+            const year =
+                now.getFullYear();
+
+
+            const month =
+                String(
+                    now.getMonth() + 1
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            const day =
+                String(
+                    now.getDate()
+                ).padStart(
+                    2,
+                    "0"
+                );
+
+
+            const random =
+                Math.random()
+                    .toString(36)
+                    .substring(
+                        2,
+                        8
+                    )
+                    .toUpperCase();
+
+
+            return (
+
+                "BMJ-PAY-" +
+                year +
+                month +
+                day +
+                "-" +
+                random
+
+            );
+
+        }
+
+
+        /* =====================================================
+           12. CHOIX FORMULE
         ===================================================== */
 
         function selectPlan(
@@ -2456,105 +2486,57 @@ document.addEventListener(
                 Number(amount);
 
 
-            const summaryPlan =
-                document.getElementById(
-                    "summaryPlan"
-                );
+            setText(
+                "summaryPlan",
+                plan
+            );
 
 
-            if (summaryPlan) {
-
-                summaryPlan.textContent =
-                    plan;
-
-            }
+            setText(
+                "summaryDomain",
+                getDomain()
+            );
 
 
-            const summaryDomain =
-                document.getElementById(
-                    "summaryDomain"
-                );
+            setText(
+
+                "summaryAmount",
+
+                selectedAmount.toFixed(2) +
+                " USD"
+
+            );
 
 
-            if (summaryDomain) {
+            setText(
 
-                summaryDomain.textContent =
-                    getDomain();
+                "paymentAmount",
 
-            }
+                selectedAmount.toFixed(2) +
+                " USD"
 
-
-            const summaryAmount =
-                document.getElementById(
-                    "summaryAmount"
-                );
+            );
 
 
-            if (summaryAmount) {
-
-                summaryAmount.textContent =
-                    selectedAmount.toFixed(2) +
-                    " USD";
-
-            }
+            setText(
+                "userPlan",
+                plan
+            );
 
 
-            const paymentAmount =
-                document.getElementById(
-                    "paymentAmount"
-                );
+            paymentReference =
+                generateLocalReference();
 
 
-            if (paymentAmount) {
-
-                paymentAmount.textContent =
-                    selectedAmount.toFixed(2) +
-                    " USD";
-
-            }
+            setText(
+                "paymentReference",
+                paymentReference
+            );
 
 
-            const userPlan =
-                document.getElementById(
-                    "userPlan"
-                );
-
-
-            if (userPlan) {
-
-                userPlan.textContent =
-                    plan;
-
-            }
-
-
-            /*
-               IMPORTANT :
-               La référence n'est PLUS générée ici.
-
-               Elle sera générée automatiquement
-               par PostgreSQL/backend lorsque la
-               demande sera réellement enregistrée.
-            */
-
-            paymentReference = null;
-
-
-            const referenceElement =
-                document.getElementById(
-                    "paymentReference"
-                );
-
-
-            if (referenceElement) {
-
-                referenceElement.textContent =
-                    "Générée automatiquement";
-
-            }
-
-
-            updateSteps(2);
+            updateSteps(
+                2
+            );
 
 
             showPanel(
@@ -2565,104 +2547,151 @@ document.addEventListener(
 
 
         /* =====================================================
-           12. FORMULE 9.99 USD
+           13. FORMULE 9.99
         ===================================================== */
 
         if (choose999) {
 
             choose999.addEventListener(
+
                 "click",
+
                 function () {
 
                     selectPlan(
+
                         "Un seul domaine",
+
                         9.99
+
                     );
 
                 }
+
             );
 
         }
 
 
         /* =====================================================
-           13. FORMULE 49.90 USD
+           14. FORMULE 49.90
         ===================================================== */
 
         if (choose4990) {
 
             choose4990.addEventListener(
+
                 "click",
+
                 function () {
 
                     selectPlan(
+
                         "Tous les domaines",
+
                         49.90
+
                     );
 
                 }
+
             );
 
         }
 
 
         /* =====================================================
-           14. MOBILE MONEY
+           15. MOBILE MONEY
         ===================================================== */
 
         if (mobileMoneyBtn) {
 
             mobileMoneyBtn.addEventListener(
+
                 "click",
+
                 function () {
 
-                    updateSteps(3);
+                    if (!selectedPlan) {
+
+                        showToast(
+                            "Veuillez d'abord choisir une formule."
+                        );
+
+                        return;
+
+                    }
+
+
+                    updateSteps(
+                        3
+                    );
+
 
                     showPanel(
                         operatorsPanel
                     );
 
                 }
+
             );
 
         }
 
 
         /* =====================================================
-           15. VISAPAY
+           16. VISA
         ===================================================== */
 
         if (visaBtn) {
 
             visaBtn.addEventListener(
+
                 "click",
+
                 function () {
 
                     showToast(
-                        "VisaPay sera bientôt disponible. Merci de patienter."
+                        "VisaPay sera bientôt disponible."
                     );
 
                 }
+
             );
 
         }
 
 
         /* =====================================================
-           16. AIRTEL MONEY
+           17. AIRTEL MONEY
         ===================================================== */
 
         if (airtelOperator) {
 
             airtelOperator.addEventListener(
+
                 "click",
+
                 function () {
+
+                    if (!selectedPlan) {
+
+                        showToast(
+                            "Veuillez choisir une formule."
+                        );
+
+                        return;
+
+                    }
+
 
                     selectedOperator =
                         "Airtel Money";
 
 
-                    updateSteps(4);
+                    updateSteps(
+                        4
+                    );
 
 
                     showPanel(
@@ -2670,16 +2699,24 @@ document.addEventListener(
                     );
 
                 }
+
             );
 
 
             airtelOperator.addEventListener(
+
                 "keydown",
+
                 function (event) {
 
                     if (
-                        event.key === "Enter" ||
-                        event.key === " "
+
+                        event.key ===
+                            "Enter" ||
+
+                        event.key ===
+                            " "
+
                     ) {
 
                         event.preventDefault();
@@ -2689,85 +2726,106 @@ document.addEventListener(
                     }
 
                 }
+
             );
 
         }
 
 
         /* =====================================================
-           17. RETOUR FORMULES
+           18. RETOUR FORMULES
         ===================================================== */
 
         if (backToPlans) {
 
             backToPlans.addEventListener(
+
                 "click",
+
                 function () {
 
-                    updateSteps(1);
+                    updateSteps(
+                        1
+                    );
+
 
                     showPanel(
                         plansPanel
                     );
 
                 }
+
             );
 
         }
 
 
         /* =====================================================
-           18. RETOUR MOYENS DE PAIEMENT
+           19. RETOUR MOYENS
         ===================================================== */
 
         if (backToMethods) {
 
             backToMethods.addEventListener(
+
                 "click",
+
                 function () {
 
-                    updateSteps(2);
+                    updateSteps(
+                        2
+                    );
+
 
                     showPanel(
                         methodsPanel
                     );
 
                 }
+
             );
 
         }
 
 
         /* =====================================================
-           19. RETOUR OPERATEURS
+           20. RETOUR OPERATEURS
         ===================================================== */
 
         if (backToOperators) {
 
             backToOperators.addEventListener(
+
                 "click",
+
                 function () {
 
-                    updateSteps(3);
+                    updateSteps(
+                        3
+                    );
+
 
                     showPanel(
                         operatorsPanel
                     );
 
                 }
+
             );
 
         }
 
 
         /* =====================================================
-           20. VALIDATION TELEPHONE
+           21. TELEPHONE
         ===================================================== */
 
         if (paymentPhone) {
 
             paymentPhone.addEventListener(
+
                 "input",
+
                 function () {
 
                     this.value =
@@ -2777,26 +2835,29 @@ document.addEventListener(
                         );
 
                 }
+
             );
 
         }
 
 
         /* =====================================================
-           21. ENVOI DE LA DEMANDE
+           22. ENVOI DEMANDE
         ===================================================== */
 
         if (paymentForm) {
 
             paymentForm.addEventListener(
+
                 "submit",
+
                 async function (event) {
 
                     event.preventDefault();
 
 
                     /* =========================================
-                       VERIFICATION FORMULE
+                       FORMULE
                     ========================================= */
 
                     if (!selectedPlan) {
@@ -2811,13 +2872,15 @@ document.addEventListener(
 
 
                     /* =========================================
-                       VERIFICATION UTILISATEUR
+                       UTILISATEUR
                     ========================================= */
 
                     if (!currentUser) {
 
                         showToast(
-                            "Impossible de récupérer votre compte. Veuillez vous reconnecter."
+
+                            "Votre session utilisateur est introuvable. Veuillez vous reconnecter."
+
                         );
 
                         return;
@@ -2826,7 +2889,7 @@ document.addEventListener(
 
 
                     /* =========================================
-                       TELEPHONE DU PAIEMENT
+                       TELEPHONE
                     ========================================= */
 
                     const phone =
@@ -2838,7 +2901,9 @@ document.addEventListener(
                     if (!phone) {
 
                         showToast(
+
                             "Veuillez entrer le numéro ayant effectué le paiement."
+
                         );
 
 
@@ -2866,7 +2931,9 @@ document.addEventListener(
                     ) {
 
                         showToast(
+
                             "Veuillez entrer un numéro de téléphone valide."
+
                         );
 
 
@@ -2883,10 +2950,11 @@ document.addEventListener(
 
 
                     /* =========================================
-                       IDENTIFIANTS UTILISATEUR
+                       UTILISATEUR
                     ========================================= */
 
                     const userId =
+
                         currentUser.id ||
                         currentUser.user_id ||
                         currentUser.userId ||
@@ -2894,24 +2962,60 @@ document.addEventListener(
 
 
                     const userName =
+
                         currentUser.nom ||
                         currentUser.name ||
                         "";
 
 
                     const userEmail =
+
                         currentUser.email ||
                         "";
 
 
                     const userPhone =
+
                         currentUser.telephone ||
                         currentUser.phone ||
                         "";
 
 
+                    const domain =
+
+                        currentUser.domaine ||
+                        currentUser.domain ||
+                        "";
+
+
                     /* =========================================
-                       PREPARATION BOUTON
+                       MONTANT
+                    ========================================= */
+
+                    const amount =
+                        Number(
+                            selectedAmount
+                        );
+
+
+                    if (
+                        !Number.isFinite(
+                            amount
+                        ) ||
+                        amount <= 0
+                    ) {
+
+                        showToast(
+                            "Montant de paiement invalide."
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* =========================================
+                       BOUTON
                     ========================================= */
 
                     if (sendPaymentBtn) {
@@ -2938,48 +3042,72 @@ document.addEventListener(
                     }
 
 
-                    /* =========================================
-                       DONNEES ENVOYEES AU BACKEND
-                       -----------------------------------------
-                       IMPORTANT :
-                       On utilise exactement les noms
-                       attendus par :
-
-                       POST /api/demandes-verification
-                    ========================================= */
-
-                    const verificationData = {
-
-                        numero_payeur:
-                            phone,
-
-                        user_id:
-                            userId,
-
-                        nom:
-                            userName,
-
-                        email:
-                            userEmail
-
-                    };
-
-
-                    console.log(
-                        "Demande envoyée au serveur :",
-                        verificationData
-                    );
-
-
                     try {
 
+
                         /* =====================================
-                           APPEL API
+                           DONNEES SERVEUR
+                        ===================================== */
+
+                        const verificationData = {
+
+                            numero_payeur:
+                                phone,
+
+                            user_id:
+                                userId,
+
+                            nom:
+                                userName,
+
+                            email:
+                                userEmail,
+
+                            telephone:
+                                userPhone,
+
+                            domaine:
+                                domain,
+
+                            formule:
+                                selectedPlan,
+
+                            montant:
+                                amount,
+
+                            devise:
+                                "USD",
+
+                            moyen_paiement:
+                                "Mobile Money",
+
+                            methode:
+                                "Mobile Money",
+
+                            operateur:
+                                selectedOperator,
+
+                            reference:
+                                paymentReference
+
+                        };
+
+
+                        console.log(
+                            "Demande paiement envoyée :",
+                            verificationData
+                        );
+
+
+                        /* =====================================
+                           APPEL SERVEUR
                         ===================================== */
 
                         const response =
                             await fetch(
+
                                 API_VERIFICATION,
+
                                 {
 
                                     method:
@@ -3001,14 +3129,16 @@ document.addEventListener(
                                         )
 
                                 }
+
                             );
 
 
                         /* =====================================
-                           REPONSE JSON
+                           REPONSE
                         ===================================== */
 
-                        let result = null;
+                        let result =
+                            null;
 
 
                         try {
@@ -3016,34 +3146,36 @@ document.addEventListener(
                             result =
                                 await response.json();
 
-                        } catch (jsonError) {
-
-                            console.error(
-                                "Réponse serveur invalide :",
-                                jsonError
-                            );
-
+                        } catch (
+                            jsonError
+                        ) {
 
                             throw new Error(
-                                "Le serveur n'a pas retourné une réponse JSON valide."
+
+                                "Le serveur n'a pas retourné une réponse JSON."
+
                             );
 
                         }
 
 
                         console.log(
-                            "Réponse demande vérification :",
+                            "Réponse serveur :",
                             result
                         );
 
 
                         /* =====================================
-                           VERIFICATION REPONSE
+                           ERREUR
                         ===================================== */
 
                         if (
+
                             !response.ok ||
-                            result.success !== true
+
+                            result.success !==
+                                true
+
                         ) {
 
                             throw new Error(
@@ -3058,84 +3190,52 @@ document.addEventListener(
 
 
                         /* =====================================
-                           RECUPERATION DES DONNEES SERVEUR
+                           DONNEES SERVEUR
                         ===================================== */
 
-                        const demande =
-                            result.data || {};
+                        const serverData =
+                            result.data ||
+                            {};
 
-
-                        /*
-                           C'est ici que nous récupérons
-                           la référence générée par le serveur.
-                        */
 
                         paymentReference =
-                            demande.reference ||
-                            null;
 
+                            serverData.reference ||
 
-                        if (!paymentReference) {
+                            paymentReference ||
 
-                            throw new Error(
-                                "La demande a été enregistrée mais le serveur n'a pas retourné de référence."
-                            );
-
-                        }
+                            generateLocalReference();
 
 
                         /* =====================================
-                           AFFICHAGE REFERENCE
+                           DONNEES COMPLETE
                         ===================================== */
 
-                        const referenceElement =
-                            document.getElementById(
-                                "paymentReference"
-                            );
-
-
-                        if (referenceElement) {
-
-                            referenceElement.textContent =
-                                paymentReference;
-
-                        }
-
-
-                        /* =====================================
-                           SAUVEGARDE LOCALE
-                        ===================================== */
-
-                        const lastVerification = {
-
-                            id:
-                                demande.id ||
-                                null,
+                        const paymentData = {
 
                             reference:
                                 paymentReference,
 
-                            numero_payeur:
-                                demande.numero_payeur ||
-                                phone,
-
                             user_id:
-                                demande.user_id ||
                                 userId,
 
                             nom:
-                                demande.nom ||
                                 userName,
 
                             email:
-                                demande.email ||
                                 userEmail,
+
+                            telephone:
+                                userPhone,
+
+                            domaine:
+                                domain,
 
                             formule:
                                 selectedPlan,
 
                             montant:
-                                selectedAmount,
+                                amount,
 
                             devise:
                                 "USD",
@@ -3146,71 +3246,145 @@ document.addEventListener(
                             operateur:
                                 selectedOperator,
 
-                            status:
-                                demande.status ||
+                            numero_paiement:
+                                phone,
+
+                            statut:
+                                serverData.status ||
                                 "pending",
 
-                            created_at:
-                                demande.created_at ||
-                                new Date().toISOString()
+                            premium:
+                                false,
+
+                            demande_id:
+                                serverData.id ||
+                                null,
+
+                            date:
+                                serverData.created_at ||
+                                new Date()
+                                    .toISOString()
 
                         };
 
 
-                        localStorage.setItem(
+                        /* =====================================
+                           SAUVEGARDE LOCALE
+                        ===================================== */
 
-                            "bmj_last_verification",
+                        try {
 
-                            JSON.stringify(
-                                lastVerification
-                            )
+                            localStorage.setItem(
 
-                        );
+                                "bmj_last_payment",
+
+                                JSON.stringify(
+                                    paymentData
+                                )
+
+                            );
 
 
-                        /*
-                           Compatibilité avec l'ancien
-                           système local.
-                        */
+                            localStorage.setItem(
 
-                        localStorage.setItem(
+                                "bmj_payment_reference",
 
-                            "bmj_last_payment",
+                                paymentReference
 
-                            JSON.stringify(
-                                lastVerification
-                            )
+                            );
+
+
+                            localStorage.setItem(
+
+                                "bmj_verification_request",
+
+                                JSON.stringify(
+                                    serverData
+                                )
+
+                            );
+
+                        } catch (
+                            storageError
+                        ) {
+
+                            console.warn(
+
+                                "Sauvegarde locale impossible :",
+
+                                storageError
+
+                            );
+
+                        }
+
+
+                        /* =====================================
+                           AFFICHAGE REFERENCE
+                        ===================================== */
+
+                        setText(
+
+                            "paymentReference",
+
+                            paymentReference
 
                         );
 
 
                         /* =====================================
-                           EMAIL ADMINISTRATEUR
+                           IMPORTANT :
+                           LA BASE EST MAINTENANT ENREGISTREE
+                        ===================================== */
+
+                        if (loading) {
+
+                            loading.textContent =
+
+                                "Demande enregistrée avec succès.";
+
+                        }
+
+
+                        showToast(
+
+                            "Votre demande de paiement a bien été enregistrée."
+
+                        );
+
+
+                        /* =====================================
+                           EMAIL ADMIN
+                           APRÈS ENREGISTREMENT
                         ===================================== */
 
                         const subject =
-                            "Demande de vérification paiement Premium BMJ SERVICE - " +
+
+                            "Demande de paiement Premium BMJ SERVICE - " +
                             paymentReference;
 
 
                         const body =
-`
-Bonjour BMJ SERVICE,
 
-Je viens d'effectuer un paiement pour demander l'activation de mon accès Premium.
+`Bonjour BMJ SERVICE,
 
-==================================================
-DEMANDE DE VÉRIFICATION
-==================================================
+Je viens d'effectuer un paiement pour activer mon accès Premium.
+
+==============================
+INFORMATIONS DE PAIEMENT
+==============================
 
 Référence :
 ${paymentReference}
+
+ID demande :
+${serverData.id || "Non renseigné"}
 
 Formule :
 ${selectedPlan}
 
 Montant :
-${selectedAmount.toFixed(2)} USD
+${amount.toFixed(2)} USD
 
 Moyen de paiement :
 Mobile Money
@@ -3221,9 +3395,12 @@ ${selectedOperator}
 Numéro ayant effectué le paiement :
 ${phone}
 
-==================================================
+Statut :
+En attente de vérification
+
+==============================
 INFORMATIONS UTILISATEUR
-==================================================
+==============================
 
 ID utilisateur :
 ${userId || "Non renseigné"}
@@ -3238,14 +3415,15 @@ Téléphone du compte :
 ${userPhone || "Non renseigné"}
 
 Domaine :
-${getDomain()}
+${domain || "Non renseigné"}
 
-==================================================
+==============================
 
-Statut de la demande :
-En attente de vérification
+La demande a été enregistrée automatiquement
+dans le serveur BMJ SERVICE.
 
-Merci de vérifier mon paiement et d'activer mon statut Premium si le paiement est confirmé.
+Merci de vérifier le paiement et d'activer
+mon statut Premium si le paiement est confirmé.
 
 Cordialement,
 
@@ -3253,85 +3431,77 @@ ${userName || "Utilisateur BMJ SERVICE"}
 `;
 
 
-                        /* =====================================
-                           MAILTO
-                        ===================================== */
-
                         const mailto =
 
                             "mailto:" +
                             ADMIN_EMAIL +
+
                             "?subject=" +
                             encodeURIComponent(
                                 subject
                             ) +
+
                             "&body=" +
                             encodeURIComponent(
                                 body
                             );
 
 
-                        /* =====================================
-                           MESSAGE SUCCES
-                        ===================================== */
+                        /*
+                           IMPORTANT :
 
-                        if (loading) {
+                           L'enregistrement PostgreSQL est déjà
+                           terminé avant cette instruction.
 
-                            loading.textContent =
-                                "Demande enregistrée. Ouverture de votre application e-mail...";
+                           Donc si mailto ne fonctionne pas,
+                           la demande reste dans PostgreSQL.
+                        */
+
+                        try {
+
+                            window.location.href =
+                                mailto;
+
+                        } catch (
+                            mailError
+                        ) {
+
+                            console.warn(
+                                "Ouverture e-mail impossible :",
+                                mailError
+                            );
 
                         }
 
 
-                        showToast(
-
-                            "Votre demande a été enregistrée avec succès. Référence : " +
-                            paymentReference
-
-                        );
-
-
                         /* =====================================
-                           OUVERTURE EMAIL
+                           REDIRECTION
                         ===================================== */
 
                         setTimeout(
-                            function () {
 
-                                window.location.href =
-                                    mailto;
-
-                            },
-                            500
-                        );
-
-
-                        /* =====================================
-                           REDIRECTION VERIFICATION
-                        ===================================== */
-
-                        setTimeout(
                             function () {
 
                                 window.location.href =
                                     "verificationdepaiement.html";
 
                             },
-                            2000
+
+                            1800
+
                         );
 
 
                     } catch (error) {
 
                         console.error(
-                            "Erreur demande de vérification :",
+
+                            "Erreur demande paiement :",
+
                             error
+
                         );
 
-
-                        /* =====================================
-                           ARRET LOADING
-                        ===================================== */
 
                         if (loading) {
 
@@ -3340,10 +3510,6 @@ ${userName || "Utilisateur BMJ SERVICE"}
 
                         }
 
-
-                        /* =====================================
-                           REACTIVATION BOUTON
-                        ===================================== */
 
                         if (sendPaymentBtn) {
 
@@ -3357,64 +3523,110 @@ ${userName || "Utilisateur BMJ SERVICE"}
                         }
 
 
-                        /* =====================================
-                           MESSAGE ERREUR
-                        ===================================== */
-
                         showToast(
 
                             error.message ||
-                            "Impossible d'enregistrer la demande de vérification."
+
+                            "Impossible d'enregistrer la demande."
 
                         );
 
                     }
 
                 }
+
             );
 
         }
 
 
         /* =====================================================
-           22. ETAT INITIAL
+           23. TEST API
         ===================================================== */
 
-        updateSteps(1);
+        async function testAPI() {
+
+            try {
+
+                const response =
+                    await fetch(
+
+                        API_URL +
+                        "/api",
+
+                        {
+
+                            method:
+                                "GET",
+
+                            headers: {
+
+                                "Accept":
+                                    "application/json"
+
+                            }
+
+                        }
+
+                    );
 
 
-        if (plansPanel) {
+                if (!response.ok) {
 
-            showPanel(
-                plansPanel
-            );
+                    console.warn(
+
+                        "API BMJ retourne HTTP",
+
+                        response.status
+
+                    );
+
+                    return;
+
+                }
+
+
+                const result =
+                    await response.json();
+
+
+                console.log(
+
+                    "BMJ SERVICE API :",
+
+                    result
+
+                );
+
+
+            } catch (error) {
+
+                console.warn(
+
+                    "Serveur BMJ SERVICE inaccessible :",
+
+                    error.message
+
+                );
+
+            }
 
         }
 
 
-        console.log(
-            "================================================"
+        /* =====================================================
+           24. DEMARRAGE
+        ===================================================== */
+
+        updateSteps(
+            1
         );
 
-        console.log(
-            "BMJ SERVICE - PAGE PAIEMENT"
-        );
 
-        console.log(
-            "API vérification : " +
-            API_VERIFICATION
-        );
+        testAPI();
 
-        console.log(
-            "Statut : JavaScript chargé"
-        );
-
-        console.log(
-            "================================================"
-        );
 
     }
-
 );
 
 </script>
