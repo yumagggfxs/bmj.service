@@ -3072,85 +3072,100 @@ document.addEventListener(
            27. FONCTION : OUVRIR EMAIL
         ===================================================== */
 
-        function openAdminEmail(
-            data
-        ) {
+       /* =====================================================
+   27. CONSTRUCTION DU MESSAGE DE DEMANDE
+   ===================================================== */
 
-            const reference =
-                data.reference ||
-                paymentReference ||
-                "Non renseignée";
+function buildPaymentMessage(data) {
+
+    const reference =
+        data.reference ||
+        paymentReference ||
+        "Non renseignée";
+
+    const numeroPayeur =
+        data.numero_payeur ||
+        "Non renseigné";
+
+    const userId =
+        data.user_id ||
+        getUserId() ||
+        "Non renseigné";
+
+    const userName =
+        data.nom ||
+        getUserName() ||
+        "Non renseigné";
+
+    const userEmail =
+        data.email ||
+        getUserEmail() ||
+        "Non renseigné";
+
+    const userPhone =
+        getUserPhone() ||
+        "Non renseigné";
+
+    const domain =
+        getDomain();
+
+    const plan =
+        selectedPlan ||
+        "Non renseignée";
+
+    const amount =
+        Number(selectedAmount || 0).toFixed(2);
+
+    const operator =
+        selectedOperator ||
+        "Airtel Money";
 
 
-            const numeroPayeur =
-                data.numero_payeur ||
-                data.numero_paiement ||
-                "";
-
-
-            const demandeId =
-                data.id ||
-                data.demande_id ||
-                "Non renseigné";
-
-
-            const userId =
-                data.user_id ||
-                getUserId() ||
-                "Non renseigné";
-
-
-            const userName =
-                data.nom ||
-                getUserName() ||
-                "Non renseigné";
-
-
-            const userEmail =
-                data.email ||
-                getUserEmail() ||
-                "Non renseigné";
-
-
-            const subject =
-
-                "Demande de vérification de paiement BMJ SERVICE - " +
-                reference;
-
-
-            const body =
-
-`Bonjour BMJ SERVICE,
-
-Je viens d'effectuer un paiement pour activer mon accès Premium.
-
-Merci de vérifier ce paiement.
-
+    return `
 ========================================
-INFORMATIONS DU PAIEMENT
+        BMJ SERVICE
+   DEMANDE DE VÉRIFICATION
 ========================================
 
-Référence de paiement :
+Bonjour BMJ SERVICE,
+
+Je viens d'effectuer un paiement pour
+activer mon accès Premium.
+
+Merci de vérifier mon paiement.
+
+----------------------------------------
+       INFORMATIONS IMPORTANTES
+----------------------------------------
+
+RÉFÉRENCE DU PAIEMENT :
 ${reference}
 
-Numéro ayant effectué le paiement :
+
+NUMÉRO AYANT EFFECTUÉ LE PAIEMENT :
 ${numeroPayeur}
 
+
+----------------------------------------
+        INFORMATIONS DU PAIEMENT
+----------------------------------------
+
 Opérateur :
-${selectedOperator}
+${operator}
 
 Formule :
-${selectedPlan || "Non renseignée"}
+${plan}
 
 Montant :
-${Number(selectedAmount || 0).toFixed(2)} USD
+${amount} USD
 
 Statut :
 En attente de vérification
 
-========================================
-INFORMATIONS UTILISATEUR
-========================================
+
+----------------------------------------
+        INFORMATIONS UTILISATEUR
+----------------------------------------
 
 ID utilisateur :
 ${userId}
@@ -3161,767 +3176,612 @@ ${userName}
 Email :
 ${userEmail}
 
+Téléphone du compte :
+${userPhone}
+
 Domaine :
-${getDomain()}
+${domain}
 
-========================================
-DEMANDE
-========================================
 
-ID de la demande :
-${demandeId}
+----------------------------------------
+              DEMANDE
+----------------------------------------
 
-La demande de vérification a été enregistrée
-sur le serveur BMJ SERVICE.
+Merci de vérifier :
 
-Merci de vérifier la référence et le numéro
-ayant effectué le paiement.
+• la référence du paiement ;
+• le numéro ayant effectué le paiement ;
+• le montant payé ;
+• les informations de l'utilisateur.
 
-Après confirmation du paiement, merci d'activer
-l'accès Premium de l'utilisateur.
+Après confirmation du paiement,
+merci d'activer l'accès Premium.
+
+Merci.
 
 Cordialement,
 
 ${userName}
+
 BMJ SERVICE
 `;
+}
 
 
-            const mailto =
+/* =====================================================
+   28. OUVRIR L'APPLICATION EMAIL
+   ===================================================== */
 
-                "mailto:" +
-                ADMIN_EMAIL +
-                "?subject=" +
-                encodeURIComponent(
-                    subject
-                ) +
-                "&body=" +
-                encodeURIComponent(
-                    body
+function openAdminEmail(data) {
+
+    const reference =
+        data.reference ||
+        paymentReference ||
+        "Non renseignée";
+
+    const numeroPayeur =
+        data.numero_payeur ||
+        "Non renseigné";
+
+    const userId =
+        data.user_id ||
+        getUserId() ||
+        "Non renseigné";
+
+    const userName =
+        data.nom ||
+        getUserName() ||
+        "Non renseigné";
+
+    const userEmail =
+        data.email ||
+        getUserEmail() ||
+        "Non renseigné";
+
+    const subject =
+        "BMJ SERVICE - Vérification paiement - " +
+        reference;
+
+
+    const body =
+        buildPaymentMessage({
+
+            reference:
+                reference,
+
+            numero_payeur:
+                numeroPayeur,
+
+            user_id:
+                userId,
+
+            nom:
+                userName,
+
+            email:
+                userEmail
+
+        });
+
+
+    const mailto =
+        "mailto:" +
+        ADMIN_EMAIL +
+        "?subject=" +
+        encodeURIComponent(subject) +
+        "&body=" +
+        encodeURIComponent(body);
+
+
+    console.log(
+        "Ouverture de l'application email..."
+    );
+
+    console.log(
+        "Administrateur :",
+        ADMIN_EMAIL
+    );
+
+    console.log(
+        "Référence :",
+        reference
+    );
+
+    console.log(
+        "Numéro payeur :",
+        numeroPayeur
+    );
+
+
+    try {
+
+        window.location.href =
+            mailto;
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Impossible d'ouvrir l'email :",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/* =====================================================
+   29. ENVOI DE LA DEMANDE
+   ===================================================== */
+
+if (paymentForm) {
+
+    paymentForm.addEventListener(
+
+        "submit",
+
+        async function (event) {
+
+            event.preventDefault();
+
+
+            /* -------------------------------------------
+               PROTECTION DOUBLE CLIC
+            ------------------------------------------- */
+
+            if (requestSent) {
+
+                showToast(
+                    "Votre demande est déjà en préparation."
                 );
 
-
-            console.log(
-                "Ouverture de la boîte email :",
-                ADMIN_EMAIL
-            );
-
-
-            try {
-
-                window.location.href =
-                    mailto;
-
-                return true;
-
-            } catch (error) {
-
-                console.error(
-                    "Impossible d'ouvrir l'email :",
-                    error
-                );
-
-                return false;
+                return;
 
             }
 
+
+            /* -------------------------------------------
+               FORMULE
+            ------------------------------------------- */
+
+            if (!selectedPlan) {
+
+                showToast(
+                    "Veuillez choisir une formule."
+                );
+
+                return;
+
+            }
+
+
+            /* -------------------------------------------
+               UTILISATEUR
+            ------------------------------------------- */
+
+            if (!currentUser) {
+
+                showToast(
+                    "Votre session utilisateur est introuvable. Veuillez vous reconnecter."
+                );
+
+                return;
+
+            }
+
+
+            /* -------------------------------------------
+               ID UTILISATEUR
+            ------------------------------------------- */
+
+            const userId =
+                getUserId();
+
+
+            if (!userId) {
+
+                showToast(
+                    "Impossible de déterminer votre identifiant utilisateur."
+                );
+
+                return;
+
+            }
+
+
+            /* -------------------------------------------
+               NUMÉRO PAYEUR
+            ------------------------------------------- */
+
+            const phone =
+                paymentPhone
+                    ? paymentPhone.value.trim()
+                    : "";
+
+
+            if (!phone) {
+
+                showToast(
+                    "Veuillez entrer le numéro ayant effectué le paiement."
+                );
+
+
+                if (paymentPhone) {
+
+                    paymentPhone.focus();
+
+                }
+
+                return;
+
+            }
+
+
+            /* -------------------------------------------
+               NETTOYAGE NUMÉRO
+            ------------------------------------------- */
+
+            const cleanPhone =
+                phone.replace(
+                    /[^0-9]/g,
+                    ""
+                );
+
+
+            if (
+                cleanPhone.length < 8
+            ) {
+
+                showToast(
+                    "Veuillez entrer un numéro de téléphone valide."
+                );
+
+
+                if (paymentPhone) {
+
+                    paymentPhone.focus();
+
+                }
+
+                return;
+
+            }
+
+
+            /* -------------------------------------------
+               MONTANT
+            ------------------------------------------- */
+
+            const amount =
+                Number(
+                    selectedAmount
+                );
+
+
+            if (
+                !Number.isFinite(amount) ||
+                amount <= 0
+            ) {
+
+                showToast(
+                    "Montant de paiement invalide."
+                );
+
+                return;
+
+            }
+
+
+            /* -------------------------------------------
+               RÉFÉRENCE LOCALE
+               
+               AUCUNE RÉFÉRENCE SERVEUR.
+            ------------------------------------------- */
+
+            if (!paymentReference) {
+
+                paymentReference =
+                    generateLocalReference();
+
+            }
+
+
+            setText(
+                "paymentReference",
+                paymentReference
+            );
+
+
+            /* -------------------------------------------
+               INFORMATIONS UTILISATEUR
+            ------------------------------------------- */
+
+            const userName =
+                getUserName();
+
+            const userEmail =
+                getUserEmail();
+
+            const userPhone =
+                getUserPhone();
+
+            const domain =
+                getDomain();
+
+
+            /* -------------------------------------------
+               DONNÉES LOCALES UNIQUEMENT
+               
+               IMPORTANT :
+               RIEN N'EST ENVOYÉ AU SERVEUR.
+            ------------------------------------------- */
+
+            const paymentData = {
+
+                reference:
+                    paymentReference,
+
+                user_id:
+                    userId,
+
+                nom:
+                    userName,
+
+                email:
+                    userEmail,
+
+                telephone_compte:
+                    userPhone,
+
+                domaine:
+                    domain,
+
+                numero_payeur:
+                    phone,
+
+                operateur:
+                    selectedOperator,
+
+                formule:
+                    selectedPlan,
+
+                montant:
+                    amount,
+
+                devise:
+                    "USD",
+
+                date:
+                    new Date().toISOString(),
+
+                statut:
+                    "pending"
+
+            };
+
+
+            console.log(
+                "========================================"
+            );
+
+            console.log(
+                "BMJ SERVICE"
+            );
+
+            console.log(
+                "DEMANDE LOCALE"
+            );
+
+            console.log(
+                "========================================"
+            );
+
+            console.log(
+                paymentData
+            );
+
+            console.log(
+                "IMPORTANT : aucune donnée n'est envoyée au serveur."
+            );
+
+
+            /* -------------------------------------------
+               SAUVEGARDE LOCALE UNIQUEMENT
+            ------------------------------------------- */
+
+            try {
+
+                localStorage.setItem(
+
+                    "bmj_payment_reference",
+
+                    paymentReference
+
+                );
+
+
+                localStorage.setItem(
+
+                    "bmj_last_payment",
+
+                    JSON.stringify(
+                        paymentData
+                    )
+
+                );
+
+            } catch (storageError) {
+
+                console.warn(
+                    "Sauvegarde locale impossible :",
+                    storageError
+                );
+
+            }
+
+
+            /* -------------------------------------------
+               MARQUER COMME PRÉPARÉ
+            ------------------------------------------- */
+
+            requestSent =
+                true;
+
+
+            if (sendPaymentBtn) {
+
+                sendPaymentBtn.disabled =
+                    true;
+
+                sendPaymentBtn.textContent =
+                    "📧 Ouverture de votre messagerie...";
+
+            }
+
+
+            if (loading) {
+
+                loading.style.display =
+                    "block";
+
+                loading.textContent =
+                    "Préparation de votre demande...";
+
+            }
+
+
+            /* -------------------------------------------
+               OUVERTURE EMAIL
+               
+               AUCUN FETCH.
+               AUCUN POST.
+               AUCUNE ROUTE API.
+            ------------------------------------------- */
+
+            const emailOpened =
+                openAdminEmail({
+
+                    reference:
+                        paymentReference,
+
+                    numero_payeur:
+                        phone,
+
+                    user_id:
+                        userId,
+
+                    nom:
+                        userName,
+
+                    email:
+                        userEmail
+
+                });
+
+
+            if (!emailOpened) {
+
+                requestSent =
+                    false;
+
+
+                if (sendPaymentBtn) {
+
+                    sendPaymentBtn.disabled =
+                        false;
+
+                    sendPaymentBtn.textContent =
+                        "📧 Envoyer ma demande";
+
+                }
+
+
+                if (loading) {
+
+                    loading.style.display =
+                        "none";
+
+                }
+
+
+                showToast(
+                    "Impossible d'ouvrir votre application email."
+                );
+
+                return;
+
+            }
+
+
+            /* -------------------------------------------
+               SUCCÈS
+            ------------------------------------------- */
+
+            if (loading) {
+
+                loading.textContent =
+                    "Votre demande est prête. Vérifiez votre message puis envoyez-le.";
+            }
+
+
+            showToast(
+                "Votre message a été préparé. Vérifiez les informations puis envoyez-le."
+            );
+
+
+            /* -------------------------------------------
+               REDIRECTION
+               
+               On laisse d'abord le temps à mailto
+               de s'ouvrir.
+            ------------------------------------------- */
+
+            setTimeout(
+
+                function () {
+
+                    window.location.href =
+                        "verificationpaiement.html";
+
+                },
+
+                2500
+
+            );
+
         }
 
+    );
 
-        /* =====================================================
-           28. ENVOI DE LA DEMANDE
-        ===================================================== */
+}
 
-        if (paymentForm) {
 
-            paymentForm.addEventListener(
+/* =====================================================
+   30. TEST API
+   ===================================================== */
 
-                "submit",
+async function testAPI() {
 
-                async function (event) {
+    try {
 
-                    event.preventDefault();
+        const response =
+            await fetch(
 
+                API_URL + "/api",
 
-                    /* -------------------------------------------
-                       PROTECTION DOUBLE ENVOI
-                    ------------------------------------------- */
+                {
 
-                    if (requestSent) {
+                    method:
+                        "GET",
 
-                        showToast(
+                    headers: {
 
-                            "Votre demande a déjà été envoyée."
-
-                        );
-
-                        return;
-
-                    }
-
-
-                    /* -------------------------------------------
-                       FORMULE
-                    ------------------------------------------- */
-
-                    if (!selectedPlan) {
-
-                        showToast(
-
-                            "Veuillez choisir une formule."
-
-                        );
-
-                        return;
-
-                    }
-
-
-                    /* -------------------------------------------
-                       UTILISATEUR
-                    ------------------------------------------- */
-
-                    if (!currentUser) {
-
-                        showToast(
-
-                            "Votre session utilisateur est introuvable. Veuillez vous reconnecter."
-
-                        );
-
-                        return;
-
-                    }
-
-
-                    /* -------------------------------------------
-                       ID UTILISATEUR
-                    ------------------------------------------- */
-
-                    const userId =
-                        getUserId();
-
-
-                    if (!userId) {
-
-                        showToast(
-
-                            "Impossible de déterminer votre identifiant utilisateur."
-
-                        );
-
-                        return;
-
-                    }
-
-
-                    /* -------------------------------------------
-                       NUMÉRO PAYEUR
-                    ------------------------------------------- */
-
-                    const phone =
-                        paymentPhone
-                            ? paymentPhone.value.trim()
-                            : "";
-
-
-                    if (!phone) {
-
-                        showToast(
-
-                            "Veuillez entrer le numéro ayant effectué le paiement."
-
-                        );
-
-
-                        if (paymentPhone) {
-
-                            paymentPhone.focus();
-
-                        }
-
-
-                        return;
-
-                    }
-
-
-                    const cleanPhone =
-                        phone.replace(
-                            /[^0-9]/g,
-                            ""
-                        );
-
-
-                    if (
-                        cleanPhone.length < 8
-                    ) {
-
-                        showToast(
-
-                            "Veuillez entrer un numéro de téléphone valide."
-
-                        );
-
-
-                        if (paymentPhone) {
-
-                            paymentPhone.focus();
-
-                        }
-
-
-                        return;
-
-                    }
-
-
-                    /* -------------------------------------------
-                       MONTANT
-                    ------------------------------------------- */
-
-                    const amount =
-                        Number(
-                            selectedAmount
-                        );
-
-
-                    if (
-
-                        !Number.isFinite(
-                            amount
-                        ) ||
-
-                        amount <= 0
-
-                    ) {
-
-                        showToast(
-
-                            "Montant de paiement invalide."
-
-                        );
-
-                        return;
-
-                    }
-
-
-                    /* -------------------------------------------
-                       RÉFÉRENCE
-                       
-                       Si elle existe déjà, on la conserve.
-                       Sinon on en génère une.
-                    ------------------------------------------- */
-
-                    if (!paymentReference) {
-
-                        paymentReference =
-                            generateLocalReference();
-
-                    }
-
-
-                    setText(
-                        "paymentReference",
-                        paymentReference
-                    );
-
-
-                    /* -------------------------------------------
-                       INFORMATIONS UTILISATEUR
-                    ------------------------------------------- */
-
-                    const userName =
-                        getUserName();
-
-
-                    const userEmail =
-                        getUserEmail();
-
-
-                    const userPhone =
-                        getUserPhone();
-
-
-                    const domain =
-                        getDomain();
-
-
-                    /* -------------------------------------------
-                       DONNÉES POUR LA NOUVELLE ROUTE
-                       
-                       IMPORTANT :
-                       On n'utilise PAS /api/paiements.
-
-                       Cette requête est destinée uniquement
-                       à /api/demandes-verification.
-                    ------------------------------------------- */
-
-                    const verificationData = {
-
-                        user_id:
-                            userId,
-
-                        numero_payeur:
-                            phone,
-
-                        reference:
-                            paymentReference,
-
-                        formule:
-                            selectedPlan,
-
-                        montant:
-                            amount,
-
-                        devise:
-                            "USD",
-
-                        operateur:
-                            selectedOperator,
-
-                        nom:
-                            userName,
-
-                        email:
-                            userEmail
-
-                    };
-
-
-                    console.log(
-                        "========================================"
-                    );
-
-
-                    console.log(
-                        "DEMANDE DE VÉRIFICATION BMJ SERVICE"
-                    );
-
-
-                    console.log(
-                        verificationData
-                    );
-
-
-                    console.log(
-                        "Route utilisée :",
-                        API_VERIFICATION
-                    );
-
-
-                    console.log(
-                        "========================================"
-                    );
-
-
-                    /* -------------------------------------------
-                       BOUTON
-                    ------------------------------------------- */
-
-                    if (sendPaymentBtn) {
-
-                        sendPaymentBtn.disabled =
-                            true;
-
-
-                        sendPaymentBtn.textContent =
-                            "Enregistrement...";
-
-                    }
-
-
-                    if (loading) {
-
-                        loading.style.display =
-                            "block";
-
-
-                        loading.textContent =
-                            "Enregistrement de votre demande...";
-
-                    }
-
-
-                    try {
-
-
-                        /* =====================================
-                           APPEL NOUVELLE ROUTE
-                        ===================================== */
-
-                        const response =
-                            await fetch(
-
-                                API_VERIFICATION,
-
-                                {
-
-                                    method:
-                                        "POST",
-
-                                    headers: {
-
-                                        "Content-Type":
-                                            "application/json",
-
-                                        "Accept":
-                                            "application/json"
-
-                                    },
-
-                                    body:
-                                        JSON.stringify(
-                                            verificationData
-                                        )
-
-                                }
-
-                            );
-
-
-                        /* =====================================
-                           LECTURE JSON
-                        ===================================== */
-
-                        let result =
-                            null;
-
-
-                        try {
-
-                            result =
-                                await response.json();
-
-                        } catch (
-                            jsonError
-                        ) {
-
-                            throw new Error(
-
-                                "Le serveur n'a pas retourné une réponse JSON."
-
-                            );
-
-                        }
-
-
-                        console.log(
-                            "Réponse serveur :",
-                            result
-                        );
-
-
-                        /* =====================================
-                           VÉRIFICATION SERVEUR
-                        ===================================== */
-
-                        if (
-
-                            !response.ok ||
-
-                            !result ||
-
-                            result.success !== true
-
-                        ) {
-
-                            throw new Error(
-
-                                result?.message ||
-                                result?.error ||
-                                "Impossible d'enregistrer la demande."
-
-                            );
-
-                        }
-
-
-                        /* =====================================
-                           DONNÉES SERVEUR
-                        ===================================== */
-
-                        const serverData =
-                            result.data ||
-                            {};
-
-
-                        /* =====================================
-                           RÉFÉRENCE SERVEUR
-                           
-                           Si le serveur renvoie sa propre
-                           référence, elle devient prioritaire.
-                        ===================================== */
-
-                        paymentReference =
-
-                            serverData.reference ||
-
-                            paymentReference;
-
-
-                        /* =====================================
-                           ID DEMANDE
-                        ===================================== */
-
-                        const demandeId =
-
-                            serverData.id ||
-
-                            serverData.demande_id ||
-
-                            null;
-
-
-                        /* =====================================
-                           NUMÉRO PAYEUR
-                        ===================================== */
-
-                        const numeroPayeur =
-
-                            serverData.numero_payeur ||
-
-                            phone;
-
-
-                        /* =====================================
-                           SAUVEGARDE LOCALE
-                           
-                           Ceci ne remplace PAS PostgreSQL.
-                           PostgreSQL est déjà enregistré.
-                        ===================================== */
-
-                        const localPaymentData = {
-
-                            demande_id:
-                                demandeId,
-
-                            reference:
-                                paymentReference,
-
-                            user_id:
-                                userId,
-
-                            numero_payeur:
-                                numeroPayeur,
-
-                            formule:
-                                selectedPlan,
-
-                            montant:
-                                amount,
-
-                            devise:
-                                "USD",
-
-                            operateur:
-                                selectedOperator,
-
-                            statut:
-                                serverData.status ||
-                                serverData.statut ||
-                                "pending",
-
-                            date:
-                                serverData.created_at ||
-                                new Date()
-                                    .toISOString()
-
-                        };
-
-
-                        try {
-
-                            localStorage.setItem(
-
-                                "bmj_verification_request",
-
-                                JSON.stringify(
-                                    localPaymentData
-                                )
-
-                            );
-
-
-                            localStorage.setItem(
-
-                                "bmj_payment_reference",
-
-                                paymentReference
-
-                            );
-
-
-                            localStorage.setItem(
-
-                                "bmj_last_payment",
-
-                                JSON.stringify(
-                                    localPaymentData
-                                )
-
-                            );
-
-                        } catch (
-                            storageError
-                        ) {
-
-                            console.warn(
-
-                                "Sauvegarde locale impossible :",
-
-                                storageError
-
-                            );
-
-                        }
-
-
-                        /* =====================================
-                           DEMANDE ENREGISTRÉE
-                        ===================================== */
-
-                        requestSent =
-                            true;
-
-
-                        if (loading) {
-
-                            loading.textContent =
-
-                                "Demande enregistrée avec succès.";
-
-                        }
-
-
-                        setText(
-
-                            "paymentReference",
-
-                            paymentReference
-
-                        );
-
-
-                        showToast(
-
-                            "Votre demande de paiement a été enregistrée avec succès."
-
-                        );
-
-
-                        /* =====================================
-                           EMAIL ADMINISTRATEUR
-                           
-                           L'EMAIL EST OUVERT SEULEMENT
-                           APRÈS CONFIRMATION DU SERVEUR.
-                        ===================================== */
-
-                        const emailData = {
-
-                            id:
-                                demandeId,
-
-                            user_id:
-                                userId,
-
-                            nom:
-                                userName,
-
-                            email:
-                                userEmail,
-
-                            reference:
-                                paymentReference,
-
-                            numero_payeur:
-                                numeroPayeur
-
-                        };
-
-
-                        openAdminEmail(
-                            emailData
-                        );
-
-
-                        /* =====================================
-                           REDIRECTION
-                           
-                           Après ouverture de la boîte email.
-                        ===================================== */
-
-                        setTimeout(
-
-                            function () {
-
-                                window.location.href =
-                                    "verificationpaiement.html";
-
-                            },
-
-                            1800
-
-                        );
-
-
-                    } catch (error) {
-
-                        console.error(
-
-                            "========================================"
-
-                        );
-
-
-                        console.error(
-
-                            "ERREUR DEMANDE DE PAIEMENT :",
-
-                            error
-
-                        );
-
-
-                        console.error(
-
-                            "========================================"
-
-                        );
-
-
-                        requestSent =
-                            false;
-
-
-                        if (loading) {
-
-                            loading.style.display =
-                                "none";
-
-                        }
-
-
-                        if (sendPaymentBtn) {
-
-                            sendPaymentBtn.disabled =
-                                false;
-
-
-                            sendPaymentBtn.textContent =
-                                "📧 Envoyer ma demande";
-
-                        }
-
-
-                        showToast(
-
-                            error.message ||
-
-                            "Impossible d'enregistrer la demande."
-
-                        );
+                        "Accept":
+                            "application/json"
 
                     }
 
@@ -3929,8 +3789,82 @@ BMJ SERVICE
 
             );
 
+
+        if (!response.ok) {
+
+            console.warn(
+                "API BMJ retourne HTTP",
+                response.status
+            );
+
+            return;
+
         }
 
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "BMJ SERVICE API :",
+            result
+        );
+
+
+    } catch (error) {
+
+        console.warn(
+            "Serveur BMJ SERVICE inaccessible :",
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   31. INITIALISATION
+   ===================================================== */
+
+updateSteps(1);
+
+
+/* -----------------------------------------------
+   Restaurer la référence locale
+----------------------------------------------- */
+
+try {
+
+    const savedReference =
+        localStorage.getItem(
+            "bmj_payment_reference"
+        );
+
+
+    if (savedReference) {
+
+        paymentReference =
+            savedReference;
+
+    }
+
+} catch (error) {
+
+    console.warn(
+        "Impossible de récupérer la référence.",
+        error
+    );
+
+}
+
+
+/* -----------------------------------------------
+   Test API
+----------------------------------------------- */
+
+testAPI();
 
         /* =====================================================
            29. TEST API
