@@ -3,846 +3,1173 @@
 
 <head>
 
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Paiement Premium — BMJ SERVICE
-    </title>
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-    <style>
-
-        /* =========================================================
-           BMJ SERVICE
-           PAGE PAIEMENT PREMIUM
-        ========================================================= */
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', Arial, sans-serif;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: #f4f7fb;
-            color: #334155;
-            overflow-x: hidden;
-        }
-
-        button,
-        input {
-            font: inherit;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        /* =========================================================
-           HEADER
-        ========================================================= */
-
-        .header {
-            background: #145a86;
-            color: #fff;
-            padding: 17px 20px;
-            box-shadow:
-                0 4px 18px rgba(20, 90, 134, .18);
-        }
-
-        .header-content {
-            max-width: 1100px;
-            margin: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .logo {
-            font-size: 21px;
-            font-weight: 800;
-        }
-
-        .header-user {
-            font-size: 11px;
-            opacity: .92;
-        }
-
-        /* =========================================================
-           CONTAINER
-        ========================================================= */
-
-        .container {
-            width: min(1050px, calc(100% - 24px));
-            margin: auto;
-            padding: 32px 0 65px;
-        }
-
-        /* =========================================================
-           HERO
-        ========================================================= */
-
-        .hero {
-            text-align: center;
-            margin-bottom: 27px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 30px;
-            background: #e8f3fa;
-            color: #145a86;
-            font-size: 10px;
-            font-weight: 800;
-            margin-bottom: 10px;
-        }
-
-        .hero h1 {
-            color: #123d5a;
-            font-size: clamp(25px, 4vw, 36px);
-            margin-bottom: 8px;
-        }
-
-        .hero p {
-            max-width: 680px;
-            margin: auto;
-            color: #718096;
-            font-size: 13px;
-            line-height: 1.75;
-        }
-
-        /* =========================================================
-           STEPS
-        ========================================================= */
-
-        .steps {
-            max-width: 820px;
-            margin: 0 auto 30px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-        }
-
-        .step {
-            text-align: center;
-        }
-
-        .step-circle {
-            width: 38px;
-            height: 38px;
-            margin: auto;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #e2e8f0;
-            color: #64748b;
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .step.active .step-circle {
-            background: #145a86;
-            color: #fff;
-        }
-
-        .step.done .step-circle {
-            background: #16a34a;
-            color: #fff;
-        }
-
-        .step-label {
-            display: block;
-            margin-top: 6px;
-            color: #7b8794;
-            font-size: 9px;
-            font-weight: 600;
-        }
-
-        /* =========================================================
-           PANELS
-        ========================================================= */
-
-        .panel {
-            display: none;
-        }
-
-        .panel.active {
-            display: block;
-            animation: showPanel .25s ease;
-        }
-
-        @keyframes showPanel {
-
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: none;
-            }
-
-        }
-
-        /* =========================================================
-           TITRES
-        ========================================================= */
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .section-title h2 {
-            color: #173f5b;
-            font-size: 22px;
-        }
-
-        .section-title p {
-            margin-top: 5px;
-            color: #7b8794;
-            font-size: 12px;
-        }
-
-        /* =========================================================
-           PLANS
-        ========================================================= */
-
-        .plans {
-            max-width: 850px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-        }
-
-        .plan {
-            background: #fff;
-            border: 2px solid #e7edf3;
-            border-radius: 19px;
-            padding: 26px;
-            box-shadow:
-                0 10px 30px rgba(15, 23, 42, .06);
-            transition: .2s;
-        }
-
-        .plan:hover {
-            transform: translateY(-2px);
-            border-color: #b9d4e5;
-        }
-
-        .plan-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 15px;
-            background: #eaf4fa;
-            color: #145a86;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            margin-bottom: 14px;
-        }
-
-        .plan h3 {
-            color: #183f59;
-            font-size: 18px;
-        }
-
-        .plan-description {
-            color: #788597;
-            font-size: 11px;
-            line-height: 1.7;
-            margin-top: 6px;
-        }
-
-        .price {
-            color: #145a86;
-            font-size: 31px;
-            font-weight: 800;
-            margin: 17px 0;
-        }
-
-        .price small {
-            color: #718096;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .plan ul {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-
-        .plan li {
-            color: #526173;
-            font-size: 11px;
-            margin: 9px 0;
-        }
-
-        .plan li span {
-            color: #16a34a;
-            font-weight: 800;
-            margin-right: 5px;
-        }
-
-        /* =========================================================
-           BUTTON
-        ========================================================= */
-
-        .btn {
-            width: 100%;
-            border: 0;
-            border-radius: 10px;
-            padding: 13px 15px;
-            background: #145a86;
-            color: #fff;
-            font-size: 12px;
-            font-weight: 700;
-            transition: .2s;
-        }
-
-        .btn:hover {
-            background: #0e4a70;
-        }
-
-        .btn:disabled {
-            opacity: .6;
-            cursor: not-allowed;
-        }
-
-        .back {
-            border: 0;
-            background: transparent;
-            color: #145a86;
-            font-size: 11px;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        /* =========================================================
-           SUMMARY
-        ========================================================= */
-
-        .summary {
-            max-width: 820px;
-            margin: 0 auto 20px;
-            background: #fff;
-            border-radius: 15px;
-            padding: 15px 18px;
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            box-shadow:
-                0 7px 24px rgba(15, 23, 42, .05);
-        }
-
-        .summary-item span {
-            display: block;
-            color: #8a96a6;
-            font-size: 8px;
-        }
-
-        .summary-item strong {
-            display: block;
-            color: #173f5b;
-            font-size: 12px;
-            margin-top: 3px;
-            word-break: break-word;
-        }
-
-        .summary-item.amount strong {
-            color: #145a86;
-            font-size: 18px;
-        }
-
-        /* =========================================================
-           PAYMENT METHODS
-        ========================================================= */
-
-        .methods {
-            max-width: 820px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
-
-        .method {
-            background: #fff;
-            border: 2px solid #e8edf3;
-            border-radius: 19px;
-            padding: 27px;
-            text-align: center;
-            box-shadow:
-                0 8px 25px rgba(15, 23, 42, .05);
-        }
-
-        .method-icon {
-            font-size: 32px;
-            margin-bottom: 10px;
-        }
-
-        .method h3 {
-            color: #173f5b;
-            font-size: 17px;
-        }
-
-        .method p {
-            color: #788597;
-            font-size: 11px;
-            line-height: 1.7;
-            margin: 8px 0 17px;
-        }
-
-        .notice-disabled {
-            background: #f1f5f9;
-            color: #64748b;
-            border-radius: 9px;
-            padding: 9px;
-            font-size: 9px;
-            margin-bottom: 12px;
-        }
-
-        /* =========================================================
-           OPERATORS
-        ========================================================= */
-
-        .operators {
-            max-width: 850px;
-            margin: auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-        }
-
-        .operator {
-            background: #fff;
-            border: 2px solid #e8edf3;
-            border-radius: 18px;
-            padding: 19px 14px;
-            text-align: center;
-            box-shadow:
-                0 8px 24px rgba(15, 23, 42, .05);
-        }
-
-        .operator.available {
-            cursor: pointer;
-            transition: .2s;
-        }
-
-        .operator.available:hover {
-            border-color: #145a86;
-            transform: translateY(-2px);
-        }
-
-        .operator.disabled {
-            opacity: .55;
-            cursor: not-allowed;
-        }
-
-        .operator img {
-            width: 68px;
-            height: 68px;
-            object-fit: contain;
-            border-radius: 13px;
-            margin-bottom: 10px;
-        }
-
-        .operator h3 {
-            color: #173f5b;
-            font-size: 14px;
-            margin-bottom: 7px;
-        }
-
-        .status {
-            display: inline-block;
-            padding: 5px 8px;
-            border-radius: 30px;
-            font-size: 8px;
-            font-weight: 800;
-        }
-
-        .status.ok {
-            background: #dcfce7;
-            color: #15803d;
-        }
-
-        .status.off {
-            background: #f1f5f9;
-            color: #64748b;
-        }
-
-        /* =========================================================
-           DETAILS
-        ========================================================= */
-
-        .details {
-            max-width: 850px;
-            margin: auto;
-            background: #fff;
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow:
-                0 10px 35px rgba(15, 23, 42, .07);
-        }
-
-        .method-selected {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .method-selected img {
-            width: 54px;
-            height: 54px;
-            object-fit: contain;
-        }
-
-        .method-selected h3 {
-            color: #173f5b;
-            font-size: 18px;
-        }
-
-        .method-selected p {
-            color: #8793a2;
-            font-size: 9px;
-        }
-
-        /* =========================================================
-           RECIPIENT
-        ========================================================= */
-
-        .recipient {
-            background: #edf7ff;
-            border: 1px solid #d8ebf7;
-            border-radius: 15px;
-            padding: 18px;
-            margin: 18px 0;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
-        }
-
-        .info-box span {
-            display: block;
-            color: #7c8b9d;
-            font-size: 8px;
-        }
-
-        .info-box strong {
-            display: block;
-            color: #173f5b;
-            font-size: 15px;
-            margin-top: 3px;
-            word-break: break-word;
-        }
-
-        .info-box.amount strong {
-            color: #145a86;
-            font-size: 22px;
-        }
-
-        /* =========================================================
-           INSTRUCTIONS
-        ========================================================= */
-
-        .instructions {
-            margin: 20px 0;
-        }
-
-        .instructions h3,
-        .user-info h3 {
-            color: #173f5b;
-            font-size: 15px;
-            margin-bottom: 10px;
-        }
-
-        .instructions ol {
-            padding-left: 20px;
-        }
-
-        .instructions li {
-            color: #59687a;
-            font-size: 11px;
-            line-height: 1.8;
-        }
-
-        /* =========================================================
-           NOTICE
-        ========================================================= */
-
-        .notice {
-            background: #fff8e7;
-            border-left: 4px solid #e0a400;
-            border-radius: 7px;
-            padding: 12px 14px;
-            color: #725b18;
-            font-size: 10px;
-            line-height: 1.7;
-            margin: 18px 0;
-        }
-
-        /* =========================================================
-           USER INFO
-        ========================================================= */
-
-        .user-info {
-            background: #f7f9fc;
-            border-radius: 14px;
-            padding: 16px;
-            margin: 18px 0;
-        }
-
-        .user-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 7px 15px;
-        }
-
-        .user-grid div {
-            border-bottom: 1px solid #e3e8ee;
-            padding: 6px 0;
-        }
-
-        .user-grid span {
-            display: block;
-            color: #8a96a6;
-            font-size: 8px;
-        }
-
-        .user-grid strong {
-            color: #34495e;
-            font-size: 10px;
-            word-break: break-word;
-        }
-
-        /* =========================================================
-           UPLOAD
-        ========================================================= */
-
-        .upload {
-            border: 2px dashed #c9d7e3;
-            background: #fbfdff;
-            border-radius: 15px;
-            padding: 22px;
-            text-align: center;
-        }
-
-        .upload-icon {
-            font-size: 29px;
-        }
-
-        .upload h3 {
-            color: #173f5b;
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        .upload p {
-            color: #8793a2;
-            font-size: 9px;
-            margin: 5px 0 12px;
-        }
-
-        .upload input {
-            max-width: 100%;
-            font-size: 10px;
-        }
-
-        .preview {
-            display: none;
-            max-width: 280px;
-            max-height: 230px;
-            margin: 14px auto 0;
-            border-radius: 10px;
-            border: 1px solid #d9e2ea;
-            object-fit: contain;
-        }
-
-        /* =========================================================
-           LOADING
-        ========================================================= */
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            color: #145a86;
-            font-size: 11px;
-        }
-
-        .spinner {
-            width: 25px;
-            height: 25px;
-            border: 3px solid #dce8f0;
-            border-top-color: #145a86;
-            border-radius: 50%;
-            animation: spin .8s linear infinite;
-            margin: 0 auto 9px;
-        }
-
-        @keyframes spin {
-
-            to {
-                transform: rotate(360deg);
-            }
-
-        }
-
-        /* =========================================================
-           SUCCESS
-        ========================================================= */
-
-        .success {
-            max-width: 620px;
-            margin: 20px auto;
-            background: #fff;
-            border-radius: 20px;
-            padding: 34px 25px;
-            text-align: center;
-            box-shadow:
-                0 12px 40px rgba(15, 23, 42, .08);
-        }
-
-        .check {
-            width: 67px;
-            height: 67px;
-            border-radius: 50%;
-            background: #dcfce7;
-            color: #16a34a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: auto auto 14px;
-            font-size: 29px;
-        }
-
-        .success h2 {
-            color: #173f5b;
-            font-size: 22px;
-        }
-
-        .success p {
-            color: #738092;
-            font-size: 11px;
-            line-height: 1.8;
-            margin-top: 8px;
-        }
-
-        .reference {
-            background: #edf7ff;
-            color: #145a86;
-            border-radius: 10px;
-            padding: 10px;
-            margin: 15px 0;
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        /* =========================================================
-           TOAST
-        ========================================================= */
-
-        .toast {
-            position: fixed;
-            right: 16px;
-            bottom: 16px;
-            width: min(390px, calc(100% - 32px));
-            padding: 13px 15px;
-            background: #173f5b;
-            color: #fff;
-            border-radius: 11px;
-            box-shadow:
-                0 15px 35px rgba(0, 0, 0, .2);
-            font-size: 11px;
-            display: none;
-            z-index: 9999;
-        }
-
-        .toast.show {
-            display: block;
-        }
-
-        /* =========================================================
-           MOBILE
-        ========================================================= */
-
-        @media(max-width:700px) {
-
-            .container {
-                width: calc(100% - 18px);
-                padding-top: 25px;
-            }
-
-            .plans,
-            .methods {
-                grid-template-columns: 1fr;
-            }
-
-            .operators {
-                grid-template-columns: 1fr;
-                max-width: 340px;
-            }
-
-            .summary {
-                grid-template-columns: 1fr;
-            }
-
-            .recipient,
-            .user-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .details {
-                padding: 17px;
-            }
-
-            .header-user {
-                max-width: 150px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-
-        }
-
-    </style>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+    Paiement Premium — BMJ SERVICE
+</title>
+
+<link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+>
+
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+>
+
+<style>
+
+/* =========================================================
+   BMJ SERVICE
+   PAIEMENT PREMIUM
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f4f7fb;
+    color: #334155;
+    overflow-x: hidden;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+    background: #145a86;
+    color: #ffffff;
+    padding: 17px 20px;
+
+    box-shadow:
+        0 4px 18px rgba(20, 90, 134, .18);
+}
+
+.header-content {
+    max-width: 1100px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.logo {
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.header-user {
+    font-size: 11px;
+    opacity: .92;
+}
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container {
+    width: min(1050px, calc(100% - 24px));
+    margin: auto;
+
+    padding: 32px 0 65px;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    text-align: center;
+    margin-bottom: 27px;
+}
+
+.badge {
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    border-radius: 30px;
+
+    background: #e8f3fa;
+    color: #145a86;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    margin-bottom: 10px;
+}
+
+.hero h1 {
+    color: #123d5a;
+
+    font-size:
+        clamp(25px, 4vw, 36px);
+
+    margin-bottom: 8px;
+}
+
+.hero p {
+    max-width: 680px;
+
+    margin: auto;
+
+    color: #718096;
+
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+/* =========================================================
+   ETAPES
+========================================================= */
+
+.steps {
+    max-width: 820px;
+
+    margin:
+        0 auto 30px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 8px;
+}
+
+.step {
+    text-align: center;
+}
+
+.step-circle {
+    width: 38px;
+    height: 38px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #e2e8f0;
+    color: #64748b;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.step.active .step-circle {
+    background: #145a86;
+    color: #ffffff;
+}
+
+.step.done .step-circle {
+    background: #16a34a;
+    color: #ffffff;
+}
+
+.step-label {
+    display: block;
+
+    margin-top: 6px;
+
+    color: #7b8794;
+
+    font-size: 9px;
+    font-weight: 600;
+}
+
+/* =========================================================
+   PANELS
+========================================================= */
+
+.panel {
+    display: none;
+}
+
+.panel.active {
+    display: block;
+
+    animation:
+        showPanel .25s ease;
+}
+
+@keyframes showPanel {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+
+}
+
+/* =========================================================
+   TITRES
+========================================================= */
+
+.section-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.section-title h2 {
+    color: #173f5b;
+    font-size: 22px;
+}
+
+.section-title p {
+    margin-top: 5px;
+
+    color: #7b8794;
+
+    font-size: 12px;
+}
+
+/* =========================================================
+   PLANS
+========================================================= */
+
+.plans {
+    max-width: 850px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 20px;
+}
+
+.plan {
+    background: #ffffff;
+
+    border:
+        2px solid #e7edf3;
+
+    border-radius: 19px;
+
+    padding: 26px;
+
+    box-shadow:
+        0 10px 30px
+        rgba(15, 23, 42, .06);
+
+    transition: .2s;
+}
+
+.plan:hover {
+    transform: translateY(-2px);
+
+    border-color: #b9d4e5;
+}
+
+.plan-icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 15px;
+
+    background: #eaf4fa;
+    color: #145a86;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+
+    margin-bottom: 14px;
+}
+
+.plan h3 {
+    color: #183f59;
+    font-size: 18px;
+}
+
+.plan-description {
+    color: #788597;
+
+    font-size: 11px;
+    line-height: 1.7;
+
+    margin-top: 6px;
+}
+
+.price {
+    color: #145a86;
+
+    font-size: 31px;
+    font-weight: 800;
+
+    margin: 17px 0;
+}
+
+.price small {
+    color: #718096;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.plan ul {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.plan li {
+    color: #526173;
+
+    font-size: 11px;
+
+    margin: 9px 0;
+}
+
+.plan li span {
+    color: #16a34a;
+
+    font-weight: 800;
+
+    margin-right: 5px;
+}
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.btn {
+    width: 100%;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    padding: 13px 15px;
+
+    background: #145a86;
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    transition: .2s;
+}
+
+.btn:hover {
+    background: #0e4a70;
+}
+
+.btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.back {
+    border: 0;
+
+    background: transparent;
+
+    color: #145a86;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    margin-bottom: 15px;
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.summary {
+    max-width: 820px;
+
+    margin:
+        0 auto 20px;
+
+    background: #ffffff;
+
+    border-radius: 15px;
+
+    padding: 15px 18px;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr;
+
+    gap: 10px;
+
+    box-shadow:
+        0 7px 24px
+        rgba(15, 23, 42, .05);
+}
+
+.summary-item span {
+    display: block;
+
+    color: #8a96a6;
+
+    font-size: 8px;
+}
+
+.summary-item strong {
+    display: block;
+
+    color: #173f5b;
+
+    font-size: 12px;
+
+    margin-top: 3px;
+
+    word-break: break-word;
+}
+
+.summary-item.amount strong {
+    color: #145a86;
+
+    font-size: 18px;
+}
+
+/* =========================================================
+   MOYENS DE PAIEMENT
+========================================================= */
+
+.methods {
+    max-width: 820px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 18px;
+}
+
+.method {
+    background: #ffffff;
+
+    border:
+        2px solid #e8edf3;
+
+    border-radius: 19px;
+
+    padding: 27px;
+
+    text-align: center;
+
+    box-shadow:
+        0 8px 25px
+        rgba(15, 23, 42, .05);
+}
+
+.method-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.method h3 {
+    color: #173f5b;
+    font-size: 17px;
+}
+
+.method p {
+    color: #788597;
+
+    font-size: 11px;
+    line-height: 1.7;
+
+    margin:
+        8px 0 17px;
+}
+
+.notice-disabled {
+    background: #f1f5f9;
+
+    color: #64748b;
+
+    border-radius: 9px;
+
+    padding: 9px;
+
+    font-size: 9px;
+
+    margin-bottom: 12px;
+}
+
+/* =========================================================
+   OPERATEURS
+========================================================= */
+
+.operators {
+    max-width: 850px;
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 16px;
+}
+
+.operator {
+    background: #ffffff;
+
+    border:
+        2px solid #e8edf3;
+
+    border-radius: 18px;
+
+    padding: 19px 14px;
+
+    text-align: center;
+
+    box-shadow:
+        0 8px 24px
+        rgba(15, 23, 42, .05);
+}
+
+.operator.available {
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.operator.available:hover {
+    border-color: #145a86;
+
+    transform:
+        translateY(-2px);
+}
+
+.operator.disabled {
+    opacity: .55;
+
+    cursor: not-allowed;
+}
+
+.operator img {
+    width: 68px;
+    height: 68px;
+
+    object-fit: contain;
+
+    border-radius: 13px;
+
+    margin-bottom: 10px;
+}
+
+.operator h3 {
+    color: #173f5b;
+
+    font-size: 14px;
+
+    margin-bottom: 7px;
+}
+
+.status {
+    display: inline-block;
+
+    padding: 5px 8px;
+
+    border-radius: 30px;
+
+    font-size: 8px;
+    font-weight: 800;
+}
+
+.status.ok {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status.off {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+/* =========================================================
+   DETAILS
+========================================================= */
+
+.details {
+    max-width: 850px;
+
+    margin: auto;
+
+    background: #ffffff;
+
+    border-radius: 20px;
+
+    padding: 24px;
+
+    box-shadow:
+        0 10px 35px
+        rgba(15, 23, 42, .07);
+}
+
+.method-selected {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.method-selected img {
+    width: 54px;
+    height: 54px;
+
+    object-fit: contain;
+}
+
+.method-selected h3 {
+    color: #173f5b;
+
+    font-size: 18px;
+}
+
+.method-selected p {
+    color: #8793a2;
+
+    font-size: 9px;
+}
+
+/* =========================================================
+   DESTINATAIRE
+========================================================= */
+
+.recipient {
+    background: #edf7ff;
+
+    border:
+        1px solid #d8ebf7;
+
+    border-radius: 15px;
+
+    padding: 18px;
+
+    margin: 18px 0;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 14px;
+}
+
+.info-box span {
+    display: block;
+
+    color: #7c8b9d;
+
+    font-size: 8px;
+}
+
+.info-box strong {
+    display: block;
+
+    color: #173f5b;
+
+    font-size: 15px;
+
+    margin-top: 3px;
+
+    word-break: break-word;
+}
+
+.info-box.amount strong {
+    color: #145a86;
+
+    font-size: 22px;
+}
+
+/* =========================================================
+   INSTRUCTIONS
+========================================================= */
+
+.instructions {
+    margin: 20px 0;
+}
+
+.instructions h3,
+.user-info h3 {
+    color: #173f5b;
+
+    font-size: 15px;
+
+    margin-bottom: 10px;
+}
+
+.instructions ol {
+    padding-left: 20px;
+}
+
+.instructions li {
+    color: #59687a;
+
+    font-size: 11px;
+
+    line-height: 1.8;
+}
+
+/* =========================================================
+   NOTICE
+========================================================= */
+
+.notice {
+    background: #fff8e7;
+
+    border-left:
+        4px solid #e0a400;
+
+    border-radius: 7px;
+
+    padding: 12px 14px;
+
+    color: #725b18;
+
+    font-size: 10px;
+
+    line-height: 1.7;
+
+    margin: 18px 0;
+}
+
+/* =========================================================
+   INFORMATIONS UTILISATEUR
+========================================================= */
+
+.user-info {
+    background: #f7f9fc;
+
+    border-radius: 14px;
+
+    padding: 16px;
+
+    margin: 18px 0;
+}
+
+.user-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 7px 15px;
+}
+
+.user-grid div {
+    border-bottom:
+        1px solid #e3e8ee;
+
+    padding: 6px 0;
+}
+
+.user-grid span {
+    display: block;
+
+    color: #8a96a6;
+
+    font-size: 8px;
+}
+
+.user-grid strong {
+    color: #34495e;
+
+    font-size: 10px;
+
+    word-break: break-word;
+}
+
+/* =========================================================
+   FORMULAIRE PAIEMENT
+========================================================= */
+
+.payment-form {
+    margin-top: 20px;
+}
+
+/* =========================================================
+   CHAMP REFERENCE
+========================================================= */
+
+.field {
+    margin-bottom: 17px;
+}
+
+.field label {
+    display: block;
+
+    color: #173f5b;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    margin-bottom: 7px;
+}
+
+.field input {
+    width: 100%;
+
+    border:
+        1px solid #d5e0e9;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    color: #173f5b;
+
+    padding: 13px 14px;
+
+    outline: none;
+
+    font-size: 13px;
+
+    transition: .2s;
+}
+
+.field input:focus {
+    border-color: #145a86;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(20,90,134,.08);
+}
+
+/* =========================================================
+   REFERENCE EN GRAND
+========================================================= */
+
+.reference-help {
+    background: #edf7ff;
+
+    border:
+        1px solid #d8ebf7;
+
+    border-radius: 13px;
+
+    padding: 15px;
+
+    margin-bottom: 18px;
+
+    text-align: center;
+}
+
+.reference-help span {
+    display: block;
+
+    color: #7c8b9d;
+
+    font-size: 9px;
+
+    margin-bottom: 6px;
+}
+
+.reference-help strong {
+    display: block;
+
+    color: #145a86;
+
+    font-size:
+        clamp(25px, 6vw, 40px);
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+/* =========================================================
+   NUMERO PAYEUR
+========================================================= */
+
+.payer-number {
+    background: #f7f9fc;
+
+    border-radius: 14px;
+
+    padding: 17px;
+
+    margin-bottom: 18px;
+}
+
+.payer-number label {
+    display: block;
+
+    color: #173f5b;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    margin-bottom: 7px;
+}
+
+.payer-number small {
+    display: block;
+
+    color: #8793a2;
+
+    font-size: 9px;
+
+    line-height: 1.6;
+
+    margin-bottom: 9px;
+}
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading {
+    display: none;
+
+    text-align: center;
+
+    padding: 20px;
+
+    color: #145a86;
+
+    font-size: 11px;
+}
+
+.spinner {
+    width: 25px;
+    height: 25px;
+
+    border:
+        3px solid #dce8f0;
+
+    border-top-color:
+        #145a86;
+
+    border-radius: 50%;
+
+    animation:
+        spin .8s linear infinite;
+
+    margin:
+        0 auto 9px;
+}
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+/* =========================================================
+   SUCCES
+========================================================= */
+
+.success {
+    max-width: 620px;
+
+    margin: 20px auto;
+
+    background: #ffffff;
+
+    border-radius: 20px;
+
+    padding: 34px 25px;
+
+    text-align: center;
+
+    box-shadow:
+        0 12px 40px
+        rgba(15, 23, 42, .08);
+}
+
+.check {
+    width: 67px;
+    height: 67px;
+
+    border-radius: 50%;
+
+    background: #dcfce7;
+    color: #16a34a;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin:
+        auto auto 14px;
+
+    font-size: 29px;
+}
+
+.success h2 {
+    color: #173f5b;
+
+    font-size: 22px;
+}
+
+.success p {
+    color: #738092;
+
+    font-size: 11px;
+
+    line-height: 1.8;
+
+    margin-top: 8px;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast {
+    position: fixed;
+
+    right: 16px;
+    bottom: 16px;
+
+    width:
+        min(390px, calc(100% - 32px));
+
+    padding: 13px 15px;
+
+    background: #173f5b;
+
+    color: #ffffff;
+
+    border-radius: 11px;
+
+    box-shadow:
+        0 15px 35px
+        rgba(0,0,0,.2);
+
+    font-size: 11px;
+
+    display: none;
+
+    z-index: 9999;
+}
+
+.toast.show {
+    display: block;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:700px) {
+
+    .container {
+        width:
+            calc(100% - 18px);
+
+        padding-top: 25px;
+    }
+
+    .plans,
+    .methods {
+        grid-template-columns: 1fr;
+    }
+
+    .operators {
+        grid-template-columns: 1fr;
+
+        max-width: 340px;
+    }
+
+    .summary {
+        grid-template-columns: 1fr;
+    }
+
+    .recipient,
+    .user-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .details {
+        padding: 17px;
+    }
+
+    .header-user {
+        max-width: 150px;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        white-space: nowrap;
+    }
+
+    .steps {
+        gap: 3px;
+    }
+
+    .step-circle {
+        width: 34px;
+        height: 34px;
+    }
+
+    .step-label {
+        font-size: 8px;
+    }
+
+}
+
+</style>
 
 </head>
 
-
 <body>
-
 
 <!-- =========================================================
      HEADER
@@ -870,990 +1197,917 @@
 
 <main class="container">
 
+<!-- =========================================================
+     HERO
+========================================================= -->
 
-    <!-- =====================================================
-         HERO
-    ====================================================== -->
+<section class="hero">
 
-    <section class="hero">
+    <div class="badge">
+        🔐 ACTIVATION PREMIUM
+    </div>
 
-        <div class="badge">
-            🔐 ACTIVATION PREMIUM
+    <h1>
+        Débloquez votre accès Premium
+    </h1>
+
+    <p>
+        Choisissez votre formule, sélectionnez votre moyen de paiement,
+        effectuez votre paiement puis envoyez les informations de votre
+        transaction à l'administration pour vérification.
+    </p>
+
+</section>
+
+
+<!-- =========================================================
+     ETAPES
+========================================================= -->
+
+<div class="steps">
+
+    <div
+        class="step active"
+        id="step1"
+    >
+
+        <div class="step-circle">
+            1
         </div>
 
-        <h1>
-            Débloquez votre accès Premium
-        </h1>
+        <span class="step-label">
+            Abonnement
+        </span>
+
+    </div>
+
+
+    <div
+        class="step"
+        id="step2"
+    >
+
+        <div class="step-circle">
+            2
+        </div>
+
+        <span class="step-label">
+            Paiement
+        </span>
+
+    </div>
+
+
+    <div
+        class="step"
+        id="step3"
+    >
+
+        <div class="step-circle">
+            3
+        </div>
+
+        <span class="step-label">
+            Opérateur
+        </span>
+
+    </div>
+
+
+    <div
+        class="step"
+        id="step4"
+    >
+
+        <div class="step-circle">
+            4
+        </div>
+
+        <span class="step-label">
+            Confirmation
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     ETAPE 1
+========================================================= -->
+
+<section
+    class="panel active"
+    id="plansPanel"
+>
+
+    <div class="section-title">
+
+        <h2>
+            Choisissez votre abonnement
+        </h2>
 
         <p>
-            Choisissez votre formule, sélectionnez votre moyen de paiement,
-            effectuez votre transaction puis envoyez votre preuve de paiement
-            afin que notre administration puisse vérifier votre demande.
+            Le paiement sera vérifié par l'administration avant activation.
         </p>
 
-    </section>
+    </div>
 
 
-    <!-- =====================================================
-         ETAPES
-    ====================================================== -->
+    <div class="plans">
 
-    <div class="steps">
 
-        <div
-            class="step active"
-            id="step1"
-        >
+        <article class="plan">
 
-            <div class="step-circle">
-                1
+            <div class="plan-icon">
+                🎯
             </div>
 
-            <span class="step-label">
-                Abonnement
+            <h3>
+                Un seul domaine
+            </h3>
+
+            <p class="plan-description">
+                Cette formule débloque uniquement le domaine
+                enregistré sur votre compte BMJ SERVICE.
+            </p>
+
+            <div class="price">
+                9,99
+                <small>USD</small>
+            </div>
+
+            <ul>
+
+                <li>
+                    <span>✓</span>
+                    Votre domaine uniquement
+                </li>
+
+                <li>
+                    <span>✓</span>
+                    Accès Premium
+                </li>
+
+                <li>
+                    <span>✓</span>
+                    Activation après vérification
+                </li>
+
+            </ul>
+
+            <button
+                class="btn"
+                type="button"
+                id="choose999"
+            >
+                Choisir 9,99 USD
+            </button>
+
+        </article>
+
+
+        <article class="plan">
+
+            <div class="plan-icon">
+                👑
+            </div>
+
+            <h3>
+                Tous les domaines
+            </h3>
+
+            <p class="plan-description">
+                Cette formule permet de débloquer tous les domaines
+                Premium disponibles sur BMJ SERVICE.
+            </p>
+
+            <div class="price">
+                49,90
+                <small>USD</small>
+            </div>
+
+            <ul>
+
+                <li>
+                    <span>✓</span>
+                    Tous les domaines
+                </li>
+
+                <li>
+                    <span>✓</span>
+                    Accès Premium global
+                </li>
+
+                <li>
+                    <span>✓</span>
+                    Activation après vérification
+                </li>
+
+            </ul>
+
+            <button
+                class="btn"
+                type="button"
+                id="choose4990"
+            >
+                Choisir 49,90 USD
+            </button>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ETAPE 2
+========================================================= -->
+
+<section
+    class="panel"
+    id="methodsPanel"
+>
+
+    <button
+        class="back"
+        type="button"
+        id="backToPlans"
+    >
+        ← Retour aux abonnements
+    </button>
+
+
+    <div class="section-title">
+
+        <h2>
+            Choisissez votre système de paiement
+        </h2>
+
+        <p>
+            Votre formule a été enregistrée.
+        </p>
+
+    </div>
+
+
+    <div class="summary">
+
+        <div class="summary-item">
+
+            <span>
+                FORMULE
             </span>
+
+            <strong id="summaryPlan">
+                —
+            </strong>
 
         </div>
 
 
-        <div
-            class="step"
-            id="step2"
-        >
+        <div class="summary-item">
 
-            <div class="step-circle">
-                2
-            </div>
-
-            <span class="step-label">
-                Paiement
+            <span>
+                DOMAINE
             </span>
+
+            <strong id="summaryDomain">
+                —
+            </strong>
 
         </div>
 
 
-        <div
-            class="step"
-            id="step3"
-        >
+        <div class="summary-item amount">
 
-            <div class="step-circle">
-                3
-            </div>
-
-            <span class="step-label">
-                Opérateur
+            <span>
+                MONTANT
             </span>
 
-        </div>
-
-
-        <div
-            class="step"
-            id="step4"
-        >
-
-            <div class="step-circle">
-                4
-            </div>
-
-            <span class="step-label">
-                Preuve
-            </span>
+            <strong id="summaryAmount">
+                —
+            </strong>
 
         </div>
 
     </div>
 
 
-    <!-- =====================================================
-         ETAPE 1
-    ====================================================== -->
+    <div class="methods">
 
-    <section
-        class="panel active"
-        id="plansPanel"
-    >
 
-        <div class="section-title">
+        <article class="method">
 
-            <h2>
-                Choisissez votre abonnement
-            </h2>
+            <div class="method-icon">
+                📱
+            </div>
+
+            <h3>
+                Mobile Money
+            </h3>
 
             <p>
-                Le paiement sera vérifié par l'administration
-                avant activation.
+                Payez actuellement avec Airtel Money.
+                Orange Money et M-Pesa sont momentanément
+                indisponibles.
             </p>
 
-        </div>
+            <button
+                class="btn"
+                type="button"
+                id="mobileMoneyBtn"
+            >
+                Continuer avec Mobile Money
+            </button>
+
+        </article>
 
 
-        <div class="plans">
+        <article class="method">
+
+            <div class="method-icon">
+                💳
+            </div>
+
+            <h3>
+                VisaPay
+            </h3>
+
+            <p>
+                Le paiement VisaPay sera bientôt disponible.
+                Merci d'avoir patienté.
+            </p>
+
+            <div class="notice-disabled">
+                VisaPay indisponible pour le moment.
+            </div>
+
+            <button
+                class="btn"
+                type="button"
+                id="visaBtn"
+            >
+                VisaPay — bientôt disponible
+            </button>
+
+        </article>
+
+    </div>
+
+</section>
 
 
-            <!-- FORMULE 9.99 -->
+<!-- =========================================================
+     ETAPE 3
+========================================================= -->
 
-            <article class="plan">
+<section
+    class="panel"
+    id="operatorsPanel"
+>
 
-                <div class="plan-icon">
-                    🎯
-                </div>
-
-                <h3>
-                    Un seul domaine
-                </h3>
-
-                <p class="plan-description">
-
-                    Cette formule débloque uniquement le domaine
-                    enregistré sur votre compte BMJ SERVICE.
-
-                </p>
-
-                <div class="price">
-
-                    9,99
-                    <small>
-                        USD
-                    </small>
-
-                </div>
-
-                <ul>
-
-                    <li>
-                        <span>✓</span>
-                        Votre domaine uniquement
-                    </li>
-
-                    <li>
-                        <span>✓</span>
-                        Accès Premium
-                    </li>
-
-                    <li>
-                        <span>✓</span>
-                        Activation après vérification
-                    </li>
-
-                </ul>
-
-                <button
-                    class="btn"
-                    type="button"
-                    id="choose999"
-                >
-                    Choisir 9,99 USD
-                </button>
-
-            </article>
-
-
-            <!-- FORMULE 49.90 -->
-
-            <article class="plan">
-
-                <div class="plan-icon">
-                    👑
-                </div>
-
-                <h3>
-                    Tous les domaines
-                </h3>
-
-                <p class="plan-description">
-
-                    Cette formule permet de débloquer tous les domaines
-                    Premium disponibles sur BMJ SERVICE.
-
-                </p>
-
-                <div class="price">
-
-                    49,90
-                    <small>
-                        USD
-                    </small>
-
-                </div>
-
-                <ul>
-
-                    <li>
-                        <span>✓</span>
-                        Tous les domaines
-                    </li>
-
-                    <li>
-                        <span>✓</span>
-                        Accès Premium global
-                    </li>
-
-                    <li>
-                        <span>✓</span>
-                        Activation après vérification
-                    </li>
-
-                </ul>
-
-                <button
-                    class="btn"
-                    type="button"
-                    id="choose4990"
-                >
-                    Choisir 49,90 USD
-                </button>
-
-            </article>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         ETAPE 2
-    ====================================================== -->
-
-    <section
-        class="panel"
-        id="methodsPanel"
+    <button
+        class="back"
+        type="button"
+        id="backToMethods"
     >
+        ← Retour aux moyens de paiement
+    </button>
 
-        <button
-            class="back"
-            type="button"
-            id="backToPlans"
+
+    <div class="section-title">
+
+        <h2>
+            Choisissez votre opérateur
+        </h2>
+
+        <p>
+            Airtel Money est actuellement disponible.
+        </p>
+
+    </div>
+
+
+    <div class="operators">
+
+
+        <article
+            class="operator available"
+            id="airtelOperator"
+            tabindex="0"
+            role="button"
         >
-            ← Retour aux abonnements
-        </button>
 
-
-        <div class="section-title">
-
-            <h2>
-                Choisissez votre système de paiement
-            </h2>
-
-            <p>
-                Votre formule a été enregistrée.
-            </p>
-
-        </div>
-
-
-        <div class="summary">
-
-            <div class="summary-item">
-
-                <span>
-                    FORMULE
-                </span>
-
-                <strong id="summaryPlan">
-                    —
-                </strong>
-
-            </div>
-
-
-            <div class="summary-item">
-
-                <span>
-                    DOMAINE
-                </span>
-
-                <strong id="summaryDomain">
-                    —
-                </strong>
-
-            </div>
-
-
-            <div class="summary-item amount">
-
-                <span>
-                    MONTANT
-                </span>
-
-                <strong id="summaryAmount">
-                    —
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div class="methods">
-
-
-            <!-- MOBILE MONEY -->
-
-            <article class="method">
-
-                <div class="method-icon">
-                    📱
-                </div>
-
-                <h3>
-                    Mobile Money
-                </h3>
-
-                <p>
-
-                    Payez actuellement avec Airtel Money.
-                    Orange Money et M-Pesa sont momentanément
-                    indisponibles.
-
-                </p>
-
-                <button
-                    class="btn"
-                    type="button"
-                    id="mobileMoneyBtn"
-                >
-                    Continuer avec Mobile Money
-                </button>
-
-            </article>
-
-
-            <!-- VISAPAY -->
-
-            <article class="method">
-
-                <div class="method-icon">
-                    💳
-                </div>
-
-                <h3>
-                    VisaPay
-                </h3>
-
-                <p>
-
-                    Le paiement VisaPay sera bientôt disponible.
-                    Merci d'avoir patienté.
-
-                </p>
-
-                <div class="notice-disabled">
-
-                    VisaPay indisponible pour le moment.
-
-                </div>
-
-                <button
-                    class="btn"
-                    type="button"
-                    id="visaBtn"
-                >
-                    VisaPay — bientôt disponible
-                </button>
-
-            </article>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         ETAPE 3
-    ====================================================== -->
-
-    <section
-        class="panel"
-        id="operatorsPanel"
-    >
-
-        <button
-            class="back"
-            type="button"
-            id="backToMethods"
-        >
-            ← Retour aux moyens de paiement
-        </button>
-
-
-        <div class="section-title">
-
-            <h2>
-                Choisissez votre opérateur
-            </h2>
-
-            <p>
-                Airtel Money est actuellement disponible.
-            </p>
-
-        </div>
-
-
-        <div class="operators">
-
-
-            <!-- AIRTEL -->
-
-            <article
-                class="operator available"
-                id="airtelOperator"
-                tabindex="0"
-                role="button"
+            <img
+                src="images/airtel.jpeg"
+                alt="Airtel Money"
             >
 
-                <img
-                    src="images/airtel.jpeg"
-                    alt="Airtel Money"
-                >
+            <h3>
+                Airtel Money
+            </h3>
+
+            <span class="status ok">
+                DISPONIBLE
+            </span>
+
+        </article>
+
+
+        <article
+            class="operator disabled"
+            id="orangeOperator"
+        >
+
+            <img
+                src="images/orange.jpeg"
+                alt="Orange Money"
+            >
+
+            <h3>
+                Orange Money
+            </h3>
+
+            <span class="status off">
+                INDISPONIBLE
+            </span>
+
+        </article>
+
+
+        <article
+            class="operator disabled"
+            id="mpesaOperator"
+        >
+
+            <img
+                src="images/mpesa.jpeg"
+                alt="M-Pesa"
+            >
+
+            <h3>
+                M-Pesa
+            </h3>
+
+            <span class="status off">
+                INDISPONIBLE
+            </span>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ETAPE 4
+========================================================= -->
+
+<section
+    class="panel"
+    id="proofPanel"
+>
+
+    <button
+        class="back"
+        type="button"
+        id="backToOperators"
+    >
+        ← Retour aux opérateurs
+    </button>
+
+
+    <div class="section-title">
+
+        <h2>
+            Effectuez votre paiement
+        </h2>
+
+        <p>
+            Effectuez le paiement puis renseignez les informations
+            de la transaction.
+        </p>
+
+    </div>
+
+
+    <div class="details">
+
+
+        <!-- OPERATEUR -->
+
+        <div class="method-selected">
+
+            <img
+                src="images/airtel.jpeg"
+                alt="Airtel Money"
+            >
+
+            <div>
 
                 <h3>
                     Airtel Money
                 </h3>
 
-                <span class="status ok">
-                    DISPONIBLE
-                </span>
+                <p>
+                    Moyen de paiement sélectionné
+                </p>
 
-            </article>
-
-
-            <!-- ORANGE -->
-
-            <article
-                class="operator disabled"
-                id="orangeOperator"
-            >
-
-                <img
-                    src="images/orange.jpeg"
-                    alt="Orange Money"
-                >
-
-                <h3>
-                    Orange Money
-                </h3>
-
-                <span class="status off">
-                    INDISPONIBLE
-                </span>
-
-            </article>
-
-
-            <!-- MPESA -->
-
-            <article
-                class="operator disabled"
-                id="mpesaOperator"
-            >
-
-                <img
-                    src="images/mpesa.jpeg"
-                    alt="M-Pesa"
-                >
-
-                <h3>
-                    M-Pesa
-                </h3>
-
-                <span class="status off">
-                    INDISPONIBLE
-                </span>
-
-            </article>
-
-        </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         ETAPE 4
-         PREUVE
-    ====================================================== -->
-
-    <section
-        class="panel"
-        id="proofPanel"
-    >
-
-        <button
-            class="back"
-            type="button"
-            id="backToOperators"
-        >
-            ← Retour aux opérateurs
-        </button>
-
-
-        <div class="section-title">
-
-            <h2>
-                Effectuez votre paiement
-            </h2>
-
-            <p>
-                Effectuez le paiement puis importez votre preuve.
-            </p>
+            </div>
 
         </div>
 
 
-        <div class="details">
+        <!-- DESTINATAIRE -->
+
+        <div class="recipient">
 
 
-            <!-- MOYEN SELECTIONNE -->
+            <div class="info-box amount">
 
-            <div class="method-selected">
+                <span>
+                    MONTANT À ENVOYER
+                </span>
 
-                <img
-                    src="images/airtel.jpeg"
-                    alt="Airtel Money"
-                >
-
-                <div>
-
-                    <h3>
-                        Airtel Money
-                    </h3>
-
-                    <p>
-                        Moyen de paiement sélectionné
-                    </p>
-
-                </div>
+                <strong id="paymentAmount">
+                    —
+                </strong>
 
             </div>
 
 
-            <!-- DESTINATAIRE -->
+            <div class="info-box">
 
-            <div class="recipient">
+                <span>
+                    NUMÉRO DE PAIEMENT
+                </span>
+
+                <strong>
+                    0993585711
+                </strong>
+
+            </div>
 
 
-                <div class="info-box amount">
+            <div class="info-box">
+
+                <span>
+                    DESTINATAIRE
+                </span>
+
+                <strong>
+                    MUNYOKO GLOIRE
+                </strong>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <span>
+                    OPÉRATEUR
+                </span>
+
+                <strong>
+                    Airtel Money
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- INSTRUCTIONS -->
+
+        <div class="instructions">
+
+            <h3>
+                📋 Étapes à suivre
+            </h3>
+
+            <ol>
+
+                <li>
+                    Ouvrez votre service
+                    <strong>Airtel Money</strong>.
+                </li>
+
+                <li>
+                    Choisissez l'option
+                    d'envoi d'argent.
+                </li>
+
+                <li>
+                    Entrez le numéro
+                    <strong>0993585711</strong>.
+                </li>
+
+                <li>
+                    Vérifiez le nom
+                    <strong>MUNYOKO GLOIRE</strong>.
+                </li>
+
+                <li>
+                    Envoyez exactement le montant affiché.
+                </li>
+
+                <li>
+                    Une fois le paiement effectué,
+                    conservez la référence de la transaction.
+                </li>
+
+                <li>
+                    Notez également le numéro de téléphone
+                    qui a réellement effectué le paiement.
+                </li>
+
+                <li>
+                    Revenez sur cette page et renseignez
+                    ces informations.
+                </li>
+
+            </ol>
+
+        </div>
+
+
+        <!-- NOTICE -->
+
+        <div class="notice">
+
+            <strong>
+                Après avoir effectué votre paiement :
+            </strong>
+
+            <br><br>
+
+            veuillez renseigner le numéro qui a effectué
+            le paiement ainsi que la référence de la transaction.
+
+            <br><br>
+
+            Ces informations seront associées à votre compte
+            BMJ SERVICE et transmises à l'administration afin
+            qu'elle puisse vérifier votre paiement et activer
+            votre statut Premium.
+
+            <br><br>
+
+            Après l'enregistrement de votre demande,
+            l'application e-mail par défaut de votre appareil
+            sera automatiquement ouverte avec un message
+            prérempli destiné à l'administration.
+
+        </div>
+
+
+        <!-- INFORMATIONS UTILISATEUR -->
+
+        <div class="user-info">
+
+            <h3>
+                👤 Informations de votre compte
+            </h3>
+
+            <div class="user-grid">
+
+
+                <div>
 
                     <span>
-                        MONTANT À ENVOYER
+                        ID UTILISATEUR
                     </span>
 
-                    <strong id="paymentAmount">
+                    <strong id="userId">
                         —
                     </strong>
 
                 </div>
 
 
-                <div class="info-box">
+                <div>
 
                     <span>
-                        NUMÉRO DE PAIEMENT
+                        NOM
                     </span>
 
-                    <strong>
-                        0993585711
+                    <strong id="userName">
+                        —
                     </strong>
 
                 </div>
 
 
-                <div class="info-box">
+                <div>
 
                     <span>
-                        DESTINATAIRE
+                        EMAIL
                     </span>
 
-                    <strong>
-                        MUNYOKO GLOIRE
+                    <strong id="userEmail">
+                        —
                     </strong>
 
                 </div>
 
 
-                <div class="info-box">
+                <div>
 
                     <span>
-                        OPÉRATEUR
+                        TÉLÉPHONE
                     </span>
 
-                    <strong>
-                        Airtel Money
+                    <strong id="userPhone">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        DOMAINE
+                    </span>
+
+                    <strong id="userDomain">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div>
+
+                    <span>
+                        FORMULE
+                    </span>
+
+                    <strong id="userPlan">
+                        —
                     </strong>
 
                 </div>
 
             </div>
 
+        </div>
 
-            <!-- INSTRUCTIONS -->
 
-            <div class="instructions">
+        <!-- FORMULAIRE -->
 
-                <h3>
-                    📋 Étapes à suivre
-                </h3>
+        <form
+            id="paymentForm"
+            class="payment-form"
+        >
 
-                <ol>
 
-                    <li>
-                        Ouvrez votre service
-                        <strong>Airtel Money</strong>.
-                    </li>
+            <!-- NUMERO DU PAYEUR -->
 
-                    <li>
-                        Choisissez l'option
-                        d'envoi d'argent.
-                    </li>
+            <div class="payer-number">
 
-                    <li>
-                        Entrez le numéro
-                        <strong>0993585711</strong>.
-                    </li>
+                <label for="payerNumber">
+                    📱 Numéro ayant effectué le paiement
+                </label>
 
-                    <li>
-                        Vérifiez attentivement le nom
-                        <strong>MUNYOKO GLOIRE</strong>.
-                    </li>
+                <small>
+                    Entrez le numéro Airtel Money qui a réellement
+                    envoyé l'argent. Ce numéro peut être différent
+                    du numéro enregistré sur votre compte BMJ SERVICE.
+                </small>
 
-                    <li>
-                        Envoyez exactement le montant
-                        affiché ci-dessus.
-                    </li>
-
-                    <li>
-                        Attendez la confirmation
-                        de votre transaction.
-                    </li>
-
-                    <li>
-                        Conservez le reçu de votre paiement.
-                    </li>
-
-                    <li>
-                        Faites une capture claire
-                        du reçu de transaction.
-                    </li>
-
-                    <li>
-                        Importez cette capture
-                        dans le formulaire ci-dessous.
-                    </li>
-
-                </ol>
-
-            </div>
-
-
-            <!-- NOTICE -->
-
-            <div class="notice">
-
-                <strong>
-                    Après avoir effectué votre paiement :
-                </strong>
-
-                <br>
-
-                Veuillez importer votre preuve de paiement
-                afin que l'administrateur puisse vérifier
-                votre transaction et activer votre statut
-                Premium.
-
-                <br><br>
-
-                Après avoir cliqué sur
-                <strong>
-                    « Envoyer ma preuve de paiement »
-                </strong>,
-                votre application de messagerie s'ouvrira
-                avec l'adresse administrative
-                <strong>
-                    musiwapataule@gmail.com
-                </strong>.
-
-                <br><br>
-
-                Votre preuve et les informations de votre
-                compte seront préparées automatiquement
-                dans le message.
-
-                Vous devrez simplement vérifier le message
-                puis appuyer sur
-                <strong>
-                    « Envoyer »
-                </strong>
-                dans votre application e-mail.
-
-            </div>
-
-
-            <!-- INFORMATIONS UTILISATEUR -->
-
-            <div class="user-info">
-
-                <h3>
-                    👤 Informations récupérées depuis votre compte
-                </h3>
-
-
-                <div class="user-grid">
-
-
-                    <div>
-
-                        <span>
-                            ID UTILISATEUR
-                        </span>
-
-                        <strong id="userId">
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            NOM
-                        </span>
-
-                        <strong id="userName">
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            EMAIL
-                        </span>
-
-                        <strong id="userEmail">
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            TÉLÉPHONE
-                        </span>
-
-                        <strong id="userPhone">
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            PAYS
-                        </span>
-
-                        <strong id="userCountry">
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            VILLE
-                        </span>
-
-                        <strong id="userCity">
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            DOMAINE
-                        </span>
-
-                        <strong id="userDomain">
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            NIVEAU
-                        </span>
-
-                        <strong id="userLevel">
-                            —
-                        </strong>
-
-                    </div>
-
-
-                    <div>
-
-                        <span>
-                            FORMULE
-                        </span>
-
-                        <strong id="userPlan">
-                            —
-                        </strong>
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-
-            <!-- FORMULAIRE PREUVE -->
-
-            <form id="proofForm">
-
-                <div class="upload">
-
-                    <div class="upload-icon">
-                        📸
-                    </div>
-
-                    <h3>
-                        Importer votre preuve de paiement
-                    </h3>
-
-                    <p>
-                        JPG, JPEG, PNG ou WEBP —
-                        maximum 5 Mo.
-                    </p>
-
-                    <input
-                        type="file"
-                        id="proofFile"
-                        accept="image/jpeg,image/jpg,image/png,image/webp"
-                        required
-                    >
-
-                    <img
-                        id="preview"
-                        class="preview"
-                        alt="Aperçu de votre preuve"
-                    >
-
-                </div>
-
-
-                <br>
-
-
-                <button
-                    class="btn"
-                    id="sendProofBtn"
-                    type="submit"
+                <input
+                    type="tel"
+                    id="payerNumber"
+                    name="payerNumber"
+                    placeholder="Exemple : 0991234567"
+                    autocomplete="tel"
+                    required
                 >
-                    📧 Envoyer ma preuve de paiement
-                </button>
-
-            </form>
-
-
-            <div
-                class="loading"
-                id="loading"
-            >
-
-                <div class="spinner"></div>
-
-                Préparation de votre demande...
 
             </div>
 
-        </div>
 
-    </section>
+            <!-- REFERENCE -->
 
+            <div class="field">
 
-    <!-- =====================================================
-         SUCCÈS
-    ====================================================== -->
+                <label for="paymentReferenceInput">
+                    🔢 Référence de paiement
+                </label>
 
-    <section
-        class="panel"
-        id="successPanel"
-    >
+                <input
+                    type="text"
+                    id="paymentReferenceInput"
+                    name="paymentReference"
+                    placeholder="Entrez la référence de votre transaction"
+                    autocomplete="off"
+                    required
+                >
 
-        <div class="success">
-
-            <div class="check">
-                ✓
-            </div>
-
-            <h2>
-                Demande préparée avec succès
-            </h2>
-
-            <p>
-
-                Votre demande Premium est prête
-                à être envoyée à l'administration.
-
-            </p>
-
-
-            <div
-                class="reference"
-                id="paymentReference"
-            >
-                Référence : —
             </div>
 
 
-            <p>
+            <!-- RAPPEL REFERENCE -->
 
-                Votre application e-mail a été ouverte
-                avec les informations nécessaires.
+            <div class="reference-help">
 
-            </p>
+                <span>
+                    VOTRE RÉFÉRENCE DE PAIEMENT SERA ENREGISTRÉE
+                    AINSI
+                </span>
 
-
-            <p>
-
-                Vérifiez les informations et la preuve
-                de paiement, puis appuyez sur
-                <strong>
-                    Envoyer
+                <strong id="referenceLarge">
+                    —
                 </strong>
-                dans votre application de messagerie.
 
-            </p>
+            </div>
 
 
-            <p>
+            <button
+                class="btn"
+                id="sendPaymentBtn"
+                type="submit"
+            >
+                Enregistrer et envoyer la demande
+            </button>
 
-                Après l'envoi du message,
-                vous pourrez patienter pendant que
-                l'administrateur vérifie votre paiement.
+        </form>
 
-            </p>
+
+        <!-- LOADING -->
+
+        <div
+            class="loading"
+            id="loading"
+        >
+
+            <div class="spinner"></div>
+
+            Enregistrement de votre demande...
 
         </div>
 
-    </section>
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SUCCES
+========================================================= -->
+
+<section
+    class="panel"
+    id="successPanel"
+>
+
+    <div class="success">
+
+        <div class="check">
+            ✓
+        </div>
+
+        <h2>
+            Demande enregistrée
+        </h2>
+
+        <p>
+            Vos informations de paiement ont été enregistrées.
+        </p>
+
+        <div
+            class="reference-help"
+            style="margin-top:18px;"
+        >
+
+            <span>
+                RÉFÉRENCE DE PAIEMENT
+            </span>
+
+            <strong id="paymentReference">
+                —
+            </strong>
+
+        </div>
+
+        <p>
+            Votre application e-mail par défaut va être ouverte
+            afin que vous puissiez envoyer la demande à
+            l'administration.
+        </p>
+
+        <p>
+            Après l'envoi de votre e-mail, vous serez redirigé
+            vers <strong>verificationdepaiement.html</strong>.
+        </p>
+
+    </div>
+
+</section>
 
 </main>
 
@@ -1866,99 +2120,49 @@
 
 <script>
 
+/* =========================================================
+   BMJ SERVICE
+   PAIEMENT PREMIUM
+
+   FONCTIONNEMENT :
+
+   1. Choix abonnement
+   2. Choix moyen de paiement
+   3. Choix opérateur
+   4. Saisie numéro payeur + référence
+   5. Enregistrement serveur
+   6. Ouverture application email par défaut
+   7. Redirection verificationdepaiement.html
+========================================================= */
+
 document.addEventListener(
     "DOMContentLoaded",
     function () {
+
 
         /* =====================================================
            CONFIGURATION
         ===================================================== */
 
+        const API_URL =
+            "https://back-end-h602.onrender.com";
+
+        const API_PAYMENT =
+            API_URL + "/api/paiements";
+
         const ADMIN_EMAIL =
             "musiwapataule@gmail.com";
 
-        const VERIFICATION_PAGE =
-            "verification.html";
-
 
         /* =====================================================
-           ELEMENTS
+           VARIABLES
         ===================================================== */
 
-        const plansPanel =
-            document.getElementById("plansPanel");
+        let selectedPlan =
+            null;
 
-        const methodsPanel =
-            document.getElementById("methodsPanel");
-
-        const operatorsPanel =
-            document.getElementById("operatorsPanel");
-
-        const proofPanel =
-            document.getElementById("proofPanel");
-
-        const successPanel =
-            document.getElementById("successPanel");
-
-
-        const choose999 =
-            document.getElementById("choose999");
-
-        const choose4990 =
-            document.getElementById("choose4990");
-
-        const mobileMoneyBtn =
-            document.getElementById("mobileMoneyBtn");
-
-        const visaBtn =
-            document.getElementById("visaBtn");
-
-        const airtelOperator =
-            document.getElementById("airtelOperator");
-
-        const orangeOperator =
-            document.getElementById("orangeOperator");
-
-        const mpesaOperator =
-            document.getElementById("mpesaOperator");
-
-
-        const backToPlans =
-            document.getElementById("backToPlans");
-
-        const backToMethods =
-            document.getElementById("backToMethods");
-
-        const backToOperators =
-            document.getElementById("backToOperators");
-
-
-        const proofForm =
-            document.getElementById("proofForm");
-
-        const proofFile =
-            document.getElementById("proofFile");
-
-        const preview =
-            document.getElementById("preview");
-
-        const sendProofBtn =
-            document.getElementById("sendProofBtn");
-
-        const loading =
-            document.getElementById("loading");
-
-        const toast =
-            document.getElementById("toast");
-
-
-        /* =====================================================
-           ETAT
-        ===================================================== */
-
-        let selectedPlan = null;
-
-        let selectedAmount = null;
+        let selectedAmount =
+            null;
 
         let selectedOperator =
             "Airtel Money";
@@ -1968,43 +2172,123 @@ document.addEventListener(
            UTILISATEUR
         ===================================================== */
 
-        function getCurrentUser() {
+        let utilisateur =
+            null;
 
-            try {
 
-                const data =
+        try {
+
+            utilisateur =
+                JSON.parse(
                     localStorage.getItem(
                         "bmj_current_user"
-                    );
-
-                if (!data) {
-
-                    return null;
-
-                }
-
-                return JSON.parse(data);
-
-            } catch (error) {
-
-                console.error(
-                    "Erreur récupération utilisateur :",
-                    error
+                    )
                 );
 
-                return null;
+        } catch (error) {
 
-            }
+            utilisateur = null;
 
         }
 
 
-        const currentUser =
-            getCurrentUser();
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const headerUser =
+            document.getElementById(
+                "headerUser"
+            );
+
+        const summaryPlan =
+            document.getElementById(
+                "summaryPlan"
+            );
+
+        const summaryDomain =
+            document.getElementById(
+                "summaryDomain"
+            );
+
+        const summaryAmount =
+            document.getElementById(
+                "summaryAmount"
+            );
+
+        const paymentAmount =
+            document.getElementById(
+                "paymentAmount"
+            );
+
+        const userId =
+            document.getElementById(
+                "userId"
+            );
+
+        const userName =
+            document.getElementById(
+                "userName"
+            );
+
+        const userEmail =
+            document.getElementById(
+                "userEmail"
+            );
+
+        const userPhone =
+            document.getElementById(
+                "userPhone"
+            );
+
+        const userDomain =
+            document.getElementById(
+                "userDomain"
+            );
+
+        const userPlan =
+            document.getElementById(
+                "userPlan"
+            );
+
+        const referenceInput =
+            document.getElementById(
+                "paymentReferenceInput"
+            );
+
+        const referenceLarge =
+            document.getElementById(
+                "referenceLarge"
+            );
+
+        const payerNumber =
+            document.getElementById(
+                "payerNumber"
+            );
+
+        const loading =
+            document.getElementById(
+                "loading"
+            );
+
+        const paymentForm =
+            document.getElementById(
+                "paymentForm"
+            );
+
+        const sendPaymentBtn =
+            document.getElementById(
+                "sendPaymentBtn"
+            );
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
 
 
         /* =====================================================
-           TOAST
+           UTILITAIRE TOAST
         ===================================================== */
 
         function showToast(message) {
@@ -2016,7 +2300,9 @@ document.addEventListener(
             toast.textContent =
                 message;
 
-            toast.classList.add("show");
+            toast.classList.add(
+                "show"
+            );
 
             setTimeout(
                 function () {
@@ -2033,21 +2319,27 @@ document.addEventListener(
 
 
         /* =====================================================
-           AFFICHER PANEL
+           UTILITAIRE PANELS
         ===================================================== */
 
-        function showPanel(panel) {
+        function showPanel(panelId) {
 
             document
                 .querySelectorAll(".panel")
                 .forEach(
-                    function (item) {
+                    function (panel) {
 
-                        item.classList.remove(
+                        panel.classList.remove(
                             "active"
                         );
 
                     }
+                );
+
+
+            const panel =
+                document.getElementById(
+                    panelId
                 );
 
 
@@ -2059,12 +2351,6 @@ document.addEventListener(
 
             }
 
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
         }
 
 
@@ -2072,49 +2358,198 @@ document.addEventListener(
            ETAPES
         ===================================================== */
 
-        function updateSteps(activeStep) {
+        function setStep(number) {
 
-            const steps = [
-                document.getElementById("step1"),
-                document.getElementById("step2"),
-                document.getElementById("step3"),
-                document.getElementById("step4")
-            ];
+            for (
+                let i = 1;
+                i <= 4;
+                i++
+            ) {
+
+                const step =
+                    document.getElementById(
+                        "step" + i
+                    );
+
+                if (!step) {
+                    continue;
+                }
+
+                step.classList.remove(
+                    "active"
+                );
+
+                step.classList.remove(
+                    "done"
+                );
+
+            }
 
 
-            steps.forEach(
-                function (step, index) {
+            for (
+                let i = 1;
+                i < number;
+                i++
+            ) {
 
-                    step.classList.remove(
-                        "active",
+                const step =
+                    document.getElementById(
+                        "step" + i
+                    );
+
+                if (step) {
+
+                    step.classList.add(
                         "done"
                     );
 
+                }
 
-                    const number =
-                        index + 1;
-
-
-                    if (
-                        number < activeStep
-                    ) {
-
-                        step.classList.add(
-                            "done"
-                        );
-
-                    }
+            }
 
 
-                    if (
-                        number === activeStep
-                    ) {
+            const current =
+                document.getElementById(
+                    "step" + number
+                );
 
-                        step.classList.add(
-                            "active"
-                        );
 
-                    }
+            if (current) {
+
+                current.classList.add(
+                    "active"
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           VERIFICATION UTILISATEUR
+        ===================================================== */
+
+        if (!utilisateur) {
+
+            showToast(
+                "Aucun compte BMJ SERVICE trouvé."
+            );
+
+            setTimeout(
+                function () {
+
+                    window.location.href =
+                        "inscription.html";
+
+                },
+                1800
+            );
+
+            return;
+
+        }
+
+
+        /* =====================================================
+           AFFICHAGE UTILISATEUR
+        ===================================================== */
+
+        const nomUtilisateur =
+            utilisateur.nom ||
+            utilisateur.name ||
+            "Utilisateur";
+
+
+        if (headerUser) {
+
+            headerUser.textContent =
+                nomUtilisateur;
+
+        }
+
+
+        if (userId) {
+
+            userId.textContent =
+                utilisateur.id ||
+                utilisateur.user_id ||
+                "—";
+
+        }
+
+
+        if (userName) {
+
+            userName.textContent =
+                utilisateur.nom ||
+                utilisateur.name ||
+                "—";
+
+        }
+
+
+        if (userEmail) {
+
+            userEmail.textContent =
+                utilisateur.email ||
+                "—";
+
+        }
+
+
+        if (userPhone) {
+
+            userPhone.textContent =
+                utilisateur.telephone ||
+                utilisateur.phone ||
+                "—";
+
+        }
+
+
+        if (userDomain) {
+
+            userDomain.textContent =
+                utilisateur.domaine ||
+                utilisateur.domain ||
+                "Non précisé";
+
+        }
+
+
+        /* =====================================================
+           DOMAINE
+        ===================================================== */
+
+        const domaine =
+            utilisateur.domaine ||
+            utilisateur.domain ||
+            "Non précisé";
+
+
+        /* =====================================================
+           CHOIX 9,99 USD
+        ===================================================== */
+
+        const choose999 =
+            document.getElementById(
+                "choose999"
+            );
+
+
+        if (choose999) {
+
+            choose999.addEventListener(
+                "click",
+                function () {
+
+                    selectedPlan =
+                        "Un seul domaine";
+
+                    selectedAmount =
+                        "9,99 USD";
+
+                    preparePlan();
 
                 }
             );
@@ -2123,1099 +2558,970 @@ document.addEventListener(
 
 
         /* =====================================================
-           NOM UTILISATEUR HEADER
+           CHOIX 49,90 USD
         ===================================================== */
 
-        function loadHeaderUser() {
-
-            const headerUser =
-                document.getElementById(
-                    "headerUser"
-                );
+        const choose4990 =
+            document.getElementById(
+                "choose4990"
+            );
 
 
-            if (!headerUser) {
-                return;
-            }
+        if (choose4990) {
 
+            choose4990.addEventListener(
+                "click",
+                function () {
 
-            if (
-                currentUser &&
-                currentUser.nom
-            ) {
+                    selectedPlan =
+                        "Tous les domaines";
 
-                headerUser.textContent =
-                    currentUser.nom;
+                    selectedAmount =
+                        "49,90 USD";
 
-                return;
-
-            }
-
-
-            if (
-                currentUser &&
-                currentUser.email
-            ) {
-
-                headerUser.textContent =
-                    currentUser.email;
-
-                return;
-
-            }
-
-
-            headerUser.textContent =
-                "Utilisateur";
-
-        }
-
-
-        loadHeaderUser();
-
-
-        /* =====================================================
-           INFORMATIONS UTILISATEUR
-        ===================================================== */
-
-        function getValue(...values) {
-
-            for (
-                const value of values
-            ) {
-
-                if (
-                    value !== undefined &&
-                    value !== null &&
-                    String(value).trim() !== ""
-                ) {
-
-                    return String(value);
+                    preparePlan();
 
                 }
-
-            }
-
-            return "Non renseigné";
+            );
 
         }
 
 
-        function loadUserInformation() {
+        /* =====================================================
+           PREPARER FORMULE
+        ===================================================== */
 
-            const user =
-                getCurrentUser();
+        function preparePlan() {
 
+            if (summaryPlan) {
 
-            if (!user) {
-
-                document.getElementById(
-                    "userId"
-                ).textContent =
-                    "Non connecté";
-
-
-                document.getElementById(
-                    "userName"
-                ).textContent =
-                    "Non connecté";
-
-
-                document.getElementById(
-                    "userEmail"
-                ).textContent =
-                    "Non connecté";
-
-
-                return;
+                summaryPlan.textContent =
+                    selectedPlan;
 
             }
 
 
-            document.getElementById(
-                "userId"
-            ).textContent =
-                getValue(
-                    user.id,
-                    user.user_id,
-                    user.userId
-                );
+            if (summaryDomain) {
+
+                summaryDomain.textContent =
+                    domaine;
+
+            }
 
 
-            document.getElementById(
-                "userName"
-            ).textContent =
-                getValue(
-                    user.nom,
-                    user.name,
-                    user.fullName
-                );
+            if (summaryAmount) {
+
+                summaryAmount.textContent =
+                    selectedAmount;
+
+            }
 
 
-            document.getElementById(
-                "userEmail"
-            ).textContent =
-                getValue(
-                    user.email
-                );
+            if (userPlan) {
+
+                userPlan.textContent =
+                    selectedPlan;
+
+            }
 
 
-            document.getElementById(
-                "userPhone"
-            ).textContent =
-                getValue(
-                    user.telephone,
-                    user.phone
-                );
+            showPanel(
+                "methodsPanel"
+            );
 
-
-            document.getElementById(
-                "userCountry"
-            ).textContent =
-                getValue(
-                    user.pays,
-                    user.country
-                );
-
-
-            document.getElementById(
-                "userCity"
-            ).textContent =
-                getValue(
-                    user.ville,
-                    user.city
-                );
-
-
-            document.getElementById(
-                "userDomain"
-            ).textContent =
-                getValue(
-                    user.domaine,
-                    user.domain
-                );
-
-
-            document.getElementById(
-                "userLevel"
-            ).textContent =
-                getValue(
-                    user.niveau,
-                    user.level
-                );
-
-
-            document.getElementById(
-                "userPlan"
-            ).textContent =
-                selectedPlan ||
-                "À sélectionner";
+            setStep(2);
 
         }
-
-
-        loadUserInformation();
-
-
-        /* =====================================================
-           FORMULE 9.99
-        ===================================================== */
-
-        choose999.addEventListener(
-            "click",
-            function () {
-
-                selectedPlan =
-                    "Un seul domaine";
-
-                selectedAmount =
-                    "9,99 USD";
-
-
-                document.getElementById(
-                    "summaryPlan"
-                ).textContent =
-                    selectedPlan;
-
-
-                document.getElementById(
-                    "summaryAmount"
-                ).textContent =
-                    selectedAmount;
-
-
-                const user =
-                    getCurrentUser();
-
-
-                document.getElementById(
-                    "summaryDomain"
-                ).textContent =
-                    getValue(
-                        user?.domaine,
-                        user?.domain
-                    );
-
-
-                loadUserInformation();
-
-                updateSteps(2);
-
-                showPanel(methodsPanel);
-
-            }
-        );
-
-
-        /* =====================================================
-           FORMULE 49.90
-        ===================================================== */
-
-        choose4990.addEventListener(
-            "click",
-            function () {
-
-                selectedPlan =
-                    "Tous les domaines";
-
-                selectedAmount =
-                    "49,90 USD";
-
-
-                document.getElementById(
-                    "summaryPlan"
-                ).textContent =
-                    selectedPlan;
-
-
-                document.getElementById(
-                    "summaryAmount"
-                ).textContent =
-                    selectedAmount;
-
-
-                const user =
-                    getCurrentUser();
-
-
-                document.getElementById(
-                    "summaryDomain"
-                ).textContent =
-                    getValue(
-                        user?.domaine,
-                        user?.domain
-                    );
-
-
-                loadUserInformation();
-
-                updateSteps(2);
-
-                showPanel(methodsPanel);
-
-            }
-        );
-
-
-        /* =====================================================
-           VISA PAY
-        ===================================================== */
-
-        visaBtn.addEventListener(
-            "click",
-            function () {
-
-                showToast(
-                    "VisaPay sera bientôt disponible. Merci d'avoir patienté."
-                );
-
-            }
-        );
 
 
         /* =====================================================
            MOBILE MONEY
         ===================================================== */
 
-        mobileMoneyBtn.addEventListener(
-            "click",
-            function () {
-
-                updateSteps(3);
-
-                showPanel(
-                    operatorsPanel
-                );
-
-            }
-        );
+        const mobileMoneyBtn =
+            document.getElementById(
+                "mobileMoneyBtn"
+            );
 
 
-        /* =====================================================
-           ORANGE
-        ===================================================== */
+        if (mobileMoneyBtn) {
 
-        orangeOperator.addEventListener(
-            "click",
-            function () {
+            mobileMoneyBtn.addEventListener(
+                "click",
+                function () {
 
-                showToast(
-                    "Orange Money est indisponible pour le moment."
-                );
+                    showPanel(
+                        "operatorsPanel"
+                    );
 
-            }
-        );
+                    setStep(3);
+
+                }
+            );
+
+        }
 
 
         /* =====================================================
-           MPESA
+           VISAPAY
         ===================================================== */
 
-        mpesaOperator.addEventListener(
-            "click",
-            function () {
+        const visaBtn =
+            document.getElementById(
+                "visaBtn"
+            );
 
-                showToast(
-                    "M-Pesa est indisponible pour le moment."
-                );
 
-            }
-        );
+        if (visaBtn) {
+
+            visaBtn.addEventListener(
+                "click",
+                function () {
+
+                    showToast(
+                        "VisaPay sera bientôt disponible. Merci d'avoir patienté."
+                    );
+
+                }
+            );
+
+        }
 
 
         /* =====================================================
            AIRTEL
         ===================================================== */
 
-        function selectAirtel() {
-
-            selectedOperator =
-                "Airtel Money";
-
-
+        const airtelOperator =
             document.getElementById(
-                "paymentAmount"
-            ).textContent =
-                selectedAmount ||
-                "—";
-
-
-            loadUserInformation();
-
-            updateSteps(4);
-
-            showPanel(
-                proofPanel
+                "airtelOperator"
             );
 
-        }
 
+        if (airtelOperator) {
 
-        airtelOperator.addEventListener(
-            "click",
-            selectAirtel
-        );
+            function selectAirtel() {
 
+                selectedOperator =
+                    "Airtel Money";
 
-        airtelOperator.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (
-                    event.key === "Enter" ||
-                    event.key === " "
-                ) {
-
-                    event.preventDefault();
-
-                    selectAirtel();
-
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           RETOURS
-        ===================================================== */
-
-        backToPlans.addEventListener(
-            "click",
-            function () {
-
-                updateSteps(1);
 
                 showPanel(
-                    plansPanel
+                    "proofPanel"
                 );
 
-            }
-        );
+                setStep(4);
 
 
-        backToMethods.addEventListener(
-            "click",
-            function () {
+                if (paymentAmount) {
 
-                updateSteps(2);
-
-                showPanel(
-                    methodsPanel
-                );
-
-            }
-        );
-
-
-        backToOperators.addEventListener(
-            "click",
-            function () {
-
-                updateSteps(3);
-
-                showPanel(
-                    operatorsPanel
-                );
-
-            }
-        );
-
-
-        /* =====================================================
-           PREVISUALISATION IMAGE
-        ===================================================== */
-
-        proofFile.addEventListener(
-            "change",
-            function (event) {
-
-                const file =
-                    event.target.files[0];
-
-
-                if (!file) {
-
-                    preview.style.display =
-                        "none";
-
-                    preview.src =
-                        "";
-
-                    return;
+                    paymentAmount.textContent =
+                        selectedAmount ||
+                        "—";
 
                 }
 
-
-                const allowedTypes = [
-                    "image/jpeg",
-                    "image/png",
-                    "image/webp"
-                ];
-
-
-                if (
-                    !allowedTypes.includes(
-                        file.type
-                    )
-                ) {
-
-                    showToast(
-                        "Veuillez sélectionner une image JPG, JPEG, PNG ou WEBP."
-                    );
-
-                    proofFile.value =
-                        "";
-
-                    preview.style.display =
-                        "none";
-
-                    return;
-
-                }
-
-
-                if (
-                    file.size >
-                    5 * 1024 * 1024
-                ) {
-
-                    showToast(
-                        "La preuve ne doit pas dépasser 5 Mo."
-                    );
-
-                    proofFile.value =
-                        "";
-
-                    preview.style.display =
-                        "none";
-
-                    return;
-
-                }
-
-
-                const reader =
-                    new FileReader();
-
-
-                reader.onload =
-                    function (e) {
-
-                        preview.src =
-                            e.target.result;
-
-                        preview.style.display =
-                            "block";
-
-                    };
-
-
-                reader.readAsDataURL(
-                    file
-                );
-
             }
-        );
 
 
-        /* =====================================================
-           GENERATION REFERENCE
-        ===================================================== */
-
-        function generateReference() {
-
-            const now =
-                new Date();
-
-
-            const year =
-                now.getFullYear();
-
-
-            const month =
-                String(
-                    now.getMonth() + 1
-                ).padStart(2, "0");
-
-
-            const day =
-                String(
-                    now.getDate()
-                ).padStart(2, "0");
-
-
-            const random =
-                Math.random()
-                    .toString(36)
-                    .substring(2, 8)
-                    .toUpperCase();
-
-
-            return (
-                "BMJ-" +
-                year +
-                month +
-                day +
-                "-" +
-                random
+            airtelOperator.addEventListener(
+                "click",
+                selectAirtel
             );
 
-        }
 
-
-        /* =====================================================
-           FORMAT MESSAGE EMAIL
-        ===================================================== */
-
-        function createEmailBody(
-            user,
-            reference
-        ) {
-
-            const name =
-                getValue(
-                    user?.nom,
-                    user?.name
-                );
-
-
-            const email =
-                getValue(
-                    user?.email
-                );
-
-
-            const phone =
-                getValue(
-                    user?.telephone,
-                    user?.phone
-                );
-
-
-            const country =
-                getValue(
-                    user?.pays,
-                    user?.country
-                );
-
-
-            const city =
-                getValue(
-                    user?.ville,
-                    user?.city
-                );
-
-
-            const domain =
-                getValue(
-                    user?.domaine,
-                    user?.domain
-                );
-
-
-            const level =
-                getValue(
-                    user?.niveau,
-                    user?.level
-                );
-
-
-            const id =
-                getValue(
-                    user?.id,
-                    user?.user_id,
-                    user?.userId
-                );
-
-
-            const body = `
-
-DEMANDE D'ACTIVATION PREMIUM
-BMJ SERVICE
-========================================
-
-RÉFÉRENCE :
-${reference}
-
-INFORMATIONS UTILISATEUR
-----------------------------------------
-
-ID utilisateur : ${id}
-
-Nom : ${name}
-
-Email : ${email}
-
-Téléphone : ${phone}
-
-Pays : ${country}
-
-Ville : ${city}
-
-Domaine : ${domain}
-
-Niveau : ${level}
-
-
-INFORMATIONS DU PAIEMENT
-----------------------------------------
-
-Formule : ${selectedPlan}
-
-Montant : ${selectedAmount}
-
-Moyen de paiement : Mobile Money
-
-Opérateur : ${selectedOperator}
-
-Numéro destinataire : 0993585711
-
-Destinataire : MUNYOKO GLOIRE
-
-
-PREUVE DE PAIEMENT
-----------------------------------------
-
-Une preuve de paiement a été sélectionnée
-dans la page BMJ SERVICE.
-
-IMPORTANT :
-La preuve doit être jointe manuellement
-à cet e-mail avant de cliquer sur ENVOYER.
-
-========================================
-
-Merci de vérifier la transaction avant
-d'activer le statut Premium de l'utilisateur.
-
-BMJ SERVICE
-
-            `.trim();
-
-
-            return body;
-
-        }
-
-
-        /* =====================================================
-           ENVOI EMAIL
-        ===================================================== */
-
-        proofForm.addEventListener(
-            "submit",
-            async function (event) {
-
-                event.preventDefault();
-
-
-                const file =
-                    proofFile.files[0];
-
-
-                if (!file) {
-
-                    showToast(
-                        "Veuillez sélectionner votre preuve de paiement."
-                    );
-
-                    return;
-
-                }
-
-
-                if (!selectedPlan) {
-
-                    showToast(
-                        "Veuillez sélectionner une formule."
-                    );
-
-                    return;
-
-                }
-
-
-                const user =
-                    getCurrentUser();
-
-
-                if (!user) {
-
-                    showToast(
-                        "Aucun compte BMJ SERVICE n'a été trouvé sur cet appareil."
-                    );
-
-                    return;
-
-                }
-
-
-                /* =============================================
-                   VALIDATION IMAGE
-                ============================================= */
-
-                if (
-                    file.size >
-                    5 * 1024 * 1024
-                ) {
-
-                    showToast(
-                        "La preuve ne doit pas dépasser 5 Mo."
-                    );
-
-                    return;
-
-                }
-
-
-                loading.style.display =
-                    "block";
-
-
-                sendProofBtn.disabled =
-                    true;
-
-
-                sendProofBtn.textContent =
-                    "Préparation de l'e-mail...";
-
-
-                try {
-
-                    const reference =
-                        generateReference();
-
-
-                    /* =========================================
-                       SAUVEGARDE LOCALE DE LA DEMANDE
-                    ========================================= */
-
-                    const paymentRequest = {
-
-                        reference:
-                            reference,
-
-                        userId:
-                            user.id ||
-                            user.user_id ||
-                            user.userId ||
-                            null,
-
-                        nom:
-                            user.nom ||
-                            user.name ||
-                            "",
-
-                        email:
-                            user.email ||
-                            "",
-
-                        telephone:
-                            user.telephone ||
-                            user.phone ||
-                            "",
-
-                        pays:
-                            user.pays ||
-                            user.country ||
-                            "",
-
-                        ville:
-                            user.ville ||
-                            user.city ||
-                            "",
-
-                        domaine:
-                            user.domaine ||
-                            user.domain ||
-                            "",
-
-                        niveau:
-                            user.niveau ||
-                            user.level ||
-                            "",
-
-                        plan:
-                            selectedPlan,
-
-                        amount:
-                            selectedAmount,
-
-                        paymentMethod:
-                            "Mobile Money",
-
-                        operator:
-                            selectedOperator,
-
-                        recipientNumber:
-                            "0993585711",
-
-                        recipientName:
-                            "MUNYOKO GLOIRE",
-
-                        proofName:
-                            file.name,
-
-                        proofType:
-                            file.type,
-
-                        createdAt:
-                            new Date().toISOString(),
-
-                        status:
-                            "En attente de vérification"
-
-                    };
-
-
-                    localStorage.setItem(
-                        "bmj_last_payment_request",
-                        JSON.stringify(
-                            paymentRequest
-                        )
-                    );
-
-
-                    /* =========================================
-                       CORPS EMAIL
-                    ========================================= */
-
-                    const subject =
-                        "BMJ SERVICE - Demande Premium - " +
-                        reference;
-
-
-                    const body =
-                        createEmailBody(
-                            user,
-                            reference
-                        );
-
-
-                    /* =========================================
-                       MAILTO
-                    ========================================= */
-
-                    const mailto =
-                        "mailto:" +
-                        encodeURIComponent(
-                            ADMIN_EMAIL
-                        ) +
-                        "?subject=" +
-                        encodeURIComponent(
-                            subject
-                        ) +
-                        "&body=" +
-                        encodeURIComponent(
-                            body
-                        );
-
-
-                    /* =========================================
-                       REFERENCE
-                    ========================================= */
-
-                    document.getElementById(
-                        "paymentReference"
-                    ).textContent =
-                        "Référence : " +
-                        reference;
-
-
-                    /* =========================================
-                       OUVERTURE EMAIL
-                    ========================================= */
-
-                    window.location.href =
-                        mailto;
-
-
-                    /* =========================================
-                       AFFICHAGE SUCCÈS
-                    ========================================= */
-
-                    setTimeout(
-                        function () {
-
-                            loading.style.display =
-                                "none";
-
-
-                            sendProofBtn.disabled =
-                                false;
-
-
-                            sendProofBtn.textContent =
-                                "📧 Envoyer ma preuve de paiement";
-
-
-                            showPanel(
-                                successPanel
-                            );
-
-                        },
-                        1200
-                    );
-
-                } catch (error) {
-
-                    console.error(
-                        "Erreur préparation e-mail :",
-                        error
-                    );
-
-
-                    loading.style.display =
-                        "none";
-
-
-                    sendProofBtn.disabled =
-                        false;
-
-
-                    sendProofBtn.textContent =
-                        "📧 Envoyer ma preuve de paiement";
-
-
-                    showToast(
-                        "Une erreur est survenue. Veuillez réessayer."
-                    );
-
-                }
-
-            }
-        );
-
-
-        /* =====================================================
-           VERIFICATION PAGE
-        ===================================================== */
-
-        /*
-           La redirection automatique vers verification.html
-           est volontairement faite après la préparation du mail.
-
-           Comme mailto dépend de l'application e-mail de
-           l'utilisateur, le navigateur ne peut pas savoir avec
-           certitude si l'utilisateur a réellement appuyé sur
-           "Envoyer".
-
-           Le bouton ci-dessous permet donc de continuer
-           manuellement vers la page d'attente.
-        */
-
-
-        const successPanelObserver =
-            new MutationObserver(
-                function () {
+            airtelOperator.addEventListener(
+                "keydown",
+                function (event) {
 
                     if (
-                        successPanel.classList.contains(
-                            "active"
-                        )
+                        event.key === "Enter" ||
+                        event.key === " "
                     ) {
 
-                        setTimeout(
-                            function () {
+                        event.preventDefault();
 
-                                window.location.href =
-                                    VERIFICATION_PAGE;
-
-                            },
-                            5000
-                        );
+                        selectAirtel();
 
                     }
 
                 }
             );
 
-
-        successPanelObserver.observe(
-            successPanel,
-            {
-                attributes: true,
-                attributeFilter: [
-                    "class"
-                ]
-            }
-        );
+        }
 
 
         /* =====================================================
-           INITIALISATION
+           ORANGE
         ===================================================== */
 
-        updateSteps(1);
+        const orangeOperator =
+            document.getElementById(
+                "orangeOperator"
+            );
 
-        loadUserInformation();
+
+        if (orangeOperator) {
+
+            orangeOperator.addEventListener(
+                "click",
+                function () {
+
+                    showToast(
+                        "Orange Money est indisponible pour le moment."
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           MPESA
+        ===================================================== */
+
+        const mpesaOperator =
+            document.getElementById(
+                "mpesaOperator"
+            );
+
+
+        if (mpesaOperator) {
+
+            mpesaOperator.addEventListener(
+                "click",
+                function () {
+
+                    showToast(
+                        "M-Pesa est indisponible pour le moment."
+                    );
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           RETOURS
+        ===================================================== */
+
+        const backToPlans =
+            document.getElementById(
+                "backToPlans"
+            );
+
+
+        if (backToPlans) {
+
+            backToPlans.addEventListener(
+                "click",
+                function () {
+
+                    showPanel(
+                        "plansPanel"
+                    );
+
+                    setStep(1);
+
+                }
+            );
+
+        }
+
+
+        const backToMethods =
+            document.getElementById(
+                "backToMethods"
+            );
+
+
+        if (backToMethods) {
+
+            backToMethods.addEventListener(
+                "click",
+                function () {
+
+                    showPanel(
+                        "methodsPanel"
+                    );
+
+                    setStep(2);
+
+                }
+            );
+
+        }
+
+
+        const backToOperators =
+            document.getElementById(
+                "backToOperators"
+            );
+
+
+        if (backToOperators) {
+
+            backToOperators.addEventListener(
+                "click",
+                function () {
+
+                    showPanel(
+                        "operatorsPanel"
+                    );
+
+                    setStep(3);
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           AFFICHER REFERENCE EN GRAND
+        ===================================================== */
+
+        if (referenceInput) {
+
+            referenceInput.addEventListener(
+                "input",
+                function () {
+
+                    const value =
+                        this.value.trim();
+
+                    if (referenceLarge) {
+
+                        referenceLarge.textContent =
+                            value ||
+                            "—";
+
+                    }
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           NORMALISER NUMERO
+        ===================================================== */
+
+        function nettoyerNumero(numero) {
+
+            return String(
+                numero || ""
+            )
+                .trim()
+                .replace(
+                    /[\s\-().]/g,
+                    ""
+                );
+
+        }
+
+
+        /* =====================================================
+           CREER REFERENCE INTERNE
+        ===================================================== */
+
+        function genererReferenceBMJ() {
+
+            const maintenant =
+                new Date();
+
+            const date =
+                maintenant
+                    .toISOString()
+                    .replace(
+                        /[-:TZ.]/g,
+                        ""
+                    )
+                    .slice(
+                        0,
+                        14
+                    );
+
+            const aleatoire =
+                Math.floor(
+                    1000 +
+                    Math.random() *
+                    9000
+                );
+
+            return (
+                "BMJ-" +
+                date +
+                "-" +
+                aleatoire
+            );
+
+        }
+
+
+        /* =====================================================
+           ENVOI FORMULAIRE
+        ===================================================== */
+
+        if (paymentForm) {
+
+            paymentForm.addEventListener(
+                "submit",
+                async function (event) {
+
+                    event.preventDefault();
+
+
+                    /* =========================================
+                       VERIFICATION
+                    ========================================= */
+
+                    if (!selectedPlan) {
+
+                        showToast(
+                            "Veuillez choisir une formule."
+                        );
+
+                        return;
+
+                    }
+
+
+                    const numeroPayeur =
+                        nettoyerNumero(
+                            payerNumber.value
+                        );
+
+
+                    const reference =
+                        referenceInput.value.trim();
+
+
+                    if (!numeroPayeur) {
+
+                        showToast(
+                            "Veuillez entrer le numéro ayant effectué le paiement."
+                        );
+
+                        payerNumber.focus();
+
+                        return;
+
+                    }
+
+
+                    if (
+                        numeroPayeur.length < 8
+                    ) {
+
+                        showToast(
+                            "Veuillez entrer un numéro de téléphone valide."
+                        );
+
+                        payerNumber.focus();
+
+                        return;
+
+                    }
+
+
+                    if (!reference) {
+
+                        showToast(
+                            "Veuillez entrer la référence de paiement."
+                        );
+
+                        referenceInput.focus();
+
+                        return;
+
+                    }
+
+
+                    /* =========================================
+                       LOADING
+                    ========================================= */
+
+                    sendPaymentBtn.disabled =
+                        true;
+
+                    sendPaymentBtn.textContent =
+                        "Enregistrement...";
+
+
+                    loading.style.display =
+                        "block";
+
+
+                    /* =========================================
+                       REFERENCE BMJ INTERNE
+                    ========================================= */
+
+                    const referenceBMJ =
+                        genererReferenceBMJ();
+
+
+                    /* =========================================
+                       IDENTIFIANT UTILISATEUR
+                    ========================================= */
+
+                    const idUtilisateur =
+                        utilisateur.id ||
+                        utilisateur.user_id ||
+                        utilisateur.userId ||
+                        null;
+
+
+                    /* =========================================
+                       OBJET PAIEMENT
+                    ========================================= */
+
+                    const paiement = {
+
+                        user_id:
+                            idUtilisateur,
+
+                        userId:
+                            idUtilisateur,
+
+                        nom:
+                            utilisateur.nom ||
+                            utilisateur.name ||
+                            "",
+
+                        email:
+                            utilisateur.email ||
+                            "",
+
+                        telephone:
+                            utilisateur.telephone ||
+                            utilisateur.phone ||
+                            "",
+
+                        pays:
+                            utilisateur.pays ||
+                            "",
+
+                        ville:
+                            utilisateur.ville ||
+                            "",
+
+                        domaine:
+                            utilisateur.domaine ||
+                            utilisateur.domain ||
+                            "",
+
+                        niveau:
+                            utilisateur.niveau ||
+                            "",
+
+                        plan:
+                            selectedPlan,
+
+                        montant:
+                            selectedAmount,
+
+                        operator:
+                            selectedOperator,
+
+                        methode:
+                            "Mobile Money",
+
+                        numero_paiement:
+                            "0993585711",
+
+                        numero_payeur:
+                            numeroPayeur,
+
+                        reference_paiement:
+                            reference,
+
+                        reference_bmj:
+                            referenceBMJ,
+
+                        statut:
+                            "en_attente",
+
+                        premium:
+                            false
+
+                    };
+
+
+                    console.log(
+                        "BMJ PAIEMENT :",
+                        paiement
+                    );
+
+
+                    /* =========================================
+                       ENREGISTREMENT SERVEUR
+                    ========================================= */
+
+                    let serveurOK =
+                        false;
+
+                    let resultatServeur =
+                        null;
+
+
+                    try {
+
+                        const response =
+                            await fetch(
+                                API_PAYMENT,
+                                {
+
+                                    method:
+                                        "POST",
+
+                                    headers: {
+
+                                        "Content-Type":
+                                            "application/json",
+
+                                        "Accept":
+                                            "application/json"
+
+                                    },
+
+                                    body:
+                                        JSON.stringify(
+                                            paiement
+                                        )
+
+                                }
+                            );
+
+
+                        try {
+
+                            resultatServeur =
+                                await response.json();
+
+                        } catch (jsonError) {
+
+                            resultatServeur =
+                                null;
+
+                        }
+
+
+                        if (
+                            response.ok &&
+                            (
+                                !resultatServeur ||
+                                resultatServeur.success !== false
+                            )
+                        ) {
+
+                            serveurOK =
+                                true;
+
+                        }
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Erreur serveur paiement :",
+                            error
+                        );
+
+                    }
+
+
+                    /* =========================================
+                       SI SERVEUR NON DISPONIBLE
+                    ========================================= */
+
+                    if (!serveurOK) {
+
+                        loading.style.display =
+                            "none";
+
+                        sendPaymentBtn.disabled =
+                            false;
+
+                        sendPaymentBtn.textContent =
+                            "Enregistrer et envoyer la demande";
+
+
+                        showToast(
+                            "Impossible d'enregistrer la demande sur le serveur. Vérifiez votre connexion puis réessayez."
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* =========================================
+                       PREPARER EMAIL
+                    ========================================= */
+
+                    const emailSubject =
+                        "Demande de vérification de paiement Premium - " +
+                        referenceBMJ;
+
+
+                    const emailBody =
+
+                        "Bonjour BMJ SERVICE," +
+
+                        "\n\n" +
+
+                        "Je viens d'effectuer un paiement pour activer mon accès Premium." +
+
+                        "\n\n" +
+
+                        "============================" +
+                        "\n" +
+                        "INFORMATIONS DU PAIEMENT" +
+                        "\n" +
+                        "============================" +
+
+                        "\n\n" +
+
+                        "Formule : " +
+                        selectedPlan +
+
+                        "\n" +
+
+                        "Montant : " +
+                        selectedAmount +
+
+                        "\n" +
+
+                        "Moyen : " +
+                        "Mobile Money" +
+
+                        "\n" +
+
+                        "Opérateur : " +
+                        selectedOperator +
+
+                        "\n" +
+
+                        "Numéro destinataire : " +
+                        "0993585711" +
+
+                        "\n" +
+
+                        "Destinataire : " +
+                        "MUNYOKO GLOIRE" +
+
+                        "\n" +
+
+                        "Numéro ayant effectué le paiement : " +
+                        numeroPayeur +
+
+                        "\n" +
+
+                        "Référence du paiement : " +
+                        reference +
+
+                        "\n" +
+
+                        "Référence BMJ : " +
+                        referenceBMJ +
+
+                        "\n\n" +
+
+                        "============================" +
+                        "\n" +
+                        "INFORMATIONS UTILISATEUR" +
+                        "\n" +
+                        "============================" +
+
+                        "\n\n" +
+
+                        "ID utilisateur : " +
+                        (
+                            idUtilisateur ||
+                            "Non disponible"
+                        ) +
+
+                        "\n" +
+
+                        "Nom : " +
+                        (
+                            utilisateur.nom ||
+                            utilisateur.name ||
+                            ""
+                        ) +
+
+                        "\n" +
+
+                        "Email : " +
+                        (
+                            utilisateur.email ||
+                            ""
+                        ) +
+
+                        "\n" +
+
+                        "Téléphone du compte : " +
+                        (
+                            utilisateur.telephone ||
+                            utilisateur.phone ||
+                            ""
+                        ) +
+
+                        "\n" +
+
+                        "Pays : " +
+                        (
+                            utilisateur.pays ||
+                            ""
+                        ) +
+
+                        "\n" +
+
+                        "Ville : " +
+                        (
+                            utilisateur.ville ||
+                            ""
+                        ) +
+
+                        "\n" +
+
+                        "Domaine : " +
+                        domaine +
+
+                        "\n" +
+
+                        "Niveau : " +
+                        (
+                            utilisateur.niveau ||
+                            ""
+                        ) +
+
+                        "\n\n" +
+
+                        "Merci de vérifier mon paiement et d'activer mon statut Premium." +
+
+                        "\n\n" +
+
+                        "Cordialement," +
+
+                        "\n" +
+
+                        (
+                            utilisateur.nom ||
+                            utilisateur.name ||
+                            "Utilisateur BMJ SERVICE"
+                        );
+
+
+                    /* =========================================
+                       ENCODAGE MAILTO
+                    ========================================= */
+
+                    const mailto =
+                        "mailto:" +
+                        ADMIN_EMAIL +
+                        "?subject=" +
+                        encodeURIComponent(
+                            emailSubject
+                        ) +
+                        "&body=" +
+                        encodeURIComponent(
+                            emailBody
+                        );
+
+
+                    /* =========================================
+                       SAUVEGARDER LOCALEMENT
+                    ========================================= */
+
+                    const demandeLocale = {
+
+                        ...paiement,
+
+                        created_at:
+                            new Date()
+                                .toISOString()
+
+                    };
+
+
+                    localStorage.setItem(
+                        "bmj_last_payment",
+                        JSON.stringify(
+                            demandeLocale
+                        )
+                    );
+
+
+                    /* =========================================
+                       AFFICHER SUCCES
+                    ========================================= */
+
+                    loading.style.display =
+                        "none";
+
+
+                    const successReference =
+                        document.getElementById(
+                            "paymentReference"
+                        );
+
+
+                    if (successReference) {
+
+                        successReference.textContent =
+                            reference;
+
+                    }
+
+
+                    showPanel(
+                        "successPanel"
+                    );
+
+
+                    /* =========================================
+                       OUVRIR APPLICATION EMAIL
+                    ========================================= */
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                mailto;
+
+                        },
+                        500
+                    );
+
+
+                    /* =========================================
+                       REDIRECTION
+                    ========================================= */
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "verificationdepaiement.html";
+
+                        },
+                        1800
+                    );
+
+                }
+            );
+
+        }
 
     }
 );
 
 </script>
-
 
 </body>
 
