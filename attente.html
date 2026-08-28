@@ -1,0 +1,2485 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Vérification Premium - BMJ SERVICE
+    </title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", Arial, sans-serif;
+        }
+
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f4f8fc 0%,
+                    #eef5fa 50%,
+                    #f8fafc 100%
+                );
+
+            color: #1e293b;
+
+            overflow-x: hidden;
+
+        }
+
+
+        /* =====================================================
+           CONTENEUR
+        ===================================================== */
+
+        .page-container {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 25px;
+
+        }
+
+
+        /* =====================================================
+           CARTE PRINCIPALE
+        ===================================================== */
+
+        .verification-card {
+
+            width: 100%;
+
+            max-width: 600px;
+
+            background: #ffffff;
+
+            border-radius: 28px;
+
+            padding: 42px 35px;
+
+            box-shadow:
+                0 20px 60px rgba(15, 23, 42, 0.10);
+
+            border: 1px solid #e8eef5;
+
+            text-align: center;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+
+        .verification-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+
+            height: 5px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #145a86,
+                    #1d78b0,
+                    #f59e0b
+                );
+
+        }
+
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
+
+        .logo {
+
+            width: 72px;
+
+            height: 72px;
+
+            margin: 0 auto 20px;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #145a86,
+                    #1d78b0
+                );
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 30px;
+
+            box-shadow:
+                0 12px 25px rgba(20, 90, 134, 0.25);
+
+        }
+
+
+        /* =====================================================
+           ETAT
+        ===================================================== */
+
+        .status-icon {
+
+            width: 92px;
+
+            height: 92px;
+
+            border-radius: 50%;
+
+            margin: 5px auto 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 38px;
+
+        }
+
+
+        .status-icon.pending {
+
+            background: #fff7ed;
+
+            color: #f59e0b;
+
+            animation: pulse 2s infinite;
+
+        }
+
+
+        .status-icon.approved {
+
+            background: #dcfce7;
+
+            color: #16a34a;
+
+        }
+
+
+        .status-icon.rejected {
+
+            background: #fee2e2;
+
+            color: #dc2626;
+
+        }
+
+
+        @keyframes pulse {
+
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.30);
+            }
+
+            70% {
+                transform: scale(1.03);
+                box-shadow: 0 0 0 15px rgba(245, 158, 11, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+            }
+
+        }
+
+
+        /* =====================================================
+           TITRE
+        ===================================================== */
+
+        .title {
+
+            font-size: 25px;
+
+            font-weight: 800;
+
+            color: #0f172a;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .subtitle {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.8;
+
+            margin-bottom: 28px;
+
+        }
+
+
+        /* =====================================================
+           UTILISATEUR
+        ===================================================== */
+
+        .user-box {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            text-align: left;
+
+            background: #f8fafc;
+
+            border: 1px solid #edf2f7;
+
+            padding: 15px;
+
+            border-radius: 16px;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .user-photo {
+
+            width: 52px;
+
+            height: 52px;
+
+            min-width: 52px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 3px solid white;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,0.08);
+
+        }
+
+
+        .user-info {
+
+            min-width: 0;
+
+        }
+
+
+        .user-name {
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            color: #0f172a;
+
+        }
+
+
+        .user-email {
+
+            font-size: 12px;
+
+            color: #64748b;
+
+            word-break: break-word;
+
+            margin-top: 3px;
+
+        }
+
+
+        /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+        .message-box {
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            text-align: left;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .message-box.pending {
+
+            background: #fffbeb;
+
+            border: 1px solid #fde68a;
+
+        }
+
+
+        .message-box.approved {
+
+            background: #f0fdf4;
+
+            border: 1px solid #bbf7d0;
+
+        }
+
+
+        .message-box.rejected {
+
+            background: #fef2f2;
+
+            border: 1px solid #fecaca;
+
+        }
+
+
+        .message-title {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .message-box.pending .message-title {
+            color: #b45309;
+        }
+
+
+        .message-box.approved .message-title {
+            color: #15803d;
+        }
+
+
+        .message-box.rejected .message-title {
+            color: #b91c1c;
+        }
+
+
+        .message-text {
+
+            color: #475569;
+
+            font-size: 13px;
+
+            line-height: 1.8;
+
+        }
+
+
+        /* =====================================================
+           INFOS
+        ===================================================== */
+
+        .info-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+
+            margin: 20px 0;
+
+        }
+
+
+        .info-item {
+
+            background: #f8fafc;
+
+            border: 1px solid #edf2f7;
+
+            border-radius: 14px;
+
+            padding: 14px;
+
+            text-align: left;
+
+        }
+
+
+        .info-label {
+
+            display: block;
+
+            color: #94a3b8;
+
+            font-size: 10px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .5px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .info-value {
+
+            color: #334155;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            word-break: break-word;
+
+        }
+
+
+        /* =====================================================
+           DELAI
+        ===================================================== */
+
+        .waiting-time {
+
+            margin-top: 20px;
+
+            padding: 17px;
+
+            background: #f8fafc;
+
+            border-radius: 15px;
+
+            border: 1px solid #e5eaf0;
+
+        }
+
+
+        .waiting-label {
+
+            font-size: 11px;
+
+            color: #64748b;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .waiting-value {
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+            color: #145a86;
+
+        }
+
+
+        .waiting-expired {
+
+            color: #dc2626;
+
+        }
+
+
+        /* =====================================================
+           SUPPORT
+        ===================================================== */
+
+        .support-box {
+
+            display: none;
+
+            margin-top: 22px;
+
+            padding: 20px;
+
+            border-radius: 18px;
+
+            background: #fff7ed;
+
+            border: 1px solid #fed7aa;
+
+            text-align: center;
+
+        }
+
+
+        .support-box.show {
+
+            display: block;
+
+        }
+
+
+        .support-icon {
+
+            width: 48px;
+
+            height: 48px;
+
+            margin: 0 auto 10px;
+
+            border-radius: 50%;
+
+            background: #25d366;
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 24px;
+
+        }
+
+
+        .support-title {
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            color: #9a3412;
+
+            margin-bottom: 7px;
+
+        }
+
+
+        .support-text {
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            line-height: 1.7;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .support-button {
+
+            width: 100%;
+
+            border: none;
+
+            padding: 13px 18px;
+
+            border-radius: 12px;
+
+            background: #25d366;
+
+            color: white;
+
+            font-weight: 700;
+
+            font-size: 13px;
+
+            cursor: pointer;
+
+            transition: .2s;
+
+            text-decoration: none;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+        }
+
+
+        .support-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 20px rgba(37, 211, 102, .25);
+
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+
+            margin-top: 25px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #edf2f7;
+
+            color: #94a3b8;
+
+            font-size: 10px;
+
+        }
+
+
+        .refresh-indicator {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
+            margin-top: 7px;
+
+        }
+
+
+        .refresh-dot {
+
+            width: 7px;
+
+            height: 7px;
+
+            background: #22c55e;
+
+            border-radius: 50%;
+
+            animation: blink 1.5s infinite;
+
+        }
+
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: .3;
+            }
+
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 600px) {
+
+            .page-container {
+                padding: 15px;
+            }
+
+            .verification-card {
+
+                padding: 35px 20px;
+
+                border-radius: 23px;
+
+            }
+
+            .title {
+
+                font-size: 21px;
+
+            }
+
+            .subtitle {
+
+                font-size: 13px;
+
+            }
+
+            .info-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page-container">
+
+
+    <main class="verification-card">
+
+
+        <!-- LOGO -->
+
+        <div class="logo">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+        </div>
+
+
+        <!-- ETAT -->
+
+        <div
+            id="statusIcon"
+            class="status-icon pending"
+        >
+
+            <i
+                id="statusIconElement"
+                class="fa-solid fa-hourglass-half"
+            ></i>
+
+        </div>
+
+
+        <h1
+            id="pageTitle"
+            class="title"
+        >
+            Vérification de votre paiement
+        </h1>
+
+
+        <p
+            id="pageSubtitle"
+            class="subtitle"
+        >
+            Votre demande a bien été prise en compte.
+            Veuillez patienter pendant que notre administrateur
+            vérifie votre paiement.
+        </p>
+
+
+        <!-- UTILISATEUR -->
+
+        <div class="user-box">
+
+            <img
+                id="photoUtilisateur"
+                class="user-photo"
+                src="images/user.png"
+                alt="Utilisateur"
+            >
+
+            <div class="user-info">
+
+                <div
+                    id="nomUtilisateur"
+                    class="user-name"
+                >
+                    Chargement...
+                </div>
+
+                <div
+                    id="emailUtilisateur"
+                    class="user-email"
+                >
+                    Chargement du compte...
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- MESSAGE -->
+
+        <div
+            id="messageBox"
+            class="message-box pending"
+        >
+
+            <div class="message-title">
+
+                <i
+                    id="messageIcon"
+                    class="fa-solid fa-clock"
+                ></i>
+
+                <span id="messageTitle">
+                    Demande en attente
+                </span>
+
+            </div>
+
+
+            <div
+                id="messageText"
+                class="message-text"
+            >
+
+                Votre demande est actuellement en cours
+                de vérification par l'administration.
+                Vous n'avez rien à faire pour le moment.
+
+            </div>
+
+        </div>
+
+
+        <!-- INFORMATIONS -->
+
+        <div class="info-grid">
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    Compte
+                </span>
+
+                <span
+                    id="userId"
+                    class="info-value"
+                >
+                    -
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <span class="info-label">
+                    Statut Premium
+                </span>
+
+                <span
+                    id="premiumStatus"
+                    class="info-value"
+                >
+                    Vérification...
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- DELAI -->
+
+        <div
+            id="waitingTimeBox"
+            class="waiting-time"
+        >
+
+            <div class="waiting-label">
+
+                Temps depuis la demande
+
+            </div>
+
+            <div
+                id="waitingTime"
+                class="waiting-value"
+            >
+                Calcul...
+            </div>
+
+        </div>
+
+
+        <!-- SUPPORT -->
+
+        <div
+            id="supportBox"
+            class="support-box"
+        >
+
+            <div class="support-icon">
+
+                <i class="fa-brands fa-whatsapp"></i>
+
+            </div>
+
+
+            <div class="support-title">
+
+                Le délai de vérification est dépassé
+
+            </div>
+
+
+            <div class="support-text">
+
+                Cela fait plus de 24 heures que votre demande
+                est en attente sans réponse de l'administration.
+                Vous pouvez maintenant contacter le support
+                technique afin d'expliquer votre problème.
+
+            </div>
+
+
+            <a
+                id="supportButton"
+                class="support-button"
+                href="#"
+                target="_blank"
+                rel="noopener"
+            >
+
+                <i class="fa-brands fa-whatsapp"></i>
+
+                Contacter le support technique
+
+            </a>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            BMJ SERVICE
+
+            <div class="refresh-indicator">
+
+                <span class="refresh-dot"></span>
+
+                <span id="refreshText">
+                    Vérification automatique du statut...
+                </span>
+
+            </div>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+<script>
+
+
+/* =========================================================
+   1. API
+========================================================= */
+
+const BMJ_API_URL =
+    "https://back-end-h602.onrender.com";
+
+
+/* =========================================================
+   2. CONSTANTES
+========================================================= */
+
+const SUPPORT_WHATSAPP =
+    "243859424813";
+
+const DELAI_24_HEURES =
+    24 * 60 * 60 * 1000;
+
+const VERIFICATION_INTERVAL =
+    15000;
+
+
+/* =========================================================
+   3. UTILISATEUR COURANT
+========================================================= */
+
+let utilisateurBMJ = null;
+
+let intervalVerification = null;
+
+let demandeDate = null;
+
+
+/* =========================================================
+   4. CONVERSION BOOLEAN
+========================================================= */
+
+function convertirBoolean(value) {
+
+    return (
+        value === true ||
+        value === 1 ||
+        value === "1" ||
+        value === "true" ||
+        value === "TRUE" ||
+        value === "yes" ||
+        value === "oui"
+    );
+
+}
+
+
+/* =========================================================
+   5. SESSION BMJ
+========================================================= */
+
+function obtenirSessionBMJ() {
+
+    try {
+
+        const valeur =
+            localStorage.getItem(
+                "bmj_session"
+            );
+
+
+        if (!valeur) {
+
+            return null;
+
+        }
+
+
+        const session =
+            JSON.parse(
+                valeur
+            );
+
+
+        if (
+            session &&
+            session.authenticated === true &&
+            session.user
+        ) {
+
+            return session;
+
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "Session BMJ invalide.",
+            error
+        );
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   6. UTILISATEUR LOCAL
+========================================================= */
+
+function obtenirUtilisateurLocal() {
+
+    const session =
+        obtenirSessionBMJ();
+
+
+    /*
+       COMME LE DASHBOARD :
+       LA SESSION BMJ EST PRIORITAIRE.
+    */
+
+    if (
+        session &&
+        session.user
+    ) {
+
+        return session.user;
+
+    }
+
+
+    /*
+       COMPATIBILITE ANCIENNES SESSIONS
+    */
+
+    const sources = [
+
+        "bmj_current_user",
+
+        "bmj_user",
+
+        "currentUser",
+
+        "user"
+
+    ];
+
+
+    for (
+        const cle of sources
+    ) {
+
+        try {
+
+            const valeur =
+                localStorage.getItem(
+                    cle
+                );
+
+
+            if (!valeur) {
+
+                continue;
+
+            }
+
+
+            const user =
+                JSON.parse(
+                    valeur
+                );
+
+
+            if (
+                user &&
+                typeof user === "object"
+            ) {
+
+                return user;
+
+            }
+
+        } catch {
+
+            // continuer
+
+        }
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   7. AFFICHER UTILISATEUR
+========================================================= */
+
+function afficherInformationsUtilisateur(
+    utilisateur
+) {
+
+    if (!utilisateur) {
+
+        return;
+
+    }
+
+
+    const nom =
+        utilisateur.nom
+        ||
+        utilisateur.name
+        ||
+        "Utilisateur";
+
+
+    const email =
+        utilisateur.email
+        ||
+        "-";
+
+
+    const photo =
+        utilisateur.photo
+        ||
+        "images/user.png";
+
+
+    document.getElementById(
+        "nomUtilisateur"
+    ).textContent =
+        nom;
+
+
+    document.getElementById(
+        "emailUtilisateur"
+    ).textContent =
+        email;
+
+
+    const image =
+        document.getElementById(
+            "photoUtilisateur"
+        );
+
+
+    image.src =
+        photo;
+
+
+    image.onerror =
+        function() {
+
+            this.src =
+                "images/user.png";
+
+        };
+
+
+    document.getElementById(
+        "userId"
+    ).textContent =
+        utilisateur.id
+        ||
+        utilisateur.user_id
+        ||
+        "-";
+
+}
+
+
+/* =========================================================
+   8. CLE UNIQUE UTILISATEUR
+========================================================= */
+
+function obtenirIdentifiantUtilisateur(
+    utilisateur
+) {
+
+    if (!utilisateur) {
+
+        return null;
+
+    }
+
+
+    return (
+        utilisateur.id
+        ||
+        utilisateur.user_id
+        ||
+        utilisateur.userId
+        ||
+        utilisateur.email
+        ||
+        utilisateur.telephone
+        ||
+        utilisateur.phone
+        ||
+        null
+    );
+
+}
+
+
+/* =========================================================
+   9. CLE STOCKAGE
+========================================================= */
+
+function obtenirCleAttente() {
+
+    const id =
+        obtenirIdentifiantUtilisateur(
+            utilisateurBMJ
+        );
+
+
+    if (!id) {
+
+        return null;
+
+    }
+
+
+    return (
+        "bmj_verification_premium_" +
+        String(id)
+    );
+
+}
+
+
+/* =========================================================
+   10. RECUPERER DATE DEMANDE
+========================================================= */
+
+function obtenirDateDemande() {
+
+    const cle =
+        obtenirCleAttente();
+
+
+    if (!cle) {
+
+        return null;
+
+    }
+
+
+    try {
+
+        const data =
+            JSON.parse(
+                localStorage.getItem(
+                    cle
+                )
+            );
+
+
+        if (
+            data &&
+            data.createdAt
+        ) {
+
+            const date =
+                new Date(
+                    data.createdAt
+                );
+
+
+            if (
+                !Number.isNaN(
+                    date.getTime()
+                )
+            ) {
+
+                return date;
+
+            }
+
+        }
+
+    } catch {
+
+        // ignorer
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   11. ENREGISTRER ATTENTE
+========================================================= */
+
+function enregistrerDemandeLocale() {
+
+    const cle =
+        obtenirCleAttente();
+
+
+    if (!cle) {
+
+        return;
+
+    }
+
+
+    let ancienne =
+        obtenirDateDemande();
+
+
+    /*
+       TRÈS IMPORTANT :
+       on ne réinitialise PAS la date
+       à chaque ouverture de la page.
+    */
+
+    if (!ancienne) {
+
+        ancienne =
+            new Date();
+
+        localStorage.setItem(
+            cle,
+            JSON.stringify({
+
+                createdAt:
+                    ancienne.toISOString(),
+
+                userId:
+                    obtenirIdentifiantUtilisateur(
+                        utilisateurBMJ
+                    ),
+
+                status:
+                    "pending"
+
+            })
+        );
+
+    }
+
+
+    demandeDate =
+        ancienne;
+
+}
+
+
+/* =========================================================
+   12. RECUPERER STATUT SERVEUR
+========================================================= */
+
+async function recupererCompteUtilisateur() {
+
+    const id =
+        obtenirIdentifiantUtilisateur(
+            utilisateurBMJ
+        );
+
+
+    if (!id) {
+
+        throw new Error(
+            "Identifiant utilisateur introuvable."
+        );
+
+    }
+
+
+    /*
+       Même logique que le dashboard :
+       récupération du compte depuis le serveur.
+    */
+
+    const response =
+        await fetch(
+            BMJ_API_URL +
+            "/api/utilisateurs/" +
+            encodeURIComponent(id)
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Impossible de récupérer le compte utilisateur."
+        );
+
+    }
+
+
+    const data =
+        await response.json();
+
+
+    /*
+       Le serveur peut renvoyer :
+       { data: user }
+       ou
+       { user: user }
+       ou directement l'utilisateur.
+    */
+
+    const user =
+        data?.data
+        ||
+        data?.user
+        ||
+        data;
+
+
+    if (
+        user &&
+        typeof user === "object"
+    ) {
+
+        utilisateurBMJ = {
+
+            ...utilisateurBMJ,
+
+            ...user
+
+        };
+
+
+        /*
+           Mettre également à jour
+           la session locale afin que
+           le dashboard retrouve le
+           même statut Premium.
+        */
+
+        synchroniserSessionUtilisateur(
+            utilisateurBMJ
+        );
+
+
+        afficherInformationsUtilisateur(
+            utilisateurBMJ
+        );
+
+
+        return utilisateurBMJ;
+
+    }
+
+
+    return null;
+
+}
+
+
+/* =========================================================
+   13. SYNCHRONISER SESSION
+========================================================= */
+
+function synchroniserSessionUtilisateur(
+    utilisateur
+) {
+
+    if (!utilisateur) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const session =
+            obtenirSessionBMJ();
+
+
+        if (
+            session &&
+            session.user
+        ) {
+
+            session.user = {
+
+                ...session.user,
+
+                ...utilisateur
+
+            };
+
+
+            localStorage.setItem(
+                "bmj_session",
+                JSON.stringify(
+                    session
+                )
+            );
+
+        }
+
+
+        /*
+           Compatibilité ancienne session.
+        */
+
+        const anciennesCles = [
+
+            "bmj_current_user",
+
+            "bmj_user",
+
+            "currentUser"
+
+        ];
+
+
+        anciennesCles.forEach(
+            cle => {
+
+                const valeur =
+                    localStorage.getItem(
+                        cle
+                    );
+
+
+                if (!valeur) {
+
+                    return;
+
+                }
+
+
+                try {
+
+                    const ancien =
+                        JSON.parse(
+                            valeur
+                        );
+
+
+                    if (
+                        ancien &&
+                        typeof ancien === "object"
+                    ) {
+
+                        localStorage.setItem(
+                            cle,
+                            JSON.stringify({
+
+                                ...ancien,
+
+                                ...utilisateur
+
+                            })
+                        );
+
+                    }
+
+                } catch {
+
+                    // ignorer
+
+                }
+
+            }
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Synchronisation session impossible :",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   14. DETERMINER STATUT PREMIUM
+========================================================= */
+
+function obtenirStatutPremium(
+    utilisateur
+) {
+
+    if (!utilisateur) {
+
+        return "pending";
+
+    }
+
+
+    /*
+       NE REGARDER QUE LE STATUT PREMIUM
+       DU COMPTE.
+
+       Plusieurs formats sont acceptés
+       pour rester compatible avec ton serveur.
+    */
+
+    const premium =
+        convertirBoolean(
+            utilisateur.isPremium
+        )
+        ||
+        convertirBoolean(
+            utilisateur.premium
+        )
+        ||
+        convertirBoolean(
+            utilisateur.is_premium
+        );
+
+
+    if (premium) {
+
+        return "approved";
+
+    }
+
+
+    /*
+       Le serveur peut éventuellement
+       envoyer explicitement le statut
+       de la demande.
+    */
+
+    const status =
+        String(
+            utilisateur.payment_status
+            ||
+            utilisateur.premium_status
+            ||
+            utilisateur.demande_status
+            ||
+            ""
+        )
+        .toLowerCase()
+        .trim();
+
+
+    if (
+        [
+            "approved",
+            "accepted",
+            "success",
+            "paid",
+            "premium"
+        ].includes(status)
+    ) {
+
+        return "approved";
+
+    }
+
+
+    if (
+        [
+            "rejected",
+            "refused",
+            "failed",
+            "denied"
+        ].includes(status)
+    ) {
+
+        return "rejected";
+
+    }
+
+
+    return "pending";
+
+}
+
+
+/* =========================================================
+   15. AFFICHER ETAT
+========================================================= */
+
+function afficherEtat(
+    status
+) {
+
+    const icon =
+        document.getElementById(
+            "statusIcon"
+        );
+
+    const iconElement =
+        document.getElementById(
+            "statusIconElement"
+        );
+
+    const title =
+        document.getElementById(
+            "pageTitle"
+        );
+
+    const subtitle =
+        document.getElementById(
+            "pageSubtitle"
+        );
+
+    const box =
+        document.getElementById(
+            "messageBox"
+        );
+
+    const messageIcon =
+        document.getElementById(
+            "messageIcon"
+        );
+
+    const messageTitle =
+        document.getElementById(
+            "messageTitle"
+        );
+
+    const messageText =
+        document.getElementById(
+            "messageText"
+        );
+
+    const premiumStatus =
+        document.getElementById(
+            "premiumStatus"
+        );
+
+
+    /*
+       PENDING
+    */
+
+    if (status === "pending") {
+
+        icon.className =
+            "status-icon pending";
+
+        iconElement.className =
+            "fa-solid fa-hourglass-half";
+
+
+        title.textContent =
+            "Vérification en cours";
+
+
+        subtitle.textContent =
+            "Votre demande est toujours en attente de décision de l'administration. Veuillez patienter.";
+
+
+        box.className =
+            "message-box pending";
+
+
+        messageIcon.className =
+            "fa-solid fa-clock";
+
+
+        messageTitle.textContent =
+            "Demande en attente";
+
+
+        messageText.textContent =
+            "L'administrateur n'a pas encore accepté ou rejeté votre demande. Cette page restera votre page de suivi jusqu'à la réception du résultat.";
+
+
+        premiumStatus.textContent =
+            "En attente";
+
+
+        premiumStatus.style.color =
+            "#d97706";
+
+
+        return;
+
+    }
+
+
+    /*
+       APPROVED
+    */
+
+    if (status === "approved") {
+
+        icon.className =
+            "status-icon approved";
+
+        iconElement.className =
+            "fa-solid fa-circle-check";
+
+
+        title.textContent =
+            "Premium accepté";
+
+
+        subtitle.textContent =
+            "Bonne nouvelle ! Votre compte a été validé par l'administration.";
+
+
+        box.className =
+            "message-box approved";
+
+
+        messageIcon.className =
+            "fa-solid fa-crown";
+
+
+        messageTitle.textContent =
+            "Votre compte est maintenant Premium";
+
+
+        messageText.textContent =
+            "L'administration a accepté votre demande. Vous pouvez maintenant retourner sur la plateforme et profiter de vos fonctionnalités Premium.";
+
+
+        premiumStatus.textContent =
+            "Premium activé";
+
+
+        premiumStatus.style.color =
+            "#16a34a";
+
+
+        masquerSupport();
+
+
+        return;
+
+    }
+
+
+    /*
+       REJECTED
+    */
+
+    if (status === "rejected") {
+
+        icon.className =
+            "status-icon rejected";
+
+        iconElement.className =
+            "fa-solid fa-circle-xmark";
+
+
+        title.textContent =
+            "Demande rejetée";
+
+
+        subtitle.textContent =
+            "L'administration a terminé la vérification de votre demande.";
+
+
+        box.className =
+            "message-box rejected";
+
+
+        messageIcon.className =
+            "fa-solid fa-xmark";
+
+
+        messageTitle.textContent =
+            "Paiement non validé";
+
+
+        messageText.textContent =
+            "Votre demande Premium a été rejetée par l'administration. Si vous pensez qu'il s'agit d'une erreur, veuillez contacter le support technique.";
+
+
+        premiumStatus.textContent =
+            "Rejeté";
+
+
+        premiumStatus.style.color =
+            "#dc2626";
+
+
+        masquerSupport();
+
+    }
+
+}
+
+
+/* =========================================================
+   16. SUPPORT
+========================================================= */
+
+function afficherSupport() {
+
+    const box =
+        document.getElementById(
+            "supportBox"
+        );
+
+
+    const message =
+        encodeURIComponent(
+            "Bonjour BMJ SERVICE, ma demande de vérification Premium est en attente depuis plus de 24 heures et je n'ai toujours pas reçu de réponse de l'administration. Je souhaite vous expliquer mon problème afin d'obtenir de l'aide."
+        );
+
+
+    const url =
+        "https://wa.me/" +
+        SUPPORT_WHATSAPP +
+        "?text=" +
+        message;
+
+
+    document.getElementById(
+        "supportButton"
+    ).href =
+        url;
+
+
+    box.classList.add(
+        "show"
+    );
+
+}
+
+
+function masquerSupport() {
+
+    document.getElementById(
+        "supportBox"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =========================================================
+   17. VERIFIER DELAI
+========================================================= */
+
+function verifierDelai() {
+
+    if (!demandeDate) {
+
+        return;
+
+    }
+
+
+    const maintenant =
+        Date.now();
+
+
+    const debut =
+        demandeDate.getTime();
+
+
+    const difference =
+        maintenant -
+        debut;
+
+
+    const waitingTime =
+        document.getElementById(
+            "waitingTime"
+        );
+
+
+    /*
+       Le délai est dépassé.
+    */
+
+    if (
+        difference >=
+        DELAI_24_HEURES
+    ) {
+
+        waitingTime.textContent =
+            "Plus de 24 heures";
+
+
+        waitingTime.classList.add(
+            "waiting-expired"
+        );
+
+
+        const status =
+            obtenirStatutPremium(
+                utilisateurBMJ
+            );
+
+
+        /*
+           Le support apparaît uniquement
+           si aucune réponse n'est arrivée.
+        */
+
+        if (
+            status ===
+            "pending"
+        ) {
+
+            afficherSupport();
+
+            document.getElementById(
+                "refreshText"
+            ).textContent =
+                "Aucune réponse après 24 h — support disponible.";
+
+        }
+
+
+        return;
+
+    }
+
+
+    waitingTime.classList.remove(
+        "waiting-expired"
+    );
+
+
+    const secondes =
+        Math.floor(
+            difference / 1000
+        );
+
+
+    const heures =
+        Math.floor(
+            secondes / 3600
+        );
+
+
+    const minutes =
+        Math.floor(
+            (secondes % 3600) / 60
+        );
+
+
+    const secs =
+        secondes % 60;
+
+
+    waitingTime.textContent =
+        String(heures).padStart(2, "0")
+        + ":"
+        +
+        String(minutes).padStart(2, "0")
+        + ":"
+        +
+        String(secs).padStart(2, "0");
+
+
+    document.getElementById(
+        "refreshText"
+    ).textContent =
+        "Vérification automatique du statut...";
+
+}
+
+
+/* =========================================================
+   18. VERIFICATION SERVEUR
+========================================================= */
+
+async function verifierStatutServeur() {
+
+    try {
+
+        const user =
+            await recupererCompteUtilisateur();
+
+
+        if (!user) {
+
+            return;
+
+        }
+
+
+        const status =
+            obtenirStatutPremium(
+                user
+            );
+
+
+        afficherEtat(
+            status
+        );
+
+
+        /*
+           Si le Premium est accepté,
+           on peut arrêter les requêtes
+           puisque le résultat est définitif.
+        */
+
+        if (
+            status ===
+            "approved"
+        ) {
+
+            arreterVerification();
+
+            localStorage.removeItem(
+                obtenirCleAttente()
+            );
+
+        }
+
+
+        /*
+           Si rejeté, on arrête également.
+        */
+
+        if (
+            status ===
+            "rejected"
+        ) {
+
+            arreterVerification();
+
+        }
+
+
+        verifierDelai();
+
+
+    } catch (error) {
+
+        console.warn(
+            "Vérification du statut :",
+            error
+        );
+
+
+        /*
+           IMPORTANT :
+           Une erreur serveur ne transforme
+           PAS la demande en rejet.
+        */
+
+        document.getElementById(
+            "refreshText"
+        ).textContent =
+            "Connexion au serveur en attente...";
+
+    }
+
+}
+
+
+/* =========================================================
+   19. DEMARRER VERIFICATION
+========================================================= */
+
+function demarrerVerification() {
+
+    arreterVerification();
+
+
+    verifierStatutServeur();
+
+
+    intervalVerification =
+        setInterval(
+            verifierStatutServeur,
+            VERIFICATION_INTERVAL
+        );
+
+
+    /*
+       Actualisation du compteur
+       toutes les secondes.
+    */
+
+    setInterval(
+        verifierDelai,
+        1000
+    );
+
+}
+
+
+/* =========================================================
+   20. ARRETER VERIFICATION
+========================================================= */
+
+function arreterVerification() {
+
+    if (
+        intervalVerification
+    ) {
+
+        clearInterval(
+            intervalVerification
+        );
+
+        intervalVerification =
+            null;
+
+    }
+
+}
+
+
+/* =========================================================
+   21. INITIALISATION
+========================================================= */
+
+async function initialiserPage() {
+
+    /*
+       Récupération exactement comme
+       le dashboard.
+    */
+
+    utilisateurBMJ =
+        obtenirUtilisateurLocal();
+
+
+    /*
+       Si aucun compte n'est trouvé.
+    */
+
+    if (!utilisateurBMJ) {
+
+        document.getElementById(
+            "nomUtilisateur"
+        ).textContent =
+            "Compte introuvable";
+
+
+        document.getElementById(
+            "emailUtilisateur"
+        ).textContent =
+            "Veuillez vous reconnecter.";
+
+
+        document.getElementById(
+            "messageText"
+        ).textContent =
+            "Impossible de retrouver votre session utilisateur. Veuillez vous reconnecter à votre compte BMJ SERVICE.";
+
+
+        return;
+
+    }
+
+
+    /*
+       Afficher immédiatement
+       les informations locales.
+    */
+
+    afficherInformationsUtilisateur(
+        utilisateurBMJ
+    );
+
+
+    /*
+       Conserver la date originale
+       de la demande.
+    */
+
+    enregistrerDemandeLocale();
+
+
+    verifierDelai();
+
+
+    /*
+       Ensuite on récupère
+       la vraie information du serveur.
+    */
+
+    await verifierStatutServeur();
+
+
+    /*
+       Et on continue à vérifier
+       automatiquement.
+    */
+
+    demarrerVerification();
+
+}
+
+
+/* =========================================================
+   22. PAGE VISIBILITY
+========================================================= */
+
+document.addEventListener(
+    "visibilitychange",
+    function() {
+
+        if (
+            document.visibilityState ===
+            "visible"
+        ) {
+
+            /*
+               Lorsque l'utilisateur revient
+               sur la page, on vérifie
+               immédiatement le résultat.
+            */
+
+            verifierStatutServeur();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   23. LANCEMENT
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initialiserPage
+);
+
+
+</script>
+
+
+</body>
+
+</html>
