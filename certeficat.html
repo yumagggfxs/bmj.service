@@ -9,9 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cinzel:wght@500;600;700;800&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- HTML2CANVAS & JSPDF -->
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-     <!-- Bibliothèque jsPDF -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
     <!-- STYLE -->
     <style>
         * {
@@ -499,185 +499,201 @@
 
 <!-- SCRIPT JAVASCRIPT INTÉGRÉ -->
 <script>
-   document.addEventListener("DOMContentLoaded", function () {
-    const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
-    const panelStatus = document.getElementById("panelStatus");
-    const nomElement = document.getElementById("nom");
-    const domaineTexte = document.getElementById("domaineTexte");
-    const nomDomaine = document.getElementById("nomDomaine");
-    const signatureDomaine = document.getElementById("signatureDomaine");
-    const dateElement = document.getElementById("dateCertificat");
-    const dateElement2 = document.getElementById("dateCertificat2");
-    const imgDrapeau = document.getElementById("drapeauPays");
+    document.addEventListener("DOMContentLoaded", function () {
+        const utilisateur = JSON.parse(localStorage.getItem("bmj_current_user"));
+        const panelStatus = document.getElementById("panelStatus");
+        const nomElement = document.getElementById("nom");
+        const domaineTexte = document.getElementById("domaineTexte");
+        const nomDomaine = document.getElementById("nomDomaine");
+        const signatureDomaine = document.getElementById("signatureDomaine");
+        const dateElement = document.getElementById("dateCertificat");
+        const dateElement2 = document.getElementById("dateCertificat2");
+        const imgDrapeau = document.getElementById("drapeauPays");
 
-    if (!utilisateur) {
-        alert("Veuillez vous connecter pour accéder à votre certificat.");
-        window.location.href = "connexion.html";
-        return;
-    }
+        if (!utilisateur) {
+            alert("Veuillez vous connecter pour accéder à votre certificat.");
+            window.location.href = "connexion.html";
+            return;
+        }
 
-    const DOMAINES_PRO = ["contactbmj.com", "directionbmj.com"];
-    function estEmailProfessionnel(email) {
-        if (!email) return false;
-        let parts = email.split('@');
-        if (parts.length < 2) return false;
-        return DOMAINES_PRO.includes(parts[1].toLowerCase().trim());
-    }
+        const DOMAINES_PRO = ["contactbmj.com", "directionbmj.com"];
+        function estEmailProfessionnel(email) {
+            if (!email) return false;
+            let parts = email.split('@');
+            if (parts.length < 2) return false;
+            return DOMAINES_PRO.includes(parts[1].toLowerCase().trim());
+        }
 
-    let isPro = estEmailProfessionnel(utilisateur.email);
-    if (isPro || utilisateur.isPremium === true || utilisateur.premium === true) {
-        utilisateur.premium = true;
-        utilisateur.isPremium = true;
-        localStorage.setItem("bmj_current_user", JSON.stringify(utilisateur));
-    }
+        let isPro = estEmailProfessionnel(utilisateur.email);
+        if (isPro || utilisateur.isPremium === true || utilisateur.premium === true) {
+            utilisateur.premium = true;
+            utilisateur.isPremium = true;
+            localStorage.setItem("bmj_current_user", JSON.stringify(utilisateur));
+        }
 
-    const codesPaysISO = {
-        "republique democratique du congo": "cd", "congo kinshasa": "cd", "congo-kinshasa": "cd", "cd": "cd",
-        "congo brazzaville": "cg", "congo-brazzaville": "cg", "cg": "cg", "zambie": "zm", "zm": "zm",
-        "tanzanie": "tz", "tz": "tz", "france": "fr", "fr": "fr", "cote d'ivoire": "ci", "ci": "ci",
-        "cameroun": "cm", "cm": "cm", "senegal": "sn", "sn": "sn", "gabon": "ga", "ga": "ga",
-        "togo": "tg", "tg": "tg", "benin": "bj", "bj": "bj", "mali": "ml", "ml": "ml",
-        "burkina faso": "bf", "bf": "bf", "rwanda": "rw", "rw": "rw", "burundi": "bi", "bi": "bi",
-        "belgique": "be", "be": "be", "canada": "ca", "ca": "ca", "algerie": "dz", "dz": "dz",
-        "maroc": "ma", "ma": "ma", "tunisie": "tn", "tn": "tn", "afrique du sud": "za", "za": "za",
-        "nigeria": "ng", "ng": "ng", "kenya": "ke", "ke": "ke", "angola": "ao", "ao": "ao",
-        "allemagne": "de", "de": "de", "espagne": "es", "es": "es", "italie": "it", "it": "it",
-        "royaume-uni": "gb", "royaume uni": "gb", "gb": "gb", "etats-unis": "us", "usa": "us", "us": "us",
-        "chine": "cn", "cn": "cn", "inde": "in", "in": "in", "bresil": "br", "br": "br"
-    };
+        const codesPaysISO = {
+            "republique democratique du congo": "cd", "congo kinshasa": "cd", "congo-kinshasa": "cd", "cd": "cd",
+            "congo brazzaville": "cg", "congo-brazzaville": "cg", "cg": "cg", "zambie": "zm", "zm": "zm",
+            "tanzanie": "tz", "tz": "tz", "france": "fr", "fr": "fr", "cote d'ivoire": "ci", "ci": "ci",
+            "cameroun": "cm", "cm": "cm", "senegal": "sn", "sn": "sn", "gabon": "ga", "ga": "ga",
+            "togo": "tg", "tg": "tg", "benin": "bj", "bj": "bj", "mali": "ml", "ml": "ml",
+            "burkina faso": "bf", "bf": "bf", "rwanda": "rw", "rw": "rw", "burundi": "bi", "bi": "bi",
+            "belgique": "be", "be": "be", "canada": "ca", "ca": "ca", "algerie": "dz", "dz": "dz",
+            "maroc": "ma", "ma": "ma", "tunisie": "tn", "tn": "tn", "afrique du sud": "za", "za": "za",
+            "nigeria": "ng", "ng": "ng", "kenya": "ke", "ke": "ke", "angola": "ao", "ao": "ao",
+            "allemagne": "de", "de": "de", "espagne": "es", "es": "es", "italie": "it", "it": "it",
+            "royaume-uni": "gb", "royaume uni": "gb", "gb": "gb", "etats-unis": "us", "usa": "us", "us": "us",
+            "chine": "cn", "cn": "cn", "inde": "in", "in": "in", "bresil": "br", "br": "br"
+        };
 
-    function normaliserTexte(texte) {
-        return texte.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
-    }
+        function normaliserTexte(texte) {
+            return texte.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim();
+        }
 
-    if (imgDrapeau) {
-        let codeIso = "cd";
-        if (utilisateur.pays) {
-            let paysNettoye = normaliserTexte(utilisateur.pays);
-            if (codesPaysISO[paysNettoye]) {
-                codeIso = codesPaysISO[paysNettoye];
+        if (imgDrapeau) {
+            let codeIso = "cd";
+            if (utilisateur.pays) {
+                let paysNettoye = normaliserTexte(utilisateur.pays);
+                if (codesPaysISO[paysNettoye]) {
+                    codeIso = codesPaysISO[paysNettoye];
+                }
             }
+            imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
+            imgDrapeau.alt = utilisateur.pays ? `Drapeau : ${utilisateur.pays}` : "Drapeau officiel";
         }
-        imgDrapeau.src = `https://flagcdn.com/w160/${codeIso}.png`;
-        imgDrapeau.alt = utilisateur.pays ? `Drapeau : ${utilisateur.pays}` : "Drapeau officiel";
-    }
 
-    const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
-    const dateDuJour = new Date().toLocaleDateString('fr-FR', optionsDate);
-    if (dateElement) dateElement.textContent = dateDuJour;
-    if (dateElement2) dateElement2.textContent = dateDuJour;
+        const optionsDate = { year: 'numeric', month: 'long', day: 'numeric' };
+        const dateDuJour = new Date().toLocaleDateString('fr-FR', optionsDate);
+        if (dateElement) dateElement.textContent = dateDuJour;
+        if (dateElement2) dateElement2.textContent = dateDuJour;
 
-    if (nomElement) nomElement.textContent = utilisateur.nom || "Apprenant";
-    const domaineUtilisateur = utilisateur.domaine || "Développement Web";
-    if (domaineTexte) domaineTexte.textContent = domaineUtilisateur;
-    if (nomDomaine) nomDomaine.textContent = domaineUtilisateur.toUpperCase();
-    if (signatureDomaine) signatureDomaine.textContent = "Expert " + domaineUtilisateur;
+        if (nomElement) nomElement.textContent = utilisateur.nom || "Apprenant";
+        const domaineUtilisateur = utilisateur.domaine || "Développement Web";
+        if (domaineTexte) domaineTexte.textContent = domaineUtilisateur;
+        if (nomDomaine) nomDomaine.textContent = domaineUtilisateur.toUpperCase();
+        if (signatureDomaine) signatureDomaine.textContent = "Expert " + domaineUtilisateur;
 
-    const estPremium = utilisateur.premium === true || utilisateur.isPremium === true || estEmailProfessionnel(utilisateur.email);
+        const estPremium = utilisateur.premium === true || utilisateur.isPremium === true || estEmailProfessionnel(utilisateur.email);
 
-    if (panelStatus) {
-        if (estPremium) {
-            let messageSource = estEmailProfessionnel(utilisateur.email) ? "Compte Pro (Email Professionnel)" : "Compte Premium actif";
-            panelStatus.innerHTML = `✅ Accès validé : ${messageSource} pour <strong>${utilisateur.nom}</strong>.`;
-            panelStatus.style.borderLeftColor = "#16a34a";
-        } else {
-            panelStatus.innerHTML = `⚠️ Compte Standard — <span style="color:#dc2626;">Paiement requis pour le téléchargement.</span>`;
-            panelStatus.style.borderLeftColor = "#dc2626";
-        }
-    }
-
-    // Modale de paiement
-    let modalOverlay = document.getElementById("elegantModalOverlay");
-    if (!modalOverlay) {
-        modalOverlay = document.createElement("div");
-        modalOverlay.id = "elegantModalOverlay";
-        modalOverlay.innerHTML = `
-            <div class="elegant-modal">
-                <h3>Paiement Requis</h3>
-                <p>Cher(e) <strong id="modalNomUser"></strong>, votre compte nécessite une validation pour télécharger le certificat officiel.</p>
-                <div class="modal-actions">
-                    <button id="modalBtnFermer" class="btn-secondary">Fermer</button>
-                    <button id="modalBtnPayer" class="btn-primary">Procéder au paiement</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modalOverlay);
-
-        const styleModale = document.createElement("style");
-        styleModale.innerHTML = `
-            #elegantModalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 99999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
-            #elegantModalOverlay.active { opacity: 1; visibility: visible; }
-            .elegant-modal { background: #ffffff; width: 90%; max-width: 420px; border-radius: 16px; padding: 30px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-            .elegant-modal h3 { font-size: 1.25rem; color: #1e293b; margin-bottom: 10px; font-weight: 700; }
-            .elegant-modal p { font-size: 0.95rem; color: #64748b; line-height: 1.5; margin-bottom: 25px; }
-            .modal-actions { display: flex; gap: 12px; }
-            .modal-actions button { flex: 1; padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; }
-        `;
-        document.head.appendChild(styleModale);
-    }
-
-    const modalBtnFermer = document.getElementById("modalBtnFermer");
-    const modalBtnPayer = document.getElementById("modalBtnPayer");
-    const modalNomUser = document.getElementById("modalNomUser");
-    const btnTelecharger = document.getElementById("btnTelecharger");
-
-    if (btnTelecharger) {
-        btnTelecharger.addEventListener("click", function () {
+        if (panelStatus) {
             if (estPremium) {
-                lancerTelechargementPDF();
+                let messageSource = estEmailProfessionnel(utilisateur.email) ? "Compte Pro (Email Professionnel)" : "Compte Premium actif";
+                panelStatus.innerHTML = `✅ Accès validé : ${messageSource} pour <strong>${utilisateur.nom}</strong>.`;
+                panelStatus.style.borderLeftColor = "#16a34a";
             } else {
-                if (modalNomUser) modalNomUser.textContent = utilisateur.nom;
-                modalOverlay.classList.add("active");
+                panelStatus.innerHTML = `⚠️ Compte Standard — <span style="color:#dc2626;">Paiement requis pour le téléchargement.</span>`;
+                panelStatus.style.borderLeftColor = "#dc2626";
             }
-        });
-    }
+        }
 
-    if (modalBtnFermer) modalBtnFermer.addEventListener("click", () => modalOverlay.classList.remove("active"));
-    if (modalBtnPayer) modalBtnPayer.addEventListener("click", () => {
-        window.location.href = `certificat_${domaineUtilisateur.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "_")}.html`;
-    });
+        // Modale de paiement
+        let modalOverlay = document.getElementById("elegantModalOverlay");
+        if (!modalOverlay) {
+            modalOverlay = document.createElement("div");
+            modalOverlay.id = "elegantModalOverlay";
+            modalOverlay.innerHTML = `
+                <div class="elegant-modal">
+                    <h3>Paiement Requis</h3>
+                    <p>Cher(e) <strong id="modalNomUser"></strong>, votre compte nécessite une validation pour télécharger le certificat officiel.</p>
+                    <div class="modal-actions">
+                        <button id="modalBtnFermer" class="btn-secondary">Fermer</button>
+                        <button id="modalBtnPayer" class="btn-primary">Procéder au paiement</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modalOverlay);
 
-    const btnRetour = document.getElementById("btnRetour");
-    if (btnRetour) btnRetour.addEventListener("click", () => window.history.back());
+            const styleModale = document.createElement("style");
+            styleModale.innerHTML = `
+                #elegantModalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; z-index: 99999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+                #elegantModalOverlay.active { opacity: 1; visibility: visible; }
+                .elegant-modal { background: #ffffff; width: 90%; max-width: 420px; border-radius: 16px; padding: 30px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
+                .elegant-modal h3 { font-size: 1.25rem; color: #1e293b; margin-bottom: 10px; font-weight: 700; }
+                .elegant-modal p { font-size: 0.95rem; color: #64748b; line-height: 1.5; margin-bottom: 25px; }
+                .modal-actions { display: flex; gap: 12px; }
+                .modal-actions button { flex: 1; padding: 12px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; border: none; }
+            `;
+            document.head.appendChild(styleModale);
+        }
 
-    // Fonction de génération et téléchargement au format PDF
-    function lancerTelechargementPDF() {
-        btnTelecharger.disabled = true;
-        btnTelecharger.textContent = "Génération du PDF en cours...";
+        const modalBtnFermer = document.getElementById("modalBtnFermer");
+        const modalBtnPayer = document.getElementById("modalBtnPayer");
+        const modalNomUser = document.getElementById("modalNomUser");
+        const btnTelecharger = document.getElementById("btnTelecharger");
 
-        const certificatElement = document.getElementById("certificat");
-
-        html2canvas(certificatElement, {
-            scale: 3, 
-            useCORS: true,
-            allowTaint: true,
-            backgroundColor: "#ffffff"
-        }).then(canvas => {
-            const imgData = canvas.toDataURL("image/jpeg", 1.0);
-            
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({
-                orientation: 'landscape',
-                unit: 'mm',
-                format: 'a4'
+        if (btnTelecharger) {
+            btnTelecharger.addEventListener("click", function () {
+                if (estPremium) {
+                    lancerTelechargementPDF();
+                } else {
+                    if (modalNomUser) modalNomUser.textContent = utilisateur.nom;
+                    modalOverlay.classList.add("active");
+                }
             });
+        }
 
-            const pageWidth = pdf.internal.pageSize.getWidth();
-            const pageHeight = pdf.internal.pageSize.getHeight();
-
-            pdf.addImage(imgData, 'JPEG', 0, 0, pageWidth, pageHeight);
-            pdf.save(`Certificat_${utilisateur.nom.replace(/\s+/g, '_')}_${domaineUtilisateur.replace(/\s+/g, '_')}.pdf`);
-
-            btnTelecharger.disabled = false;
-            btnTelecharger.textContent = "Télécharger le certificat (PDF)";
-        }).catch(err => {
-            console.error("Erreur lors de la génération du PDF :", err);
-            alert("Une erreur est survenue lors de la création du document.");
-            btnTelecharger.disabled = false;
-            btnTelecharger.textContent = "Télécharger le certificat (PDF)";
+        if (modalBtnFermer) modalBtnFermer.addEventListener("click", () => modalOverlay.classList.remove("active"));
+        if (modalBtnPayer) modalBtnPayer.addEventListener("click", () => {
+            window.location.href = `certificat_${domaineUtilisateur.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "_")}.html`;
         });
-    }
-});
+
+        const btnRetour = document.getElementById("btnRetour");
+        if (btnRetour) btnRetour.addEventListener("click", () => window.history.back());
+
+        // Fonction de génération et téléchargement au format PDF compatible Mobile & PC
+        function lancerTelechargementPDF() {
+            btnTelecharger.disabled = true;
+            btnTelecharger.textContent = "Génération du PDF...";
+
+            const certificatElement = document.getElementById("certificat");
+            const isMobile = window.innerWidth <= 700;
+            const echelle = isMobile ? 2 : 3;
+
+            html2canvas(certificatElement, {
+                scale: echelle, 
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const imgData = canvas.toDataURL("image/jpeg", 0.95);
+                
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: 'landscape',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+
+                pdf.addImage(imgData, 'JPEG', 0, 0, pageWidth, pageHeight);
+                
+                const nomFichier = `Certificat_${utilisateur.nom.replace(/\s+/g, '_')}_${domaineUtilisateur.replace(/\s+/g, '_')}.pdf`;
+                const pdfBlob = pdf.output('blob');
+                const blobUrl = URL.createObjectURL(pdfBlob);
+
+                if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    const lien = document.createElement('a');
+                    lien.href = blobUrl;
+                    lien.download = nomFichier;
+                    document.body.appendChild(lien);
+                    lien.click();
+                    document.body.removeChild(lien);
+                } else {
+                    pdf.save(nomFichier);
+                }
+
+                btnTelecharger.disabled = false;
+                btnTelecharger.textContent = "Télécharger le certificat (PDF)";
+            }).catch(err => {
+                console.error("Erreur lors de la génération du PDF :", err);
+                alert("Une erreur est survenue lors de la création du document.");
+                btnTelecharger.disabled = false;
+                btnTelecharger.textContent = "Télécharger le certificat (PDF)";
+            });
+        }
+    });
 </script>
 </body>
 </html>
