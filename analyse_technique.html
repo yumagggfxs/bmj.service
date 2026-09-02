@@ -1,0 +1,2739 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analyse technique — BMJ FORMATION</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            background: rgba(255,255,255,.96);
+            backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid #e6ebf2;
+            box-shadow: 0 4px 20px rgba(20,50,90,.06);
+        }
+
+        .header-inner {
+            max-width: 1180px;
+            margin: auto;
+            min-height: 72px;
+
+            padding: 0 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: #145a86;
+            font-weight: 800;
+            font-size: 19px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+            background: #145a86;
+            color: white;
+
+            box-shadow: 0 8px 20px rgba(20,90,134,.20);
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .user-photo {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+
+            border: 2px solid #d9b44a;
+            background: #edf3f8;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(10,53,84,.97),
+                    rgba(20,90,134,.93)
+                );
+
+            color: white;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 380px;
+            height: 380px;
+
+            right: -120px;
+            top: -160px;
+
+            border-radius: 50%;
+            background: rgba(255,255,255,.06);
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+
+            max-width: 1180px;
+            margin: auto;
+            padding: 70px 20px;
+        }
+
+        .breadcrumb {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            font-size: 13px;
+            color: rgba(255,255,255,.78);
+
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            max-width: 800px;
+
+            font-size: clamp(32px, 5vw, 56px);
+            line-height: 1.15;
+
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #f0c95a;
+        }
+
+        .hero-description {
+            max-width: 760px;
+            color: rgba(255,255,255,.88);
+            font-size: 16px;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 28px;
+        }
+
+        .hero-tag {
+            padding: 8px 14px;
+
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 30px;
+
+            background: rgba(255,255,255,.08);
+
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        main {
+            max-width: 1180px;
+            margin: auto;
+            padding: 35px 20px 70px;
+        }
+
+        /* =====================================================
+           INFO CARDS
+        ===================================================== */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+
+            margin-bottom: 28px;
+        }
+
+        .info-card {
+            background: white;
+            border: 1px solid #e5eaf1;
+            border-radius: 18px;
+            padding: 20px;
+
+            box-shadow: 0 8px 25px rgba(20,50,90,.05);
+        }
+
+        .info-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+            background: #edf5fa;
+            color: #145a86;
+
+            margin-bottom: 12px;
+        }
+
+        .info-card strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .info-card small {
+            color: #718096;
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .progress-card {
+            background: white;
+            border: 1px solid #e5eaf1;
+            border-radius: 20px;
+
+            padding: 22px;
+            margin-bottom: 30px;
+
+            box-shadow: 0 8px 25px rgba(20,50,90,.05);
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 10px;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .progress-track {
+            height: 10px;
+            background: #edf1f5;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+
+            background: linear-gradient(
+                90deg,
+                #145a86,
+                #d9b44a
+            );
+
+            border-radius: inherit;
+            transition: width .5s ease;
+        }
+
+        /* =====================================================
+           SECTIONS
+        ===================================================== */
+
+        .section {
+            background: white;
+            border: 1px solid #e5eaf1;
+            border-radius: 22px;
+
+            padding: 30px;
+            margin-bottom: 25px;
+
+            box-shadow: 0 8px 25px rgba(20,50,90,.05);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+
+            margin-bottom: 22px;
+        }
+
+        .section-number {
+            flex-shrink: 0;
+
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #145a86;
+            color: white;
+
+            font-weight: 800;
+        }
+
+        .section-heading h2 {
+            font-size: 23px;
+            color: #123b59;
+        }
+
+        .section-heading p {
+            color: #718096;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           CONCEPT BOXES
+        ===================================================== */
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .concept {
+            padding: 20px;
+
+            background: #f8fafc;
+            border: 1px solid #e8edf3;
+
+            border-radius: 16px;
+        }
+
+        .concept h3 {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            font-size: 16px;
+            color: #145a86;
+
+            margin-bottom: 8px;
+        }
+
+        .concept p {
+            font-size: 14px;
+            color: #596579;
+        }
+
+        /* =====================================================
+           IMAGE / VIDEO
+        ===================================================== */
+
+        .visual-grid {
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 20px;
+        }
+
+        .visual-card {
+            overflow: hidden;
+
+            border-radius: 18px;
+            border: 1px solid #e2e8ef;
+            background: #f8fafc;
+        }
+
+        .visual-image {
+            width: 100%;
+            height: 270px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .visual-content {
+            padding: 18px;
+        }
+
+        .visual-content h3 {
+            color: #123b59;
+            margin-bottom: 7px;
+        }
+
+        .visual-content p {
+            color: #667085;
+            font-size: 13px;
+        }
+
+        .video-box {
+            min-height: 270px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 30px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #0e3e5e,
+                    #145a86
+                );
+
+            color: white;
+        }
+
+        .play-button {
+            width: 68px;
+            height: 68px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: white;
+            color: #145a86;
+
+            font-size: 22px;
+
+            margin-bottom: 15px;
+        }
+
+        .video-box h3 {
+            margin-bottom: 5px;
+        }
+
+        .video-box p {
+            font-size: 12px;
+            color: rgba(255,255,255,.75);
+        }
+
+        /* =====================================================
+           INDICATORS
+        ===================================================== */
+
+        .indicator-list {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .indicator {
+            padding: 20px;
+
+            border: 1px solid #e5eaf1;
+            border-radius: 16px;
+
+            background: #fbfcfe;
+        }
+
+        .indicator-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 10px;
+        }
+
+        .indicator-icon {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #eaf3f8;
+            color: #145a86;
+        }
+
+        .indicator h3 {
+            font-size: 15px;
+            color: #173b57;
+        }
+
+        .indicator p {
+            color: #687386;
+            font-size: 13px;
+        }
+
+        .formula {
+            margin-top: 12px;
+
+            padding: 10px;
+
+            border-radius: 9px;
+            background: #f0f4f8;
+
+            color: #145a86;
+
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           CHART
+        ===================================================== */
+
+        .chart-wrapper {
+            background: #0e2639;
+            border-radius: 18px;
+            padding: 20px;
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+            margin-bottom: 18px;
+
+            color: white;
+        }
+
+        .chart-header h3 {
+            font-size: 16px;
+        }
+
+        .chart-header span {
+            font-size: 11px;
+            color: #aebdca;
+        }
+
+        .chart-container {
+            height: 330px;
+        }
+
+        /* =====================================================
+           SUPPORT / RESISTANCE
+        ===================================================== */
+
+        .sr-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .sr-card {
+            padding: 22px;
+
+            border-radius: 16px;
+
+            border: 1px solid #e5eaf1;
+        }
+
+        .sr-card.resistance {
+            border-top: 4px solid #d05b5b;
+        }
+
+        .sr-card.support {
+            border-top: 4px solid #3b8f70;
+        }
+
+        .sr-card h3 {
+            margin-bottom: 8px;
+            color: #173b57;
+        }
+
+        .sr-card p {
+            font-size: 13px;
+            color: #667085;
+        }
+
+        /* =====================================================
+           EXERCICE
+        ===================================================== */
+
+        .exercise {
+            background:
+                linear-gradient(
+                    135deg,
+                    #f7fbfd,
+                    #eef5f9
+                );
+
+            border: 1px solid #dbe7ee;
+        }
+
+        .scenario {
+            padding: 20px;
+
+            background: white;
+            border-radius: 16px;
+
+            border: 1px solid #e1e8ef;
+
+            margin-bottom: 20px;
+        }
+
+        .scenario-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-bottom: 12px;
+
+            color: #145a86;
+            font-weight: 700;
+        }
+
+        .market-data {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+
+            margin-top: 15px;
+        }
+
+        .market-data div {
+            padding: 13px;
+
+            border-radius: 11px;
+            background: #f5f8fa;
+        }
+
+        .market-data small {
+            display: block;
+            color: #7b8797;
+            font-size: 10px;
+        }
+
+        .market-data strong {
+            font-size: 14px;
+        }
+
+        .decision-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .decision-btn {
+            border: 2px solid #dfe6ed;
+            background: white;
+
+            padding: 16px;
+
+            border-radius: 14px;
+
+            cursor: pointer;
+
+            font-family: inherit;
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+        .decision-btn:hover {
+            transform: translateY(-2px);
+            border-color: #145a86;
+        }
+
+        .decision-btn i {
+            display: block;
+            font-size: 21px;
+            margin-bottom: 7px;
+        }
+
+        .decision-btn.buy i {
+            color: #25845d;
+        }
+
+        .decision-btn.sell i {
+            color: #c94f54;
+        }
+
+        .decision-btn.wait i {
+            color: #c09528;
+        }
+
+        .exercise-result {
+            display: none;
+
+            margin-top: 18px;
+            padding: 17px;
+
+            border-radius: 13px;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .exercise-result.show {
+            display: block;
+        }
+
+        .exercise-result.success {
+            background: #eaf8f1;
+            color: #176341;
+            border: 1px solid #bce5cf;
+        }
+
+        .exercise-result.warning {
+            background: #fff8df;
+            color: #795d12;
+            border: 1px solid #f1dc8e;
+        }
+
+        /* =====================================================
+           CHECKLIST
+        ===================================================== */
+
+        .checklist {
+            display: grid;
+            gap: 10px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+
+            padding: 13px;
+
+            border-radius: 12px;
+            background: #f7f9fb;
+        }
+
+        .check-item i {
+            color: #d0a72e;
+            margin-top: 4px;
+        }
+
+        .check-item span {
+            font-size: 13px;
+            color: #5e6a7b;
+        }
+
+        /* =====================================================
+           QUIZ
+        ===================================================== */
+
+        .quiz-question {
+            padding: 20px;
+            margin-bottom: 15px;
+
+            border: 1px solid #e5eaf1;
+            border-radius: 15px;
+
+            background: #fbfcfd;
+        }
+
+        .quiz-question h3 {
+            font-size: 15px;
+            margin-bottom: 13px;
+        }
+
+        .answers {
+            display: grid;
+            gap: 8px;
+        }
+
+        .answer {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 11px 13px;
+
+            background: white;
+            border: 1px solid #e0e6ed;
+
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+        }
+
+        .answer:hover {
+            border-color: #145a86;
+        }
+
+        .answer input {
+            accent-color: #145a86;
+        }
+
+        .quiz-button {
+            width: 100%;
+
+            border: 0;
+            border-radius: 13px;
+
+            padding: 15px;
+
+            background: #145a86;
+            color: white;
+
+            font-family: inherit;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .quiz-button:hover {
+            background: #0e4569;
+        }
+
+        .quiz-result {
+            display: none;
+
+            margin-top: 15px;
+            padding: 17px;
+
+            border-radius: 13px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .quiz-result.show {
+            display: block;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            background: #0c2f47;
+            color: white;
+
+            padding: 35px 20px;
+
+            text-align: center;
+        }
+
+        footer strong {
+            color: #f0c95a;
+        }
+
+        footer p {
+            margin-top: 6px;
+
+            font-size: 12px;
+            color: rgba(255,255,255,.65);
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .visual-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .indicator-list {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .header-inner {
+                min-height: 65px;
+            }
+
+            .brand span {
+                display: none;
+            }
+
+            .user-area {
+                font-size: 11px;
+            }
+
+            .hero-inner {
+                padding: 50px 20px;
+            }
+
+            main {
+                padding-top: 22px;
+            }
+
+            .info-grid,
+            .concept-grid,
+            .indicator-list,
+            .sr-grid,
+            .market-data,
+            .decision-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 20px;
+                border-radius: 17px;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header>
+
+    <div class="header-inner">
+
+        <a href="index.html" class="brand">
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <span>BMJ FORMATION</span>
+
+        </a>
+
+        <div class="user-area">
+
+            <span id="userName">
+                Apprenant
+            </span>
+
+            <img
+                id="userPhoto"
+                class="user-photo"
+                src="images/default-avatar.png"
+                alt="Photo utilisateur"
+            >
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+        <div class="breadcrumb">
+            <i class="fa-solid fa-graduation-cap"></i>
+            Trading
+            <i class="fa-solid fa-chevron-right"></i>
+            Chapitre 3
+        </div>
+
+        <h1>
+            Maîtriser l'<span>analyse technique</span>
+        </h1>
+
+        <p class="hero-description">
+
+            Apprenez à lire un graphique, identifier une tendance,
+            repérer les supports et résistances et utiliser les
+            principaux indicateurs techniques pour construire une
+            analyse structurée.
+
+        </p>
+
+        <div class="hero-tags">
+
+            <span class="hero-tag">
+                <i class="fa-solid fa-chart-column"></i>
+                Graphiques
+            </span>
+
+            <span class="hero-tag">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                Tendances
+            </span>
+
+            <span class="hero-tag">
+                <i class="fa-solid fa-signal"></i>
+                Indicateurs
+            </span>
+
+            <span class="hero-tag">
+                <i class="fa-solid fa-flask"></i>
+                Pratique
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main>
+
+
+    <!-- =====================================================
+         INFORMATIONS
+    ====================================================== -->
+
+    <div class="info-grid">
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+
+            <strong>Chapitre 3 / 5</strong>
+            <small>Analyse technique</small>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-regular fa-clock"></i>
+            </div>
+
+            <strong>50 – 60 min</strong>
+            <small>Temps conseillé</small>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-signal"></i>
+            </div>
+
+            <strong>Niveau débutant</strong>
+            <small>Progression progressive</small>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-laptop-code"></i>
+            </div>
+
+            <strong>Pratique incluse</strong>
+            <small>Analyse d'un scénario</small>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PROGRESSION
+    ====================================================== -->
+
+    <div class="progress-card">
+
+        <div class="progress-top">
+
+            <span>
+                Progression du chapitre
+            </span>
+
+            <span id="progressText">
+                0%
+            </span>
+
+        </div>
+
+        <div class="progress-track">
+
+            <div
+                id="progressBar"
+                class="progress-bar">
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SECTION 1
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                01
+            </div>
+
+            <div>
+
+                <h2>Qu'est-ce que l'analyse technique ?</h2>
+
+                <p>
+                    Comprendre le comportement du prix à partir des graphiques.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <p style="margin-bottom:20px;color:#5f6b7a;font-size:14px;">
+
+            L'analyse technique consiste à étudier principalement
+            les mouvements historiques du prix et les informations
+            visibles sur un graphique afin d'identifier des scénarios
+            possibles.
+
+            Elle ne permet pas de prévoir l'avenir avec certitude.
+            Son objectif est plutôt de structurer une décision en
+            fonction de plusieurs éléments.
+
+        </p>
+
+
+        <div class="concept-grid">
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Le prix
+                </h3>
+
+                <p>
+                    Le prix représente l'information centrale du graphique.
+                    L'évolution des prix permet d'observer les mouvements
+                    et les changements de comportement du marché.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                    La tendance
+                </h3>
+
+                <p>
+                    Une tendance peut être haussière, baissière ou
+                    latérale. Identifier sa direction est l'une des
+                    premières étapes d'une analyse.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-arrows-left-right"></i>
+                    Les niveaux
+                </h3>
+
+                <p>
+                    Les supports et résistances permettent de repérer
+                    des zones où le prix a historiquement réagi.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-chart-simple"></i>
+                    Les indicateurs
+                </h3>
+
+                <p>
+                    Les indicateurs peuvent aider à mesurer la tendance,
+                    le momentum ou la volatilité, mais ils ne doivent
+                    pas être utilisés isolément.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECTION 2 : VISUELS
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                02
+            </div>
+
+            <div>
+
+                <h2>Lire un graphique</h2>
+
+                <p>
+                    Apprendre à observer les informations importantes.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="visual-grid">
+
+            <div class="visual-card">
+
+                <img
+                    class="visual-image"
+                    src="images/analyse-technique.jpg"
+                    alt="Analyse technique"
+                    onerror="
+                        this.src='images/trading-banner.jpg';
+                    "
+                >
+
+                <div class="visual-content">
+
+                    <h3>
+                        Le graphique raconte une histoire
+                    </h3>
+
+                    <p>
+                        Avant d'ajouter des indicateurs, commencez
+                        toujours par observer le prix : direction,
+                        accélérations, corrections et zones importantes.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="visual-card">
+
+                <div class="video-box">
+
+                    <div class="play-button">
+                        <i class="fa-solid fa-play"></i>
+                    </div>
+
+                    <h3>
+                        Vidéo pédagogique
+                    </h3>
+
+                    <p>
+                        Ajoutez ici votre vidéo de formation sur
+                        la lecture des graphiques.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECTION 3 : TENDANCES
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                03
+            </div>
+
+            <div>
+
+                <h2>Identifier une tendance</h2>
+
+                <p>
+                    Haussière, baissière ou latérale.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="concept-grid">
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-arrow-up"></i>
+                    Tendance haussière
+                </h3>
+
+                <p>
+                    Le marché forme globalement des sommets et des creux
+                    de plus en plus élevés.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-arrow-down"></i>
+                    Tendance baissière
+                </h3>
+
+                <p>
+                    Le marché forme globalement des sommets et des creux
+                    de plus en plus bas.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-arrows-left-right"></i>
+                    Marché latéral
+                </h3>
+
+                <p>
+                    Le prix évolue dans une zone relativement définie
+                    sans direction dominante évidente.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    Attention aux faux signaux
+                </h3>
+
+                <p>
+                    Une cassure ponctuelle ne signifie pas forcément
+                    qu'une nouvelle tendance vient de commencer.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECTION 4 : SUPPORT / RESISTANCE
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                04
+            </div>
+
+            <div>
+
+                <h2>Supports et résistances</h2>
+
+                <p>
+                    Repérer les zones importantes du marché.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="sr-grid">
+
+            <div class="sr-card support">
+
+                <h3>
+                    <i class="fa-solid fa-arrow-down"></i>
+                    Support
+                </h3>
+
+                <p>
+                    Un support correspond à une zone où le prix a
+                    historiquement trouvé davantage d'intérêt acheteur.
+                    Il peut parfois provoquer un rebond, mais aucune
+                    réaction n'est garantie.
+                </p>
+
+            </div>
+
+
+            <div class="sr-card resistance">
+
+                <h3>
+                    <i class="fa-solid fa-arrow-up"></i>
+                    Résistance
+                </h3>
+
+                <p>
+                    Une résistance correspond à une zone où le prix
+                    a historiquement rencontré davantage de pression
+                    vendeuse. Une cassure peut modifier la structure
+                    du marché.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECTION 5 : INDICATEURS
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                05
+            </div>
+
+            <div>
+
+                <h2>Les principaux indicateurs</h2>
+
+                <p>
+                    Des outils complémentaires pour renforcer l'analyse.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="indicator-list">
+
+            <div class="indicator">
+
+                <div class="indicator-top">
+
+                    <div class="indicator-icon">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+
+                    <span>01</span>
+
+                </div>
+
+                <h3>Moyenne mobile</h3>
+
+                <p>
+                    Elle permet de lisser les variations du prix et
+                    d'observer plus facilement la tendance générale.
+                </p>
+
+                <div class="formula">
+                    MA = moyenne des prix sur une période
+                </div>
+
+            </div>
+
+
+            <div class="indicator">
+
+                <div class="indicator-top">
+
+                    <div class="indicator-icon">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+
+                    <span>02</span>
+
+                </div>
+
+                <h3>RSI</h3>
+
+                <p>
+                    Le RSI mesure le momentum sur une échelle de 0 à 100.
+                    Il peut aider à étudier la dynamique du marché.
+                </p>
+
+                <div class="formula">
+                    RSI : 0 → 100
+                </div>
+
+            </div>
+
+
+            <div class="indicator">
+
+                <div class="indicator-top">
+
+                    <div class="indicator-icon">
+                        <i class="fa-solid fa-wave-square"></i>
+                    </div>
+
+                    <span>03</span>
+
+                </div>
+
+                <h3>MACD</h3>
+
+                <p>
+                    Le MACD permet notamment d'étudier la dynamique
+                    et les changements de momentum.
+                </p>
+
+                <div class="formula">
+                    MACD = EMA courte − EMA longue
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECTION 6 : GRAPHIQUE
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                06
+            </div>
+
+            <div>
+
+                <h2>Laboratoire graphique</h2>
+
+                <p>
+                    Observer une évolution de prix simulée.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-wrapper">
+
+            <div class="chart-header">
+
+                <h3>
+                    EUR / USD — scénario pédagogique
+                </h3>
+
+                <span>
+                    Données simulées
+                </span>
+
+            </div>
+
+            <div class="chart-container">
+
+                <canvas id="technicalChart"></canvas>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECTION 7 : EXERCICE REALISTE
+    ====================================================== -->
+
+    <section class="section exercise">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                07
+            </div>
+
+            <div>
+
+                <h2>Exercice : analyser une situation de marché</h2>
+
+                <p>
+                    Prenez une décision comme un analyste, sans argent réel.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="scenario">
+
+            <div class="scenario-title">
+
+                <i class="fa-solid fa-briefcase"></i>
+
+                Situation du marché
+
+            </div>
+
+            <p style="font-size:14px;color:#596579;">
+
+                Vous observez EUR/USD sur une unité de temps de 1 heure.
+                Le marché vient de progresser pendant plusieurs séances.
+                Une correction vient cependant de commencer.
+
+                Le prix se trouve maintenant proche d'une ancienne zone
+                de support.
+
+            </p>
+
+
+            <div class="market-data">
+
+                <div>
+                    <small>Prix actuel</small>
+                    <strong>1.08720</strong>
+                </div>
+
+                <div>
+                    <small>Support</small>
+                    <strong>1.08550</strong>
+                </div>
+
+                <div>
+                    <small>Résistance</small>
+                    <strong>1.09100</strong>
+                </div>
+
+                <div>
+                    <small>Tendance</small>
+                    <strong>Haussière</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <p style="
+            font-weight:700;
+            color:#173b57;
+            margin-bottom:13px;
+        ">
+
+            Quelle serait votre première décision ?
+
+        </p>
+
+
+        <div class="decision-grid">
+
+            <button
+                class="decision-btn buy"
+                data-decision="buy">
+
+                <i class="fa-solid fa-arrow-trend-up"></i>
+
+                Observer un achat
+
+            </button>
+
+
+            <button
+                class="decision-btn sell"
+                data-decision="sell">
+
+                <i class="fa-solid fa-arrow-trend-down"></i>
+
+                Vendre immédiatement
+
+            </button>
+
+
+            <button
+                class="decision-btn wait"
+                data-decision="wait">
+
+                <i class="fa-solid fa-pause"></i>
+
+                Attendre une confirmation
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="exerciseResult"
+            class="exercise-result">
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECTION 8 : METHODE
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                08
+            </div>
+
+            <div>
+
+                <h2>Construire une analyse structurée</h2>
+
+                <p>
+                    Une bonne analyse commence par les éléments les plus simples.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="checklist">
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    1. Identifier l'actif étudié et son unité de temps.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    2. Déterminer la tendance générale.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    3. Repérer les supports et résistances.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    4. Observer le comportement du prix autour des niveaux importants.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    5. Utiliser les indicateurs uniquement comme éléments complémentaires.
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    6. Définir ce qui invaliderait votre scénario avant toute décision.
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         SECTION 9 : QUIZ
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                09
+            </div>
+
+            <div>
+
+                <h2>Quiz du chapitre</h2>
+
+                <p>
+                    Validez vos connaissances avant de poursuivre.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form id="quizForm">
+
+
+            <!-- Q1 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    1. Quel est l'objectif principal de l'analyse technique ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="a"
+                        >
+                        Garantir le résultat d'un trade
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="b"
+                        >
+                        Étudier le comportement du prix et structurer des scénarios
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="c"
+                        >
+                        Éliminer totalement le risque
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Q2 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    2. Que caractérise généralement une tendance haussière ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="a"
+                        >
+                        Des sommets et creux globalement plus élevés
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="b"
+                        >
+                        Des prix toujours identiques
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="c"
+                        >
+                        Uniquement des bougies rouges
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Q3 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    3. À quoi sert principalement un support ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="a"
+                        >
+                        À représenter une zone où le prix peut historiquement réagir
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="b"
+                        >
+                        À garantir un rebond
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="c"
+                        >
+                        À connaître le futur prix exact
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Q4 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    4. Le RSI évolue généralement sur quelle échelle ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="a"
+                        >
+                        0 à 10
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="b"
+                        >
+                        0 à 100
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="c"
+                        >
+                        100 à 1 000
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Q5 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    5. Pourquoi éviter de dépendre d'un seul indicateur ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="a"
+                        >
+                        Parce qu'un indicateur ne donne jamais aucune information
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="b"
+                        >
+                        Parce qu'il peut produire des signaux imparfaits ou retardés
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="c"
+                        >
+                        Parce que les graphiques sont inutiles
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Q6 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    6. Quelle est une bonne première étape avant d'utiliser plusieurs indicateurs ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="a"
+                        >
+                        Observer d'abord le prix et sa structure
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="b"
+                        >
+                        Ajouter immédiatement dix indicateurs
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="c"
+                        >
+                        Ignorer la tendance
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="quiz-button">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                Vérifier mes réponses
+
+            </button>
+
+
+        </form>
+
+
+        <div
+            id="quizResult"
+            class="quiz-result">
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <strong>BMJ FORMATION</strong>
+
+    <p>
+        Formation Trading — Chapitre 3 : Analyse technique
+    </p>
+
+    <p>
+        Contenu pédagogique destiné à l'apprentissage.
+        Les exemples présentés sont simulés et ne constituent pas
+        des conseils financiers.
+    </p>
+
+</footer>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    /* =====================================================
+       UTILISATEUR
+    ===================================================== */
+
+    const currentUser =
+        JSON.parse(
+            localStorage.getItem("bmj_current_user") || "null"
+        );
+
+
+    const userName =
+        document.getElementById("userName");
+
+    const userPhoto =
+        document.getElementById("userPhoto");
+
+
+    if (currentUser) {
+
+        const name =
+            currentUser.nom ||
+            currentUser.name ||
+            currentUser.prenom ||
+            "Apprenant";
+
+        userName.textContent = name;
+
+
+        if (currentUser.photo) {
+            userPhoto.src = currentUser.photo;
+        }
+
+    }
+
+
+    /* =====================================================
+       PROGRESSION
+    ===================================================== */
+
+    const userId =
+        currentUser?.id_bmj ||
+        currentUser?.id ||
+        "guest";
+
+
+    const progressKey =
+        `trading_progression_${userId}`;
+
+
+    function getProgress() {
+
+        const value =
+            parseInt(
+                localStorage.getItem(progressKey) || "0",
+                10
+            );
+
+        return isNaN(value) ? 0 : value;
+    }
+
+
+    function setProgress(value) {
+
+        const safeValue =
+            Math.max(
+                0,
+                Math.min(100, value)
+            );
+
+        localStorage.setItem(
+            progressKey,
+            safeValue
+        );
+
+        updateProgress();
+    }
+
+
+    function updateProgress() {
+
+        const progress =
+            getProgress();
+
+        document.getElementById(
+            "progressBar"
+        ).style.width = progress + "%";
+
+
+        document.getElementById(
+            "progressText"
+        ).textContent = progress + "%";
+    }
+
+
+    updateProgress();
+
+
+    /* =====================================================
+       GRAPHIQUE
+    ===================================================== */
+
+    const canvas =
+        document.getElementById(
+            "technicalChart"
+        );
+
+
+    if (canvas && typeof Chart !== "undefined") {
+
+        const labels = [
+            "09:00",
+            "10:00",
+            "11:00",
+            "12:00",
+            "13:00",
+            "14:00",
+            "15:00",
+            "16:00",
+            "17:00",
+            "18:00",
+            "19:00",
+            "20:00"
+        ];
+
+
+        const prices = [
+            1.0832,
+            1.0838,
+            1.0844,
+            1.0851,
+            1.0847,
+            1.0856,
+            1.0863,
+            1.0871,
+            1.0866,
+            1.0874,
+            1.0880,
+            1.0872
+        ];
+
+
+        new Chart(canvas, {
+
+            type: "line",
+
+            data: {
+
+                labels,
+
+                datasets: [
+
+                    {
+                        label: "EUR/USD",
+                        data: prices,
+
+                        borderColor: "#4db6e8",
+
+                        backgroundColor:
+                            "rgba(77,182,232,.12)",
+
+                        borderWidth: 2,
+
+                        pointRadius: 3,
+
+                        pointHoverRadius: 5,
+
+                        fill: true,
+
+                        tension: .35
+                    },
+
+                    {
+                        label: "Support",
+                        data: labels.map(
+                            () => 1.0855
+                        ),
+
+                        borderColor: "#58bd91",
+
+                        borderDash: [
+                            7,
+                            6
+                        ],
+
+                        borderWidth: 1.5,
+
+                        pointRadius: 0,
+
+                        fill: false
+                    },
+
+                    {
+                        label: "Résistance",
+                        data: labels.map(
+                            () => 1.0910
+                        ),
+
+                        borderColor: "#df7777",
+
+                        borderDash: [
+                            7,
+                            6
+                        ],
+
+                        borderWidth: 1.5,
+
+                        pointRadius: 0,
+
+                        fill: false
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        labels: {
+                            color: "#d9e5ee",
+                            font: {
+                                family: "Poppins",
+                                size: 11
+                            }
+                        }
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        ticks: {
+                            color: "#91a6b6"
+                        },
+
+                        grid: {
+                            color:
+                                "rgba(255,255,255,.06)"
+                        }
+
+                    },
+
+                    y: {
+
+                        ticks: {
+                            color: "#91a6b6"
+                        },
+
+                        grid: {
+                            color:
+                                "rgba(255,255,255,.06)"
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+
+    /* =====================================================
+       EXERCICE
+    ===================================================== */
+
+    const decisionButtons =
+        document.querySelectorAll(
+            ".decision-btn"
+        );
+
+
+    const exerciseResult =
+        document.getElementById(
+            "exerciseResult"
+        );
+
+
+    decisionButtons.forEach(
+        function (button) {
+
+            button.addEventListener(
+                "click",
+                function () {
+
+                    const decision =
+                        button.dataset.decision;
+
+
+                    exerciseResult
+                        .className =
+                        "exercise-result show";
+
+
+                    if (decision === "buy") {
+
+                        exerciseResult.classList.add(
+                            "success"
+                        );
+
+                        exerciseResult.innerHTML = `
+                            <i class="fa-solid fa-circle-check"></i>
+                            <strong>Bonne réflexion.</strong><br>
+                            Une observation acheteuse peut être envisagée
+                            puisque la tendance générale est haussière et que
+                            le prix approche d'un support. Mais il faudrait
+                            attendre une confirmation du comportement du prix
+                            avant de considérer un scénario.
+                        `;
+
+                        setProgress(
+                            Math.max(
+                                getProgress(),
+                                60
+                            )
+                        );
+
+                    }
+
+                    else if (decision === "wait") {
+
+                        exerciseResult.classList.add(
+                            "success"
+                        );
+
+                        exerciseResult.innerHTML = `
+                            <i class="fa-solid fa-circle-check"></i>
+                            <strong>Très bonne approche.</strong><br>
+                            Attendre une confirmation est particulièrement
+                            intéressant ici. Le prix est proche d'un support,
+                            mais une zone de support ne garantit pas un rebond.
+                            L'analyse doit donc rechercher une réaction avant
+                            de prendre une décision.
+                        `;
+
+                        setProgress(
+                            Math.max(
+                                getProgress(),
+                                70
+                            )
+                        );
+
+                    }
+
+                    else {
+
+                        exerciseResult.classList.add(
+                            "warning"
+                        );
+
+                        exerciseResult.innerHTML = `
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                            <strong>Décision trop rapide.</strong><br>
+                            Vendre immédiatement va contre le contexte présenté :
+                            la tendance générale reste haussière et le prix est
+                            proche d'un support. Il faudrait davantage d'éléments
+                            avant d'envisager ce scénario.
+                        `;
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+    /* =====================================================
+       QUIZ
+    ===================================================== */
+
+    const quizForm =
+        document.getElementById(
+            "quizForm"
+        );
+
+
+    const quizResult =
+        document.getElementById(
+            "quizResult"
+        );
+
+
+    quizForm.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+
+            const correctAnswers = {
+
+                q1: "b",
+                q2: "a",
+                q3: "a",
+                q4: "b",
+                q5: "b",
+                q6: "a"
+
+            };
+
+
+            let score = 0;
+            let answered = 0;
+
+
+            Object.keys(
+                correctAnswers
+            ).forEach(
+                function (question) {
+
+                    const selected =
+                        document.querySelector(
+                            `input[name="${question}"]:checked`
+                        );
+
+
+                    if (selected) {
+
+                        answered++;
+
+
+                        if (
+                            selected.value ===
+                            correctAnswers[question]
+                        ) {
+
+                            score++;
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+            quizResult.className =
+                "quiz-result show";
+
+
+            if (answered < 6) {
+
+                quizResult.style.background =
+                    "#fff8df";
+
+                quizResult.style.color =
+                    "#795d12";
+
+                quizResult.innerHTML = `
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    Veuillez répondre aux 6 questions
+                    avant de valider le quiz.
+                `;
+
+                return;
+            }
+
+
+            const percentage =
+                Math.round(
+                    (score / 6) * 100
+                );
+
+
+            if (percentage >= 70) {
+
+                quizResult.style.background =
+                    "#eaf8f1";
+
+                quizResult.style.color =
+                    "#176341";
+
+
+                quizResult.innerHTML = `
+                    <i class="fa-solid fa-circle-check"></i>
+                    <strong>Chapitre validé !</strong><br>
+                    Vous avez obtenu
+                    <strong>${score}/6 (${percentage}%)</strong>.
+                    Votre progression est enregistrée.
+                `;
+
+
+                setProgress(100);
+
+
+                /*
+                 * Le chapitre 3 correspond
+                 * à l'index 2.
+                 */
+
+                localStorage.setItem(
+                    `trading_chapitre_2_complete_${userId}`,
+                    "true"
+                );
+
+
+                localStorage.setItem(
+                    `trading_progression_${userId}`,
+                    "100"
+                );
+
+            }
+
+            else {
+
+                quizResult.style.background =
+                    "#fff1f1";
+
+                quizResult.style.color =
+                    "#a53d43";
+
+
+                quizResult.innerHTML = `
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <strong>Score : ${score}/6 (${percentage}%).</strong><br>
+                    Il faut obtenir au moins 70%.
+                    Relisez les notions puis réessayez.
+                `;
+
+            }
+
+        }
+    );
+
+});
+
+</script>
+
+</body>
+</html>

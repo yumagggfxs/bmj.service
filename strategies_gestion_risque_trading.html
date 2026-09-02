@@ -1,0 +1,3912 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Stratégies & Gestion du risque — BMJ FORMATION</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+            line-height: 1.7;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            background: rgba(255,255,255,.96);
+            backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid #e4eaf1;
+            box-shadow: 0 4px 20px rgba(20,50,90,.06);
+        }
+
+        .header-inner {
+            max-width: 1180px;
+            margin: auto;
+
+            min-height: 72px;
+            padding: 0 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            color: #145a86;
+            text-decoration: none;
+
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #145a86;
+            color: white;
+
+            box-shadow: 0 8px 20px rgba(20,90,134,.2);
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .user-photo {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 50%;
+            object-fit: cover;
+
+            border: 2px solid #d9b44a;
+            background: #edf3f8;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(9,47,74,.98),
+                    rgba(20,90,134,.94)
+                );
+        }
+
+        .hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 450px;
+            height: 450px;
+
+            right: -180px;
+            top: -220px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,.05);
+        }
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+
+            width: 250px;
+            height: 250px;
+
+            left: -130px;
+            bottom: -150px;
+
+            border-radius: 50%;
+
+            background: rgba(240,201,90,.06);
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 2;
+
+            max-width: 1180px;
+            margin: auto;
+
+            padding: 70px 20px;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            color: rgba(255,255,255,.72);
+
+            font-size: 13px;
+
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            max-width: 900px;
+
+            font-size: clamp(31px,5vw,54px);
+
+            line-height: 1.15;
+
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #f0c95a;
+        }
+
+        .hero-description {
+            max-width: 790px;
+
+            color: rgba(255,255,255,.88);
+
+            font-size: 15px;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+
+            margin-top: 28px;
+        }
+
+        .hero-tag {
+            padding: 8px 14px;
+
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 30px;
+
+            background: rgba(255,255,255,.08);
+
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        main {
+            max-width: 1180px;
+            margin: auto;
+
+            padding: 35px 20px 70px;
+        }
+
+        /* =====================================================
+           INFO
+        ===================================================== */
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 15px;
+
+            margin-bottom: 28px;
+        }
+
+        .info-card {
+            background: white;
+
+            border: 1px solid #e4eaf1;
+            border-radius: 18px;
+
+            padding: 20px;
+
+            box-shadow: 0 8px 25px rgba(20,50,90,.05);
+        }
+
+        .info-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #edf5fa;
+            color: #145a86;
+
+            margin-bottom: 12px;
+        }
+
+        .info-card strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .info-card small {
+            color: #748094;
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .progress-card {
+            background: white;
+
+            border: 1px solid #e4eaf1;
+            border-radius: 20px;
+
+            padding: 22px;
+            margin-bottom: 30px;
+
+            box-shadow: 0 8px 25px rgba(20,50,90,.05);
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: 10px;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .progress-track {
+            height: 10px;
+
+            background: #edf1f5;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #145a86,
+                    #d9b44a
+                );
+
+            border-radius: inherit;
+
+            transition: width .5s ease;
+        }
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .section {
+            background: white;
+
+            border: 1px solid #e4eaf1;
+            border-radius: 22px;
+
+            padding: 30px;
+            margin-bottom: 25px;
+
+            box-shadow: 0 8px 25px rgba(20,50,90,.05);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+
+            margin-bottom: 22px;
+        }
+
+        .section-number {
+            flex-shrink: 0;
+
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #145a86;
+            color: white;
+
+            font-weight: 800;
+        }
+
+        .section-heading h2 {
+            color: #123b59;
+            font-size: 23px;
+        }
+
+        .section-heading p {
+            color: #718096;
+            font-size: 13px;
+        }
+
+        .intro-text {
+            color: #596579;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        /* =====================================================
+           CONCEPT GRID
+        ===================================================== */
+
+        .concept-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 17px;
+        }
+
+        .concept {
+            padding: 20px;
+
+            border: 1px solid #e5eaf1;
+            border-radius: 16px;
+
+            background: #f9fbfc;
+        }
+
+        .concept h3 {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            color: #145a86;
+            font-size: 16px;
+
+            margin-bottom: 8px;
+        }
+
+        .concept p {
+            color: #657083;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           STRATEGIES
+        ===================================================== */
+
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 16px;
+        }
+
+        .strategy {
+            position: relative;
+
+            padding: 22px;
+
+            border: 1px solid #e3e9ef;
+            border-radius: 17px;
+
+            background: #fbfcfd;
+        }
+
+        .strategy-number {
+            position: absolute;
+
+            top: 15px;
+            right: 15px;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            color: #a0a9b5;
+        }
+
+        .strategy-icon {
+            width: 43px;
+            height: 43px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background: #eaf3f8;
+            color: #145a86;
+
+            margin-bottom: 14px;
+        }
+
+        .strategy h3 {
+            font-size: 16px;
+            color: #173b57;
+
+            margin-bottom: 8px;
+        }
+
+        .strategy p {
+            color: #657083;
+            font-size: 13px;
+        }
+
+        .strategy-list {
+            margin-top: 13px;
+            padding-left: 17px;
+        }
+
+        .strategy-list li {
+            color: #697586;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        /* =====================================================
+           RULE BOX
+        ===================================================== */
+
+        .rule-box {
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8fbfd,
+                    #eef5f9
+                );
+
+            border-left: 4px solid #d8b348;
+        }
+
+        .rule-box strong {
+            color: #145a86;
+        }
+
+        .rule-box p {
+            color: #5e6a7b;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           RISK CARDS
+        ===================================================== */
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 15px;
+        }
+
+        .risk-card {
+            padding: 21px;
+
+            border-radius: 16px;
+
+            background: #fbfcfd;
+
+            border: 1px solid #e4eaf1;
+        }
+
+        .risk-card h3 {
+            color: #173b57;
+            font-size: 15px;
+
+            margin-bottom: 8px;
+        }
+
+        .risk-card p {
+            color: #657083;
+            font-size: 13px;
+        }
+
+        .risk-value {
+            display: inline-block;
+
+            margin-top: 13px;
+
+            padding: 6px 10px;
+
+            border-radius: 8px;
+
+            background: #edf5fa;
+            color: #145a86;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           CALCULATION
+        ===================================================== */
+
+        .calculation-box {
+            padding: 22px;
+
+            border-radius: 17px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e1e7ed;
+
+            margin-top: 20px;
+        }
+
+        .calculation-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            color: #145a86;
+
+            font-weight: 700;
+
+            margin-bottom: 13px;
+        }
+
+        .formula-big {
+            padding: 15px;
+
+            border-radius: 11px;
+
+            background: white;
+
+            border: 1px dashed #ccd7e0;
+
+            text-align: center;
+
+            font-family: monospace;
+            font-size: 14px;
+
+            color: #173b57;
+        }
+
+        /* =====================================================
+           TABLE
+        ===================================================== */
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            min-width: 650px;
+        }
+
+        th,
+        td {
+            padding: 13px 15px;
+
+            text-align: left;
+
+            border-bottom: 1px solid #e7ebef;
+
+            font-size: 13px;
+        }
+
+        th {
+            background: #f4f7fa;
+            color: #173b57;
+
+            font-weight: 700;
+        }
+
+        td {
+            color: #687386;
+        }
+
+        /* =====================================================
+           SIMULATOR
+        ===================================================== */
+
+        .simulator {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .sim-form {
+            padding: 22px;
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8ef;
+            border-radius: 17px;
+        }
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+        .field label {
+            display: block;
+
+            color: #4f5d6e;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            margin-bottom: 6px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+
+            padding: 12px 13px;
+
+            border: 1px solid #dce3e9;
+            border-radius: 10px;
+
+            outline: none;
+
+            font-family: inherit;
+            font-size: 13px;
+
+            background: white;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #145a86;
+        }
+
+        .calculate-btn {
+            width: 100%;
+
+            padding: 13px;
+
+            border: 0;
+            border-radius: 11px;
+
+            background: #145a86;
+            color: white;
+
+            font-family: inherit;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .calculate-btn:hover {
+            background: #0d4567;
+        }
+
+        .sim-result {
+            padding: 22px;
+
+            border-radius: 17px;
+
+            background: #0d314a;
+
+            color: white;
+
+            min-height: 100%;
+        }
+
+        .sim-result h3 {
+            margin-bottom: 18px;
+            font-size: 17px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .result-item {
+            padding: 14px;
+
+            border-radius: 11px;
+
+            background: rgba(255,255,255,.07);
+        }
+
+        .result-item small {
+            display: block;
+
+            color: #aebdca;
+            font-size: 10px;
+
+            margin-bottom: 3px;
+        }
+
+        .result-item strong {
+            font-size: 16px;
+        }
+
+        .sim-note {
+            margin-top: 17px;
+
+            color: #b8c9d5;
+
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           RISK REWARD
+        ===================================================== */
+
+        .rr-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 18px;
+        }
+
+        .rr-card {
+            padding: 22px;
+
+            border-radius: 16px;
+
+            border: 1px solid #e4eaf1;
+        }
+
+        .rr-card h3 {
+            color: #173b57;
+            margin-bottom: 8px;
+        }
+
+        .rr-card p {
+            color: #657083;
+            font-size: 13px;
+        }
+
+        .ratio {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-top: 15px;
+
+            font-weight: 800;
+            color: #145a86;
+        }
+
+        .ratio span {
+            padding: 8px 12px;
+
+            border-radius: 9px;
+
+            background: #edf5fa;
+        }
+
+        /* =====================================================
+           CHECKLIST
+        ===================================================== */
+
+        .checklist {
+            display: grid;
+            gap: 10px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+
+            padding: 13px;
+
+            border-radius: 11px;
+
+            background: #f8fafc;
+        }
+
+        .check-item i {
+            color: #d3aa37;
+
+            margin-top: 5px;
+        }
+
+        .check-item span {
+            color: #5e6a7b;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           ERREURS
+        ===================================================== */
+
+        .error-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 13px;
+        }
+
+        .error {
+            padding: 17px;
+
+            border-radius: 13px;
+
+            background: #fff8f8;
+
+            border: 1px solid #f0dddd;
+        }
+
+        .error h3 {
+            color: #a64c53;
+            font-size: 14px;
+
+            margin-bottom: 5px;
+        }
+
+        .error p {
+            color: #76676a;
+            font-size: 12px;
+        }
+
+        /* =====================================================
+           EXERCICE
+        ===================================================== */
+
+        .exercise {
+            background:
+                linear-gradient(
+                    135deg,
+                    #f8fbfd,
+                    #edf5f9
+                );
+        }
+
+        .scenario {
+            padding: 21px;
+
+            background: white;
+
+            border: 1px solid #e1e8ef;
+            border-radius: 16px;
+
+            margin-bottom: 20px;
+        }
+
+        .scenario-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            color: #145a86;
+            font-weight: 700;
+
+            margin-bottom: 10px;
+        }
+
+        .scenario p {
+            color: #5e6a7b;
+            font-size: 13px;
+        }
+
+        .exercise-options {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 12px;
+        }
+
+        .exercise-btn {
+            padding: 16px;
+
+            background: white;
+
+            border: 2px solid #dfe6ed;
+            border-radius: 13px;
+
+            cursor: pointer;
+
+            font-family: inherit;
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+        .exercise-btn:hover {
+            transform: translateY(-2px);
+            border-color: #145a86;
+        }
+
+        .exercise-btn i {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 20px;
+        }
+
+        .exercise-result {
+            display: none;
+
+            margin-top: 17px;
+
+            padding: 16px;
+
+            border-radius: 12px;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .exercise-result.show {
+            display: block;
+        }
+
+        .success {
+            background: #eaf8f1;
+            color: #176341;
+            border: 1px solid #bce5cf;
+        }
+
+        .warning {
+            background: #fff8df;
+            color: #795d12;
+            border: 1px solid #f0dd91;
+        }
+
+        /* =====================================================
+           QUIZ
+        ===================================================== */
+
+        .quiz-question {
+            padding: 20px;
+
+            border: 1px solid #e4eaf1;
+            border-radius: 15px;
+
+            background: #fbfcfd;
+
+            margin-bottom: 15px;
+        }
+
+        .quiz-question h3 {
+            font-size: 14px;
+            color: #173b57;
+
+            margin-bottom: 12px;
+        }
+
+        .answers {
+            display: grid;
+            gap: 8px;
+        }
+
+        .answer {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 11px 13px;
+
+            background: white;
+
+            border: 1px solid #dfe6ed;
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            color: #596579;
+            font-size: 12px;
+        }
+
+        .answer:hover {
+            border-color: #145a86;
+        }
+
+        .answer input {
+            accent-color: #145a86;
+        }
+
+        .quiz-button {
+            width: 100%;
+
+            padding: 15px;
+
+            border: 0;
+            border-radius: 12px;
+
+            background: #145a86;
+            color: white;
+
+            font-family: inherit;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .quiz-result {
+            display: none;
+
+            margin-top: 15px;
+
+            padding: 17px;
+
+            border-radius: 12px;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .quiz-result.show {
+            display: block;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            background: #0c2f47;
+
+            color: white;
+
+            text-align: center;
+
+            padding: 35px 20px;
+        }
+
+        footer strong {
+            color: #f0c95a;
+        }
+
+        footer p {
+            color: rgba(255,255,255,.63);
+
+            font-size: 11px;
+
+            margin-top: 6px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media(max-width:950px) {
+
+            .info-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .strategy-grid,
+            .risk-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .simulator {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width:680px) {
+
+            .brand span {
+                display: none;
+            }
+
+            .hero-inner {
+                padding: 50px 20px;
+            }
+
+            .info-grid,
+            .concept-grid,
+            .strategy-grid,
+            .risk-grid,
+            .rr-grid,
+            .error-grid,
+            .exercise-options {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 20px;
+                border-radius: 17px;
+            }
+
+            .market-data {
+                grid-template-columns: 1fr 1fr !important;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header>
+
+    <div class="header-inner">
+
+        <a
+            href="index.html"
+            class="brand"
+        >
+
+            <div class="brand-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <span>BMJ FORMATION</span>
+
+        </a>
+
+
+        <div class="user-area">
+
+            <span id="userName">
+                Apprenant
+            </span>
+
+            <img
+                id="userPhoto"
+                class="user-photo"
+                src="images/default-avatar.png"
+                alt="Photo utilisateur"
+            >
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-inner">
+
+        <div class="breadcrumb">
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+            Trading
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+            Chapitre 4
+
+        </div>
+
+
+        <h1>
+
+            <span>Stratégies</span> & gestion du risque
+
+        </h1>
+
+
+        <p class="hero-description">
+
+            Découvrez comment transformer une analyse de marché
+            en plan de trading structuré, comment choisir une stratégie,
+            calculer votre risque, définir un stop-loss et construire
+            un rapport risque/rendement cohérent.
+
+        </p>
+
+
+        <div class="hero-tags">
+
+            <span class="hero-tag">
+                <i class="fa-solid fa-chess"></i>
+                Stratégies
+            </span>
+
+            <span class="hero-tag">
+                <i class="fa-solid fa-shield"></i>
+                Gestion du risque
+            </span>
+
+            <span class="hero-tag">
+                <i class="fa-solid fa-calculator"></i>
+                Calcul
+            </span>
+
+            <span class="hero-tag">
+                <i class="fa-solid fa-flask"></i>
+                Simulation
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main>
+
+
+    <!-- =====================================================
+         INFORMATIONS
+    ====================================================== -->
+
+    <div class="info-grid">
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+
+            <strong>Chapitre 4 / 5</strong>
+
+            <small>
+                Stratégies & risque
+            </small>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-regular fa-clock"></i>
+            </div>
+
+            <strong>60 – 75 min</strong>
+
+            <small>
+                Temps conseillé
+            </small>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+
+            <strong>Niveau intermédiaire</strong>
+
+            <small>
+                Après l'analyse technique
+            </small>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-calculator"></i>
+            </div>
+
+            <strong>Simulateur inclus</strong>
+
+            <small>
+                Gestion du capital
+            </small>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PROGRESSION
+    ====================================================== -->
+
+    <div class="progress-card">
+
+        <div class="progress-top">
+
+            <span>
+                Progression du chapitre
+            </span>
+
+            <span id="progressText">
+                0%
+            </span>
+
+        </div>
+
+
+        <div class="progress-track">
+
+            <div
+                id="progressBar"
+                class="progress-bar"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         01 — INTRODUCTION
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                01
+            </div>
+
+            <div>
+
+                <h2>
+                    Pourquoi une stratégie ?
+                </h2>
+
+                <p>
+                    Passer de l'observation à un plan structuré.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <p class="intro-text">
+
+            Une stratégie de trading est un ensemble de règles
+            qui définit dans quelles conditions un trader peut
+            envisager une entrée, où le scénario serait invalidé,
+            comment gérer la position et dans quelles conditions
+            la sortie est prévue.
+
+            Une stratégie ne garantit jamais un résultat.
+
+        </p>
+
+
+        <div class="concept-grid">
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-bullseye"></i>
+                    Condition d'entrée
+                </h3>
+
+                <p>
+                    Définir précisément ce qui doit être observé
+                    avant d'envisager une position.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-ban"></i>
+                    Invalidation
+                </h3>
+
+                <p>
+                    Déterminer à quel moment l'idée de départ
+                    n'est plus valable.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Sortie
+                </h3>
+
+                <p>
+                    Prévoir à l'avance comment une position
+                    pourrait être clôturée.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-file-lines"></i>
+                    Journal
+                </h3>
+
+                <p>
+                    Noter les décisions, résultats et erreurs
+                    afin d'améliorer progressivement son processus.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         02 — STRATEGIES
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                02
+            </div>
+
+            <div>
+
+                <h2>
+                    Les grandes familles de stratégies
+                </h2>
+
+                <p>
+                    Comprendre les différents styles avant de choisir.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="strategy-grid">
+
+
+            <div class="strategy">
+
+                <span class="strategy-number">
+                    01
+                </span>
+
+                <div class="strategy-icon">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+
+                <h3>
+                    Scalping
+                </h3>
+
+                <p>
+                    Le scalping cherche généralement à exploiter
+                    de petits mouvements sur des périodes très courtes.
+                </p>
+
+                <ul class="strategy-list">
+
+                    <li>
+                        Durée très courte
+                    </li>
+
+                    <li>
+                        Beaucoup de décisions possibles
+                    </li>
+
+                    <li>
+                        Coûts et exécution importants
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="strategy">
+
+                <span class="strategy-number">
+                    02
+                </span>
+
+                <div class="strategy-icon">
+                    <i class="fa-solid fa-chart-column"></i>
+                </div>
+
+                <h3>
+                    Day trading
+                </h3>
+
+                <p>
+                    Les positions sont généralement ouvertes et
+                    fermées au cours de la même journée.
+                </p>
+
+                <ul class="strategy-list">
+
+                    <li>
+                        Pas de conservation overnight
+                    </li>
+
+                    <li>
+                        Analyse intraday
+                    </li>
+
+                    <li>
+                        Discipline importante
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="strategy">
+
+                <span class="strategy-number">
+                    03
+                </span>
+
+                <div class="strategy-icon">
+                    <i class="fa-solid fa-arrows-to-circle"></i>
+                </div>
+
+                <h3>
+                    Swing trading
+                </h3>
+
+                <p>
+                    Le swing trading cherche à exploiter des mouvements
+                    plus importants sur plusieurs jours ou semaines.
+                </p>
+
+                <ul class="strategy-list">
+
+                    <li>
+                        Horizon plus long
+                    </li>
+
+                    <li>
+                        Moins de décisions quotidiennes
+                    </li>
+
+                    <li>
+                        Risque overnight à considérer
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="strategy">
+
+                <span class="strategy-number">
+                    04
+                </span>
+
+                <div class="strategy-icon">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                </div>
+
+                <h3>
+                    Suivi de tendance
+                </h3>
+
+                <p>
+                    Le principe consiste à chercher des configurations
+                    compatibles avec une tendance déjà présente.
+                </p>
+
+                <ul class="strategy-list">
+
+                    <li>
+                        Structure du marché
+                    </li>
+
+                    <li>
+                        Moyennes mobiles possibles
+                    </li>
+
+                    <li>
+                        Attention aux phases latérales
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="strategy">
+
+                <span class="strategy-number">
+                    05
+                </span>
+
+                <div class="strategy-icon">
+                    <i class="fa-solid fa-arrows-left-right"></i>
+                </div>
+
+                <h3>
+                    Trading de range
+                </h3>
+
+                <p>
+                    Le trader étudie un marché qui évolue entre
+                    des zones de support et de résistance.
+                </p>
+
+                <ul class="strategy-list">
+
+                    <li>
+                        Support
+                    </li>
+
+                    <li>
+                        Résistance
+                    </li>
+
+                    <li>
+                        Risque de fausse cassure
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="strategy">
+
+                <span class="strategy-number">
+                    06
+                </span>
+
+                <div class="strategy-icon">
+                    <i class="fa-solid fa-arrows-split-up-and-left"></i>
+                </div>
+
+                <h3>
+                    Breakout
+                </h3>
+
+                <p>
+                    Le breakout étudie une sortie du prix hors
+                    d'une zone ou d'un niveau important.
+                </p>
+
+                <ul class="strategy-list">
+
+                    <li>
+                        Cassure
+                    </li>
+
+                    <li>
+                        Confirmation
+                    </li>
+
+                    <li>
+                        Risque de faux breakout
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+
+        <div class="rule-box">
+
+            <strong>
+                <i class="fa-solid fa-lightbulb"></i>
+                Notion importante
+            </strong>
+
+            <p>
+
+                Une stratégie simple et bien testée est généralement
+                plus intéressante qu'une méthode extrêmement complexe
+                que le trader ne comprend pas. L'objectif est de créer
+                un processus reproductible.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         03 — PLAN DE TRADING
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                03
+            </div>
+
+            <div>
+
+                <h2>
+                    Construire un plan de trading
+                </h2>
+
+                <p>
+                    La checklist avant toute décision.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="checklist">
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Quel actif suis-je en train d'analyser ?
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Quelle est l'unité de temps utilisée ?
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Quelle est la tendance ou structure actuelle ?
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Quel événement ou signal déclenche mon scénario ?
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Où mon scénario serait-il invalidé ?
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Combien suis-je prêt à risquer sur cette position ?
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Quel est mon objectif ou ma condition de sortie ?
+                </span>
+
+            </div>
+
+
+            <div class="check-item">
+
+                <i class="fa-solid fa-check"></i>
+
+                <span>
+                    Est-ce que cette opération respecte mon plan ?
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         04 — GESTION DU RISQUE
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                04
+            </div>
+
+            <div>
+
+                <h2>
+                    Les fondamentaux de la gestion du risque
+                </h2>
+
+                <p>
+                    Protéger le capital avant de chercher la performance.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <p class="intro-text">
+
+            La gestion du risque consiste à contrôler la quantité
+            de capital exposée à chaque opération et à l'ensemble
+            du portefeuille.
+
+            Une stratégie peut avoir de bonnes idées et rester
+            dangereuse si la taille des positions est mal maîtrisée.
+
+        </p>
+
+
+        <div class="risk-grid">
+
+            <div class="risk-card">
+
+                <h3>
+                    Risque par opération
+                </h3>
+
+                <p>
+                    Définir une limite maximale de perte acceptable
+                    pour une seule position.
+                </p>
+
+                <span class="risk-value">
+                    Exemple pédagogique : 1 %
+                </span>
+
+            </div>
+
+
+            <div class="risk-card">
+
+                <h3>
+                    Risque total
+                </h3>
+
+                <p>
+                    Plusieurs positions corrélées peuvent augmenter
+                    l'exposition réelle du portefeuille.
+                </p>
+
+                <span class="risk-value">
+                    Surveiller l'exposition
+                </span>
+
+            </div>
+
+
+            <div class="risk-card">
+
+                <h3>
+                    Perte maximale
+                </h3>
+
+                <p>
+                    Définir une limite au-delà de laquelle il devient
+                    nécessaire de revoir son plan.
+                </p>
+
+                <span class="risk-value">
+                    Règle personnelle
+                </span>
+
+            </div>
+
+
+            <div class="risk-card">
+
+                <h3>
+                    Stop-loss
+                </h3>
+
+                <p>
+                    Niveau permettant d'invalider automatiquement
+                    le scénario selon les règles de la stratégie.
+                </p>
+
+                <span class="risk-value">
+                    Protection
+                </span>
+
+            </div>
+
+
+            <div class="risk-card">
+
+                <h3>
+                    Diversification
+                </h3>
+
+                <p>
+                    Éviter de concentrer tout le risque sur une seule
+                    classe d'actifs ou une seule idée.
+                </p>
+
+                <span class="risk-value">
+                    Réduire la concentration
+                </span>
+
+            </div>
+
+
+            <div class="risk-card">
+
+                <h3>
+                    Levier
+                </h3>
+
+                <p>
+                    Le levier augmente l'exposition relative et peut
+                    accélérer aussi bien les gains que les pertes.
+                </p>
+
+                <span class="risk-value">
+                    À utiliser avec prudence
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         05 — CALCUL DU RISQUE
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                05
+            </div>
+
+            <div>
+
+                <h2>
+                    Calculer le montant risqué
+                </h2>
+
+                <p>
+                    Comprendre la relation entre capital, risque et stop.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="calculation-box">
+
+            <div class="calculation-title">
+
+                <i class="fa-solid fa-calculator"></i>
+
+                Formule pédagogique
+
+            </div>
+
+
+            <div class="formula-big">
+
+                Montant risqué = Capital × Pourcentage de risque
+
+            </div>
+
+
+            <p
+                style="
+                    margin-top:15px;
+                    color:#657083;
+                    font-size:13px;
+                "
+            >
+
+                Exemple : avec un capital simulé de 1 000 USD
+                et un risque théorique de 1 %, le montant maximal
+                risqué serait de 10 USD.
+
+            </p>
+
+        </div>
+
+
+        <div class="calculation-box">
+
+            <div class="calculation-title">
+
+                <i class="fa-solid fa-ruler-horizontal"></i>
+
+                Taille de position
+
+            </div>
+
+
+            <div class="formula-big">
+
+                Taille = Montant risqué ÷ Distance jusqu'au stop
+
+            </div>
+
+
+            <p
+                style="
+                    margin-top:15px;
+                    color:#657083;
+                    font-size:13px;
+                "
+            >
+
+                La taille exacte dépend ensuite de l'instrument,
+                de la valeur du point, du contrat et des règles
+                de la plateforme utilisée.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         06 — SIMULATEUR
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                06
+            </div>
+
+            <div>
+
+                <h2>
+                    Simulateur de risque
+                </h2>
+
+                <p>
+                    Faites vos calculs avec un capital virtuel.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="simulator">
+
+
+            <div class="sim-form">
+
+                <div class="field">
+
+                    <label>
+                        Capital simulé (USD)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="capital"
+                        value="1000"
+                        min="1"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Risque par opération (%)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="riskPercent"
+                        value="1"
+                        min="0.1"
+                        max="10"
+                        step="0.1"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Prix d'entrée
+                    </label>
+
+                    <input
+                        type="number"
+                        id="entryPrice"
+                        value="1.0850"
+                        step="0.0001"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Stop-loss
+                    </label>
+
+                    <input
+                        type="number"
+                        id="stopPrice"
+                        value="1.0800"
+                        step="0.0001"
+                    >
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="calculate-btn"
+                    id="calculateRisk"
+                >
+
+                    <i class="fa-solid fa-calculator"></i>
+
+                    Calculer le risque
+
+                </button>
+
+            </div>
+
+
+            <div class="sim-result">
+
+                <h3>
+                    Résultat de la simulation
+                </h3>
+
+
+                <div class="result-grid">
+
+                    <div class="result-item">
+
+                        <small>
+                            Montant risqué
+                        </small>
+
+                        <strong id="riskAmount">
+                            10.00 USD
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <small>
+                            Distance du stop
+                        </small>
+
+                        <strong id="stopDistance">
+                            0.0050
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <small>
+                            Risque %
+                        </small>
+
+                        <strong id="riskDisplay">
+                            1%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <small>
+                            Ratio potentiel
+                        </small>
+
+                        <strong id="riskRatio">
+                            À définir
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <p class="sim-note">
+
+                    Simulation éducative uniquement.
+                    Elle ne passe aucun ordre et n'est connectée
+                    à aucun marché réel.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         07 — RISK / REWARD
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                07
+            </div>
+
+            <div>
+
+                <h2>
+                    Comprendre le ratio risque / rendement
+                </h2>
+
+                <p>
+                    Comparer ce que vous risquez avec votre objectif potentiel.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="rr-grid">
+
+            <div class="rr-card">
+
+                <h3>
+                    Risque
+                </h3>
+
+                <p>
+                    Le risque correspond à la perte théorique prévue
+                    si le scénario est invalidé au niveau défini.
+                </p>
+
+                <div class="ratio">
+
+                    <span>
+                        1R
+                    </span>
+
+                    =
+
+                    unité de risque
+
+                </div>
+
+            </div>
+
+
+            <div class="rr-card">
+
+                <h3>
+                    Rendement potentiel
+                </h3>
+
+                <p>
+                    L'objectif peut être exprimé comme un multiple
+                    du risque initial.
+                </p>
+
+                <div class="ratio">
+
+                    <span>
+                        2R
+                    </span>
+
+                    =
+
+                    deux unités de risque
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="rule-box">
+
+            <strong>
+                Exemple
+            </strong>
+
+            <p>
+
+                Si une opération risque 10 USD et que l'objectif
+                potentiel correspond à 20 USD, le ratio théorique
+                est de 1:2.
+
+                Ce ratio ne signifie cependant pas que l'opération
+                sera gagnante.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         08 — TABLEAU
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                08
+            </div>
+
+            <div>
+
+                <h2>
+                    Exemple de scénarios
+                </h2>
+
+                <p>
+                    Comprendre comment le risque évolue.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Capital
+                        </th>
+
+                        <th>
+                            Risque
+                        </th>
+
+                        <th>
+                            Montant risqué
+                        </th>
+
+                        <th>
+                            Objectif
+                        </th>
+
+                        <th>
+                            Ratio
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+
+                        <td>
+                            500 USD
+                        </td>
+
+                        <td>
+                            1 %
+                        </td>
+
+                        <td>
+                            5 USD
+                        </td>
+
+                        <td>
+                            10 USD
+                        </td>
+
+                        <td>
+                            1:2
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            1 000 USD
+                        </td>
+
+                        <td>
+                            1 %
+                        </td>
+
+                        <td>
+                            10 USD
+                        </td>
+
+                        <td>
+                            20 USD
+                        </td>
+
+                        <td>
+                            1:2
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            2 000 USD
+                        </td>
+
+                        <td>
+                            1 %
+                        </td>
+
+                        <td>
+                            20 USD
+                        </td>
+
+                        <td>
+                            40 USD
+                        </td>
+
+                        <td>
+                            1:2
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            5 000 USD
+                        </td>
+
+                        <td>
+                            0,5 %
+                        </td>
+
+                        <td>
+                            25 USD
+                        </td>
+
+                        <td>
+                            50 USD
+                        </td>
+
+                        <td>
+                            1:2
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         09 — ERREURS
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                09
+            </div>
+
+            <div>
+
+                <h2>
+                    Les erreurs de gestion du risque
+                </h2>
+
+                <p>
+                    Les comportements qui peuvent détruire une bonne stratégie.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="error-grid">
+
+            <div class="error">
+
+                <h3>
+                    <i class="fa-solid fa-xmark"></i>
+                    Risquer trop sur une position
+                </h3>
+
+                <p>
+                    Une seule perte importante peut compromettre
+                    une grande partie du capital.
+                </p>
+
+            </div>
+
+
+            <div class="error">
+
+                <h3>
+                    <i class="fa-solid fa-xmark"></i>
+                    Déplacer son stop
+                </h3>
+
+                <p>
+                    Modifier constamment son niveau d'invalidation
+                    peut transformer une petite perte en grosse perte.
+                </p>
+
+            </div>
+
+
+            <div class="error">
+
+                <h3>
+                    <i class="fa-solid fa-xmark"></i>
+                    Trader pour se refaire
+                </h3>
+
+                <p>
+                    Augmenter brutalement les positions après une
+                    perte peut créer une spirale dangereuse.
+                </p>
+
+            </div>
+
+
+            <div class="error">
+
+                <h3>
+                    <i class="fa-solid fa-xmark"></i>
+                    Multiplier les positions
+                </h3>
+
+                <p>
+                    Plusieurs trades sur des actifs fortement corrélés
+                    peuvent représenter un risque similaire.
+                </p>
+
+            </div>
+
+
+            <div class="error">
+
+                <h3>
+                    <i class="fa-solid fa-xmark"></i>
+                    Ignorer les coûts
+                </h3>
+
+                <p>
+                    Spread, commissions et autres frais peuvent affecter
+                    les résultats, surtout sur les stratégies courtes.
+                </p>
+
+            </div>
+
+
+            <div class="error">
+
+                <h3>
+                    <i class="fa-solid fa-xmark"></i>
+                    Utiliser un levier excessif
+                </h3>
+
+                <p>
+                    Une forte exposition peut amplifier rapidement
+                    les pertes lorsque le marché évolue défavorablement.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         10 — EXERCICE REALISTE
+    ====================================================== -->
+
+    <section class="section exercise">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                10
+            </div>
+
+            <div>
+
+                <h2>
+                    Exercice : construire un scénario
+                </h2>
+
+                <p>
+                    Mettez en pratique la gestion du risque.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="scenario">
+
+            <div class="scenario-title">
+
+                <i class="fa-solid fa-briefcase"></i>
+
+                Situation
+
+            </div>
+
+
+            <p>
+
+                Votre capital virtuel est de 1 000 USD.
+
+                Vous identifiez une configuration intéressante
+                sur EUR/USD.
+
+                Votre plan prévoit un risque maximal de 1 %.
+
+                Le scénario serait invalidé si le prix atteint
+                le niveau du stop-loss.
+
+                Vous estimez que l'objectif potentiel se trouve
+                à une distance deux fois supérieure à celle du stop.
+
+            </p>
+
+        </div>
+
+
+        <p
+            style="
+                font-size:13px;
+                font-weight:700;
+                color:#173b57;
+                margin-bottom:13px;
+            "
+        >
+
+            Quelle approche respecte le mieux le plan ?
+
+        </p>
+
+
+        <div class="exercise-options">
+
+            <button
+                class="exercise-btn"
+                data-answer="correct"
+            >
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                Risquer 1 % maximum
+                et respecter le stop
+
+            </button>
+
+
+            <button
+                class="exercise-btn"
+                data-answer="wrong"
+            >
+
+                <i class="fa-solid fa-arrow-up"></i>
+
+                Risquer 10 %
+                pour gagner plus rapidement
+
+            </button>
+
+
+            <button
+                class="exercise-btn"
+                data-answer="wrong"
+            >
+
+                <i class="fa-solid fa-fire"></i>
+
+                Déplacer le stop
+                si le marché baisse
+
+            </button>
+
+        </div>
+
+
+        <div
+            id="exerciseResult"
+            class="exercise-result"
+        ></div>
+
+    </section>
+
+
+    <!-- =====================================================
+         11 — JOURNAL
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                11
+            </div>
+
+            <div>
+
+                <h2>
+                    Le journal de trading
+                </h2>
+
+                <p>
+                    Transformer chaque opération en source d'apprentissage.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="concept-grid">
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-calendar"></i>
+                    Date et heure
+                </h3>
+
+                <p>
+                    Notez quand la décision a été prise.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-coins"></i>
+                    Actif
+                </h3>
+
+                <p>
+                    Enregistrez l'instrument et l'unité de temps.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-brain"></i>
+                    Raisonnement
+                </h3>
+
+                <p>
+                    Expliquez pourquoi le scénario semblait intéressant.
+                </p>
+
+            </div>
+
+
+            <div class="concept">
+
+                <h3>
+                    <i class="fa-solid fa-chart-simple"></i>
+                    Résultat
+                </h3>
+
+                <p>
+                    Notez le résultat mais aussi si le plan a été respecté.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="rule-box">
+
+            <strong>
+                La bonne question après un trade
+            </strong>
+
+            <p>
+
+                Au lieu de demander uniquement :
+                « Ai-je gagné ou perdu ? »
+
+                demandez aussi :
+
+                « Ai-je correctement exécuté mon plan ? »
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         12 — QUIZ
+    ====================================================== -->
+
+    <section class="section">
+
+        <div class="section-heading">
+
+            <div class="section-number">
+                12
+            </div>
+
+            <div>
+
+                <h2>
+                    Quiz du chapitre
+                </h2>
+
+                <p>
+                    Validez vos connaissances.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form id="quizForm">
+
+
+            <!-- Q1 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    1. Quel est le rôle principal d'une stratégie ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="a"
+                        >
+
+                        Garantir chaque trade gagnant
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="b"
+                        >
+
+                        Définir un processus et des règles de décision
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="c"
+                        >
+
+                        Supprimer tous les risques
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Q2 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    2. Pourquoi définir un stop-loss ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="a"
+                        >
+
+                        Pour garantir un bénéfice
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="b"
+                        >
+
+                        Pour définir une zone d'invalidation du scénario
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="c"
+                        >
+
+                        Pour prévoir le prix exact du marché
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Q3 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    3. Avec 1 000 USD et un risque de 1 %, quel est le montant risqué ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="a"
+                        >
+
+                        1 USD
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="b"
+                        >
+
+                        10 USD
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="c"
+                        >
+
+                        100 USD
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Q4 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    4. Que signifie un ratio risque/rendement de 1:2 ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="a"
+                        >
+
+                        Le risque représente deux fois l'objectif
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="b"
+                        >
+
+                        L'objectif potentiel représente deux unités de risque
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="c"
+                        >
+
+                        Le trade est automatiquement gagnant
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Q5 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    5. Que peut provoquer un levier trop important ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="a"
+                        >
+
+                        Une disparition du risque
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="b"
+                        >
+
+                        Une amplification de l'exposition et des pertes potentielles
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="c"
+                        >
+
+                        Une garantie de rendement
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Q6 -->
+
+            <div class="quiz-question">
+
+                <h3>
+                    6. Pourquoi tenir un journal de trading ?
+                </h3>
+
+                <div class="answers">
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="a"
+                        >
+
+                        Pour analyser et améliorer son processus
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="b"
+                        >
+
+                        Pour garantir les prochains trades
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="c"
+                        >
+
+                        Pour éviter toute perte
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="quiz-button"
+            >
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                Valider le quiz
+
+            </button>
+
+        </form>
+
+
+        <div
+            id="quizResult"
+            class="quiz-result"
+        ></div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <strong>
+        BMJ FORMATION
+    </strong>
+
+    <p>
+        Formation Trading — Chapitre 4 : Stratégies & gestion du risque
+    </p>
+
+    <p>
+        Les exemples et calculs de cette page sont pédagogiques.
+        Ils ne constituent pas des conseils financiers et ne permettent
+        pas d'exécuter des opérations réelles.
+    </p>
+
+</footer>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /* =====================================================
+           UTILISATEUR
+        ===================================================== */
+
+        const currentUser =
+            JSON.parse(
+                localStorage.getItem(
+                    "bmj_current_user"
+                ) || "null"
+            );
+
+
+        const userName =
+            document.getElementById(
+                "userName"
+            );
+
+
+        const userPhoto =
+            document.getElementById(
+                "userPhoto"
+            );
+
+
+        if (currentUser) {
+
+            userName.textContent =
+                currentUser.nom ||
+                currentUser.name ||
+                currentUser.prenom ||
+                "Apprenant";
+
+
+            if (currentUser.photo) {
+
+                userPhoto.src =
+                    currentUser.photo;
+
+            }
+
+        }
+
+
+        /* =====================================================
+           PROGRESSION
+        ===================================================== */
+
+        const userId =
+            currentUser?.id_bmj ||
+            currentUser?.id ||
+            "guest";
+
+
+        const progressKey =
+            `trading_progression_${userId}`;
+
+
+        function getProgress() {
+
+            const value =
+                parseInt(
+                    localStorage.getItem(
+                        progressKey
+                    ) || "0",
+                    10
+                );
+
+
+            return Number.isNaN(value)
+                ? 0
+                : value;
+
+        }
+
+
+        function setProgress(value) {
+
+            const safe =
+                Math.max(
+                    0,
+                    Math.min(
+                        100,
+                        value
+                    )
+                );
+
+
+            localStorage.setItem(
+                progressKey,
+                safe
+            );
+
+
+            updateProgress();
+
+        }
+
+
+        function updateProgress() {
+
+            const progress =
+                getProgress();
+
+
+            document.getElementById(
+                "progressBar"
+            ).style.width =
+                progress + "%";
+
+
+            document.getElementById(
+                "progressText"
+            ).textContent =
+                progress + "%";
+
+        }
+
+
+        updateProgress();
+
+
+        /* =====================================================
+           SIMULATEUR DE RISQUE
+        ===================================================== */
+
+        const calculateButton =
+            document.getElementById(
+                "calculateRisk"
+            );
+
+
+        calculateButton.addEventListener(
+            "click",
+            function () {
+
+                const capital =
+                    parseFloat(
+                        document.getElementById(
+                            "capital"
+                        ).value
+                    );
+
+
+                const riskPercent =
+                    parseFloat(
+                        document.getElementById(
+                            "riskPercent"
+                        ).value
+                    );
+
+
+                const entry =
+                    parseFloat(
+                        document.getElementById(
+                            "entryPrice"
+                        ).value
+                    );
+
+
+                const stop =
+                    parseFloat(
+                        document.getElementById(
+                            "stopPrice"
+                        ).value
+                    );
+
+
+                if (
+                    !Number.isFinite(capital) ||
+                    !Number.isFinite(riskPercent) ||
+                    !Number.isFinite(entry) ||
+                    !Number.isFinite(stop) ||
+                    capital <= 0 ||
+                    riskPercent <= 0 ||
+                    entry <= 0 ||
+                    stop <= 0
+                ) {
+
+                    return;
+
+                }
+
+
+                const riskAmount =
+                    capital *
+                    (riskPercent / 100);
+
+
+                const distance =
+                    Math.abs(
+                        entry - stop
+                    );
+
+
+                document.getElementById(
+                    "riskAmount"
+                ).textContent =
+                    riskAmount.toFixed(2) +
+                    " USD";
+
+
+                document.getElementById(
+                    "stopDistance"
+                ).textContent =
+                    distance.toFixed(5);
+
+
+                document.getElementById(
+                    "riskDisplay"
+                ).textContent =
+                    riskPercent +
+                    "%";
+
+
+                document.getElementById(
+                    "riskRatio"
+                ).textContent =
+                    "1R";
+
+
+                setProgress(
+                    Math.max(
+                        getProgress(),
+                        65
+                    )
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           EXERCICE
+        ===================================================== */
+
+        const exerciseButtons =
+            document.querySelectorAll(
+                ".exercise-btn"
+            );
+
+
+        const exerciseResult =
+            document.getElementById(
+                "exerciseResult"
+            );
+
+
+        exerciseButtons.forEach(
+            function (button) {
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+                        const answer =
+                            button.dataset.answer;
+
+
+                        exerciseResult.className =
+                            "exercise-result show";
+
+
+                        if (
+                            answer ===
+                            "correct"
+                        ) {
+
+                            exerciseResult.classList.add(
+                                "success"
+                            );
+
+
+                            exerciseResult.innerHTML = `
+
+                                <i class="fa-solid fa-circle-check"></i>
+
+                                <strong>
+                                    Bonne réponse.
+                                </strong>
+
+                                <br>
+
+                                Avec un capital de 1 000 USD
+                                et une limite de risque de 1 %,
+                                le risque théorique est de 10 USD.
+                                L'objectif est de respecter le plan
+                                plutôt que de chercher à maximiser
+                                artificiellement la position.
+
+                            `;
+
+
+                            setProgress(
+                                Math.max(
+                                    getProgress(),
+                                    75
+                                )
+                            );
+
+                        }
+
+                        else {
+
+                            exerciseResult.classList.add(
+                                "warning"
+                            );
+
+
+                            exerciseResult.innerHTML = `
+
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                                <strong>
+                                    Cette décision ne respecte pas le plan.
+                                </strong>
+
+                                <br>
+
+                                Augmenter fortement le risque
+                                ou déplacer le stop peut transformer
+                                une stratégie contrôlée en exposition
+                                excessive.
+
+                            `;
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           QUIZ
+        ===================================================== */
+
+        const quizForm =
+            document.getElementById(
+                "quizForm"
+            );
+
+
+        const quizResult =
+            document.getElementById(
+                "quizResult"
+            );
+
+
+        quizForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const answers = {
+
+                    q1: "b",
+                    q2: "b",
+                    q3: "b",
+                    q4: "b",
+                    q5: "b",
+                    q6: "a"
+
+                };
+
+
+                let score = 0;
+                let answered = 0;
+
+
+                Object.keys(
+                    answers
+                ).forEach(
+                    function (question) {
+
+                        const selected =
+                            document.querySelector(
+                                `input[name="${question}"]:checked`
+                            );
+
+
+                        if (selected) {
+
+                            answered++;
+
+
+                            if (
+                                selected.value ===
+                                answers[question]
+                            ) {
+
+                                score++;
+
+                            }
+
+                        }
+
+                    }
+                );
+
+
+                quizResult.className =
+                    "quiz-result show";
+
+
+                if (answered < 6) {
+
+                    quizResult.style.background =
+                        "#fff8df";
+
+                    quizResult.style.color =
+                        "#795d12";
+
+
+                    quizResult.innerHTML = `
+
+                        <i class="fa-solid fa-circle-exclamation"></i>
+
+                        Répondez aux 6 questions
+                        avant de valider le quiz.
+
+                    `;
+
+                    return;
+
+                }
+
+
+                const percentage =
+                    Math.round(
+                        (score / 6) * 100
+                    );
+
+
+                if (percentage >= 70) {
+
+                    quizResult.style.background =
+                        "#eaf8f1";
+
+                    quizResult.style.color =
+                        "#176341";
+
+
+                    quizResult.innerHTML = `
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        <strong>
+                            Chapitre validé !
+                        </strong>
+
+                        <br>
+
+                        Score :
+                        <strong>
+                            ${score}/6 (${percentage}%)
+                        </strong>
+
+                        <br>
+
+                        Vous maîtrisez les principales notions
+                        de stratégies et de gestion du risque.
+
+                    `;
+
+
+                    setProgress(100);
+
+
+                    /*
+                     * Chapitre 4
+                     * index = 3
+                     */
+
+                    localStorage.setItem(
+                        `trading_chapitre_3_complete_${userId}`,
+                        "true"
+                    );
+
+
+                    localStorage.setItem(
+                        progressKey,
+                        "100"
+                    );
+
+                }
+
+                else {
+
+                    quizResult.style.background =
+                        "#fff1f1";
+
+                    quizResult.style.color =
+                        "#a53d43";
+
+
+                    quizResult.innerHTML = `
+
+                        <i class="fa-solid fa-rotate-right"></i>
+
+                        <strong>
+                            Score :
+                            ${score}/6 (${percentage}%)
+                        </strong>
+
+                        <br>
+
+                        Il faut obtenir au moins 70 %.
+                        Relisez les notions importantes
+                        puis recommencez le quiz.
+
+                    `;
+
+                }
+
+            }
+        );
+
+    });
+
+</script>
+
+</body>
+</html>

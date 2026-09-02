@@ -1,0 +1,5288 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projet Final Trading | BMJ SERVICE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <style>
+
+        :root {
+
+            --blue: #075985;
+            --blue-dark: #043b59;
+            --blue-light: #0ea5e9;
+
+            --gold: #f4b400;
+            --gold-light: #ffd75a;
+
+            --green: #16a34a;
+            --green-light: #dcfce7;
+
+            --red: #dc2626;
+            --red-light: #fee2e2;
+
+            --orange: #f97316;
+            --orange-light: #ffedd5;
+
+            --purple: #7c3aed;
+            --purple-light: #ede9fe;
+
+            --bg: #f5f8fc;
+            --white: #ffffff;
+
+            --text: #142033;
+            --muted: #6b7280;
+
+            --border: #e5eaf0;
+
+            --shadow:
+                0 15px 40px rgba(15, 23, 42, .08);
+
+            --radius: 18px;
+
+        }
+
+
+        * {
+
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+
+        }
+
+
+        html {
+
+            scroll-behavior: smooth;
+
+        }
+
+
+        body {
+
+            font-family: "Poppins", sans-serif;
+
+            background: var(--bg);
+
+            color: var(--text);
+
+            line-height: 1.6;
+
+        }
+
+
+        button,
+        input,
+        select {
+
+            font-family: inherit;
+
+        }
+
+
+        button {
+
+            cursor: pointer;
+
+        }
+
+
+        a {
+
+            text-decoration: none;
+
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .header {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            height: 74px;
+
+            background: rgba(255,255,255,.96);
+
+            backdrop-filter: blur(14px);
+
+            border-bottom: 1px solid var(--border);
+
+        }
+
+
+        .header-inner {
+
+            width: min(1250px, calc(100% - 40px));
+
+            height: 100%;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 11px;
+
+        }
+
+
+        .brand img {
+
+            width: 42px;
+
+            height: 42px;
+
+            object-fit: contain;
+
+        }
+
+
+        .brand strong {
+
+            display: block;
+
+            color: var(--blue);
+
+            font-size: 17px;
+
+            font-weight: 800;
+
+            line-height: 1.1;
+
+        }
+
+
+        .brand span {
+
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+        }
+
+
+        .user-box {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+
+        .user-photo {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 50%;
+
+            object-fit: cover;
+
+            border: 2px solid var(--gold);
+
+        }
+
+
+        .user-info strong {
+
+            display: block;
+
+            font-size: 13px;
+
+        }
+
+
+        .user-info span {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+        }
+
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+
+            min-height: 470px;
+
+            display: flex;
+
+            align-items: center;
+
+            background:
+
+                linear-gradient(
+                    100deg,
+                    rgba(3,38,57,.97),
+                    rgba(4,59,89,.86),
+                    rgba(7,89,133,.62)
+                ),
+
+                url("images/trading-banner.jpg")
+                center/cover;
+
+        }
+
+
+        .hero-content {
+
+            width: min(1250px, calc(100% - 40px));
+
+            margin: auto;
+
+            padding: 70px 0;
+
+        }
+
+
+        .hero-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 8px 15px;
+
+            border-radius: 999px;
+
+            background: rgba(255,255,255,.1);
+
+            border: 1px solid rgba(255,255,255,.2);
+
+            color: white;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .hero h1 {
+
+            max-width: 850px;
+
+            color: white;
+
+            font-size: clamp(36px, 5vw, 60px);
+
+            line-height: 1.08;
+
+            font-weight: 800;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .hero h1 span {
+
+            color: var(--gold-light);
+
+        }
+
+
+        .hero p {
+
+            max-width: 760px;
+
+            color: rgba(255,255,255,.8);
+
+            font-size: 14px;
+
+        }
+
+
+        .hero-actions {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-top: 30px;
+
+        }
+
+
+        .btn {
+
+            border: 0;
+
+            border-radius: 11px;
+
+            padding: 13px 20px;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 8px;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            transition: .2s;
+
+        }
+
+
+        .btn:hover {
+
+            transform: translateY(-2px);
+
+        }
+
+
+        .btn-primary {
+
+            background: var(--gold);
+
+            color: #172033;
+
+        }
+
+
+        .btn-white {
+
+            background: white;
+
+            color: var(--blue);
+
+        }
+
+
+        /* =========================================================
+           CONTAINER
+        ========================================================= */
+
+        .container {
+
+            width: min(1180px, calc(100% - 36px));
+
+            margin: auto;
+
+        }
+
+
+        /* =========================================================
+           INFO
+        ========================================================= */
+
+        .course-info {
+
+            position: relative;
+
+            z-index: 10;
+
+            margin-top: -45px;
+
+        }
+
+
+        .info-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(4,1fr);
+
+            gap: 14px;
+
+        }
+
+
+        .info-card {
+
+            padding: 20px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius);
+
+            box-shadow: var(--shadow);
+
+        }
+
+
+        .info-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #eaf6fc;
+
+            color: var(--blue);
+
+            border-radius: 12px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .info-card strong {
+
+            display: block;
+
+            font-size: 13px;
+
+        }
+
+
+        .info-card span {
+
+            color: var(--muted);
+
+            font-size: 10px;
+
+        }
+
+
+        /* =========================================================
+           PROGRESS
+        ========================================================= */
+
+        .progress-card {
+
+            margin-top: 25px;
+
+            padding: 20px 24px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius);
+
+            box-shadow: var(--shadow);
+
+        }
+
+
+        .progress-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .progress-top strong {
+
+            font-size: 13px;
+
+        }
+
+
+        #progressText {
+
+            color: var(--blue);
+
+            font-weight: 800;
+
+        }
+
+
+        .progress-bar {
+
+            height: 9px;
+
+            background: #edf1f5;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+        }
+
+
+        .progress-fill {
+
+            height: 100%;
+
+            width: 0%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--blue),
+                    var(--blue-light)
+                );
+
+            transition: .4s;
+
+        }
+
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        .main {
+
+            padding: 60px 0 90px;
+
+        }
+
+
+        .section-heading {
+
+            margin-bottom: 27px;
+
+        }
+
+
+        .eyebrow {
+
+            color: var(--blue);
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-transform: uppercase;
+
+        }
+
+
+        .section-heading h2 {
+
+            font-size: clamp(27px,4vw,40px);
+
+            line-height: 1.2;
+
+            margin-top: 5px;
+
+        }
+
+
+        .section-heading p {
+
+            max-width: 760px;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-top: 9px;
+
+        }
+
+
+        /* =========================================================
+           MISSION
+        ========================================================= */
+
+        .mission {
+
+            padding: 28px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            box-shadow: var(--shadow);
+
+            margin-bottom: 55px;
+
+        }
+
+
+        .mission-top {
+
+            display: flex;
+
+            align-items: flex-start;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+        }
+
+
+        .mission-title {
+
+            display: flex;
+
+            gap: 15px;
+
+        }
+
+
+        .mission-icon {
+
+            width: 52px;
+
+            height: 52px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 15px;
+
+            background: var(--purple-light);
+
+            color: var(--purple);
+
+            font-size: 20px;
+
+        }
+
+
+        .mission h3 {
+
+            font-size: 18px;
+
+            margin-bottom: 5px;
+
+        }
+
+
+        .mission p {
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+        }
+
+
+        .mission-badge {
+
+            padding: 8px 12px;
+
+            border-radius: 999px;
+
+            background: var(--orange-light);
+
+            color: var(--orange);
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            white-space: nowrap;
+
+        }
+
+
+        .mission-steps {
+
+            display: grid;
+
+            grid-template-columns: repeat(4,1fr);
+
+            gap: 12px;
+
+            margin-top: 25px;
+
+        }
+
+
+        .mission-step {
+
+            padding: 15px;
+
+            background: #fafbfd;
+
+            border: 1px solid var(--border);
+
+            border-radius: 13px;
+
+        }
+
+
+        .mission-step span {
+
+            width: 27px;
+
+            height: 27px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 8px;
+
+            background: #eaf6fc;
+
+            color: var(--blue);
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            margin-bottom: 9px;
+
+        }
+
+
+        .mission-step strong {
+
+            display: block;
+
+            font-size: 11px;
+
+            margin-bottom: 3px;
+
+        }
+
+
+        .mission-step small {
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+        }
+
+
+        /* =========================================================
+           TRADING
+        ========================================================= */
+
+        .practice-header {
+
+            display: flex;
+
+            align-items: flex-end;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .simulation-badge {
+
+            padding: 9px 13px;
+
+            border-radius: 999px;
+
+            background: var(--green-light);
+
+            color: var(--green);
+
+            font-size: 9px;
+
+            font-weight: 800;
+
+            white-space: nowrap;
+
+        }
+
+
+        /* =========================================================
+           TERMINAL
+        ========================================================= */
+
+        .trading-terminal {
+
+            overflow: hidden;
+
+            background: #081521;
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 25px 70px rgba(3,20,32,.22);
+
+        }
+
+
+        .terminal-top {
+
+            min-height: 70px;
+
+            padding: 14px 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.08);
+
+        }
+
+
+        .market-selector {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .market-selector select {
+
+            padding: 10px 13px;
+
+            background: #102536;
+
+            color: white;
+
+            border: 1px solid #294152;
+
+            border-radius: 9px;
+
+            outline: none;
+
+        }
+
+
+        .market-status {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            color: #8fa4b5;
+
+            font-size: 9px;
+
+        }
+
+
+        .market-dot {
+
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+
+            box-shadow: 0 0 10px #22c55e;
+
+        }
+
+
+        .virtual-balance {
+
+            text-align: right;
+
+        }
+
+
+        .virtual-balance span {
+
+            display: block;
+
+            color: #7890a3;
+
+            font-size: 8px;
+
+        }
+
+
+        .virtual-balance strong {
+
+            color: white;
+
+            font-size: 18px;
+
+        }
+
+
+        /* =========================================================
+           TERMINAL BODY
+        ========================================================= */
+
+        .terminal-body {
+
+            display: grid;
+
+            grid-template-columns: minmax(0,1fr) 350px;
+
+        }
+
+
+        .chart-area {
+
+            min-height: 490px;
+
+            padding: 18px;
+
+            border-right:
+                1px solid rgba(255,255,255,.08);
+
+        }
+
+
+        .price-header {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .price-title {
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+
+        .price-change {
+
+            color: #71879a;
+
+            font-size: 8px;
+
+        }
+
+
+        .current-price {
+
+            color: #22c55e;
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+        }
+
+
+        .chart-wrapper {
+
+            position: relative;
+
+            height: 355px;
+
+        }
+
+
+        /* =========================================================
+           ORDER PANEL
+        ========================================================= */
+
+        .order-panel {
+
+            padding: 20px;
+
+            background: #0b1c2a;
+
+        }
+
+
+        .panel-title {
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 14px;
+
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            color: #8fa4b5;
+
+            font-size: 8px;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .form-group input {
+
+            width: 100%;
+
+            padding: 11px;
+
+            background: #102536;
+
+            color: white;
+
+            border: 1px solid #294152;
+
+            border-radius: 9px;
+
+            outline: none;
+
+        }
+
+
+        .form-group input:focus {
+
+            border-color: var(--blue-light);
+
+        }
+
+
+        .risk-row {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+
+        }
+
+
+        .risk-summary {
+
+            padding: 13px;
+
+            margin-top: 18px;
+
+            background: #102536;
+
+            border: 1px solid #20394b;
+
+            border-radius: 11px;
+
+        }
+
+
+        .risk-line {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            margin: 6px 0;
+
+            color: #8499a9;
+
+            font-size: 9px;
+
+        }
+
+
+        .risk-line strong {
+
+            color: white;
+
+        }
+
+
+        .positive {
+
+            color: #22c55e !important;
+
+        }
+
+
+        .negative {
+
+            color: #ef4444 !important;
+
+        }
+
+
+        .trade-buttons {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 9px;
+
+            margin-top: 18px;
+
+        }
+
+
+        .trade-btn {
+
+            padding: 13px 8px;
+
+            border: 0;
+
+            border-radius: 10px;
+
+            color: white;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            transition: .2s;
+
+        }
+
+
+        .trade-btn:hover {
+
+            transform: translateY(-2px);
+
+        }
+
+
+        .buy-btn {
+
+            background: #16a34a;
+
+        }
+
+
+        .sell-btn {
+
+            background: #dc2626;
+
+        }
+
+
+        /* =========================================================
+           POSITION
+        ========================================================= */
+
+        .position-card {
+
+            margin-top: 20px;
+
+            padding-top: 18px;
+
+            border-top:
+                1px solid rgba(255,255,255,.08);
+
+        }
+
+
+        .position-title {
+
+            color: #8fa4b5;
+
+            font-size: 8px;
+
+            text-transform: uppercase;
+
+            letter-spacing: .7px;
+
+            margin-bottom: 9px;
+
+        }
+
+
+        .no-position {
+
+            color: #6f8494;
+
+            font-size: 10px;
+
+        }
+
+
+        .position-details {
+
+            display: grid;
+
+            gap: 7px;
+
+        }
+
+
+        .position-line {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            color: #a9bac8;
+
+            font-size: 9px;
+
+        }
+
+
+        .position-line strong {
+
+            color: white;
+
+        }
+
+
+        .pl {
+
+            font-size: 17px;
+
+            font-weight: 800;
+
+        }
+
+
+        .close-position {
+
+            width: 100%;
+
+            margin-top: 13px;
+
+            padding: 10px;
+
+            background: transparent;
+
+            color: white;
+
+            border: 1px solid #405363;
+
+            border-radius: 9px;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+        }
+
+
+        .close-position:hover {
+
+            background: rgba(255,255,255,.06);
+
+        }
+
+
+        .terminal-message {
+
+            min-height: 44px;
+
+            padding: 0 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            color: #9fb0bd;
+
+            border-top:
+                1px solid rgba(255,255,255,.08);
+
+            font-size: 9px;
+
+        }
+
+
+        /* =========================================================
+           STATS
+        ========================================================= */
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(4,1fr);
+
+            gap: 10px;
+
+            margin-top: 15px;
+
+        }
+
+
+        .stat {
+
+            padding: 13px;
+
+            background: #0d2030;
+
+            border:
+                1px solid rgba(255,255,255,.06);
+
+            border-radius: 12px;
+
+        }
+
+
+        .stat span {
+
+            display: block;
+
+            color: #6f8494;
+
+            font-size: 8px;
+
+            margin-bottom: 4px;
+
+        }
+
+
+        .stat strong {
+
+            color: white;
+
+            font-size: 15px;
+
+        }
+
+
+        /* =========================================================
+           HISTORY
+        ========================================================= */
+
+        .history {
+
+            margin-top: 20px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius);
+
+            overflow: hidden;
+
+        }
+
+
+        .history-header {
+
+            padding: 18px 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            border-bottom: 1px solid var(--border);
+
+        }
+
+
+        .history-header h3 {
+
+            font-size: 14px;
+
+        }
+
+
+        .reset-btn {
+
+            border: 0;
+
+            background: transparent;
+
+            color: var(--red);
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+        }
+
+
+        .table-wrapper {
+
+            overflow-x: auto;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            min-width: 700px;
+
+            border-collapse: collapse;
+
+        }
+
+
+        th,
+        td {
+
+            padding: 13px 17px;
+
+            text-align: left;
+
+            border-bottom: 1px solid var(--border);
+
+            font-size: 9px;
+
+        }
+
+
+        th {
+
+            color: var(--muted);
+
+            background: #fafbfd;
+
+        }
+
+
+        td {
+
+            color: #374151;
+
+        }
+
+
+        .direction {
+
+            display: inline-flex;
+
+            padding: 4px 8px;
+
+            border-radius: 999px;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+        }
+
+
+        .direction.buy {
+
+            background: var(--green-light);
+
+            color: var(--green);
+
+        }
+
+
+        .direction.sell {
+
+            background: var(--red-light);
+
+            color: var(--red);
+
+        }
+
+
+        /* =========================================================
+           EVALUATION
+        ========================================================= */
+
+        .evaluation {
+
+            margin-top: 70px;
+
+        }
+
+
+        .evaluation-card {
+
+            padding: 28px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 20px;
+
+            box-shadow: var(--shadow);
+
+        }
+
+
+        .evaluation-grid {
+
+            display: grid;
+
+            grid-template-columns: 1.1fr .9fr;
+
+            gap: 25px;
+
+        }
+
+
+        .criteria {
+
+            display: grid;
+
+            gap: 11px;
+
+        }
+
+
+        .criterion {
+
+            padding: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            background: #fafbfd;
+
+            border: 1px solid var(--border);
+
+            border-radius: 12px;
+
+        }
+
+
+        .criterion-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+
+        .criterion-icon {
+
+            width: 35px;
+
+            height: 35px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: #eaf6fc;
+
+            color: var(--blue);
+
+        }
+
+
+        .criterion strong {
+
+            display: block;
+
+            font-size: 10px;
+
+        }
+
+
+        .criterion span {
+
+            color: var(--muted);
+
+            font-size: 8px;
+
+        }
+
+
+        .criterion-score {
+
+            color: var(--blue);
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+        }
+
+
+        .score-box {
+
+            padding: 25px;
+
+            text-align: center;
+
+            color: white;
+
+            border-radius: 18px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #063b59,
+                    #075985
+                );
+
+        }
+
+
+        .score-label {
+
+            color: rgba(255,255,255,.7);
+
+            font-size: 9px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        .score-number {
+
+            margin: 12px 0 8px;
+
+            font-size: 60px;
+
+            line-height: 1;
+
+            font-weight: 800;
+
+        }
+
+
+        .score-box p {
+
+            color: rgba(255,255,255,.72);
+
+            font-size: 9px;
+
+        }
+
+
+        .evaluation-message {
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            font-size: 9px;
+
+        }
+
+
+        .evaluation-message.success {
+
+            background: var(--green-light);
+
+            color: #166534;
+
+        }
+
+
+        .evaluation-message.warning {
+
+            background: var(--orange-light);
+
+            color: #9a3412;
+
+        }
+
+
+        /* =========================================================
+           CERTIFICAT
+        ========================================================= */
+
+        .certificate-section {
+
+            margin-top: 70px;
+
+        }
+
+
+        .certificate-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+            padding: 45px 30px;
+
+            text-align: center;
+
+            color: white;
+
+            border-radius: 24px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #062f48,
+                    #075985
+                );
+
+            box-shadow:
+                0 25px 60px rgba(3,47,72,.20);
+
+        }
+
+
+        .certificate-icon {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: 65px;
+
+            height: 65px;
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 18px;
+
+            background: rgba(244,180,0,.16);
+
+            color: var(--gold-light);
+
+            font-size: 27px;
+
+        }
+
+
+        .certificate-card h2 {
+
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 17px;
+
+            font-size: clamp(25px,4vw,36px);
+
+        }
+
+
+        .certificate-card p {
+
+            position: relative;
+
+            z-index: 2;
+
+            max-width: 650px;
+
+            margin: 9px auto 25px;
+
+            color: rgba(255,255,255,.72);
+
+            font-size: 11px;
+
+        }
+
+
+        .certificate-btn {
+
+            position: relative;
+
+            z-index: 2;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 14px 25px;
+
+            background: var(--gold);
+
+            color: #172033;
+
+            border-radius: 12px;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            transition: .2s;
+
+        }
+
+
+        .certificate-btn:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 10px 25px rgba(244,180,0,.25);
+
+        }
+
+
+        .certificate-status {
+
+            position: relative;
+
+            z-index: 2;
+
+            margin-top: 15px;
+
+            color: rgba(255,255,255,.55);
+
+            font-size: 9px;
+
+        }
+
+
+        /* =========================================================
+           NOTIFICATION
+        ========================================================= */
+
+        .notice-box {
+
+            position: fixed;
+
+            right: 20px;
+
+            bottom: 20px;
+
+            z-index: 3000;
+
+            max-width: 380px;
+
+            padding: 14px 17px;
+
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 10px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 13px;
+
+            box-shadow:
+                0 18px 50px rgba(15,23,42,.16);
+
+            transform: translateY(130px);
+
+            opacity: 0;
+
+            pointer-events: none;
+
+            transition: .3s;
+
+        }
+
+
+        .notice-box.show {
+
+            transform: translateY(0);
+
+            opacity: 1;
+
+        }
+
+
+        .notice-box i {
+
+            color: var(--blue);
+
+            margin-top: 3px;
+
+        }
+
+
+        .notice-box strong {
+
+            display: block;
+
+            font-size: 10px;
+
+        }
+
+
+        .notice-box span {
+
+            color: var(--muted);
+
+            font-size: 9px;
+
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+
+            margin-top: 80px;
+
+            padding: 35px 20px;
+
+            text-align: center;
+
+            color: white;
+
+            background: #062f48;
+
+        }
+
+
+        footer strong {
+
+            display: block;
+
+            font-size: 16px;
+
+        }
+
+
+        footer p {
+
+            color: rgba(255,255,255,.6);
+
+            font-size: 9px;
+
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 950px) {
+
+            .info-grid {
+
+                grid-template-columns: repeat(2,1fr);
+
+            }
+
+
+            .terminal-body {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .chart-area {
+
+                border-right: 0;
+
+                border-bottom:
+                    1px solid rgba(255,255,255,.08);
+
+            }
+
+
+            .mission-steps {
+
+                grid-template-columns: repeat(2,1fr);
+
+            }
+
+
+            .evaluation-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+        }
+
+
+        @media (max-width: 650px) {
+
+            .header {
+
+                height: 65px;
+
+            }
+
+
+            .brand span,
+            .user-info {
+
+                display: none;
+
+            }
+
+
+            .hero {
+
+                min-height: 450px;
+
+            }
+
+
+            .hero-content {
+
+                padding: 55px 0;
+
+            }
+
+
+            .hero h1 {
+
+                font-size: 35px;
+
+            }
+
+
+            .course-info {
+
+                margin-top: -25px;
+
+            }
+
+
+            .info-grid {
+
+                grid-template-columns: 1fr 1fr;
+
+                gap: 9px;
+
+            }
+
+
+            .info-card {
+
+                padding: 15px;
+
+            }
+
+
+            .mission {
+
+                padding: 20px;
+
+            }
+
+
+            .mission-top {
+
+                display: block;
+
+            }
+
+
+            .mission-badge {
+
+                display: inline-flex;
+
+                margin-top: 15px;
+
+            }
+
+
+            .mission-steps {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .practice-header {
+
+                display: block;
+
+            }
+
+
+            .simulation-badge {
+
+                display: inline-flex;
+
+                margin-top: 12px;
+
+            }
+
+
+            .terminal-top {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+            }
+
+
+            .virtual-balance {
+
+                text-align: left;
+
+            }
+
+
+            .chart-area {
+
+                min-height: 400px;
+
+            }
+
+
+            .chart-wrapper {
+
+                height: 300px;
+
+            }
+
+
+            .stats-grid {
+
+                grid-template-columns: 1fr 1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="header">
+
+    <div class="header-inner">
+
+
+        <a
+            href="trading.html"
+            class="brand"
+        >
+
+            <img
+                src="images/logo.png"
+                alt="BMJ SERVICE"
+                onerror="this.src='images/user.png'"
+            >
+
+
+            <div>
+
+                <strong>
+                    BMJ SERVICE
+                </strong>
+
+                <span>
+                    FORMATION & APPRENTISSAGE
+                </span>
+
+            </div>
+
+        </a>
+
+
+        <div class="user-box">
+
+            <img
+                id="userPhoto"
+                class="user-photo"
+                src="images/user.png"
+                alt="Utilisateur"
+            >
+
+
+            <div class="user-info">
+
+                <strong id="userName">
+                    Utilisateur
+                </strong>
+
+                <span>
+                    Projet Final Trading
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+
+        <div class="hero-badge">
+
+            <i class="fa-solid fa-trophy"></i>
+
+            PROJET FINAL — TRADING
+
+        </div>
+
+
+        <h1>
+
+            Ton dernier défi en
+            <span>Trading</span>
+
+        </h1>
+
+
+        <p>
+
+            Mets en pratique les connaissances acquises pendant
+            ta formation. Analyse un marché simulé, choisis une
+            direction, définis ton risque et gère ta position
+            jusqu'à sa clôture.
+
+        </p>
+
+
+        <div class="hero-actions">
+
+
+            <button
+                class="btn btn-primary"
+                id="startProject"
+            >
+
+                <i class="fa-solid fa-play"></i>
+
+                Commencer la simulation
+
+            </button>
+
+
+            <button
+                class="btn btn-white"
+                id="goTrading"
+            >
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Espace de trading
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     INFO
+========================================================= -->
+
+<section class="course-info">
+
+    <div class="container">
+
+
+        <div class="info-grid">
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-trophy"></i>
+
+                </div>
+
+                <strong>
+                    Projet final
+                </strong>
+
+                <span>
+                    Validation pratique
+                </span>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-dollar-sign"></i>
+
+                </div>
+
+                <strong>
+                    $10,000 virtuels
+                </strong>
+
+                <span>
+                    Capital de départ
+                </span>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                </div>
+
+                <strong>
+                    Simulation Trading
+                </strong>
+
+                <span>
+                    Achat & Vente
+                </span>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-certificate"></i>
+
+                </div>
+
+                <strong>
+                    Certificat
+                </strong>
+
+                <span>
+                    Disponible
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-card">
+
+
+            <div class="progress-top">
+
+                <strong>
+                    Progression de la formation Trading
+                </strong>
+
+                <span id="progressText">
+                    0%
+                </span>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="progressFill"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main">
+
+    <div class="container">
+
+
+        <!-- =====================================================
+             MISSION
+        ====================================================== -->
+
+        <section>
+
+            <div class="section-heading">
+
+                <div class="eyebrow">
+                    Mission finale
+                </div>
+
+                <h2>
+                    Réalise ta simulation de trading
+                </h2>
+
+                <p>
+
+                    Tu disposes d'un capital virtuel de 10 000 $.
+                    Utilise-le pour réaliser une opération complète
+                    dans l'environnement de simulation.
+
+                </p>
+
+            </div>
+
+
+            <div class="mission">
+
+
+                <div class="mission-top">
+
+
+                    <div class="mission-title">
+
+
+                        <div class="mission-icon">
+
+                            <i class="fa-solid fa-crosshairs"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <h3>
+                                Ton objectif
+                            </h3>
+
+                            <p>
+
+                                Effectue une opération en respectant
+                                les principes de gestion du risque.
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mission-badge">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        100 % VIRTUEL
+
+                    </div>
+
+                </div>
+
+
+                <div class="mission-steps">
+
+
+                    <div class="mission-step">
+
+                        <span>
+                            01
+                        </span>
+
+                        <strong>
+                            Analyser
+                        </strong>
+
+                        <small>
+                            Observe l'évolution du prix.
+                        </small>
+
+                    </div>
+
+
+                    <div class="mission-step">
+
+                        <span>
+                            02
+                        </span>
+
+                        <strong>
+                            Choisir
+                        </strong>
+
+                        <small>
+                            ACHAT ou VENTE.
+                        </small>
+
+                    </div>
+
+
+                    <div class="mission-step">
+
+                        <span>
+                            03
+                        </span>
+
+                        <strong>
+                            Protéger
+                        </strong>
+
+                        <small>
+                            Définis ton Stop Loss.
+                        </small>
+
+                    </div>
+
+
+                    <div class="mission-step">
+
+                        <span>
+                            04
+                        </span>
+
+                        <strong>
+                            Terminer
+                        </strong>
+
+                        <small>
+                            Ferme ton opération.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             TRADING
+        ====================================================== -->
+
+        <section id="espace-trading">
+
+
+            <div class="practice-header">
+
+
+                <div class="section-heading" style="margin:0">
+
+                    <div class="eyebrow">
+                        Simulation finale
+                    </div>
+
+                    <h2>
+                        Ton espace de Trading
+                    </h2>
+
+                    <p>
+
+                        Les prix sont générés automatiquement.
+                        Il s'agit d'un environnement pédagogique
+                        et non d'un marché financier réel.
+
+                    </p>
+
+                </div>
+
+
+                <div class="simulation-badge">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    MARCHÉ SIMULÉ
+
+                </div>
+
+            </div>
+
+
+            <div class="trading-terminal">
+
+
+                <!-- =================================================
+                     TERMINAL TOP
+                ================================================== -->
+
+                <div class="terminal-top">
+
+
+                    <div class="market-selector">
+
+
+                        <select id="assetSelect">
+
+                            <option value="EURUSD">
+                                EUR / USD
+                            </option>
+
+                            <option value="GBPUSD">
+                                GBP / USD
+                            </option>
+
+                            <option value="GOLD">
+                                GOLD / USD
+                            </option>
+
+                            <option value="BTCUSD">
+                                BTC / USD
+                            </option>
+
+                        </select>
+
+
+                        <div class="market-status">
+
+                            <span class="market-dot"></span>
+
+                            Marché simulé
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="virtual-balance">
+
+                        <span>
+                            CAPITAL VIRTUEL
+                        </span>
+
+                        <strong id="balance">
+                            $10,000.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     BODY
+                ================================================== -->
+
+                <div class="terminal-body">
+
+
+                    <!-- CHART -->
+
+                    <div class="chart-area">
+
+
+                        <div class="price-header">
+
+
+                            <div>
+
+                                <div
+                                    class="price-title"
+                                    id="assetName"
+                                >
+                                    EUR / USD
+                                </div>
+
+
+                                <div class="price-change">
+                                    PRIX SIMULÉ
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="current-price"
+                                id="currentPrice"
+                            >
+                                1.08500
+                            </div>
+
+                        </div>
+
+
+                        <div class="chart-wrapper">
+
+                            <canvas
+                                id="tradingChart"
+                            ></canvas>
+
+                        </div>
+
+
+                        <div class="stats-grid">
+
+
+                            <div class="stat">
+
+                                <span>
+                                    TRADES
+                                </span>
+
+                                <strong id="totalTrades">
+                                    0
+                                </strong>
+
+                            </div>
+
+
+                            <div class="stat">
+
+                                <span>
+                                    GAINS
+                                </span>
+
+                                <strong
+                                    id="winningTrades"
+                                    class="positive"
+                                >
+                                    0
+                                </strong>
+
+                            </div>
+
+
+                            <div class="stat">
+
+                                <span>
+                                    PERTES
+                                </span>
+
+                                <strong
+                                    id="losingTrades"
+                                    class="negative"
+                                >
+                                    0
+                                </strong>
+
+                            </div>
+
+
+                            <div class="stat">
+
+                                <span>
+                                    RÉUSSITE
+                                </span>
+
+                                <strong id="winRate">
+                                    0%
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ORDER PANEL -->
+
+                    <aside class="order-panel">
+
+
+                        <div class="panel-title">
+
+                            Nouvelle position
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                CAPITAL À ENGAGER
+                            </label>
+
+                            <input
+                                id="tradeCapital"
+                                type="number"
+                                min="10"
+                                step="10"
+                                value="1000"
+                            >
+
+                        </div>
+
+
+                        <div class="risk-row">
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    STOP LOSS %
+                                </label>
+
+                                <input
+                                    id="stopLoss"
+                                    type="number"
+                                    min=".1"
+                                    max="20"
+                                    step=".1"
+                                    value="1"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label>
+                                    TAKE PROFIT %
+                                </label>
+
+                                <input
+                                    id="takeProfit"
+                                    type="number"
+                                    min=".1"
+                                    max="50"
+                                    step=".1"
+                                    value="2"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="risk-summary">
+
+
+                            <div class="risk-line">
+
+                                <span>
+                                    Risque potentiel
+                                </span>
+
+                                <strong id="riskAmount">
+                                    $10.00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="risk-line">
+
+                                <span>
+                                    Gain potentiel
+                                </span>
+
+                                <strong
+                                    id="rewardAmount"
+                                    class="positive"
+                                >
+                                    $20.00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="risk-line">
+
+                                <span>
+                                    Ratio R/R
+                                </span>
+
+                                <strong
+                                    id="riskReward"
+                                    class="positive"
+                                >
+                                    1 : 2.00
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="trade-buttons">
+
+
+                            <button
+                                class="trade-btn buy-btn"
+                                id="buyButton"
+                            >
+
+                                <i class="fa-solid fa-arrow-trend-up"></i>
+
+                                ACHETER
+
+                            </button>
+
+
+                            <button
+                                class="trade-btn sell-btn"
+                                id="sellButton"
+                            >
+
+                                <i class="fa-solid fa-arrow-trend-down"></i>
+
+                                VENDRE
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="position-card">
+
+
+                            <div class="position-title">
+                                Position actuelle
+                            </div>
+
+
+                            <div id="positionContainer">
+
+                                <div class="no-position">
+
+                                    Aucune position ouverte.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </aside>
+
+                </div>
+
+
+                <div
+                    class="terminal-message"
+                    id="terminalMessage"
+                >
+
+                    Analyse le marché avant d'ouvrir une position.
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 HISTORY
+            ====================================================== -->
+
+            <div class="history">
+
+
+                <div class="history-header">
+
+                    <h3>
+                        Historique des opérations
+                    </h3>
+
+
+                    <button
+                        class="reset-btn"
+                        id="resetSimulator"
+                    >
+
+                        <i class="fa-solid fa-rotate-left"></i>
+
+                        Réinitialiser
+
+                    </button>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Direction
+                                </th>
+
+                                <th>
+                                    Marché
+                                </th>
+
+                                <th>
+                                    Entrée
+                                </th>
+
+                                <th>
+                                    Sortie
+                                </th>
+
+                                <th>
+                                    Capital
+                                </th>
+
+                                <th>
+                                    Résultat
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="historyBody">
+
+                            <tr>
+
+                                <td
+                                    colspan="7"
+                                    style="text-align:center;color:#9ca3af"
+                                >
+
+                                    Aucun trade terminé.
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             EVALUATION
+        ====================================================== -->
+
+        <section class="evaluation">
+
+
+            <div class="section-heading">
+
+                <div class="eyebrow">
+                    Résultat
+                </div>
+
+                <h2>
+                    Évaluation du projet
+                </h2>
+
+                <p>
+
+                    Ton score évolue selon les opérations réalisées
+                    dans la simulation.
+
+                </p>
+
+            </div>
+
+
+            <div class="evaluation-card">
+
+
+                <div class="evaluation-grid">
+
+
+                    <div class="criteria">
+
+
+                        <div class="criterion">
+
+                            <div class="criterion-left">
+
+                                <div class="criterion-icon">
+
+                                    <i class="fa-solid fa-chart-line"></i>
+
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        Pratique du trading
+                                    </strong>
+
+                                    <span>
+                                        Réaliser une opération complète
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="criterion-score"
+                                id="scoreTrading"
+                            >
+                                0 / 30
+                            </div>
+
+                        </div>
+
+
+                        <div class="criterion">
+
+                            <div class="criterion-left">
+
+                                <div class="criterion-icon">
+
+                                    <i class="fa-solid fa-shield-halved"></i>
+
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        Gestion du risque
+                                    </strong>
+
+                                    <span>
+                                        Stop Loss et exposition
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="criterion-score"
+                                id="scoreRisk"
+                            >
+                                0 / 30
+                            </div>
+
+                        </div>
+
+
+                        <div class="criterion">
+
+                            <div class="criterion-left">
+
+                                <div class="criterion-icon">
+
+                                    <i class="fa-solid fa-bullseye"></i>
+
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        Ratio risque / rendement
+                                    </strong>
+
+                                    <span>
+                                        Cohérence du trade
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="criterion-score"
+                                id="scoreRR"
+                            >
+                                0 / 20
+                            </div>
+
+                        </div>
+
+
+                        <div class="criterion">
+
+                            <div class="criterion-left">
+
+                                <div class="criterion-icon">
+
+                                    <i class="fa-solid fa-gamepad"></i>
+
+                                </div>
+
+
+                                <div>
+
+                                    <strong>
+                                        Expérience pratique
+                                    </strong>
+
+                                    <span>
+                                        Réalisation du projet
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                class="criterion-score"
+                                id="scorePractice"
+                            >
+                                0 / 20
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="score-box">
+
+
+                        <div class="score-label">
+                            Score actuel
+                        </div>
+
+
+                        <div
+                            class="score-number"
+                            id="finalScore"
+                        >
+                            0
+                        </div>
+
+
+                        <p>
+
+                            Continue ta simulation pour
+                            améliorer ton résultat.
+
+                        </p>
+
+
+                        <div
+                            id="evaluationMessage"
+                            class="evaluation-message warning"
+                        >
+
+                            Réalise une opération pour commencer
+                            ton évaluation.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CERTIFICATE
+        ====================================================== -->
+
+        <section class="certificate-section">
+
+
+            <div class="certificate-card">
+
+
+                <div class="certificate-icon">
+
+                    <i class="fa-solid fa-award"></i>
+
+                </div>
+
+
+                <h2>
+                    Ton certificat de formation
+                </h2>
+
+
+                <p>
+
+                    Tu peux accéder directement à ton espace
+                    de certificat de formation.
+
+                </p>
+
+
+                <!--
+                    TOUCHE TOUJOURS ACTIVE
+                    LIEN DEMANDÉ PAR L'UTILISATEUR
+                -->
+
+                <a
+                    href="projet_final_investissement.html"
+                    class="certificate-btn"
+                >
+
+                    <i class="fa-solid fa-certificate"></i>
+
+                    Obtenir mon certificat
+
+                </a>
+
+
+                <div class="certificate-status">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Accès disponible
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     NOTIFICATION
+========================================================= -->
+
+<div
+    class="notice-box"
+    id="noticeBox"
+>
+
+    <i class="fa-solid fa-circle-info"></i>
+
+
+    <div>
+
+        <strong id="noticeTitle">
+            Information
+        </strong>
+
+
+        <span id="noticeText">
+            Message
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <strong>
+        BMJ SERVICE
+    </strong>
+
+
+    <p>
+
+        Projet Final Trading —
+        Simulation pédagogique 100 % virtuelle.
+
+    </p>
+
+</footer>
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+
+        /* =====================================================
+           UTILISATEUR
+        ===================================================== */
+
+        let currentUser = null;
+
+
+        try {
+
+            currentUser =
+                JSON.parse(
+                    localStorage.getItem(
+                        "bmj_current_user"
+                    ) || "null"
+                );
+
+        } catch {
+
+            currentUser = null;
+
+        }
+
+
+        if (currentUser) {
+
+            document.getElementById(
+                "userName"
+            ).textContent =
+
+                currentUser.nom ||
+                currentUser.name ||
+                currentUser.username ||
+                "Utilisateur";
+
+
+            if (currentUser.photo) {
+
+                document.getElementById(
+                    "userPhoto"
+                ).src =
+                    currentUser.photo;
+
+            }
+
+        }
+
+
+        const userId =
+
+            currentUser?.id_bmj ||
+            currentUser?.id ||
+            currentUser?.email ||
+            "guest";
+
+
+        /* =====================================================
+           PROGRESSION
+        ===================================================== */
+
+        const progressKey =
+            `trading_progression_${userId}`;
+
+
+        let progression = [];
+
+
+        try {
+
+            progression =
+                JSON.parse(
+                    localStorage.getItem(
+                        progressKey
+                    ) || "[]"
+                );
+
+
+            if (!Array.isArray(progression)) {
+
+                progression = [];
+
+            }
+
+        } catch {
+
+            progression = [];
+
+        }
+
+
+        function updateProgress() {
+
+            const total = 5;
+
+
+            const percentage = Math.min(
+                100,
+                Math.round(
+                    (
+                        progression.length /
+                        total
+                    ) * 100
+                )
+            );
+
+
+            document.getElementById(
+                "progressFill"
+            ).style.width =
+                `${percentage}%`;
+
+
+            document.getElementById(
+                "progressText"
+            ).textContent =
+                `${percentage}%`;
+
+        }
+
+
+        updateProgress();
+
+
+        /* =====================================================
+           SCROLL
+        ===================================================== */
+
+        document.getElementById(
+            "startProject"
+        ).addEventListener(
+            "click",
+            function () {
+
+                document.getElementById(
+                    "espace-trading"
+                ).scrollIntoView({
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+
+        document.getElementById(
+            "goTrading"
+        ).addEventListener(
+            "click",
+            function () {
+
+                document.getElementById(
+                    "espace-trading"
+                ).scrollIntoView({
+                    behavior: "smooth"
+                });
+
+            }
+        );
+
+
+        /* =====================================================
+           NOTIFICATION
+        ===================================================== */
+
+        let noticeTimer;
+
+
+        function showNotice(
+            title,
+            message
+        ) {
+
+            const box =
+                document.getElementById(
+                    "noticeBox"
+                );
+
+
+            document.getElementById(
+                "noticeTitle"
+            ).textContent =
+                title;
+
+
+            document.getElementById(
+                "noticeText"
+            ).textContent =
+                message;
+
+
+            box.classList.add("show");
+
+
+            clearTimeout(noticeTimer);
+
+
+            noticeTimer =
+                setTimeout(
+                    function () {
+
+                        box.classList.remove(
+                            "show"
+                        );
+
+                    },
+                    4000
+                );
+
+        }
+
+
+        /* =====================================================
+           ASSETS
+        ===================================================== */
+
+        const assets = {
+
+            EURUSD: {
+
+                name: "EUR / USD",
+
+                price: 1.08500,
+
+                decimals: 5,
+
+                volatility: .0015
+
+            },
+
+
+            GBPUSD: {
+
+                name: "GBP / USD",
+
+                price: 1.27100,
+
+                decimals: 5,
+
+                volatility: .0017
+
+            },
+
+
+            GOLD: {
+
+                name: "GOLD / USD",
+
+                price: 2500,
+
+                decimals: 2,
+
+                volatility: .002
+
+            },
+
+
+            BTCUSD: {
+
+                name: "BTC / USD",
+
+                price: 60000,
+
+                decimals: 2,
+
+                volatility: .0025
+
+            }
+
+        };
+
+
+        let selectedAsset =
+            "EURUSD";
+
+
+        let currentPrice =
+            assets[selectedAsset].price;
+
+
+        let prices = [];
+
+
+        let balance =
+            10000;
+
+
+        let position =
+            null;
+
+
+        let history =
+            [];
+
+
+        /* =====================================================
+           SAVE KEY
+        ===================================================== */
+
+        const simulatorKey =
+            `trading_final_simulator_${userId}`;
+
+
+        try {
+
+            const saved =
+                JSON.parse(
+                    localStorage.getItem(
+                        simulatorKey
+                    ) || "null"
+                );
+
+
+            if (saved) {
+
+                balance =
+                    Number(saved.balance) ||
+                    10000;
+
+
+                history =
+                    Array.isArray(
+                        saved.history
+                    )
+                        ? saved.history
+                        : [];
+
+            }
+
+        } catch {}
+
+
+
+        function saveSimulator() {
+
+            localStorage.setItem(
+
+                simulatorKey,
+
+                JSON.stringify({
+
+                    balance,
+
+                    history
+
+                })
+
+            );
+
+        }
+
+
+        /* =====================================================
+           FORMAT
+        ===================================================== */
+
+        function money(value) {
+
+            return new Intl.NumberFormat(
+                "en-US",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            ).format(value);
+
+        }
+
+
+        function price(value) {
+
+            return Number(value)
+                .toFixed(
+                    assets[selectedAsset]
+                        .decimals
+                );
+
+        }
+
+
+        /* =====================================================
+           BALANCE
+        ===================================================== */
+
+        function updateBalance() {
+
+            document.getElementById(
+                "balance"
+            ).textContent =
+                `$${money(balance)}`;
+
+        }
+
+
+        /* =====================================================
+           STATS
+        ===================================================== */
+
+        function updateStats() {
+
+            const total =
+                history.length;
+
+
+            const wins =
+                history.filter(
+                    trade =>
+                        Number(trade.profit) > 0
+                ).length;
+
+
+            const losses =
+                history.filter(
+                    trade =>
+                        Number(trade.profit) < 0
+                ).length;
+
+
+            const rate =
+                total
+                    ? Math.round(
+                        (
+                            wins /
+                            total
+                        ) * 100
+                    )
+                    : 0;
+
+
+            document.getElementById(
+                "totalTrades"
+            ).textContent =
+                total;
+
+
+            document.getElementById(
+                "winningTrades"
+            ).textContent =
+                wins;
+
+
+            document.getElementById(
+                "losingTrades"
+            ).textContent =
+                losses;
+
+
+            document.getElementById(
+                "winRate"
+            ).textContent =
+                `${rate}%`;
+
+        }
+
+
+        /* =====================================================
+           PRICES
+        ===================================================== */
+
+        function generatePrices() {
+
+            prices = [];
+
+
+            const asset =
+                assets[selectedAsset];
+
+
+            let p =
+                asset.price;
+
+
+            for (
+                let i = 0;
+                i < 60;
+                i++
+            ) {
+
+                p +=
+                    (
+                        Math.random() - .47
+                    ) *
+                    asset.price *
+                    asset.volatility;
+
+
+                if (p <= 0) {
+
+                    p =
+                        asset.price;
+
+                }
+
+
+                prices.push(p);
+
+            }
+
+
+            currentPrice =
+                prices[
+                    prices.length - 1
+                ];
+
+        }
+
+
+        generatePrices();
+
+
+        /* =====================================================
+           CHART
+        ===================================================== */
+
+        const chart =
+            new Chart(
+
+                document
+                    .getElementById(
+                        "tradingChart"
+                    )
+                    .getContext("2d"),
+
+                {
+
+                    type: "line",
+
+                    data: {
+
+                        labels:
+                            prices.map(
+                                (_, i) => i
+                            ),
+
+                        datasets: [
+
+                            {
+
+                                data: prices,
+
+                                borderColor:
+                                    "#38bdf8",
+
+                                backgroundColor:
+                                    "rgba(14,165,233,.08)",
+
+                                borderWidth: 2,
+
+                                pointRadius: 0,
+
+                                fill: true,
+
+                                tension: .35
+
+                            }
+
+                        ]
+
+                    },
+
+
+                    options: {
+
+                        responsive: true,
+
+                        maintainAspectRatio:
+                            false,
+
+                        animation: false,
+
+                        plugins: {
+
+                            legend: {
+                                display: false
+                            }
+
+                        },
+
+                        scales: {
+
+                            x: {
+                                display: false
+                            },
+
+                            y: {
+
+                                ticks: {
+
+                                    color:
+                                        "#71879a",
+
+                                    font: {
+                                        size: 10
+                                    }
+
+                                },
+
+                                grid: {
+
+                                    color:
+                                        "rgba(255,255,255,.06)"
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            );
+
+
+        /* =====================================================
+           RISK
+        ===================================================== */
+
+        function updateRisk() {
+
+            const capital =
+                Number(
+                    document.getElementById(
+                        "tradeCapital"
+                    ).value
+                ) || 0;
+
+
+            const stop =
+                Number(
+                    document.getElementById(
+                        "stopLoss"
+                    ).value
+                ) || 0;
+
+
+            const target =
+                Number(
+                    document.getElementById(
+                        "takeProfit"
+                    ).value
+                ) || 0;
+
+
+            const risk =
+                capital *
+                stop /
+                100;
+
+
+            const reward =
+                capital *
+                target /
+                100;
+
+
+            const rr =
+                stop > 0
+                    ? target / stop
+                    : 0;
+
+
+            document.getElementById(
+                "riskAmount"
+            ).textContent =
+                `$${money(risk)}`;
+
+
+            document.getElementById(
+                "rewardAmount"
+            ).textContent =
+                `$${money(reward)}`;
+
+
+            const rrElement =
+                document.getElementById(
+                    "riskReward"
+                );
+
+
+            rrElement.textContent =
+                `1 : ${rr.toFixed(2)}`;
+
+
+            rrElement.className =
+                rr >= 1.5
+                    ? "positive"
+                    : "negative";
+
+        }
+
+
+        document.getElementById(
+            "tradeCapital"
+        ).addEventListener(
+            "input",
+            updateRisk
+        );
+
+
+        document.getElementById(
+            "stopLoss"
+        ).addEventListener(
+            "input",
+            updateRisk
+        );
+
+
+        document.getElementById(
+            "takeProfit"
+        ).addEventListener(
+            "input",
+            updateRisk
+        );
+
+
+        updateRisk();
+
+
+        /* =====================================================
+           TERMINAL MESSAGE
+        ===================================================== */
+
+        function message(text) {
+
+            document.getElementById(
+                "terminalMessage"
+            ).textContent =
+                text;
+
+        }
+
+
+        /* =====================================================
+           UPDATE CHART
+        ===================================================== */
+
+        function updateChart() {
+
+            const asset =
+                assets[selectedAsset];
+
+
+            currentPrice +=
+
+                (
+                    Math.random() - .47
+                ) *
+                asset.price *
+                asset.volatility;
+
+
+            if (currentPrice <= 0) {
+
+                currentPrice =
+                    asset.price;
+
+            }
+
+
+            prices.push(
+                currentPrice
+            );
+
+
+            if (prices.length > 70) {
+
+                prices.shift();
+
+            }
+
+
+            chart.data.labels =
+                prices.map(
+                    (_, i) => i
+                );
+
+
+            chart.data.datasets[0].data =
+                prices;
+
+
+            chart.update("none");
+
+
+            document.getElementById(
+                "currentPrice"
+            ).textContent =
+                price(currentPrice);
+
+
+            if (position) {
+
+                renderPosition();
+
+                checkAutoClose();
+
+            }
+
+        }
+
+
+        setInterval(
+            updateChart,
+            2500
+        );
+
+
+        /* =====================================================
+           ASSET
+        ===================================================== */
+
+        document.getElementById(
+            "assetSelect"
+        ).addEventListener(
+            "change",
+            function (event) {
+
+
+                if (position) {
+
+                    event.target.value =
+                        selectedAsset;
+
+
+                    message(
+                        "Ferme d'abord ta position avant de changer de marché."
+                    );
+
+                    return;
+
+                }
+
+
+                selectedAsset =
+                    event.target.value;
+
+
+                document.getElementById(
+                    "assetName"
+                ).textContent =
+                    assets[selectedAsset].name;
+
+
+                generatePrices();
+
+
+                chart.data.labels =
+                    prices.map(
+                        (_, i) => i
+                    );
+
+
+                chart.data.datasets[0]
+                    .data =
+                    prices;
+
+
+                chart.update("none");
+
+
+                document.getElementById(
+                    "currentPrice"
+                ).textContent =
+                    price(currentPrice);
+
+            }
+        );
+
+
+        /* =====================================================
+           OPEN TRADE
+        ===================================================== */
+
+        function openPosition(
+            direction
+        ) {
+
+            if (position) {
+
+                message(
+                    "Une position est déjà ouverte."
+                );
+
+                return;
+
+            }
+
+
+            const capital =
+                Number(
+                    document.getElementById(
+                        "tradeCapital"
+                    ).value
+                );
+
+
+            const stopLoss =
+                Number(
+                    document.getElementById(
+                        "stopLoss"
+                    ).value
+                );
+
+
+            const takeProfit =
+                Number(
+                    document.getElementById(
+                        "takeProfit"
+                    ).value
+                );
+
+
+            if (
+                !capital ||
+                capital <= 0
+            ) {
+
+                message(
+                    "Entre un capital valide."
+                );
+
+                return;
+
+            }
+
+
+            if (capital > balance) {
+
+                message(
+                    "Capital insuffisant."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                stopLoss <= 0 ||
+                takeProfit <= 0
+            ) {
+
+                message(
+                    "Définis ton Stop Loss et ton Take Profit."
+                );
+
+                return;
+
+            }
+
+
+            const risk =
+                capital *
+                stopLoss /
+                100;
+
+
+            if (
+                risk >
+                balance * .02
+            ) {
+
+                message(
+                    "Le risque dépasse 2 % du capital virtuel."
+                );
+
+                return;
+
+            }
+
+
+            position = {
+
+                direction,
+
+                asset:
+                    selectedAsset,
+
+                entry:
+                    currentPrice,
+
+                capital,
+
+                stopLoss,
+
+                takeProfit,
+
+                openedAt:
+                    new Date().toISOString()
+
+            };
+
+
+            renderPosition();
+
+
+            message(
+
+                direction === "BUY"
+
+                    ? "Position ACHAT ouverte. Le marché simulé continue d'évoluer."
+
+                    : "Position VENTE ouverte. Le marché simulé continue d'évoluer."
+
+            );
+
+
+            updateEvaluation();
+
+        }
+
+
+        document.getElementById(
+            "buyButton"
+        ).addEventListener(
+            "click",
+            () =>
+                openPosition("BUY")
+        );
+
+
+        document.getElementById(
+            "sellButton"
+        ).addEventListener(
+            "click",
+            () =>
+                openPosition("SELL")
+        );
+
+
+        /* =====================================================
+           PROFIT
+        ===================================================== */
+
+        function calculateProfit() {
+
+            if (!position) {
+
+                return 0;
+
+            }
+
+
+            let movement =
+                (
+                    currentPrice -
+                    position.entry
+                ) /
+                position.entry;
+
+
+            if (
+                position.direction ===
+                "SELL"
+            ) {
+
+                movement *= -1;
+
+            }
+
+
+            return (
+                movement *
+                position.capital
+            );
+
+        }
+
+
+        /* =====================================================
+           POSITION
+        ===================================================== */
+
+        function renderPosition() {
+
+            const container =
+                document.getElementById(
+                    "positionContainer"
+                );
+
+
+            if (!position) {
+
+                container.innerHTML = `
+
+                    <div class="no-position">
+
+                        Aucune position ouverte.
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+            const profit =
+                calculateProfit();
+
+
+            container.innerHTML = `
+
+                <div class="position-details">
+
+                    <div class="position-line">
+
+                        <span>
+                            Direction
+                        </span>
+
+                        <strong>
+                            ${
+                                position.direction === "BUY"
+                                    ? "ACHAT"
+                                    : "VENTE"
+                            }
+                        </strong>
+
+                    </div>
+
+
+                    <div class="position-line">
+
+                        <span>
+                            Entrée
+                        </span>
+
+                        <strong>
+                            ${
+                                Number(
+                                    position.entry
+                                ).toFixed(
+                                    assets[
+                                        position.asset
+                                    ].decimals
+                                )
+                            }
+                        </strong>
+
+                    </div>
+
+
+                    <div class="position-line">
+
+                        <span>
+                            Prix actuel
+                        </span>
+
+                        <strong>
+                            ${price(currentPrice)}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="position-line">
+
+                        <span>
+                            Stop Loss
+                        </span>
+
+                        <strong>
+                            ${position.stopLoss}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="position-line">
+
+                        <span>
+                            Take Profit
+                        </span>
+
+                        <strong>
+                            ${position.takeProfit}%
+                        </strong>
+
+                    </div>
+
+
+                    <div class="position-line">
+
+                        <span>
+                            Capital
+                        </span>
+
+                        <strong>
+                            $${money(position.capital)}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="position-line">
+
+                        <span>
+                            P/L
+                        </span>
+
+                        <strong
+                            class="pl ${
+                                profit >= 0
+                                    ? "positive"
+                                    : "negative"
+                            }"
+                        >
+
+                            ${
+                                profit >= 0
+                                    ? "+"
+                                    : ""
+                            }$${money(profit)}
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="close-position"
+                    id="closePosition"
+                >
+
+                    Fermer la position
+
+                </button>
+
+            `;
+
+
+            document.getElementById(
+                "closePosition"
+            ).addEventListener(
+                "click",
+                function () {
+
+                    closePosition();
+
+                }
+            );
+
+        }
+
+
+        /* =====================================================
+           AUTO CLOSE
+        ===================================================== */
+
+        function checkAutoClose() {
+
+            if (!position) {
+
+                return;
+
+            }
+
+
+            const movement =
+                (
+                    currentPrice -
+                    position.entry
+                ) /
+                position.entry;
+
+
+            const signedMovement =
+
+                position.direction === "BUY"
+
+                    ? movement
+
+                    : -movement;
+
+
+            if (
+                signedMovement <=
+                -(position.stopLoss / 100)
+            ) {
+
+                closePosition(
+                    "Stop Loss atteint."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                signedMovement >=
+                position.takeProfit / 100
+            ) {
+
+                closePosition(
+                    "Take Profit atteint."
+                );
+
+            }
+
+        }
+
+
+        /* =====================================================
+           CLOSE
+        ===================================================== */
+
+        function closePosition(
+            reason = ""
+        ) {
+
+            if (!position) {
+
+                return;
+
+            }
+
+
+            const profit =
+                calculateProfit();
+
+
+            balance +=
+                profit;
+
+
+            history.unshift({
+
+                direction:
+                    position.direction,
+
+                asset:
+                    assets[position.asset].name,
+
+                entry:
+                    position.entry,
+
+                exit:
+                    currentPrice,
+
+                capital:
+                    position.capital,
+
+                profit,
+
+                riskPercentage:
+                    position.stopLoss,
+
+                takeProfit:
+                    position.takeProfit,
+
+                stopLoss:
+                    position.stopLoss,
+
+                date:
+                    new Date().toLocaleString(
+                        "fr-FR"
+                    )
+
+            });
+
+
+            position = null;
+
+
+            saveSimulator();
+
+            updateBalance();
+
+            updateStats();
+
+            renderPosition();
+
+            renderHistory();
+
+            updateEvaluation();
+
+
+            message(
+
+                reason ||
+
+                `Position fermée : ${
+                    profit >= 0
+                        ? "+"
+                        : ""
+                }$${money(profit)}`
+
+            );
+
+        }
+
+
+        /* =====================================================
+           HISTORY
+        ===================================================== */
+
+        function renderHistory() {
+
+            const body =
+                document.getElementById(
+                    "historyBody"
+                );
+
+
+            if (!history.length) {
+
+                body.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="7"
+                            style="text-align:center;color:#9ca3af"
+                        >
+
+                            Aucun trade terminé.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+
+            }
+
+
+            body.innerHTML =
+
+                history
+                    .slice(0,20)
+                    .map(
+                        trade => {
+
+                            const profit =
+                                Number(
+                                    trade.profit
+                                );
+
+
+                            let decimals =
+                                2;
+
+
+                            if (
+                                trade.asset ===
+                                "EUR / USD" ||
+                                trade.asset ===
+                                "GBP / USD"
+                            ) {
+
+                                decimals = 5;
+
+                            }
+
+
+                            return `
+
+                                <tr>
+
+                                    <td>
+
+                                        <span
+                                            class="direction ${
+                                                trade.direction === "BUY"
+                                                    ? "buy"
+                                                    : "sell"
+                                            }"
+                                        >
+
+                                            ${
+                                                trade.direction === "BUY"
+                                                    ? "ACHAT"
+                                                    : "VENTE"
+                                            }
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+                                        ${trade.asset}
+                                    </td>
+
+
+                                    <td>
+                                        ${
+                                            Number(
+                                                trade.entry
+                                            ).toFixed(
+                                                decimals
+                                            )
+                                        }
+                                    </td>
+
+
+                                    <td>
+                                        ${
+                                            Number(
+                                                trade.exit
+                                            ).toFixed(
+                                                decimals
+                                            )
+                                        }
+                                    </td>
+
+
+                                    <td>
+                                        $${money(
+                                            Number(
+                                                trade.capital
+                                            )
+                                        )}
+                                    </td>
+
+
+                                    <td
+                                        class="${
+                                            profit >= 0
+                                                ? "positive"
+                                                : "negative"
+                                        }"
+                                    >
+
+                                        ${
+                                            profit >= 0
+                                                ? "+"
+                                                : ""
+                                        }$${money(profit)}
+
+                                    </td>
+
+
+                                    <td>
+                                        ${trade.date}
+                                    </td>
+
+                                </tr>
+
+                            `;
+
+                        }
+                    )
+                    .join("");
+
+        }
+
+
+        /* =====================================================
+           RESET
+        ===================================================== */
+
+        document.getElementById(
+            "resetSimulator"
+        ).addEventListener(
+            "click",
+            function () {
+
+                balance = 10000;
+
+                history = [];
+
+                position = null;
+
+                saveSimulator();
+
+                updateBalance();
+
+                updateStats();
+
+                renderPosition();
+
+                renderHistory();
+
+                updateEvaluation();
+
+                message(
+                    "Simulation réinitialisée avec $10,000 virtuels."
+                );
+
+            }
+        );
+
+
+        /* =====================================================
+           EVALUATION
+        ===================================================== */
+
+        function updateEvaluation() {
+
+            const hasTrade =
+                history.length > 0;
+
+
+            const lastTrade =
+                history[0];
+
+
+            let tradingScore =
+                hasTrade
+                    ? 30
+                    : 0;
+
+
+            let riskScore =
+                0;
+
+
+            let rrScore =
+                0;
+
+
+            let practiceScore =
+                hasTrade
+                    ? 20
+                    : 0;
+
+
+            if (lastTrade) {
+
+
+                const risk =
+                    Number(
+                        lastTrade.riskPercentage
+                    ) || 1;
+
+
+                if (risk <= 1) {
+
+                    riskScore = 30;
+
+                } else if (risk <= 2) {
+
+                    riskScore = 25;
+
+                } else {
+
+                    riskScore = 10;
+
+                }
+
+
+                const rr =
+
+                    Number(
+                        lastTrade.takeProfit
+                    ) /
+                    Number(
+                        lastTrade.stopLoss
+                    );
+
+
+                if (rr >= 2) {
+
+                    rrScore = 20;
+
+                } else if (rr >= 1.5) {
+
+                    rrScore = 15;
+
+                } else {
+
+                    rrScore = 8;
+
+                }
+
+            }
+
+
+            const total =
+
+                Math.min(
+                    100,
+                    tradingScore +
+                    riskScore +
+                    rrScore +
+                    practiceScore
+                );
+
+
+            document.getElementById(
+                "scoreTrading"
+            ).textContent =
+                `${tradingScore} / 30`;
+
+
+            document.getElementById(
+                "scoreRisk"
+            ).textContent =
+                `${riskScore} / 30`;
+
+
+            document.getElementById(
+                "scoreRR"
+            ).textContent =
+                `${rrScore} / 20`;
+
+
+            document.getElementById(
+                "scorePractice"
+            ).textContent =
+                `${practiceScore} / 20`;
+
+
+            document.getElementById(
+                "finalScore"
+            ).textContent =
+                total;
+
+
+            const evaluation =
+                document.getElementById(
+                    "evaluationMessage"
+                );
+
+
+            if (hasTrade) {
+
+                evaluation.className =
+                    "evaluation-message success";
+
+
+                evaluation.innerHTML = `
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Simulation réalisée.
+                    Score actuel :
+                    <strong>${total}/100</strong>.
+
+                `;
+
+            } else {
+
+                evaluation.className =
+                    "evaluation-message warning";
+
+
+                evaluation.textContent =
+                    "Réalise une première opération pour commencer ton évaluation.";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           INITIALISATION
+        ===================================================== */
+
+        updateBalance();
+
+        updateStats();
+
+        renderPosition();
+
+        renderHistory();
+
+        updateEvaluation();
+
+
+    }
+
+);
+
+</script>
+
+
+</body>
+
+</html>

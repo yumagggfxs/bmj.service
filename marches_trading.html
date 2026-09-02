@@ -1,0 +1,3245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Les Marchés du Trading | BMJ SERVICE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        :root {
+            --blue: #075985;
+            --blue-dark: #043b59;
+            --blue-light: #0ea5e9;
+
+            --gold: #f4b400;
+            --gold-light: #ffd75a;
+
+            --green: #16a34a;
+            --red: #dc2626;
+
+            --bg: #f5f8fc;
+            --white: #ffffff;
+            --text: #142033;
+            --muted: #6b7280;
+            --border: #e5eaf0;
+
+            --shadow:
+                0 15px 40px rgba(15, 23, 42, .08);
+
+            --radius: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        button,
+        select,
+        input {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            height: 74px;
+
+            background: rgba(255,255,255,.97);
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-inner {
+            width: min(1250px, calc(100% - 40px));
+            height: 100%;
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .brand img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .brand strong {
+            display: block;
+            color: var(--blue);
+            font-size: 17px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .brand span {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-photo {
+            width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+            object-fit: cover;
+
+            border: 2px solid var(--gold);
+        }
+
+        .user-info strong {
+            display: block;
+            font-size: 13px;
+        }
+
+        .user-info span {
+            display: block;
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            position: relative;
+            min-height: 440px;
+
+            display: flex;
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    105deg,
+                    rgba(3, 38, 57, .97),
+                    rgba(4, 59, 89, .84),
+                    rgba(7, 89, 133, .58)
+                ),
+                url("images/trading-banner.jpg")
+                center/cover;
+        }
+
+        .hero-content {
+            width: min(1250px, calc(100% - 40px));
+            margin: auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 8px 14px;
+
+            color: white;
+
+            border: 1px solid rgba(255,255,255,.25);
+            background: rgba(255,255,255,.09);
+
+            border-radius: 999px;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            max-width: 800px;
+
+            color: white;
+
+            font-size: clamp(34px, 5vw, 58px);
+            line-height: 1.1;
+
+            font-weight: 800;
+
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: var(--gold-light);
+        }
+
+        .hero p {
+            max-width: 730px;
+
+            color: rgba(255,255,255,.82);
+
+            font-size: 15px;
+        }
+
+        .hero-actions {
+            margin-top: 28px;
+
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 11px;
+
+            padding: 13px 20px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: #1f2937;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--blue);
+        }
+
+        /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+        .container {
+            width: min(1180px, calc(100% - 36px));
+            margin: auto;
+        }
+
+        /* =====================================================
+           INFO
+        ===================================================== */
+
+        .info-section {
+            margin-top: -42px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .info-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+
+            padding: 20px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .info-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #eaf6fc;
+            color: var(--blue);
+
+            margin-bottom: 12px;
+        }
+
+        .info-card strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .info-card span {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           PROGRESS
+        ===================================================== */
+
+        .progress-card {
+            margin-top: 24px;
+
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+
+            padding: 20px 23px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: 9px;
+
+            font-size: 13px;
+        }
+
+        #progressText {
+            color: var(--blue);
+            font-weight: 800;
+        }
+
+        .progress-bar {
+            height: 8px;
+
+            overflow: hidden;
+
+            background: #edf1f5;
+
+            border-radius: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--blue),
+                    var(--blue-light)
+                );
+
+            transition: .4s;
+        }
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        main {
+            padding: 60px 0 80px;
+        }
+
+        .section-heading {
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            color: var(--blue);
+
+            font-size: 11px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-heading h2 {
+            margin-top: 6px;
+
+            font-size: clamp(27px, 4vw, 38px);
+            line-height: 1.2;
+        }
+
+        .section-heading p {
+            max-width: 750px;
+
+            margin-top: 8px;
+
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           MARKET CARDS
+        ===================================================== */
+
+        .markets {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .market-card {
+            position: relative;
+
+            overflow: hidden;
+
+            background: white;
+
+            border: 1px solid var(--border);
+            border-radius: 20px;
+
+            box-shadow:
+                0 8px 25px rgba(15,23,42,.05);
+
+            transition: .25s;
+        }
+
+        .market-card:hover {
+            transform: translateY(-4px);
+
+            box-shadow:
+                0 18px 40px rgba(15,23,42,.10);
+        }
+
+        .market-image {
+            height: 190px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .market-image img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            transition: .4s;
+        }
+
+        .market-card:hover .market-image img {
+            transform: scale(1.04);
+        }
+
+        .market-overlay {
+            position: absolute;
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(0,0,0,.58),
+                    transparent
+                );
+        }
+
+        .market-label {
+            position: absolute;
+            left: 16px;
+            bottom: 14px;
+
+            padding: 7px 10px;
+
+            background: rgba(255,255,255,.94);
+
+            border-radius: 8px;
+
+            color: var(--blue);
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .market-content {
+            padding: 21px;
+        }
+
+        .market-content h3 {
+            font-size: 20px;
+            margin-bottom: 7px;
+        }
+
+        .market-content > p {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .market-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 8px;
+
+            margin-top: 17px;
+        }
+
+        .market-detail {
+            padding: 11px;
+
+            background: #f7f9fc;
+
+            border-radius: 10px;
+        }
+
+        .market-detail span {
+            display: block;
+
+            color: var(--muted);
+            font-size: 9px;
+
+            margin-bottom: 2px;
+        }
+
+        .market-detail strong {
+            font-size: 11px;
+        }
+
+        .market-example {
+            margin-top: 14px;
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            color: var(--blue);
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* =====================================================
+           COMPARISON
+        ===================================================== */
+
+        .comparison-section {
+            margin-top: 70px;
+        }
+
+        .comparison {
+            background: white;
+
+            border: 1px solid var(--border);
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            box-shadow: var(--shadow);
+        }
+
+        .comparison-scroll {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 720px;
+
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 15px 17px;
+
+            border-bottom: 1px solid var(--border);
+
+            text-align: left;
+
+            font-size: 11px;
+        }
+
+        th {
+            background: #f8fafc;
+
+            color: var(--muted);
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        td strong {
+            color: var(--blue);
+        }
+
+        /* =====================================================
+           PRACTICE
+        ===================================================== */
+
+        .practice-section {
+            margin-top: 75px;
+        }
+
+        .practice-intro {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            gap: 20px;
+
+            margin-bottom: 24px;
+        }
+
+        .practice-badge {
+            padding: 9px 13px;
+
+            background: #dcfce7;
+            color: #15803d;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+        .market-lab {
+            background: #071723;
+
+            border-radius: 23px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 25px 60px rgba(3,20,32,.20);
+        }
+
+        .lab-top {
+            padding: 18px 20px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+
+        .lab-title {
+            color: white;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .lab-subtitle {
+            color: #74899a;
+
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        .lab-select {
+            background: #102737;
+
+            color: white;
+
+            border: 1px solid #294252;
+
+            border-radius: 9px;
+
+            padding: 10px 12px;
+
+            outline: none;
+        }
+
+        .lab-body {
+            display: grid;
+            grid-template-columns: minmax(0,1fr) 300px;
+        }
+
+        .lab-chart {
+            padding: 18px;
+
+            min-height: 390px;
+
+            border-right:
+                1px solid rgba(255,255,255,.08);
+        }
+
+        .chart-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 10px;
+        }
+
+        .lab-price {
+            color: #22c55e;
+
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .lab-change {
+            color: #22c55e;
+
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .chart-box {
+            height: 300px;
+        }
+
+        .analysis-panel {
+            padding: 20px;
+
+            background: #0b1c2a;
+        }
+
+        .analysis-panel h3 {
+            color: white;
+
+            font-size: 14px;
+
+            margin-bottom: 17px;
+        }
+
+        .analysis-row {
+            padding: 12px 0;
+
+            border-bottom:
+                1px solid rgba(255,255,255,.07);
+        }
+
+        .analysis-row span {
+            display: block;
+
+            color: #71879a;
+
+            font-size: 9px;
+
+            margin-bottom: 3px;
+        }
+
+        .analysis-row strong {
+            color: white;
+
+            font-size: 12px;
+        }
+
+        .analysis-question {
+            margin-top: 17px;
+
+            color: #c0ccd5;
+
+            font-size: 11px;
+        }
+
+        .analysis-buttons {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 8px;
+
+            margin-top: 12px;
+        }
+
+        .analysis-btn {
+            border: 0;
+
+            border-radius: 9px;
+
+            padding: 11px 7px;
+
+            color: white;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .btn-up {
+            background: #15803d;
+        }
+
+        .btn-down {
+            background: #b91c1c;
+        }
+
+        .btn-neutral {
+            grid-column: 1 / -1;
+
+            background: #334155;
+        }
+
+        .lab-result {
+            margin-top: 14px;
+
+            padding: 11px;
+
+            border-radius: 9px;
+
+            background: #102737;
+
+            color: #9fb1bf;
+
+            font-size: 10px;
+
+            line-height: 1.5;
+        }
+
+        /* =====================================================
+           KEY POINTS
+        ===================================================== */
+
+        .points-section {
+            margin-top: 75px;
+        }
+
+        .points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+        .point {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 17px;
+
+            padding: 20px;
+        }
+
+        .point i {
+            color: var(--blue);
+
+            font-size: 20px;
+
+            margin-bottom: 10px;
+        }
+
+        .point h3 {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .point p {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* =====================================================
+           QUIZ
+        ===================================================== */
+
+        .quiz-section {
+            margin-top: 75px;
+        }
+
+        .quiz {
+            display: grid;
+            gap: 15px;
+        }
+
+        .question {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 19px;
+        }
+
+        .question h3 {
+            font-size: 13px;
+
+            margin-bottom: 12px;
+        }
+
+        .answer {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            padding: 10px 11px;
+
+            margin-top: 7px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 9px;
+
+            font-size: 11px;
+
+            cursor: pointer;
+        }
+
+        .answer:hover {
+            background: #f8fafc;
+        }
+
+        .answer input {
+            accent-color: var(--blue);
+        }
+
+        .quiz-result {
+            display: none;
+
+            padding: 14px;
+
+            border-radius: 11px;
+
+            font-size: 12px;
+
+            font-weight: 600;
+        }
+
+        .quiz-result.success {
+            display: block;
+
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .quiz-result.fail {
+            display: block;
+
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .validate-btn {
+            justify-self: center;
+
+            border: 0;
+
+            border-radius: 11px;
+
+            background: var(--blue);
+            color: white;
+
+            padding: 13px 23px;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            margin-top: 80px;
+
+            padding: 35px 20px;
+
+            background: #062f48;
+
+            text-align: center;
+
+            color: white;
+        }
+
+        footer strong {
+            display: block;
+
+            font-size: 16px;
+
+            margin-bottom: 3px;
+        }
+
+        footer p {
+            color: rgba(255,255,255,.65);
+
+            font-size: 10px;
+        }
+
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 950px) {
+
+            .info-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .markets {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-body {
+                grid-template-columns: 1fr;
+            }
+
+            .lab-chart {
+                border-right: 0;
+
+                border-bottom:
+                    1px solid rgba(255,255,255,.08);
+            }
+
+            .points {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .header {
+                height: 65px;
+            }
+
+            .brand div {
+                display: none;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .hero {
+                min-height: 430px;
+            }
+
+            .hero-content {
+                width: calc(100% - 36px);
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .info-section {
+                margin-top: -25px;
+            }
+
+            .info-grid {
+                gap: 8px;
+            }
+
+            .info-card {
+                padding: 15px;
+            }
+
+            .practice-intro {
+                display: block;
+            }
+
+            .practice-badge {
+                display: inline-flex;
+                margin-top: 12px;
+            }
+
+            .lab-top {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .lab-select {
+                width: 100%;
+            }
+
+            .chart-box {
+                height: 260px;
+            }
+
+            .points {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="header">
+
+    <div class="header-inner">
+
+        <a href="trading.html" class="brand">
+
+            <img
+                src="images/logo.png"
+                alt="BMJ SERVICE"
+                onerror="this.src='images/user.png'"
+            >
+
+            <div>
+                <strong>BMJ SERVICE</strong>
+                <span>FORMATION & APPRENTISSAGE</span>
+            </div>
+
+        </a>
+
+
+        <div class="user-box">
+
+            <img
+                id="userPhoto"
+                class="user-photo"
+                src="images/user.png"
+                alt="Utilisateur"
+            >
+
+            <div class="user-info">
+
+                <strong id="userName">
+                    Utilisateur
+                </strong>
+
+                <span>
+                    Formation Trading
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-badge">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            CHAPITRE 2 SUR 5
+
+        </div>
+
+
+        <h1>
+
+            Découvrir les
+            <span>marchés financiers</span>
+
+        </h1>
+
+
+        <p>
+
+            Forex, actions, matières premières et cryptomonnaies :
+            découvre les principaux marchés accessibles aux traders,
+            leurs caractéristiques, leurs différences et les risques
+            associés à chacun.
+
+        </p>
+
+
+        <div class="hero-actions">
+
+            <button
+                class="btn btn-primary"
+                onclick="document.getElementById('marches').scrollIntoView()"
+            >
+
+                <i class="fa-solid fa-book-open"></i>
+
+                Découvrir les marchés
+
+            </button>
+
+
+            <button
+                class="btn btn-white"
+                onclick="document.getElementById('laboratoire').scrollIntoView()"
+            >
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Analyser un marché
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     INFO
+========================================================= -->
+
+<section class="info-section">
+
+    <div class="container">
+
+        <div class="info-grid">
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-layer-group"></i>
+
+                </div>
+
+                <strong>
+                    Chapitre 2 / 5
+                </strong>
+
+                <span>
+                    Les marchés du Trading
+                </span>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+
+                    <i class="fa-regular fa-clock"></i>
+
+                </div>
+
+                <strong>
+                    40 – 50 min
+                </strong>
+
+                <span>
+                    Temps recommandé
+                </span>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-graduation-cap"></i>
+
+                </div>
+
+                <strong>
+                    Débutant
+                </strong>
+
+                <span>
+                    Niveau du chapitre
+                </span>
+
+            </div>
+
+
+            <div class="info-card">
+
+                <div class="info-icon">
+
+                    <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+                </div>
+
+                <strong>
+                    Analyse pratique
+                </strong>
+
+                <span>
+                    Exercice inclus
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="progress-card">
+
+            <div class="progress-top">
+
+                <strong>
+                    Progression Trading
+                </strong>
+
+                <span id="progressText">
+                    0%
+                </span>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="progressFill"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main>
+
+    <div class="container">
+
+
+        <!-- =====================================================
+             MARKETS
+        ====================================================== -->
+
+        <section id="marches">
+
+            <div class="section-heading">
+
+                <div class="eyebrow">
+                    Comprendre les marchés
+                </div>
+
+                <h2>
+                    Où peut-on trader ?
+                </h2>
+
+                <p>
+
+                    Tous les marchés ne fonctionnent pas de la même manière.
+                    Avant de choisir une stratégie, il faut comprendre
+                    l'environnement dans lequel elle sera utilisée.
+
+                </p>
+
+            </div>
+
+
+            <div class="markets">
+
+
+                <!-- FOREX -->
+
+                <article class="market-card">
+
+                    <div class="market-image">
+
+                        <img
+                            src="images/forex.webp"
+                            alt="Forex"
+                            onerror="
+                                this.src='images/trading-banner.jpg'
+                            "
+                        >
+
+                        <div class="market-overlay"></div>
+
+                        <div class="market-label">
+                            MARCHÉ DES DEVISES
+                        </div>
+
+                    </div>
+
+
+                    <div class="market-content">
+
+                        <h3>
+                            Forex
+                        </h3>
+
+                        <p>
+
+                            Le Forex est le marché sur lequel
+                            les devises sont échangées les unes
+                            contre les autres.
+
+                        </p>
+
+
+                        <div class="market-details">
+
+                            <div class="market-detail">
+
+                                <span>
+                                    EXEMPLE
+                                </span>
+
+                                <strong>
+                                    EUR/USD
+                                </strong>
+
+                            </div>
+
+
+                            <div class="market-detail">
+
+                                <span>
+                                    LIQUIDITÉ
+                                </span>
+
+                                <strong>
+                                    Élevée
+                                </strong>
+
+                            </div>
+
+
+                            <div class="market-detail">
+
+                                <span>
+                                    VOLATILITÉ
+                                </span>
+
+                                <strong>
+                                    Variable
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="market-example">
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                            Exemple : EUR/USD, GBP/USD, USD/JPY
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- ACTIONS -->
+
+                <article class="market-card">
+
+                    <div class="market-image">
+
+                        <img
+                            src="images/actions.jpg"
+                            alt="Actions"
+                            onerror="
+                                this.src='images/trading-banner.jpg'
+                            "
+                        >
+
+                        <div class="market-overlay"></div>
+
+                        <div class="market-label">
+                            MARCHÉ ACTIONS
+                        </div>
+
+                    </div>
+
+
+                    <div class="market-content">
+
+                        <h3>
+                            Actions
+                        </h3>
+
+                        <p>
+
+                            Une action représente une fraction
+                            de propriété d'une entreprise cotée.
+
+                        </p>
+
+
+                        <div class="market-details">
+
+                            <div class="market-detail">
+
+                                <span>
+                                    EXEMPLE
+                                </span>
+
+                                <strong>
+                                    AAPL
+                                </strong>
+
+                            </div>
+
+
+                            <div class="market-detail">
+
+                                <span>
+                                    LIQUIDITÉ
+                                </span>
+
+                                <strong>
+                                    Variable
+                                </strong>
+
+                            </div>
+
+
+                            <div class="market-detail">
+
+                                <span>
+                                    HORAIRES
+                                </span>
+
+                                <strong>
+                                    Sessions
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="market-example">
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                            Exemple : Apple, Microsoft, Tesla
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- MATIERES PREMIERES -->
+
+                <article class="market-card">
+
+                    <div class="market-image">
+
+                        <img
+                            src="images/matieres.jpg"
+                            alt="Matières premières"
+                            onerror="
+                                this.src='images/trading-banner.jpg'
+                            "
+                        >
+
+                        <div class="market-overlay"></div>
+
+                        <div class="market-label">
+                            COMMODITIES
+                        </div>
+
+                    </div>
+
+
+                    <div class="market-content">
+
+                        <h3>
+                            Matières premières
+                        </h3>
+
+                        <p>
+
+                            Ce marché regroupe notamment l'or,
+                            le pétrole, le gaz et d'autres
+                            ressources négociées sur les marchés.
+
+                        </p>
+
+
+                        <div class="market-details">
+
+                            <div class="market-detail">
+
+                                <span>
+                                    EXEMPLE
+                                </span>
+
+                                <strong>
+                                    GOLD
+                                </strong>
+
+                            </div>
+
+
+                            <div class="market-detail">
+
+                                <span>
+                                    RISQUE
+                                </span>
+
+                                <strong>
+                                    Variable
+                                </strong>
+
+                            </div>
+
+
+                            <div class="market-detail">
+
+                                <span>
+                                    FACTEURS
+                                </span>
+
+                                <strong>
+                                    Macro
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="market-example">
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                            Exemple : Or, pétrole, argent
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- CRYPTO -->
+
+                <article class="market-card">
+
+                    <div class="market-image">
+
+                        <img
+                            src="images/cryptos.webp"
+                            alt="Cryptomonnaies"
+                            onerror="
+                                this.src='images/trading-banner.jpg'
+                            "
+                        >
+
+                        <div class="market-overlay"></div>
+
+                        <div class="market-label">
+                            ACTIFS NUMÉRIQUES
+                        </div>
+
+                    </div>
+
+
+                    <div class="market-content">
+
+                        <h3>
+                            Cryptomonnaies
+                        </h3>
+
+                        <p>
+
+                            Les cryptomonnaies sont des actifs
+                            numériques connus pour leurs mouvements
+                            parfois très importants.
+
+                        </p>
+
+
+                        <div class="market-details">
+
+                            <div class="market-detail">
+
+                                <span>
+                                    EXEMPLE
+                                </span>
+
+                                <strong>
+                                    BTC/USD
+                                </strong>
+
+                            </div>
+
+
+                            <div class="market-detail">
+
+                                <span>
+                                    VOLATILITÉ
+                                </span>
+
+                                <strong>
+                                    Élevée
+                                </strong>
+
+                            </div>
+
+
+                            <div class="market-detail">
+
+                                <span>
+                                    MARCHÉ
+                                </span>
+
+                                <strong>
+                                    24/7
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="market-example">
+
+                            <i class="fa-solid fa-arrow-right"></i>
+
+                            Exemple : Bitcoin, Ethereum
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             COMPARISON
+        ====================================================== -->
+
+        <section class="comparison-section">
+
+            <div class="section-heading">
+
+                <div class="eyebrow">
+                    Comparaison
+                </div>
+
+                <h2>
+                    Les marchés ne se ressemblent pas
+                </h2>
+
+                <p>
+
+                    Comprendre ces différences permet d'éviter
+                    de traiter tous les marchés comme s'ils
+                    fonctionnaient de la même façon.
+
+                </p>
+
+            </div>
+
+
+            <div class="comparison">
+
+                <div class="comparison-scroll">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Marché
+                                </th>
+
+                                <th>
+                                    Exemple
+                                </th>
+
+                                <th>
+                                    Liquidité
+                                </th>
+
+                                <th>
+                                    Volatilité
+                                </th>
+
+                                <th>
+                                    Particularité
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    <strong>Forex</strong>
+                                </td>
+
+                                <td>
+                                    EUR/USD
+                                </td>
+
+                                <td>
+                                    Élevée
+                                </td>
+
+                                <td>
+                                    Variable
+                                </td>
+
+                                <td>
+                                    Paires de devises
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    <strong>Actions</strong>
+                                </td>
+
+                                <td>
+                                    AAPL
+                                </td>
+
+                                <td>
+                                    Variable
+                                </td>
+
+                                <td>
+                                    Variable
+                                </td>
+
+                                <td>
+                                    Entreprises cotées
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    <strong>Or</strong>
+                                </td>
+
+                                <td>
+                                    GOLD/USD
+                                </td>
+
+                                <td>
+                                    Élevée
+                                </td>
+
+                                <td>
+                                    Variable
+                                </td>
+
+                                <td>
+                                    Matière première
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    <strong>Crypto</strong>
+                                </td>
+
+                                <td>
+                                    BTC/USD
+                                </td>
+
+                                <td>
+                                    Variable
+                                </td>
+
+                                <td>
+                                    Souvent élevée
+                                </td>
+
+                                <td>
+                                    Marché 24/7
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PRACTICE LAB
+        ====================================================== -->
+
+        <section
+            class="practice-section"
+            id="laboratoire"
+        >
+
+            <div class="practice-intro">
+
+                <div class="section-heading" style="margin:0">
+
+                    <div class="eyebrow">
+                        Exercice pratique
+                    </div>
+
+                    <h2>
+                        Laboratoire d'analyse
+                    </h2>
+
+                    <p>
+
+                        Observe le graphique simulé, étudie le marché
+                        présenté puis indique si tu penses que le contexte
+                        est plutôt haussier, baissier ou neutre.
+
+                        <strong>
+                            Il s'agit uniquement d'un exercice pédagogique.
+                        </strong>
+
+                    </p>
+
+                </div>
+
+
+                <div class="practice-badge">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    DONNÉES SIMULÉES
+
+                </div>
+
+            </div>
+
+
+            <div class="market-lab">
+
+
+                <div class="lab-top">
+
+                    <div>
+
+                        <div class="lab-title">
+                            Tableau d'analyse
+                        </div>
+
+                        <div class="lab-subtitle">
+                            Environnement pédagogique
+                        </div>
+
+                    </div>
+
+
+                    <select
+                        id="labMarket"
+                        class="lab-select"
+                    >
+
+                        <option value="EURUSD">
+                            EUR/USD
+                        </option>
+
+                        <option value="GOLD">
+                            GOLD/USD
+                        </option>
+
+                        <option value="BTCUSD">
+                            BTC/USD
+                        </option>
+
+                        <option value="AAPL">
+                            AAPL
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="lab-body">
+
+
+                    <div class="lab-chart">
+
+                        <div class="chart-top">
+
+                            <div>
+
+                                <div
+                                    class="lab-price"
+                                    id="labPrice"
+                                >
+                                    1.08500
+                                </div>
+
+                                <div
+                                    class="lab-change"
+                                    id="labChange"
+                                >
+                                    +0.00%
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="chart-box">
+
+                            <canvas
+                                id="marketChart"
+                            ></canvas>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="analysis-panel">
+
+                        <h3>
+                            Fiche du marché
+                        </h3>
+
+
+                        <div class="analysis-row">
+
+                            <span>
+                                MARCHÉ
+                            </span>
+
+                            <strong id="labName">
+                                EUR/USD
+                            </strong>
+
+                        </div>
+
+
+                        <div class="analysis-row">
+
+                            <span>
+                                TYPE
+                            </span>
+
+                            <strong id="labType">
+                                Forex
+                            </strong>
+
+                        </div>
+
+
+                        <div class="analysis-row">
+
+                            <span>
+                                LIQUIDITÉ
+                            </span>
+
+                            <strong id="labLiquidity">
+                                Élevée
+                            </strong>
+
+                        </div>
+
+
+                        <div class="analysis-row">
+
+                            <span>
+                                VOLATILITÉ
+                            </span>
+
+                            <strong id="labVolatility">
+                                Modérée
+                            </strong>
+
+                        </div>
+
+
+                        <div class="analysis-question">
+
+                            <strong>
+                                Question :
+                            </strong>
+
+                            <br>
+
+                            En observant les informations disponibles,
+                            quelle direction semble actuellement
+                            dominante ?
+
+                        </div>
+
+
+                        <div class="analysis-buttons">
+
+                            <button
+                                class="analysis-btn btn-up"
+                                onclick="answerMarket('haussiere')"
+                            >
+
+                                <i class="fa-solid fa-arrow-up"></i>
+
+                                HAUSSIÈRE
+
+                            </button>
+
+
+                            <button
+                                class="analysis-btn btn-down"
+                                onclick="answerMarket('baissiere')"
+                            >
+
+                                <i class="fa-solid fa-arrow-down"></i>
+
+                                BAISSIÈRE
+
+                            </button>
+
+
+                            <button
+                                class="analysis-btn btn-neutral"
+                                onclick="answerMarket('neutre')"
+                            >
+
+                                <i class="fa-solid fa-minus"></i>
+
+                                NEUTRE / INCERTAINE
+
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            class="lab-result"
+                            id="labResult"
+                        >
+
+                            Analyse le graphique avant de répondre.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             KEY POINTS
+        ====================================================== -->
+
+        <section class="points-section">
+
+            <div class="section-heading">
+
+                <div class="eyebrow">
+                    À retenir
+                </div>
+
+                <h2>
+                    Les réflexes du trader
+                </h2>
+
+            </div>
+
+
+            <div class="points">
+
+
+                <div class="point">
+
+                    <i class="fa-solid fa-eye"></i>
+
+                    <h3>
+                        Observer avant d'agir
+                    </h3>
+
+                    <p>
+
+                        Le trader doit d'abord comprendre
+                        le marché qu'il regarde avant
+                        d'envisager une position.
+
+                    </p>
+
+                </div>
+
+
+                <div class="point">
+
+                    <i class="fa-solid fa-scale-balanced"></i>
+
+                    <h3>
+                        Comparer les risques
+                    </h3>
+
+                    <p>
+
+                        Un marché plus volatil peut produire
+                        des mouvements importants dans les
+                        deux directions.
+
+                    </p>
+
+                </div>
+
+
+                <div class="point">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <h3>
+                        Adapter sa méthode
+                    </h3>
+
+                    <p>
+
+                        Une méthode adaptée à un marché
+                        ne convient pas nécessairement
+                        à tous les autres.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             QUIZ
+        ====================================================== -->
+
+        <section class="quiz-section">
+
+            <div class="section-heading">
+
+                <div class="eyebrow">
+                    Vérification
+                </div>
+
+                <h2>
+                    Quiz du chapitre
+                </h2>
+
+                <p>
+                    Tu dois obtenir au moins 70 % pour valider ce chapitre.
+                </p>
+
+            </div>
+
+
+            <form
+                class="quiz"
+                id="quizForm"
+            >
+
+
+                <div class="question">
+
+                    <h3>
+                        1. Quel marché concerne principalement les devises ?
+                    </h3>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="a"
+                        >
+                        Le Forex
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="b"
+                        >
+                        Le marché immobilier
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="c"
+                        >
+                        Le marché obligataire uniquement
+                    </label>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h3>
+                        2. Quel exemple correspond au Forex ?
+                    </h3>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="a"
+                        >
+                        EUR/USD
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="b"
+                        >
+                        BTC seul
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="c"
+                        >
+                        GOLD uniquement
+                    </label>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h3>
+                        3. Quel actif appartient aux matières premières ?
+                    </h3>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="a"
+                        >
+                        EUR/USD
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="b"
+                        >
+                        Or
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="c"
+                        >
+                        AAPL
+                    </label>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h3>
+                        4. Quelle caractéristique est souvent associée aux cryptomonnaies ?
+                    </h3>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="a"
+                        >
+                        Une volatilité potentiellement élevée
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="b"
+                        >
+                        Un prix toujours stable
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="c"
+                        >
+                        Une fermeture obligatoire chaque jour
+                    </label>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h3>
+                        5. Pourquoi la liquidité est-elle importante ?
+                    </h3>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="a"
+                        >
+                        Elle indique notamment la facilité avec laquelle un actif peut être échangé.
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="b"
+                        >
+                        Elle garantit un bénéfice.
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="c"
+                        >
+                        Elle supprime tous les risques.
+                    </label>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h3>
+                        6. Que doit faire un trader avant de choisir une stratégie ?
+                    </h3>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="a"
+                        >
+                        Comprendre le marché et son contexte.
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="b"
+                        >
+                        Investir immédiatement.
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="c"
+                        >
+                        Ignorer la volatilité.
+                    </label>
+
+                </div>
+
+
+                <div
+                    class="quiz-result"
+                    id="quizResult"
+                ></div>
+
+
+                <button
+                    type="button"
+                    class="validate-btn"
+                    id="validateQuiz"
+                >
+
+                    <i class="fa-solid fa-check"></i>
+
+                    Vérifier mes réponses
+
+                </button>
+
+            </form>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <strong>
+        BMJ SERVICE
+    </strong>
+
+    <p>
+        Formation Trading — Comprendre avant d'agir.
+    </p>
+
+</footer>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+
+    /* =========================================================
+       UTILISATEUR
+    ========================================================= */
+
+    const user =
+        JSON.parse(
+            localStorage.getItem(
+                "bmj_current_user"
+            ) || "null"
+        );
+
+
+    if (user) {
+
+        document.getElementById("userName")
+            .textContent =
+                user.nom ||
+                user.name ||
+                user.username ||
+                "Utilisateur";
+
+
+        if (user.photo) {
+
+            document.getElementById("userPhoto")
+                .src =
+                    user.photo;
+
+        }
+
+    }
+
+
+    /* =========================================================
+       PROGRESSION
+    ========================================================= */
+
+    const userId =
+        user?.id_bmj ||
+        user?.id ||
+        user?.email ||
+        "guest";
+
+
+    const progressKey =
+        `trading_progression_${userId}`;
+
+
+    let progression =
+        JSON.parse(
+            localStorage.getItem(
+                progressKey
+            ) || "[]"
+        );
+
+
+    function updateProgress() {
+
+        const totalChapters = 5;
+
+        const percentage =
+            Math.round(
+                (
+                    progression.length /
+                    totalChapters
+                ) * 100
+            );
+
+
+        document.getElementById(
+            "progressFill"
+        ).style.width =
+            `${Math.min(100, percentage)}%`;
+
+
+        document.getElementById(
+            "progressText"
+        ).textContent =
+            `${Math.min(100, percentage)}%`;
+
+    }
+
+
+    updateProgress();
+
+
+    /* =========================================================
+       LABORATOIRE
+    ========================================================= */
+
+    const marketData = {
+
+        EURUSD: {
+
+            name: "EUR/USD",
+
+            type: "Forex",
+
+            liquidity: "Élevée",
+
+            volatility: "Modérée",
+
+            base: 1.08500,
+
+            decimals: 5,
+
+            direction: "haussiere"
+
+        },
+
+
+        GOLD: {
+
+            name: "GOLD/USD",
+
+            type: "Matière première",
+
+            liquidity: "Élevée",
+
+            volatility: "Modérée à élevée",
+
+            base: 2500,
+
+            decimals: 2,
+
+            direction: "haussiere"
+
+        },
+
+
+        BTCUSD: {
+
+            name: "BTC/USD",
+
+            type: "Cryptomonnaie",
+
+            liquidity: "Variable",
+
+            volatility: "Élevée",
+
+            base: 60000,
+
+            decimals: 2,
+
+            direction: "baissiere"
+
+        },
+
+
+        AAPL: {
+
+            name: "AAPL",
+
+            type: "Action",
+
+            liquidity: "Élevée",
+
+            volatility: "Modérée",
+
+            base: 225,
+
+            decimals: 2,
+
+            direction: "neutre"
+
+        }
+
+    };
+
+
+    let selectedMarket = "EURUSD";
+
+    let labPrice =
+        marketData[selectedMarket].base;
+
+    let labHistory = [];
+
+
+    function generateChartData() {
+
+        const data = [];
+
+        let price =
+            marketData[selectedMarket].base;
+
+
+        for (
+            let i = 0;
+            i < 45;
+            i++
+        ) {
+
+            const trend =
+                marketData[selectedMarket].direction;
+
+
+            let movement =
+                (
+                    Math.random() - .5
+                );
+
+
+            if (trend === "haussiere") {
+                movement += .10;
+            }
+
+            if (trend === "baissiere") {
+                movement -= .10;
+            }
+
+
+            price +=
+                price *
+                movement *
+                .003;
+
+
+            data.push(price);
+
+        }
+
+
+        labPrice =
+            data[data.length - 1];
+
+
+        return data;
+
+    }
+
+
+    labHistory =
+        generateChartData();
+
+
+    const ctx =
+        document
+            .getElementById("marketChart")
+            .getContext("2d");
+
+
+    const marketChart =
+        new Chart(
+            ctx,
+            {
+
+                type: "line",
+
+                data: {
+
+                    labels:
+                        labHistory.map(
+                            (_, i) => i
+                        ),
+
+                    datasets: [
+
+                        {
+
+                            data:
+                                labHistory,
+
+                            borderColor:
+                                "#38bdf8",
+
+                            backgroundColor:
+                                "rgba(14,165,233,.07)",
+
+                            borderWidth: 2,
+
+                            pointRadius: 0,
+
+                            fill: true,
+
+                            tension: .35
+
+                        }
+
+                    ]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    animation: false,
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    },
+
+                    scales: {
+
+                        x: {
+                            display: false
+                        },
+
+                        y: {
+
+                            ticks: {
+                                color: "#71879a",
+                                font: {
+                                    size: 9
+                                }
+                            },
+
+                            grid: {
+                                color:
+                                    "rgba(255,255,255,.06)"
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+
+    function updateLabInterface() {
+
+        const data =
+            marketData[selectedMarket];
+
+
+        document.getElementById(
+            "labName"
+        ).textContent =
+            data.name;
+
+
+        document.getElementById(
+            "labType"
+        ).textContent =
+            data.type;
+
+
+        document.getElementById(
+            "labLiquidity"
+        ).textContent =
+            data.liquidity;
+
+
+        document.getElementById(
+            "labVolatility"
+        ).textContent =
+            data.volatility;
+
+
+        document.getElementById(
+            "labPrice"
+        ).textContent =
+            labPrice.toFixed(
+                data.decimals
+            );
+
+
+        const first =
+            labHistory[0];
+
+
+        const change =
+            (
+                (
+                    labPrice -
+                    first
+                ) /
+                first
+            ) * 100;
+
+
+        const changeElement =
+            document.getElementById(
+                "labChange"
+            );
+
+
+        changeElement.textContent =
+            `${change >= 0 ? "+" : ""}${change.toFixed(2)}%`;
+
+
+        changeElement.style.color =
+            change >= 0
+                ? "#22c55e"
+                : "#ef4444";
+
+    }
+
+
+    function refreshChart() {
+
+        labHistory =
+            generateChartData();
+
+
+        marketChart.data.labels =
+            labHistory.map(
+                (_, i) => i
+            );
+
+
+        marketChart.data.datasets[0].data =
+            labHistory;
+
+
+        marketChart.update("none");
+
+
+        updateLabInterface();
+
+    }
+
+
+    document.getElementById(
+        "labMarket"
+    ).addEventListener(
+        "change",
+        event => {
+
+            selectedMarket =
+                event.target.value;
+
+            refreshChart();
+
+            document.getElementById(
+                "labResult"
+            ).textContent =
+                "Nouveau marché chargé. Observe attentivement le graphique avant de répondre.";
+
+        }
+    );
+
+
+    function answerMarket(answer) {
+
+        const correct =
+            marketData[selectedMarket]
+                .direction;
+
+
+        const result =
+            document.getElementById(
+                "labResult"
+            );
+
+
+        if (answer === correct) {
+
+            result.innerHTML =
+                `
+                    <strong style="color:#22c55e">
+                        Bonne observation !
+                    </strong>
+                    <br>
+                    Ton choix correspond au scénario
+                    pédagogique actuellement affiché.
+                    Cela ne constitue toutefois pas un signal
+                    de trading réel.
+                `;
+
+        } else {
+
+            result.innerHTML =
+                `
+                    <strong style="color:#f59e0b">
+                        Continue ton analyse.
+                    </strong>
+                    <br>
+                    Observe la direction générale du graphique
+                    plutôt qu'une seule variation de prix.
+                `;
+
+        }
+
+    }
+
+
+    window.answerMarket =
+        answerMarket;
+
+
+    updateLabInterface();
+
+
+    setInterval(
+        refreshChart,
+        7000
+    );
+
+
+    /* =========================================================
+       QUIZ
+    ========================================================= */
+
+    const answers = {
+
+        q1: "a",
+        q2: "a",
+        q3: "b",
+        q4: "a",
+        q5: "a",
+        q6: "a"
+
+    };
+
+
+    document.getElementById(
+        "validateQuiz"
+    ).addEventListener(
+        "click",
+        () => {
+
+            let score = 0;
+
+            let answered = 0;
+
+            const total =
+                Object.keys(
+                    answers
+                ).length;
+
+
+            Object.keys(
+                answers
+            ).forEach(
+                question => {
+
+                    const selected =
+                        document.querySelector(
+                            `input[name="${question}"]:checked`
+                        );
+
+
+                    if (selected) {
+
+                        answered++;
+
+
+                        if (
+                            selected.value ===
+                            answers[question]
+                        ) {
+
+                            score++;
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+            const result =
+                document.getElementById(
+                    "quizResult"
+                );
+
+
+            if (
+                answered <
+                total
+            ) {
+
+                result.className =
+                    "quiz-result fail";
+
+                result.textContent =
+                    "Réponds à toutes les questions avant de valider.";
+
+                return;
+
+            }
+
+
+            const percentage =
+                Math.round(
+                    (
+                        score /
+                        total
+                    ) * 100
+                );
+
+
+            if (
+                percentage >= 70
+            ) {
+
+                result.className =
+                    "quiz-result success";
+
+
+                result.innerHTML =
+                    `
+                        <i class="fa-solid fa-circle-check"></i>
+                        Très bien ! Score :
+                        <strong>${percentage}%</strong>.
+                        Le chapitre est validé.
+                    `;
+
+
+                if (
+                    !progression.includes(1)
+                ) {
+
+                    progression.push(1);
+
+                    progression.sort(
+                        (a,b) => a-b
+                    );
+
+
+                    localStorage.setItem(
+                        progressKey,
+                        JSON.stringify(
+                            progression
+                        )
+                    );
+
+
+                    updateProgress();
+
+                }
+
+
+                document.getElementById(
+                    "validateQuiz"
+                ).innerHTML =
+                    `
+                        <i class="fa-solid fa-check"></i>
+                        Chapitre validé
+                    `;
+
+            } else {
+
+                result.className =
+                    "quiz-result fail";
+
+
+                result.innerHTML =
+                    `
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        Score :
+                        <strong>${percentage}%</strong>.
+                        Il faut au minimum 70 %.
+                        Reprends les notions puis recommence.
+                    `;
+
+            }
+
+        }
+    );
+
+});
+
+</script>
+
+</body>
+</html>
