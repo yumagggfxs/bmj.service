@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Projet final - Investissement | BMJ SERVICE</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f5f6f8;
+
+            color: #222;
+        }
+
+        .box {
+            width: min(430px, 90%);
+
+            padding: 35px 25px;
+
+            background: #fff;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+
+            object-fit: contain;
+
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            font-size: 22px;
+
+            margin-bottom: 10px;
+
+            color: #075985;
+        }
+
+        p {
+            font-size: 14px;
+
+            line-height: 1.6;
+
+            color: #666;
+
+            margin-bottom: 20px;
+        }
+
+        .loading {
+            font-size: 14px;
+
+            color: #777;
+        }
+
+        .error {
+            color: #b91c1c;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+        .retry {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 10px 18px;
+
+            background: #075985;
+
+            color: #fff;
+
+            text-decoration: none;
+
+            border-radius: 5px;
+
+            font-size: 13px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="box">
+
+    <img
+        src="images/logo.png"
+        alt="BMJ SERVICE"
+        class="logo"
+        onerror="this.style.display='none'"
+    >
+
+    <h1>
+        Vérification du statut
+    </h1>
+
+    <p id="message">
+        Vérification de votre abonnement Premium...
+    </p>
+
+    <div
+        id="loading"
+        class="loading"
+    >
+        Veuillez patienter...
+    </div>
+
+</div>
+
+
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async function () {
+
+
+        /* =====================================================
+           RÉCUPÉRER L'UTILISATEUR
+        ===================================================== */
+
+        const storedUser =
+            localStorage.getItem(
+                "bmj_current_user"
+            );
+
+
+        /* =====================================================
+           UTILISATEUR NON CONNECTÉ
+        ===================================================== */
+
+        if (!storedUser) {
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+
+        }
+
+
+        let user;
+
+
+        try {
+
+            user =
+                JSON.parse(
+                    storedUser
+                );
+
+        } catch (error) {
+
+            localStorage.removeItem(
+                "bmj_current_user"
+            );
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+
+        }
+
+
+        /* =====================================================
+           IDENTIFIANT UTILISATEUR
+        ===================================================== */
+
+        const userId =
+            user.id ||
+            user.id_bmj ||
+            user.user_id;
+
+
+        if (!userId) {
+
+            afficherErreur(
+                "Impossible de vérifier votre compte."
+            );
+
+            return;
+
+        }
+
+
+        /* =====================================================
+           API BMJ SERVICE
+        ===================================================== */
+
+        const API_URL =
+            "https://back-end-h602.onrender.com";
+
+
+        try {
+
+
+            /*
+             * On récupère la version actuelle
+             * du compte depuis le serveur.
+             *
+             * Cela évite de se baser uniquement
+             * sur le localStorage.
+             */
+
+            const response =
+                await fetch(
+                    API_URL +
+                    "/api/utilisateurs/" +
+                    encodeURIComponent(userId)
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "Impossible de récupérer le compte."
+                );
+
+            }
+
+
+            const data =
+                await response.json();
+
+
+            /*
+             * Selon la structure de l'API,
+             * l'utilisateur peut se trouver
+             * directement dans data ou dans data.user.
+             */
+
+            const currentUser =
+                data.user ||
+                data.utilisateur ||
+                data.data ||
+                data;
+
+
+            if (
+                !currentUser ||
+                typeof currentUser !== "object"
+            ) {
+
+                throw new Error(
+                    "Données utilisateur invalides."
+                );
+
+            }
+
+
+            /* =================================================
+               METTRE À JOUR LE LOCALSTORAGE
+            ================================================= */
+
+            user = {
+                ...user,
+                ...currentUser
+            };
+
+
+            localStorage.setItem(
+                "bmj_current_user",
+                JSON.stringify(user)
+            );
+
+
+            /* =================================================
+               VÉRIFICATION PREMIUM
+            ================================================= */
+
+            const premium =
+                currentUser.premium;
+
+
+            const isPremium =
+                premium === true ||
+                premium === "true" ||
+                premium === 1 ||
+                premium === "1";
+
+
+            /* =================================================
+               SI PREMIUM
+            ================================================= */
+
+            if (isPremium) {
+
+                document.getElementById(
+                    "message"
+                ).textContent =
+                    "Abonnement Premium actif. Redirection vers votre certificat...";
+
+
+                document.getElementById(
+                    "loading"
+                ).textContent =
+                    "Veuillez patienter...";
+
+
+                setTimeout(
+                    function () {
+
+                        window.location.href =
+                            "certeficat.html";
+
+                    },
+                    800
+                );
+
+
+                return;
+
+            }
+
+
+            /* =================================================
+               SI PAS PREMIUM
+            ================================================= */
+
+            document.getElementById(
+                "message"
+            ).textContent =
+                "Votre abonnement Premium n'est pas actif.";
+
+
+            document.getElementById(
+                "loading"
+            ).innerHTML =
+                "Vous devez activer votre abonnement pour accéder au certificat.<br><br>" +
+                "Redirection vers la page d'abonnement...";
+
+
+            setTimeout(
+                function () {
+
+                    window.location.href =
+                        "certifica_marketing.html";
+
+                },
+                1200
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur vérification Premium :",
+                error
+            );
+
+
+            afficherErreur(
+                "Impossible de vérifier votre abonnement pour le moment."
+            );
+
+        }
+
+    }
+);
+
+
+
+/* ============================================================
+   MESSAGE D'ERREUR
+============================================================ */
+
+function afficherErreur(message) {
+
+    const messageElement =
+        document.getElementById(
+            "message"
+        );
+
+
+    const loadingElement =
+        document.getElementById(
+            "loading"
+        );
+
+
+    messageElement.textContent =
+        "Vérification impossible";
+
+
+    loadingElement.innerHTML =
+        '<div class="error">' +
+        message +
+        '</div>' +
+
+        '<a ' +
+        'href="projet_final_investissement.html" ' +
+        'class="retry">' +
+        'Réessayer' +
+        '</a>';
+
+}
+
+</script>
+
+
+</body>
+
+</html>

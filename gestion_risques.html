@@ -1,0 +1,5323 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Gestion des risques | BMJ SERVICE
+    </title>
+
+    <meta
+        name="description"
+        content="Formation BMJ SERVICE — apprendre à identifier, mesurer et gérer les risques liés à l'investissement."
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+    <style>
+
+        /* =========================================================
+           VARIABLES
+        ========================================================= */
+
+        :root {
+
+            --blue: #075985;
+            --blue-dark: #043b59;
+            --blue-light: #0ea5e9;
+
+            --gold: #f4b400;
+            --gold-light: #ffd75a;
+
+            --green: #16a34a;
+            --red: #dc2626;
+            --orange: #f97316;
+
+            --white: #ffffff;
+            --black: #111827;
+
+            --text: #243447;
+            --muted: #64748b;
+
+            --background: #f4f7fb;
+            --card: #ffffff;
+            --border: #e2e8f0;
+
+            --shadow:
+                0 10px 30px rgba(15, 23, 42, 0.08);
+
+            --shadow-hover:
+                0 18px 40px rgba(15, 23, 42, 0.13);
+
+            --radius: 18px;
+        }
+
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+
+            font-family: "Poppins", sans-serif;
+
+            background: var(--background);
+
+            color: var(--text);
+
+            line-height: 1.7;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        header {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 1000;
+
+            background:
+                rgba(255,255,255,0.97);
+
+            backdrop-filter: blur(12px);
+
+            border-bottom:
+                1px solid var(--border);
+
+            box-shadow:
+                0 4px 18px rgba(0,0,0,0.05);
+        }
+
+
+        .header-inner {
+
+            max-width: 1250px;
+
+            min-height: 72px;
+
+            margin: auto;
+
+            padding: 10px 20px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+
+        .brand {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .brand img {
+
+            width: 45px;
+
+            height: 45px;
+
+            object-fit: contain;
+
+            border-radius: 12px;
+        }
+
+
+        .brand-title {
+
+            color:
+                var(--blue-dark);
+
+            font-size: 18px;
+
+            font-weight: 800;
+        }
+
+
+        .brand-subtitle {
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        .user-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+
+        .user-info {
+
+            text-align: right;
+        }
+
+
+        .user-name {
+
+            color: var(--blue-dark);
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        .user-domain {
+
+            color: var(--muted);
+
+            font-size: 11px;
+        }
+
+
+        .user-photo {
+
+            width: 42px;
+
+            height: 42px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            border:
+                2px solid var(--gold);
+        }
+
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+
+            min-height: 460px;
+
+            position: relative;
+
+            display: flex;
+
+            align-items: center;
+
+            color: white;
+
+            background:
+
+                linear-gradient(
+                    120deg,
+                    rgba(4,59,89,0.95),
+                    rgba(7,89,133,0.84)
+                ),
+
+                url("images/gestion-risques-banner.jpg")
+                center / cover no-repeat;
+        }
+
+
+        .hero::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(244,180,0,0.22),
+                    transparent 32%
+                );
+        }
+
+
+        .hero-content {
+
+            position: relative;
+
+            z-index: 2;
+
+            width: min(1100px,92%);
+
+            margin: auto;
+
+            padding: 70px 0;
+        }
+
+
+        .premium-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 8px 15px;
+
+            border-radius: 50px;
+
+            background:
+                rgba(244,180,0,0.15);
+
+            border:
+                1px solid rgba(255,215,90,0.6);
+
+            color:
+                var(--gold-light);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+
+        .hero h1 {
+
+            max-width: 900px;
+
+            font-size:
+                clamp(32px,5vw,58px);
+
+            line-height: 1.15;
+
+            margin-bottom: 18px;
+        }
+
+
+        .hero h1 span {
+
+            color:
+                var(--gold-light);
+        }
+
+
+        .hero-description {
+
+            max-width: 790px;
+
+            color:
+                rgba(255,255,255,0.88);
+
+            font-size: 16px;
+
+            margin-bottom: 30px;
+        }
+
+
+        .hero-actions {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+        }
+
+
+        .btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 13px 20px;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            transition: .25s;
+        }
+
+
+        .btn-primary {
+
+            background:
+                var(--gold);
+
+            color:
+                #18212b;
+        }
+
+
+        .btn-primary:hover {
+
+            background:
+                var(--gold-light);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .btn-light {
+
+            color: white;
+
+            background:
+                rgba(255,255,255,0.12);
+
+            border:
+                1px solid rgba(255,255,255,0.25);
+        }
+
+
+        .btn-light:hover {
+
+            background:
+                rgba(255,255,255,0.20);
+        }
+
+
+        /* =========================================================
+           INFO
+        ========================================================= */
+
+        .course-info {
+
+            max-width: 1100px;
+
+            width: 92%;
+
+            margin:
+                -45px auto 50px;
+
+            position: relative;
+
+            z-index: 5;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4,1fr);
+
+            gap: 15px;
+        }
+
+
+        .info-card {
+
+            background: white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            text-align: center;
+
+            box-shadow:
+                var(--shadow);
+        }
+
+
+        .info-icon {
+
+            width: 45px;
+
+            height: 45px;
+
+            margin:
+                0 auto 10px;
+
+            border-radius: 13px;
+
+            display: grid;
+
+            place-items: center;
+
+            background:
+                #e0f2fe;
+
+            color:
+                var(--blue);
+        }
+
+
+        .info-card strong {
+
+            display: block;
+
+            color:
+                var(--blue-dark);
+
+            font-size: 14px;
+        }
+
+
+        .info-card span {
+
+            color:
+                var(--muted);
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        main {
+
+            width:
+                min(1100px,92%);
+
+            margin:
+                auto;
+        }
+
+
+        .section {
+
+            margin-bottom:
+                48px;
+        }
+
+
+        .section-heading {
+
+            margin-bottom:
+                22px;
+        }
+
+
+        .chapter-number {
+
+            display: inline-block;
+
+            color:
+                var(--blue);
+
+            background:
+                #e0f2fe;
+
+            padding:
+                6px 12px;
+
+            border-radius:
+                50px;
+
+            font-size:
+                11px;
+
+            font-weight:
+                800;
+
+            text-transform:
+                uppercase;
+
+            margin-bottom:
+                10px;
+        }
+
+
+        .section-heading h2 {
+
+            color:
+                var(--blue-dark);
+
+            font-size:
+                clamp(24px,4vw,34px);
+
+            line-height:
+                1.25;
+
+            margin-bottom:
+                8px;
+        }
+
+
+        .section-heading p {
+
+            max-width:
+                800px;
+
+            color:
+                var(--muted);
+        }
+
+
+        /* =========================================================
+           OBJECTIVES
+        ========================================================= */
+
+        .objectives {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap: 15px;
+        }
+
+
+        .objective {
+
+            background:
+                white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                var(--radius);
+
+            padding:
+                20px;
+
+            display:
+                flex;
+
+            gap:
+                15px;
+
+            box-shadow:
+                var(--shadow);
+
+            transition:
+                .25s;
+        }
+
+
+        .objective:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                var(--shadow-hover);
+        }
+
+
+        .objective-icon {
+
+            flex:
+                0 0 42px;
+
+            width:
+                42px;
+
+            height:
+                42px;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            border-radius:
+                12px;
+
+            background:
+                #e0f2fe;
+
+            color:
+                var(--blue);
+        }
+
+
+        .objective strong {
+
+            display:
+                block;
+
+            color:
+                var(--blue-dark);
+
+            margin-bottom:
+                3px;
+        }
+
+
+        .objective p {
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+        }
+
+
+        /* =========================================================
+           LESSON
+        ========================================================= */
+
+        .lesson {
+
+            background:
+                white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                var(--radius);
+
+            padding:
+                30px;
+
+            margin-bottom:
+                22px;
+
+            box-shadow:
+                var(--shadow);
+        }
+
+
+        .lesson-header {
+
+            display:
+                flex;
+
+            gap:
+                14px;
+
+            align-items:
+                flex-start;
+
+            margin-bottom:
+                20px;
+        }
+
+
+        .lesson-number {
+
+            width:
+                42px;
+
+            height:
+                42px;
+
+            flex:
+                0 0 42px;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            background:
+                var(--blue);
+
+            color:
+                white;
+
+            border-radius:
+                12px;
+
+            font-size:
+                15px;
+
+            font-weight:
+                800;
+        }
+
+
+        .lesson h3 {
+
+            color:
+                var(--blue-dark);
+
+            font-size:
+                22px;
+
+            line-height:
+                1.3;
+
+            margin-bottom:
+                4px;
+        }
+
+
+        .lesson-subtitle {
+
+            color:
+                var(--muted);
+
+            font-size:
+                12px;
+        }
+
+
+        .lesson p {
+
+            margin-bottom:
+                15px;
+        }
+
+
+        .lesson ul,
+        .lesson ol {
+
+            padding-left:
+                22px;
+
+            margin-bottom:
+                16px;
+        }
+
+
+        .lesson li {
+
+            margin-bottom:
+                9px;
+        }
+
+
+        /* =========================================================
+           IMAGES
+        ========================================================= */
+
+        .lesson-image {
+
+            width:
+                100%;
+
+            max-height:
+                390px;
+
+            object-fit:
+                cover;
+
+            border-radius:
+                15px;
+
+            margin:
+                22px 0;
+
+            border:
+                1px solid var(--border);
+        }
+
+
+        /* =========================================================
+           BOXES
+        ========================================================= */
+
+        .highlight {
+
+            padding:
+                18px 20px;
+
+            border-left:
+                4px solid var(--gold);
+
+            background:
+                #fff9e8;
+
+            border-radius:
+                10px;
+
+            margin:
+                18px 0;
+        }
+
+
+        .highlight strong {
+
+            color:
+                #8a6100;
+        }
+
+
+        .blue-box {
+
+            padding:
+                20px;
+
+            border-radius:
+                14px;
+
+            background:
+                #eff8ff;
+
+            border:
+                1px solid #bae6fd;
+
+            margin:
+                18px 0;
+        }
+
+
+        .blue-box strong {
+
+            color:
+                var(--blue-dark);
+        }
+
+
+        .danger-box {
+
+            padding:
+                20px;
+
+            border-radius:
+                14px;
+
+            background:
+                #fff1f2;
+
+            border:
+                1px solid #fecdd3;
+
+            margin:
+                18px 0;
+        }
+
+
+        .danger-box strong {
+
+            color:
+                #991b1b;
+        }
+
+
+        .green-box {
+
+            padding:
+                20px;
+
+            border-radius:
+                14px;
+
+            background:
+                #ecfdf5;
+
+            border:
+                1px solid #bbf7d0;
+
+            margin:
+                18px 0;
+        }
+
+
+        .green-box strong {
+
+            color:
+                #166534;
+        }
+
+
+        /* =========================================================
+           CONCEPT GRID
+        ========================================================= */
+
+        .concept-grid {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(3,1fr);
+
+            gap:
+                15px;
+
+            margin:
+                20px 0;
+        }
+
+
+        .concept {
+
+            padding:
+                20px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                15px;
+
+            background:
+                #fbfdff;
+        }
+
+
+        .concept i {
+
+            color:
+                var(--gold);
+
+            font-size:
+                21px;
+
+            margin-bottom:
+                12px;
+        }
+
+
+        .concept h4 {
+
+            color:
+                var(--blue-dark);
+
+            font-size:
+                15px;
+
+            margin-bottom:
+                6px;
+        }
+
+
+        .concept p {
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+
+            margin:
+                0;
+        }
+
+
+        /* =========================================================
+           FORMULA
+        ========================================================= */
+
+        .formula {
+
+            background:
+                var(--blue-dark);
+
+            color:
+                white;
+
+            padding:
+                22px;
+
+            border-radius:
+                15px;
+
+            text-align:
+                center;
+
+            margin:
+                20px 0;
+        }
+
+
+        .formula-title {
+
+            color:
+                var(--gold-light);
+
+            font-size:
+                12px;
+
+            font-weight:
+                700;
+
+            text-transform:
+                uppercase;
+
+            margin-bottom:
+                8px;
+        }
+
+
+        .formula-value {
+
+            font-size:
+                clamp(18px,3vw,27px);
+
+            font-weight:
+                700;
+        }
+
+
+        /* =========================================================
+           RISK SCALE
+        ========================================================= */
+
+        .risk-scale {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(5,1fr);
+
+            gap:
+                8px;
+
+            margin:
+                25px 0;
+        }
+
+
+        .risk-level {
+
+            min-height:
+                90px;
+
+            display:
+                flex;
+
+            flex-direction:
+                column;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            text-align:
+                center;
+
+            padding:
+                10px;
+
+            border-radius:
+                12px;
+
+            border:
+                1px solid var(--border);
+
+            background:
+                #f8fafc;
+        }
+
+
+        .risk-level strong {
+
+            color:
+                var(--blue-dark);
+
+            font-size:
+                13px;
+        }
+
+
+        .risk-level span {
+
+            color:
+                var(--muted);
+
+            font-size:
+                11px;
+        }
+
+
+        .risk-level:nth-child(1) {
+            border-top:
+                4px solid #16a34a;
+        }
+
+        .risk-level:nth-child(2) {
+            border-top:
+                4px solid #84cc16;
+        }
+
+        .risk-level:nth-child(3) {
+            border-top:
+                4px solid #eab308;
+        }
+
+        .risk-level:nth-child(4) {
+            border-top:
+                4px solid #f97316;
+        }
+
+        .risk-level:nth-child(5) {
+            border-top:
+                4px solid #dc2626;
+        }
+
+
+        /* =========================================================
+           TABLE
+        ========================================================= */
+
+        .table-wrapper {
+
+            overflow-x:
+                auto;
+
+            margin:
+                20px 0;
+        }
+
+
+        table {
+
+            width:
+                100%;
+
+            min-width:
+                720px;
+
+            border-collapse:
+                collapse;
+
+            background:
+                white;
+        }
+
+
+        th,
+        td {
+
+            padding:
+                14px;
+
+            border:
+                1px solid var(--border);
+
+            text-align:
+                left;
+
+            font-size:
+                13px;
+        }
+
+
+        th {
+
+            background:
+                var(--blue);
+
+            color:
+                white;
+        }
+
+
+        tr:nth-child(even) td {
+
+            background:
+                #f8fafc;
+        }
+
+
+        /* =========================================================
+           VIDEO
+        ========================================================= */
+
+        .video-card {
+
+            background:
+                #071f2f;
+
+            border-radius:
+                var(--radius);
+
+            overflow:
+                hidden;
+
+            margin:
+                25px 0;
+
+            box-shadow:
+                var(--shadow);
+        }
+
+
+        .video-container {
+
+            width:
+                100%;
+
+            aspect-ratio:
+                16 / 9;
+        }
+
+
+        .video-container iframe {
+
+            width:
+                100%;
+
+            height:
+                100%;
+
+            border:
+                0;
+        }
+
+
+        .video-caption {
+
+            padding:
+                15px 18px;
+
+            color:
+                white;
+
+            font-size:
+                13px;
+        }
+
+
+        .video-caption i {
+
+            color:
+                var(--gold);
+
+            margin-right:
+                6px;
+        }
+
+
+        /* =========================================================
+           VOCABULARY
+        ========================================================= */
+
+        .vocabulary {
+
+            display:
+                grid;
+
+            grid-template-columns:
+                repeat(2,1fr);
+
+            gap:
+                12px;
+        }
+
+
+        .word {
+
+            padding:
+                17px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                13px;
+
+            background:
+                white;
+        }
+
+
+        .word strong {
+
+            color:
+                var(--blue);
+
+            display:
+                block;
+
+            margin-bottom:
+                4px;
+        }
+
+
+        .word span {
+
+            color:
+                var(--muted);
+
+            font-size:
+                13px;
+        }
+
+
+        /* =========================================================
+           QUIZ
+        ========================================================= */
+
+        .quiz {
+
+            background:
+                white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius:
+                var(--radius);
+
+            padding:
+                30px;
+
+            box-shadow:
+                var(--shadow);
+        }
+
+
+        .quiz-intro {
+
+            padding:
+                16px;
+
+            background:
+                #eff8ff;
+
+            border:
+                1px solid #bae6fd;
+
+            border-radius:
+                12px;
+
+            margin-bottom:
+                25px;
+
+            font-size:
+                13px;
+        }
+
+
+        .question {
+
+            padding:
+                20px 0;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+
+        .question:last-of-type {
+
+            border-bottom:
+                none;
+        }
+
+
+        .question-title {
+
+            color:
+                var(--blue-dark);
+
+            font-weight:
+                700;
+
+            margin-bottom:
+                13px;
+        }
+
+
+        .answer {
+
+            display:
+                flex;
+
+            gap:
+                9px;
+
+            align-items:
+                flex-start;
+
+            padding:
+                9px 12px;
+
+            border-radius:
+                9px;
+
+            cursor:
+                pointer;
+
+            font-size:
+                13px;
+
+            transition:
+                .2s;
+        }
+
+
+        .answer:hover {
+
+            background:
+                #f1f5f9;
+        }
+
+
+        .answer input {
+
+            margin-top:
+                5px;
+        }
+
+
+        .quiz-actions {
+
+            margin-top:
+                25px;
+
+            display:
+                flex;
+
+            flex-wrap:
+                wrap;
+
+            gap:
+                12px;
+        }
+
+
+        .quiz-button {
+
+            border:
+                none;
+
+            cursor:
+                pointer;
+
+            padding:
+                14px 22px;
+
+            border-radius:
+                12px;
+
+            background:
+                var(--blue);
+
+            color:
+                white;
+
+            font-family:
+                inherit;
+
+            font-weight:
+                700;
+
+            transition:
+                .25s;
+        }
+
+
+        .quiz-button:hover {
+
+            background:
+                var(--blue-dark);
+
+            transform:
+                translateY(-2px);
+        }
+
+
+        .quiz-result {
+
+            display:
+                none;
+
+            margin-top:
+                20px;
+
+            padding:
+                20px;
+
+            border-radius:
+                13px;
+
+            font-size:
+                14px;
+        }
+
+
+        .quiz-result.success {
+
+            display:
+                block;
+
+            background:
+                #ecfdf5;
+
+            border:
+                1px solid #bbf7d0;
+
+            color:
+                #166534;
+        }
+
+
+        .quiz-result.error {
+
+            display:
+                block;
+
+            background:
+                #fff1f2;
+
+            border:
+                1px solid #fecdd3;
+
+            color:
+                #991b1b;
+        }
+
+
+        /* =========================================================
+           COMPLETION
+        ========================================================= */
+
+        .completion {
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue-dark),
+                    var(--blue)
+                );
+
+            color:
+                white;
+
+            border-radius:
+                22px;
+
+            padding:
+                40px 30px;
+
+            text-align:
+                center;
+
+            margin:
+                50px 0;
+        }
+
+
+        .completion-icon {
+
+            width:
+                70px;
+
+            height:
+                70px;
+
+            margin:
+                0 auto 18px;
+
+            border-radius:
+                50%;
+
+            display:
+                grid;
+
+            place-items:
+                center;
+
+            background:
+                rgba(244,180,0,0.15);
+
+            border:
+                1px solid rgba(255,215,90,0.4);
+
+            color:
+                var(--gold-light);
+
+            font-size:
+                28px;
+        }
+
+
+        .completion h2 {
+
+            font-size:
+                27px;
+
+            margin-bottom:
+                10px;
+        }
+
+
+        .completion p {
+
+            max-width:
+                650px;
+
+            margin:
+                0 auto 22px;
+
+            color:
+                rgba(255,255,255,0.82);
+
+            font-size:
+                14px;
+        }
+
+
+        /* =========================================================
+           DISCLAIMER
+        ========================================================= */
+
+        .disclaimer {
+
+            padding:
+                18px;
+
+            border-radius:
+                13px;
+
+            background:
+                #f8fafc;
+
+            border:
+                1px solid var(--border);
+
+            color:
+                var(--muted);
+
+            font-size:
+                12px;
+
+            margin-bottom:
+                35px;
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+
+            background:
+                #021f31;
+
+            color:
+                rgba(255,255,255,0.75);
+
+            text-align:
+                center;
+
+            padding:
+                30px 20px;
+
+            font-size:
+                12px;
+        }
+
+
+        footer strong {
+
+            color:
+                var(--gold-light);
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media(max-width:850px) {
+
+            .course-info {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+
+            .objectives {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .concept-grid {
+
+                grid-template-columns:
+                    repeat(2,1fr);
+            }
+
+
+            .risk-scale {
+
+                grid-template-columns:
+                    repeat(3,1fr);
+            }
+
+
+            .vocabulary {
+
+                grid-template-columns:
+                    1fr;
+            }
+        }
+
+
+        @media(max-width:600px) {
+
+            .header-inner {
+
+                padding:
+                    9px 13px;
+            }
+
+
+            .brand-title {
+
+                font-size:
+                    15px;
+            }
+
+
+            .brand-subtitle {
+
+                display:
+                    none;
+            }
+
+
+            .user-info {
+
+                display:
+                    none;
+            }
+
+
+            .hero {
+
+                min-height:
+                    510px;
+            }
+
+
+            .hero-content {
+
+                padding:
+                    55px 0;
+            }
+
+
+            .hero h1 {
+
+                font-size:
+                    34px;
+            }
+
+
+            .hero-description {
+
+                font-size:
+                    14px;
+            }
+
+
+            .course-info {
+
+                grid-template-columns:
+                    1fr 1fr;
+
+                margin-top:
+                    -30px;
+            }
+
+
+            .info-card {
+
+                padding:
+                    15px 10px;
+            }
+
+
+            .info-card strong {
+
+                font-size:
+                    12px;
+            }
+
+
+            .lesson {
+
+                padding:
+                    21px;
+            }
+
+
+            .lesson h3 {
+
+                font-size:
+                    19px;
+            }
+
+
+            .concept-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .risk-scale {
+
+                grid-template-columns:
+                    1fr 1fr;
+            }
+
+
+            .quiz {
+
+                padding:
+                    20px;
+            }
+
+
+            .completion {
+
+                padding:
+                    32px 20px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
+    <header>
+
+        <div class="header-inner">
+
+
+            <a
+                href="investissement.html"
+                class="brand">
+
+                <img
+                    src="images/logo.png"
+                    alt="BMJ SERVICE">
+
+                <div>
+
+                    <div class="brand-title">
+                        BMJ SERVICE
+                    </div>
+
+                    <div class="brand-subtitle">
+                        Formation & Investissement
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <div class="user-area">
+
+                <div class="user-info">
+
+                    <div
+                        class="user-name"
+                        id="userName">
+
+                        Apprenant
+
+                    </div>
+
+                    <div class="user-domain">
+
+                        Investissement
+
+                    </div>
+
+                </div>
+
+
+                <img
+                    src="images/user.png"
+                    alt="Utilisateur"
+                    class="user-photo"
+                    id="userPhoto">
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
+
+    <section class="hero">
+
+
+        <div class="hero-content">
+
+
+            <div class="premium-badge">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+                CHAPITRE 5 — GESTION DES RISQUES
+
+            </div>
+
+
+            <h1>
+
+                Protéger son capital avec une
+                <span>gestion intelligente du risque</span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                Apprenez à identifier les différents risques,
+                mesurer votre exposition, diversifier votre portefeuille,
+                calculer la taille d'une position et construire une
+                stratégie d'investissement plus disciplinée.
+
+            </p>
+
+
+            <div class="hero-actions">
+
+
+                <a
+                    href="#cours"
+                    class="btn btn-primary">
+
+                    <i class="fa-solid fa-play"></i>
+
+                    Commencer le cours
+
+                </a>
+
+
+                <a
+                    href="investissement.html"
+                    class="btn btn-light">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Retour au domaine
+
+                </a>
+
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         INFO
+    ========================================================== -->
+
+    <section class="course-info">
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+            </div>
+
+            <strong>
+                Chapitre 7
+            </strong>
+
+            <span>
+                Gestion des risques
+            </span>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+
+                <i class="fa-regular fa-clock"></i>
+
+            </div>
+
+            <strong>
+                60–90 min
+            </strong>
+
+            <span>
+                Durée estimée
+            </span>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+
+                <i class="fa-solid fa-signal"></i>
+
+            </div>
+
+            <strong>
+                Intermédiaire
+            </strong>
+
+            <span>
+                Niveau
+            </span>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+
+                <i class="fa-solid fa-certificate"></i>
+
+            </div>
+
+            <strong>
+                Certificat
+            </strong>
+
+            <span>
+                Progression
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================== -->
+
+    <main id="cours">
+
+
+        <!-- =====================================================
+             OBJECTIFS
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Objectifs
+                </span>
+
+                <h2>
+                    Ce que vous allez apprendre
+                </h2>
+
+                <p>
+                    La gestion des risques est l'une des compétences
+                    fondamentales de l'investisseur. Elle ne permet pas
+                    d'éliminer les pertes, mais aide à contrôler son
+                    exposition.
+                </p>
+
+            </div>
+
+
+            <div class="objectives">
+
+
+                <div class="objective">
+
+                    <div class="objective-icon">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Identifier les risques
+                        </strong>
+
+                        <p>
+                            Comprendre les risques de marché,
+                            de liquidité, de crédit, de change
+                            et de concentration.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="objective">
+
+                    <div class="objective-icon">
+
+                        <i class="fa-solid fa-scale-balanced"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Mesurer son exposition
+                        </strong>
+
+                        <p>
+                            Comprendre combien de capital est exposé
+                            à chaque actif ou catégorie d'actifs.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="objective">
+
+                    <div class="objective-icon">
+
+                        <i class="fa-solid fa-layer-group"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Diversifier
+                        </strong>
+
+                        <p>
+                            Comprendre comment répartir le risque
+                            entre plusieurs investissements.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="objective">
+
+                    <div class="objective-icon">
+
+                        <i class="fa-solid fa-calculator"></i>
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Gérer la taille des positions
+                        </strong>
+
+                        <p>
+                            Éviter qu'une seule décision puisse
+                            compromettre une partie excessive du capital.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 1
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 1
+                </span>
+
+                <h2>
+                    Qu'est-ce que le risque ?
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        01
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Comprendre l'incertitude
+                        </h3>
+
+                        <div class="lesson-subtitle">
+                            Investir signifie accepter une part d'incertitude.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Le risque d'investissement correspond à la possibilité
+                    que le résultat réel soit différent de celui attendu.
+                    Cela peut prendre la forme d'une perte financière,
+                    d'un rendement inférieur aux attentes ou d'une
+                    impossibilité de récupérer rapidement son capital.
+                </p>
+
+
+                <p>
+                    Même un investissement considéré comme relativement
+                    prudent peut comporter certains risques. Le niveau
+                    de risque dépend notamment de l'actif, de l'horizon,
+                    de la diversification et de la situation du marché.
+                </p>
+
+
+                <div class="highlight">
+
+                    <strong>
+                        Principe fondamental :
+                    </strong>
+
+                    le but de la gestion du risque n'est pas de trouver
+                    un investissement « sans risque ». Le but est de
+                    construire une exposition que l'on est capable de
+                    supporter.
+
+                </div>
+
+
+                <img
+                    src="images/gestion-risques.jpg"
+                    alt="Gestion des risques"
+                    class="lesson-image"
+                    onerror="this.onerror=null;this.src='images/investissement-introduction.jpg';">
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 2
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 2
+                </span>
+
+                <h2>
+                    Les principaux types de risques
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        02
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Tous les risques ne sont pas identiques
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="concept-grid">
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        <h4>
+                            Risque de marché
+                        </h4>
+
+                        <p>
+                            Perte potentielle liée à l'évolution défavorable
+                            des prix sur les marchés financiers.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                        <h4>
+                            Risque de liquidité
+                        </h4>
+
+                        <p>
+                            Difficulté à vendre un actif rapidement
+                            à un prix raisonnable.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-building"></i>
+
+                        <h4>
+                            Risque d'entreprise
+                        </h4>
+
+                        <p>
+                            Une entreprise peut rencontrer des difficultés
+                            financières, opérationnelles ou concurrentielles.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+
+                        <h4>
+                            Risque de change
+                        </h4>
+
+                        <p>
+                            Variation du taux de change pouvant modifier
+                            la valeur d'un investissement étranger.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-building-columns"></i>
+
+                        <h4>
+                            Risque de crédit
+                        </h4>
+
+                        <p>
+                            Risque qu'un emprunteur ou un émetteur
+                            ne respecte pas ses obligations.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-users"></i>
+
+                        <h4>
+                            Risque de concentration
+                        </h4>
+
+                        <p>
+                            Exposition excessive à un seul actif,
+                            secteur, pays ou source de revenu.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <img
+                    src="images/types-risques-investissement.jpg"
+                    alt="Types de risques"
+                    class="lesson-image"
+                    onerror="this.onerror=null;this.src='images/investissement-introduction.jpg';">
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 3
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 3
+                </span>
+
+                <h2>
+                    Tolérance et capacité de risque
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        03
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Quel niveau de risque pouvez-vous réellement supporter ?
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Deux personnes peuvent avoir le même objectif
+                    d'investissement tout en ayant une capacité différente
+                    à supporter une perte.
+                </p>
+
+
+                <div class="concept-grid">
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-brain"></i>
+
+                        <h4>
+                            Tolérance psychologique
+                        </h4>
+
+                        <p>
+                            Capacité émotionnelle à supporter les variations
+                            et les périodes de baisse.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-wallet"></i>
+
+                        <h4>
+                            Capacité financière
+                        </h4>
+
+                        <p>
+                            Capacité réelle à supporter une perte sans
+                            compromettre ses besoins essentiels.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-calendar"></i>
+
+                        <h4>
+                            Horizon
+                        </h4>
+
+                        <p>
+                            Durée pendant laquelle l'argent peut rester
+                            investi sans être nécessaire.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="blue-box">
+
+                    <strong>
+                        Exemple :
+                    </strong>
+
+                    une personne qui aura besoin de son capital dans
+                    quelques mois peut avoir une capacité de risque
+                    différente d'une personne dont l'horizon est de
+                    plusieurs années.
+
+                </div>
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 4
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 4
+                </span>
+
+                <h2>
+                    La diversification
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        04
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Ne pas dépendre d'une seule idée
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    La diversification consiste à répartir le capital
+                    entre différents investissements afin de réduire
+                    la dépendance à un seul actif ou facteur de risque.
+                </p>
+
+
+                <div class="concept-grid">
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-layer-group"></i>
+
+                        <h4>
+                            Plusieurs actifs
+                        </h4>
+
+                        <p>
+                            Actions, obligations, liquidités ou autres
+                            catégories selon les objectifs de l'investisseur.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-earth-americas"></i>
+
+                        <h4>
+                            Plusieurs zones
+                        </h4>
+
+                        <p>
+                            Diversification géographique lorsque cela
+                            correspond au portefeuille.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-industry"></i>
+
+                        <h4>
+                            Plusieurs secteurs
+                        </h4>
+
+                        <p>
+                            Éviter une dépendance excessive à une seule
+                            industrie.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="formula">
+
+                    <div class="formula-title">
+                        Allocation
+                    </div>
+
+                    <div class="formula-value">
+
+                        Montant investi dans un actif
+                        ÷
+                        Valeur totale du portefeuille
+                        × 100
+
+                    </div>
+
+                </div>
+
+
+                <div class="highlight">
+
+                    <strong>
+                        Attention :
+                    </strong>
+
+                    posséder plusieurs actifs ne signifie pas
+                    automatiquement être bien diversifié. Deux actifs
+                    différents peuvent réagir de manière similaire
+                    au même événement économique.
+
+                </div>
+
+
+                <img
+                    src="images/diversification-investissement.jpg"
+                    alt="Diversification d'un portefeuille"
+                    class="lesson-image"
+                    onerror="this.onerror=null;this.src='images/investissement-introduction.jpg';">
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 5
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 5
+                </span>
+
+                <h2>
+                    Comprendre le drawdown
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        05
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Mesurer une baisse depuis un sommet
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Le drawdown représente une baisse de la valeur d'un
+                    portefeuille ou d'un actif depuis un sommet précédent
+                    jusqu'à un point plus bas.
+                </p>
+
+
+                <div class="formula">
+
+                    <div class="formula-title">
+                        Formule simplifiée
+                    </div>
+
+                    <div class="formula-value">
+
+                        Drawdown =
+                        (Sommet − Valeur actuelle)
+                        ÷ Sommet × 100
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Par exemple, si un portefeuille atteint 10 000 USD
+                    puis descend à 8 000 USD :
+                </p>
+
+
+                <div class="green-box">
+
+                    <strong>
+                        Drawdown = 20 %
+                    </strong>
+
+                    <br><br>
+
+                    Cela signifie que le portefeuille a perdu 20 %
+                    par rapport à son sommet précédent.
+
+                </div>
+
+
+                <div class="danger-box">
+
+                    <strong>
+                        ⚠️ Une perte nécessite un gain plus important
+                        pour revenir au niveau initial.
+                    </strong>
+
+                    <br><br>
+
+                    Une baisse de 50 % nécessite ensuite une hausse
+                    de 100 % pour revenir au capital de départ.
+
+                </div>
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 6
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 6
+                </span>
+
+                <h2>
+                    Taille de position et risque par opération
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        06
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Ne pas mettre une part excessive du capital
+                            sur une seule décision
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    La taille de position correspond au montant de capital
+                    engagé sur un investissement ou une opération.
+                </p>
+
+
+                <p>
+                    Une approche de gestion du risque consiste à déterminer
+                    à l'avance combien de capital on accepte de risquer
+                    dans un scénario défavorable.
+                </p>
+
+
+                <div class="formula">
+
+                    <div class="formula-title">
+                        Exemple pédagogique
+                    </div>
+
+                    <div class="formula-value">
+
+                        Risque accepté =
+                        Capital total × Pourcentage de risque
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Supposons, uniquement à titre pédagogique, un capital
+                    de 5 000 USD et une limite de risque choisie de 1 %.
+                </p>
+
+
+                <div class="blue-box">
+
+                    <strong>
+                        5 000 × 1 % = 50 USD
+                    </strong>
+
+                    <br><br>
+
+                    L'idée est que le scénario de perte défini ne devrait
+                    pas dépasser ce montant selon les hypothèses utilisées.
+                    Ce n'est pas une recommandation universelle : le niveau
+                    approprié dépend de la situation et de la stratégie
+                    de l'investisseur.
+
+                </div>
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 7
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 7
+                </span>
+
+                <h2>
+                    Le stop-loss et ses limites
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        07
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Un outil, pas une garantie
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Un stop-loss peut être utilisé pour déclencher
+                    automatiquement une instruction lorsque le prix
+                    atteint un niveau défini.
+                </p>
+
+
+                <p>
+                    Il peut faire partie d'une stratégie de gestion du
+                    risque, notamment pour éviter de laisser une perte
+                    évoluer sans limite définie.
+                </p>
+
+
+                <div class="danger-box">
+
+                    <strong>
+                        ⚠️ Important :
+                    </strong>
+
+                    un stop-loss ne garantit pas nécessairement
+                    une exécution exactement au prix défini.
+                    En cas de mouvement rapide ou de manque de liquidité,
+                    le prix d'exécution peut être différent.
+
+                </div>
+
+
+                <img
+                    src="images/stop-loss-investissement.jpg"
+                    alt="Stop loss et gestion du risque"
+                    class="lesson-image"
+                    onerror="this.onerror=null;this.src='images/investissement-introduction.jpg';">
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             VIDEO 1
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Vidéo pédagogique
+                </span>
+
+                <h2>
+                    Les bases de la gestion du risque
+                </h2>
+
+            </div>
+
+
+            <div class="video-card">
+
+                <div class="video-container">
+
+                    <iframe
+                        src="https://www.youtube.com/embed/VIDEO_GESTION_RISQUES_1"
+                        title="Gestion des risques en investissement"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
+
+                <div class="video-caption">
+
+                    <i class="fa-solid fa-circle-play"></i>
+
+                    Comprendre pourquoi la protection du capital
+                    est essentielle dans une stratégie d'investissement.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 8
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 8
+                </span>
+
+                <h2>
+                    Le risque et le rendement
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        08
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Comprendre la relation sans croire aux promesses
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Dans l'investissement, les actifs présentant davantage
+                    d'incertitude peuvent avoir un potentiel de rendement
+                    plus élevé, mais cela ne signifie pas qu'un rendement
+                    élevé est garanti.
+                </p>
+
+
+                <div class="risk-scale">
+
+
+                    <div class="risk-level">
+
+                        <strong>
+                            Faible
+                        </strong>
+
+                        <span>
+                            Incertitude limitée
+                        </span>
+
+                    </div>
+
+
+                    <div class="risk-level">
+
+                        <strong>
+                            Modéré
+                        </strong>
+
+                        <span>
+                            Variations possibles
+                        </span>
+
+                    </div>
+
+
+                    <div class="risk-level">
+
+                        <strong>
+                            Moyen
+                        </strong>
+
+                        <span>
+                            Fluctuations importantes
+                        </span>
+
+                    </div>
+
+
+                    <div class="risk-level">
+
+                        <strong>
+                            Élevé
+                        </strong>
+
+                        <span>
+                            Forte incertitude
+                        </span>
+
+                    </div>
+
+
+                    <div class="risk-level">
+
+                        <strong>
+                            Très élevé
+                        </strong>
+
+                        <span>
+                            Risque de pertes importantes
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="highlight">
+
+                    <strong>
+                        À retenir :
+                    </strong>
+
+                    « rendement élevé » et « rendement garanti »
+                    sont deux notions complètement différentes.
+
+                </div>
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 9
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 9
+                </span>
+
+                <h2>
+                    L'effet de levier
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        09
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Pourquoi le levier augmente le danger
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    L'effet de levier permet de prendre une exposition
+                    supérieure au capital directement engagé.
+                </p>
+
+
+                <p>
+                    Il peut amplifier les gains comme les pertes.
+                    C'est pourquoi un investisseur débutant doit éviter
+                    de l'utiliser sans comprendre précisément les règles,
+                    les coûts et les scénarios de perte.
+                </p>
+
+
+                <div class="danger-box">
+
+                    <strong>
+                        ⚠️ Attention au levier :
+                    </strong>
+
+                    une petite variation défavorable du marché peut
+                    produire une variation beaucoup plus importante
+                    sur le capital exposé.
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Sans levier
+                                </th>
+
+                                <th>
+                                    Avec levier
+                                </th>
+
+                                <th>
+                                    Conséquence
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    Exposition proche du capital disponible
+                                </td>
+
+                                <td>
+                                    Exposition supérieure
+                                </td>
+
+                                <td>
+                                    Risque amplifié
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Variation normale
+                                </td>
+
+                                <td>
+                                    Variation amplifiée
+                                </td>
+
+                                <td>
+                                    Gains et pertes potentiellement plus importants
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Gestion relativement simple
+                                </td>
+
+                                <td>
+                                    Conditions supplémentaires
+                                </td>
+
+                                <td>
+                                    Compréhension indispensable
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 10
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 10
+                </span>
+
+                <h2>
+                    Les risques psychologiques
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        10
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Le comportement peut devenir un risque
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="concept-grid">
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-face-grin-stars"></i>
+
+                        <h4>
+                            Euphorie
+                        </h4>
+
+                        <p>
+                            Acheter parce que tout le monde semble
+                            gagner peut conduire à une mauvaise décision.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-face-frown"></i>
+
+                        <h4>
+                            Panique
+                        </h4>
+
+                        <p>
+                            Vendre précipitamment uniquement sous l'effet
+                            de la peur peut perturber une stratégie.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-arrow-rotate-right"></i>
+
+                        <h4>
+                            Revenge trading
+                        </h4>
+
+                        <p>
+                            Chercher à récupérer immédiatement une perte
+                            peut conduire à prendre davantage de risques.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-bolt"></i>
+
+                        <h4>
+                            FOMO
+                        </h4>
+
+                        <p>
+                            La peur de manquer une opportunité peut
+                            pousser à entrer sans analyse suffisante.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        <h4>
+                            Surconfiance
+                        </h4>
+
+                        <p>
+                            Une série de gains ne signifie pas que
+                            les prochaines décisions seront gagnantes.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-repeat"></i>
+
+                        <h4>
+                            Suractivité
+                        </h4>
+
+                        <p>
+                            Multiplier les transactions augmente parfois
+                            inutilement les coûts et les erreurs.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 11
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 11
+                </span>
+
+                <h2>
+                    Construire un plan de gestion du risque
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        11
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Écrire ses règles avant d'investir
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <ol>
+
+                    <li>
+                        <strong>Définir son objectif.</strong>
+                        Pourquoi investissez-vous ?
+                    </li>
+
+                    <li>
+                        <strong>Définir son horizon.</strong>
+                        Combien de temps le capital peut-il rester investi ?
+                    </li>
+
+                    <li>
+                        <strong>Définir sa capacité de perte.</strong>
+                        Quelle perte pourrait être supportée sans
+                        compromettre les besoins essentiels ?
+                    </li>
+
+                    <li>
+                        <strong>Déterminer son allocation.</strong>
+                        Quelle part du capital sera consacrée à chaque
+                        catégorie d'actifs ?
+                    </li>
+
+                    <li>
+                        <strong>Limiter la concentration.</strong>
+                        Éviter qu'une seule position domine excessivement
+                        le portefeuille.
+                    </li>
+
+                    <li>
+                        <strong>Prévoir les scénarios défavorables.</strong>
+                        Que faire si le marché baisse fortement ?
+                    </li>
+
+                    <li>
+                        <strong>Contrôler régulièrement le portefeuille.</strong>
+                        Vérifier si la répartition correspond toujours
+                        aux objectifs.
+                    </li>
+
+                </ol>
+
+
+                <div class="green-box">
+
+                    <strong>
+                        Une bonne règle :
+                    </strong>
+
+                    ne prenez jamais une décision de risque que vous
+                    ne pourriez pas expliquer clairement avant de
+                    l'exécuter.
+
+                </div>
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 12
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 12
+                </span>
+
+                <h2>
+                    Risque de fraude et arnaques
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        12
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Protéger son argent contre les fausses opportunités
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    La gestion des risques ne concerne pas uniquement
+                    les marchés financiers. Elle concerne également
+                    la sécurité de votre capital.
+                </p>
+
+
+                <ul>
+
+                    <li>
+                        Méfiez-vous des promesses de rendement garanti
+                        exceptionnel.
+                    </li>
+
+                    <li>
+                        Vérifiez l'identité et le statut d'un intermédiaire
+                        avant d'envoyer de l'argent.
+                    </li>
+
+                    <li>
+                        Ne partagez jamais vos codes PIN, mots de passe
+                        ou codes de sécurité.
+                    </li>
+
+                    <li>
+                        Méfiez-vous des personnes qui exigent un paiement
+                        urgent pour « débloquer » des gains.
+                    </li>
+
+                    <li>
+                        Ne confondez pas témoignages sur les réseaux sociaux
+                        et preuve de performance.
+                    </li>
+
+                    <li>
+                        Comprenez précisément comment fonctionne
+                        l'investissement avant de déposer de l'argent.
+                    </li>
+
+                </ul>
+
+
+                <div class="danger-box">
+
+                    <strong>
+                        🚨 Règle d'or :
+                    </strong>
+
+                    plus une opportunité promet des gains élevés,
+                    rapides et sans risque, plus il faut être prudent.
+
+                </div>
+
+
+                <img
+                    src="images/securite-investissement.jpg"
+                    alt="Sécurité financière"
+                    class="lesson-image"
+                    onerror="this.onerror=null;this.src='images/investissement-introduction.jpg';">
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             VIDEO 2
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Vidéo pédagogique
+                </span>
+
+                <h2>
+                    Diversification et protection du capital
+                </h2>
+
+            </div>
+
+
+            <div class="video-card">
+
+
+                <div class="video-container">
+
+                    <iframe
+                        src="https://www.youtube.com/embed/VIDEO_GESTION_RISQUES_2"
+                        title="Diversification et gestion du risque"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
+
+                <div class="video-caption">
+
+                    <i class="fa-solid fa-circle-play"></i>
+
+                    Comprendre comment construire une exposition
+                    cohérente avec son niveau de risque.
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             TABLEAU SYNTHÈSE
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Synthèse
+                </span>
+
+                <h2>
+                    Les outils de gestion du risque
+                </h2>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+
+                <table>
+
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Outil
+                            </th>
+
+                            <th>
+                                Objectif
+                            </th>
+
+                            <th>
+                                Limite
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        <tr>
+
+                            <td>
+                                Diversification
+                            </td>
+
+                            <td>
+                                Réduire le risque de concentration.
+                            </td>
+
+                            <td>
+                                N'élimine pas les pertes de marché.
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Taille de position
+                            </td>
+
+                            <td>
+                                Contrôler l'exposition.
+                            </td>
+
+                            <td>
+                                Ne protège pas contre tous les événements.
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Stop-loss
+                            </td>
+
+                            <td>
+                                Définir un niveau de sortie potentiel.
+                            </td>
+
+                            <td>
+                                Le prix d'exécution n'est pas toujours garanti.
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Allocation
+                            </td>
+
+                            <td>
+                                Répartir le capital.
+                            </td>
+
+                            <td>
+                                Une mauvaise allocation peut rester risquée.
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Trésorerie
+                            </td>
+
+                            <td>
+                                Conserver une partie des ressources disponible.
+                            </td>
+
+                            <td>
+                                Peut réduire le rendement potentiel.
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             VOCABULAIRE
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Vocabulaire
+                </span>
+
+                <h2>
+                    Les mots essentiels
+                </h2>
+
+            </div>
+
+
+            <div class="vocabulary">
+
+
+                <div class="word">
+
+                    <strong>
+                        Risque
+                    </strong>
+
+                    <span>
+                        Possibilité que le résultat réel soit différent
+                        du résultat attendu.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Diversification
+                    </strong>
+
+                    <span>
+                        Répartition du capital entre différents actifs
+                        ou facteurs de risque.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Drawdown
+                    </strong>
+
+                    <span>
+                        Baisse d'une valeur depuis un sommet précédent.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Volatilité
+                    </strong>
+
+                    <span>
+                        Amplitude et variabilité des mouvements de prix.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Liquidité
+                    </strong>
+
+                    <span>
+                        Facilité à acheter ou vendre un actif.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Allocation
+                    </strong>
+
+                    <span>
+                        Répartition du capital entre plusieurs catégories
+                        d'investissement.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Effet de levier
+                    </strong>
+
+                    <span>
+                        Mécanisme permettant d'augmenter l'exposition
+                        par rapport au capital directement engagé.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Stop-loss
+                    </strong>
+
+                    <span>
+                        Instruction pouvant déclencher une sortie lorsque
+                        le prix atteint un niveau déterminé.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Risque de concentration
+                    </strong>
+
+                    <span>
+                        Exposition excessive à une seule source de risque.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Tolérance au risque
+                    </strong>
+
+                    <span>
+                        Niveau de variation ou de perte qu'un investisseur
+                        est psychologiquement capable de supporter.
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             QUIZ
+        ====================================================== -->
+
+        <section class="section">
+
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Évaluation
+                </span>
+
+                <h2>
+                    Quiz — Gestion des risques
+                </h2>
+
+                <p>
+                    Répondez aux 10 questions. Il faut obtenir au moins
+                    70 % pour valider le chapitre.
+                </p>
+
+            </div>
+
+
+            <div class="quiz">
+
+
+                <div class="quiz-intro">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    Le quiz vérifie votre compréhension des principales
+                    notions étudiées dans ce chapitre.
+
+                </div>
+
+
+
+                <!-- Q1 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        1. Quel est l'objectif principal de la gestion
+                        du risque ?
+
+                    </div>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="a">
+
+                        Garantir un bénéfice.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="b">
+
+                        Contrôler et réduire autant que possible
+                        l'exposition aux pertes.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="c">
+
+                        Éliminer complètement la volatilité.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Q2 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        2. Que signifie diversifier un portefeuille ?
+
+                    </div>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="a">
+
+                        Investir tout son capital dans le meilleur actif.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="b">
+
+                        Répartir son capital entre différentes
+                        sources de risque.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="c">
+
+                        Acheter uniquement des actifs très volatils.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Q3 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        3. Qu'est-ce que le drawdown ?
+
+                    </div>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="a">
+
+                        Une hausse depuis le dernier sommet.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="b">
+
+                        Une baisse depuis un sommet précédent.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="c">
+
+                        Le rendement garanti d'un investissement.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Q4 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        4. Quel risque concerne principalement la difficulté
+                        à vendre rapidement un actif ?
+
+                    </div>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="a">
+
+                        Risque de liquidité.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="b">
+
+                        Risque fiscal.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="c">
+
+                        Risque comptable.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Q5 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        5. L'effet de levier peut-il amplifier les pertes ?
+
+                    </div>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="a">
+
+                        Oui.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="b">
+
+                        Non, jamais.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="c">
+
+                        Seulement sur les marchés immobiliers.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Q6 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        6. Un stop-loss garantit-il toujours une exécution
+                        exactement au prix défini ?
+
+                    </div>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="a">
+
+                        Oui.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="b">
+
+                        Non.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="c">
+
+                        Oui, uniquement lorsque le marché baisse.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Q7 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        7. Que représente la taille de position ?
+
+                    </div>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q7"
+                            value="a">
+
+                        Le montant engagé sur un investissement.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q7"
+                            value="b">
+
+                        Le nombre d'années d'expérience.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q7"
+                            value="c">
+
+                        Le nombre de comptes bancaires.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Q8 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        8. Pourquoi le risque de concentration est-il
+                        dangereux ?
+
+                    </div>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q8"
+                            value="a">
+
+                        Parce qu'une seule source de risque peut avoir
+                        un impact important sur le portefeuille.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q8"
+                            value="b">
+
+                        Parce qu'un portefeuille concentré ne peut jamais
+                        gagner.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q8"
+                            value="c">
+
+                        Parce que la diversification garantit toujours
+                        un rendement supérieur.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Q9 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        9. Que doit faire un investisseur face à une
+                        promesse de rendement élevé et garanti ?
+
+                    </div>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q9"
+                            value="a">
+
+                        Investir immédiatement.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q9"
+                            value="b">
+
+                        Être particulièrement prudent et vérifier
+                        les informations.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q9"
+                            value="c">
+
+                        Emprunter pour investir davantage.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Q10 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        10. La diversification élimine-t-elle tous les risques ?
+
+                    </div>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q10"
+                            value="a">
+
+                        Oui.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q10"
+                            value="b">
+
+                        Non, elle peut réduire certains risques
+                        mais ne les élimine pas tous.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q10"
+                            value="c">
+
+                        Oui, si l'on possède plus de dix actifs.
+
+                    </label>
+
+                </div>
+
+
+
+                <div class="quiz-actions">
+
+                    <button
+                        type="button"
+                        class="quiz-button"
+                        id="submitQuiz">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Corriger le quiz
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="quizResult"
+                    class="quiz-result">
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             DISCLAIMER
+        ====================================================== -->
+
+        <div class="disclaimer">
+
+            <strong>
+                ⚠️ Information importante :
+            </strong>
+
+            Ce cours est destiné à l'éducation financière générale.
+            Il ne constitue pas un conseil financier personnalisé,
+            une recommandation d'achat ou de vente, ni une garantie
+            de rendement. Les investissements comportent des risques
+            et peuvent entraîner une perte partielle ou totale du capital.
+
+        </div>
+
+
+
+        <!-- =====================================================
+             COMPLETION
+        ====================================================== -->
+
+        <section class="completion">
+
+
+            <div class="completion-icon">
+
+                <i class="fa-solid fa-shield-halved"></i>
+
+            </div>
+
+
+            <h2>
+
+                Protéger son capital,
+                c'est investir avec discipline.
+
+            </h2>
+
+
+            <p>
+
+                Terminez le quiz avec au moins 70 % pour valider
+                automatiquement ce chapitre et enregistrer votre
+                progression dans la formation Investissement.
+
+            </p>
+
+
+            <a
+                href="#cours"
+                class="btn btn-primary">
+
+                <i class="fa-solid fa-arrow-up"></i>
+
+                Revenir au quiz
+
+            </a>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+
+    <footer>
+
+        <strong>
+            BMJ SERVICE
+        </strong>
+
+        <br>
+
+        Formation • Investissement • Développement des compétences
+
+        <br><br>
+
+        © 2026 BMJ SERVICE — Tous droits réservés.
+
+    </footer>
+
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                /* =================================================
+                   UTILISATEUR
+                ================================================= */
+
+                const currentUser =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "bmj_current_user"
+                        ) || "null"
+                    );
+
+
+                if (!currentUser) {
+
+                    window.location.href =
+                        "connexion.html";
+
+                    return;
+                }
+
+
+                const userName =
+                    currentUser.nom ||
+                    currentUser.name ||
+                    "Apprenant BMJ";
+
+
+                const userPhoto =
+                    currentUser.photo ||
+                    "images/user.png";
+
+
+                const userNameElement =
+                    document.getElementById(
+                        "userName"
+                    );
+
+
+                const userPhotoElement =
+                    document.getElementById(
+                        "userPhoto"
+                    );
+
+
+                if (userNameElement) {
+
+                    userNameElement.textContent =
+                        userName;
+                }
+
+
+                if (userPhotoElement) {
+
+                    userPhotoElement.src =
+                        userPhoto;
+
+
+                    userPhotoElement.onerror =
+                        function () {
+
+                            this.onerror = null;
+
+                            this.src =
+                                "images/user.png";
+                        };
+                }
+
+
+
+                /* =================================================
+                   RÉPONSES
+                ================================================= */
+
+                const correctAnswers = {
+
+                    q1: "b",
+                    q2: "b",
+                    q3: "b",
+                    q4: "a",
+                    q5: "a",
+                    q6: "b",
+                    q7: "a",
+                    q8: "a",
+                    q9: "b",
+                    q10: "b"
+
+                };
+
+
+                const submitButton =
+                    document.getElementById(
+                        "submitQuiz"
+                    );
+
+
+                const result =
+                    document.getElementById(
+                        "quizResult"
+                    );
+
+
+
+                /* =================================================
+                   CORRECTION
+                ================================================= */
+
+                submitButton.addEventListener(
+                    "click",
+                    function () {
+
+
+                        let score = 0;
+
+                        let unanswered = 0;
+
+
+                        Object.keys(
+                            correctAnswers
+                        ).forEach(
+                            function (question) {
+
+
+                                const selected =
+                                    document.querySelector(
+                                        `input[name="${question}"]:checked`
+                                    );
+
+
+                                if (!selected) {
+
+                                    unanswered++;
+
+                                    return;
+                                }
+
+
+                                if (
+                                    selected.value ===
+                                    correctAnswers[question]
+                                ) {
+
+                                    score++;
+                                }
+
+                            }
+                        );
+
+
+                        const total =
+                            Object.keys(
+                                correctAnswers
+                            ).length;
+
+
+                        const percentage =
+                            Math.round(
+                                (
+                                    score /
+                                    total
+                                ) * 100
+                            );
+
+
+                        result.className =
+                            "quiz-result";
+
+
+                        /* =========================================
+                           QUESTIONS NON RÉPONDUES
+                        ========================================= */
+
+                        if (unanswered > 0) {
+
+
+                            result.classList.add(
+                                "error"
+                            );
+
+
+                            result.innerHTML = `
+
+                                <strong>
+
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+
+                                    Quiz incomplet
+
+                                </strong>
+
+                                <br><br>
+
+                                Il reste
+
+                                <strong>
+                                    ${unanswered}
+                                </strong>
+
+                                question(s) sans réponse.
+
+                                <br><br>
+
+                                Répondez à toutes les questions
+                                avant de valider le chapitre.
+
+                            `;
+
+
+                            result.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center"
+                            });
+
+
+                            return;
+                        }
+
+
+
+                        /* =========================================
+                           RÉUSSITE
+                        ========================================= */
+
+                        if (percentage >= 70) {
+
+
+                            result.classList.add(
+                                "success"
+                            );
+
+
+                            result.innerHTML = `
+
+                                <strong>
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                    Félicitations !
+
+                                </strong>
+
+                                <br><br>
+
+                                Score :
+
+                                <strong>
+                                    ${score}/${total}
+                                    (${percentage}%)
+                                </strong>
+
+                                <br><br>
+
+                                Vous avez réussi l'évaluation.
+                                Le chapitre va maintenant être
+                                enregistré dans votre progression.
+
+                            `;
+
+
+                            saveProgression();
+
+                        }
+
+
+                        /* =========================================
+                           ÉCHEC
+                        ========================================= */
+
+                        else {
+
+
+                            result.classList.add(
+                                "error"
+                            );
+
+
+                            result.innerHTML = `
+
+                                <strong>
+
+                                    <i class="fa-solid fa-circle-xmark"></i>
+
+                                    Chapitre non validé
+
+                                </strong>
+
+                                <br><br>
+
+                                Votre score :
+
+                                <strong>
+                                    ${score}/${total}
+                                    (${percentage}%)
+                                </strong>
+
+                                <br><br>
+
+                                Il faut obtenir au moins
+                                <strong>70 %</strong>
+                                pour valider ce chapitre.
+
+                                <br><br>
+
+                                Relisez les notions puis
+                                recommencez le quiz.
+
+                            `;
+
+                        }
+
+
+                        result.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
+
+                    }
+                );
+
+
+
+                /* =================================================
+                   PROGRESSION
+                ================================================= */
+
+                function saveProgression() {
+
+
+                    const userId =
+                        currentUser.id_bmj ||
+                        currentUser.id ||
+                        currentUser.email ||
+                        currentUser.telephone;
+
+
+                    if (!userId) {
+
+                        result.innerHTML += `
+
+                            <br><br>
+
+                            <small>
+
+                                Impossible d'identifier votre compte.
+                                La progression locale n'a pas pu être
+                                enregistrée.
+
+                            </small>
+
+                        `;
+
+                        return;
+                    }
+
+
+                    const storageKey =
+                        "investissement_progression_" +
+                        userId;
+
+
+                    let progression = [];
+
+
+                    try {
+
+                        progression =
+                            JSON.parse(
+                                localStorage.getItem(
+                                    storageKey
+                                ) || "[]"
+                            );
+
+                    }
+
+                    catch (error) {
+
+                        progression = [];
+
+                    }
+
+
+                    /*
+                     * =============================================
+                     * CHAPITRE 5
+                     *
+                     * Introduction             = 0
+                     * Types investissements    = 1
+                     * Marchés financiers       = 2
+                     * Analyse investissement   = 3
+                     * Gestion des risques      = 4
+                     * =============================================
+                     */
+
+                    const chapterIndex = 4;
+
+
+                    if (
+                        !progression.includes(
+                            chapterIndex
+                        )
+                    ) {
+
+                        progression.push(
+                            chapterIndex
+                        );
+
+                    }
+
+
+                    localStorage.setItem(
+                        storageKey,
+                        JSON.stringify(
+                            progression
+                        )
+                    );
+
+
+                    /*
+                     * Le parcours complet
+                     * contient 8 chapitres.
+                     */
+
+                    const totalChapters = 8;
+
+
+                    const progressionPercent =
+                        Math.min(
+                            100,
+                            Math.round(
+                                (
+                                    progression.length /
+                                    totalChapters
+                                ) * 100
+                            )
+                        );
+
+
+                    currentUser.progressionInvestissement =
+                        progressionPercent;
+
+
+                    localStorage.setItem(
+                        "bmj_current_user",
+                        JSON.stringify(
+                            currentUser
+                        )
+                    );
+
+
+                    /*
+                     * Laisser le message
+                     * visible avant la redirection.
+                     */
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "investissement.html";
+
+                        },
+                        1800
+                    );
+
+                }
+
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,4749 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analyse d'investissement | BMJ SERVICE</title>
+
+    <meta name="description"
+        content="Cours BMJ SERVICE : apprendre à analyser un investissement avec l'analyse fondamentale et technique.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        /* =========================================================
+           VARIABLES
+        ========================================================= */
+
+        :root {
+            --blue: #075985;
+            --blue-dark: #043b59;
+            --blue-light: #0ea5e9;
+
+            --gold: #f4b400;
+            --gold-light: #ffd75a;
+
+            --green: #16a34a;
+            --red: #dc2626;
+            --orange: #f97316;
+
+            --white: #ffffff;
+            --black: #111827;
+
+            --text: #243447;
+            --muted: #64748b;
+
+            --background: #f4f7fb;
+            --card: #ffffff;
+            --border: #e2e8f0;
+
+            --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+            --shadow-hover: 0 18px 40px rgba(15, 23, 42, 0.13);
+
+            --radius: 18px;
+        }
+
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid var(--border);
+
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-inner {
+            max-width: 1250px;
+            margin: auto;
+
+            min-height: 72px;
+
+            padding: 10px 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+        }
+
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .brand img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+
+        .brand-text {
+            min-width: 0;
+        }
+
+        .brand-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--blue-dark);
+        }
+
+        .brand-subtitle {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-photo {
+            width: 42px;
+            height: 42px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            border: 2px solid var(--gold);
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--blue-dark);
+        }
+
+        .user-domain {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            min-height: 450px;
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    rgba(4, 59, 89, 0.94),
+                    rgba(7, 89, 133, 0.82)
+                ),
+                url("images/analyse-investissement-banner.jpg")
+                center / cover no-repeat;
+
+            color: white;
+        }
+
+        .hero::after {
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(244, 180, 0, 0.25),
+                    transparent 30%
+                );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+
+            width: min(1100px, 92%);
+
+            margin: auto;
+
+            padding: 70px 0;
+        }
+
+        .premium-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 8px 15px;
+
+            border-radius: 50px;
+
+            background: rgba(244, 180, 0, 0.16);
+            border: 1px solid rgba(255, 215, 90, 0.6);
+
+            color: var(--gold-light);
+
+            font-size: 12px;
+            font-weight: 700;
+
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 5vw, 58px);
+
+            line-height: 1.15;
+
+            max-width: 850px;
+
+            margin-bottom: 18px;
+        }
+
+        .hero h1 span {
+            color: var(--gold-light);
+        }
+
+        .hero-description {
+            max-width: 780px;
+
+            font-size: 16px;
+
+            color: rgba(255,255,255,0.88);
+
+            margin-bottom: 30px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 9px;
+
+            padding: 13px 20px;
+
+            border-radius: 12px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            transition: 0.25s;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: #18212b;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: var(--gold-light);
+        }
+
+        .btn-light {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: white;
+        }
+
+        .btn-light:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+
+        /* =========================================================
+           COURSE INFO
+        ========================================================= */
+
+        .course-info {
+            max-width: 1100px;
+
+            margin: -45px auto 50px;
+
+            position: relative;
+            z-index: 5;
+
+            width: 92%;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 15px;
+        }
+
+        .info-card {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            padding: 20px;
+
+            box-shadow: var(--shadow);
+
+            text-align: center;
+        }
+
+        .info-icon {
+            width: 45px;
+            height: 45px;
+
+            margin: 0 auto 10px;
+
+            border-radius: 13px;
+
+            display: grid;
+            place-items: center;
+
+            background: #e0f2fe;
+
+            color: var(--blue);
+
+            font-size: 18px;
+        }
+
+        .info-card strong {
+            display: block;
+
+            color: var(--blue-dark);
+
+            font-size: 14px;
+        }
+
+        .info-card span {
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           MAIN
+        ========================================================= */
+
+        main {
+            width: min(1100px, 92%);
+
+            margin: auto;
+        }
+
+
+        /* =========================================================
+           SECTION
+        ========================================================= */
+
+        .section {
+            margin-bottom: 45px;
+        }
+
+        .section-heading {
+            margin-bottom: 22px;
+        }
+
+        .chapter-number {
+            display: inline-block;
+
+            color: var(--blue);
+
+            background: #e0f2fe;
+
+            padding: 6px 12px;
+
+            border-radius: 50px;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+
+            margin-bottom: 10px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(24px, 4vw, 34px);
+
+            line-height: 1.25;
+
+            color: var(--blue-dark);
+
+            margin-bottom: 8px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+
+            max-width: 800px;
+        }
+
+
+        /* =========================================================
+           OBJECTIVES
+        ========================================================= */
+
+        .objectives {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+        .objective {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius);
+
+            padding: 20px;
+
+            display: flex;
+
+            gap: 15px;
+
+            box-shadow: var(--shadow);
+
+            transition: 0.25s;
+        }
+
+        .objective:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .objective-icon {
+            flex: 0 0 42px;
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 12px;
+
+            display: grid;
+            place-items: center;
+
+            background: #e0f2fe;
+
+            color: var(--blue);
+
+            font-size: 17px;
+        }
+
+        .objective strong {
+            display: block;
+
+            color: var(--blue-dark);
+
+            margin-bottom: 3px;
+        }
+
+        .objective p {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+
+        /* =========================================================
+           LESSON CARD
+        ========================================================= */
+
+        .lesson {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius);
+
+            padding: 30px;
+
+            margin-bottom: 22px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .lesson-header {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 14px;
+
+            margin-bottom: 20px;
+        }
+
+        .lesson-number {
+            width: 42px;
+            height: 42px;
+
+            flex: 0 0 42px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 12px;
+
+            background: var(--blue);
+
+            color: white;
+
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .lesson h3 {
+            color: var(--blue-dark);
+
+            font-size: 22px;
+
+            line-height: 1.3;
+
+            margin-bottom: 4px;
+        }
+
+        .lesson-subtitle {
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+        .lesson p {
+            margin-bottom: 15px;
+        }
+
+        .lesson ul {
+            padding-left: 20px;
+
+            margin-bottom: 15px;
+        }
+
+        .lesson li {
+            margin-bottom: 8px;
+        }
+
+        .lesson li::marker {
+            color: var(--blue);
+        }
+
+
+        /* =========================================================
+           IMAGE
+        ========================================================= */
+
+        .lesson-image {
+            width: 100%;
+
+            max-height: 390px;
+
+            object-fit: cover;
+
+            border-radius: 15px;
+
+            margin: 22px 0;
+
+            border: 1px solid var(--border);
+        }
+
+
+        /* =========================================================
+           HIGHLIGHT
+        ========================================================= */
+
+        .highlight {
+            padding: 18px 20px;
+
+            border-left: 4px solid var(--gold);
+
+            background: #fff9e8;
+
+            border-radius: 10px;
+
+            margin: 18px 0;
+        }
+
+        .highlight strong {
+            color: #8a6100;
+        }
+
+
+        .blue-box {
+            padding: 20px;
+
+            border-radius: 14px;
+
+            background: #eff8ff;
+
+            border: 1px solid #bae6fd;
+
+            margin: 18px 0;
+        }
+
+        .blue-box strong {
+            color: var(--blue-dark);
+        }
+
+
+        .danger-box {
+            padding: 20px;
+
+            border-radius: 14px;
+
+            background: #fff1f2;
+
+            border: 1px solid #fecdd3;
+
+            margin: 18px 0;
+        }
+
+        .danger-box strong {
+            color: #991b1b;
+        }
+
+
+        /* =========================================================
+           GRID CONCEPTS
+        ========================================================= */
+
+        .concept-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+
+            margin: 20px 0;
+        }
+
+        .concept {
+            padding: 20px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 15px;
+
+            background: #fbfdff;
+        }
+
+        .concept i {
+            color: var(--gold);
+
+            font-size: 21px;
+
+            margin-bottom: 12px;
+        }
+
+        .concept h4 {
+            color: var(--blue-dark);
+
+            font-size: 15px;
+
+            margin-bottom: 6px;
+        }
+
+        .concept p {
+            font-size: 13px;
+
+            color: var(--muted);
+
+            margin: 0;
+        }
+
+
+        /* =========================================================
+           FORMULA
+        ========================================================= */
+
+        .formula {
+            background: var(--blue-dark);
+
+            color: white;
+
+            padding: 22px;
+
+            border-radius: 15px;
+
+            text-align: center;
+
+            margin: 20px 0;
+        }
+
+        .formula-title {
+            color: var(--gold-light);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            margin-bottom: 8px;
+        }
+
+        .formula-value {
+            font-size: clamp(19px, 3vw, 27px);
+
+            font-weight: 700;
+
+            letter-spacing: 0.3px;
+        }
+
+
+        /* =========================================================
+           TABLE
+        ========================================================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+
+            min-width: 700px;
+
+            border-collapse: collapse;
+
+            background: white;
+        }
+
+        th,
+        td {
+            padding: 14px;
+
+            border: 1px solid var(--border);
+
+            text-align: left;
+
+            font-size: 13px;
+        }
+
+        th {
+            background: var(--blue);
+
+            color: white;
+
+            font-weight: 700;
+        }
+
+        tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+
+
+        /* =========================================================
+           INDICATOR CARDS
+        ========================================================= */
+
+        .indicator-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 15px;
+        }
+
+        .indicator {
+            padding: 20px;
+
+            border-radius: 15px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+        }
+
+        .indicator-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            color: var(--blue-dark);
+
+            font-weight: 700;
+
+            margin-bottom: 7px;
+        }
+
+        .indicator-title i {
+            color: var(--gold);
+        }
+
+        .indicator p {
+            font-size: 13px;
+
+            color: var(--muted);
+
+            margin: 0;
+        }
+
+
+        /* =========================================================
+           VIDEO
+        ========================================================= */
+
+        .video-card {
+            background: #071f2f;
+
+            border-radius: var(--radius);
+
+            overflow: hidden;
+
+            margin: 25px 0;
+
+            box-shadow: var(--shadow);
+        }
+
+        .video-container {
+            position: relative;
+
+            width: 100%;
+
+            aspect-ratio: 16 / 9;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+
+            border: 0;
+        }
+
+        .video-caption {
+            padding: 15px 18px;
+
+            color: white;
+
+            font-size: 13px;
+        }
+
+        .video-caption i {
+            color: var(--gold);
+
+            margin-right: 6px;
+        }
+
+
+        /* =========================================================
+           VOCABULARY
+        ========================================================= */
+
+        .vocabulary {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+        }
+
+        .word {
+            padding: 17px;
+
+            border-radius: 13px;
+
+            background: #fff;
+
+            border: 1px solid var(--border);
+        }
+
+        .word strong {
+            color: var(--blue);
+
+            display: block;
+
+            margin-bottom: 4px;
+        }
+
+        .word span {
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+           QUIZ
+        ========================================================= */
+
+        .quiz {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius);
+
+            padding: 30px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-intro {
+            padding: 16px;
+
+            background: #eff8ff;
+
+            border: 1px solid #bae6fd;
+
+            border-radius: 12px;
+
+            margin-bottom: 25px;
+
+            font-size: 13px;
+        }
+
+        .question {
+            padding: 20px 0;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question:last-of-type {
+            border-bottom: none;
+        }
+
+        .question-title {
+            font-weight: 700;
+
+            color: var(--blue-dark);
+
+            margin-bottom: 13px;
+        }
+
+        .answer {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 9px;
+
+            padding: 9px 12px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            transition: 0.2s;
+        }
+
+        .answer:hover {
+            background: #f1f5f9;
+        }
+
+        .answer input {
+            margin-top: 5px;
+        }
+
+        .quiz-actions {
+            margin-top: 25px;
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+        }
+
+        .quiz-button {
+            border: none;
+
+            cursor: pointer;
+
+            padding: 14px 22px;
+
+            border-radius: 12px;
+
+            background: var(--blue);
+
+            color: white;
+
+            font-family: inherit;
+
+            font-weight: 700;
+
+            transition: 0.25s;
+        }
+
+        .quiz-button:hover {
+            background: var(--blue-dark);
+
+            transform: translateY(-2px);
+        }
+
+        .quiz-result {
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 20px;
+
+            border-radius: 13px;
+
+            font-size: 14px;
+        }
+
+        .quiz-result.success {
+            display: block;
+
+            background: #ecfdf5;
+
+            border: 1px solid #bbf7d0;
+
+            color: #166534;
+        }
+
+        .quiz-result.error {
+            display: block;
+
+            background: #fff1f2;
+
+            border: 1px solid #fecdd3;
+
+            color: #991b1b;
+        }
+
+
+        /* =========================================================
+           COMPLETION
+        ========================================================= */
+
+        .completion {
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue-dark),
+                    var(--blue)
+                );
+
+            color: white;
+
+            border-radius: 22px;
+
+            padding: 40px 30px;
+
+            text-align: center;
+
+            margin: 50px 0;
+        }
+
+        .completion-icon {
+            width: 70px;
+            height: 70px;
+
+            margin: 0 auto 18px;
+
+            border-radius: 50%;
+
+            display: grid;
+            place-items: center;
+
+            background: rgba(244, 180, 0, 0.15);
+
+            border: 1px solid rgba(255,215,90,0.4);
+
+            color: var(--gold-light);
+
+            font-size: 28px;
+        }
+
+        .completion h2 {
+            font-size: 27px;
+
+            margin-bottom: 10px;
+        }
+
+        .completion p {
+            max-width: 650px;
+
+            margin: 0 auto 22px;
+
+            color: rgba(255,255,255,0.82);
+
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           DISCLAIMER
+        ========================================================= */
+
+        .disclaimer {
+            padding: 18px;
+
+            border-radius: 13px;
+
+            background: #f8fafc;
+
+            border: 1px solid var(--border);
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-bottom: 35px;
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            background: #021f31;
+
+            color: rgba(255,255,255,0.75);
+
+            text-align: center;
+
+            padding: 30px 20px;
+
+            font-size: 12px;
+        }
+
+        footer strong {
+            color: var(--gold-light);
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 850px) {
+
+            .course-info {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .objectives {
+                grid-template-columns: 1fr;
+            }
+
+            .concept-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .indicator-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .vocabulary {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .header-inner {
+                padding: 9px 13px;
+            }
+
+            .brand-title {
+                font-size: 15px;
+            }
+
+            .brand-subtitle {
+                display: none;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .hero {
+                min-height: 500px;
+            }
+
+            .hero-content {
+                padding: 55px 0;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            .course-info {
+                grid-template-columns: 1fr 1fr;
+
+                margin-top: -30px;
+            }
+
+            .info-card {
+                padding: 15px 10px;
+            }
+
+            .info-card strong {
+                font-size: 12px;
+            }
+
+            .lesson {
+                padding: 21px;
+            }
+
+            .lesson h3 {
+                font-size: 19px;
+            }
+
+            .concept-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .quiz {
+                padding: 20px;
+            }
+
+            .completion {
+                padding: 32px 20px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
+    <header>
+
+        <div class="header-inner">
+
+            <a href="investissement.html" class="brand">
+
+                <img
+                    src="images/logo.png"
+                    alt="BMJ SERVICE">
+
+                <div class="brand-text">
+
+                    <div class="brand-title">
+                        BMJ SERVICE
+                    </div>
+
+                    <div class="brand-subtitle">
+                        Formation & Investissement
+                    </div>
+
+                </div>
+
+            </a>
+
+
+            <div class="user-area">
+
+                <div class="user-info">
+
+                    <div
+                        class="user-name"
+                        id="userName">
+                        Apprenant
+                    </div>
+
+                    <div class="user-domain">
+                        Investissement
+                    </div>
+
+                </div>
+
+                <img
+                    src="images/user.png"
+                    alt="Utilisateur"
+                    class="user-photo"
+                    id="userPhoto">
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="premium-badge">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                CHAPITRE 5 — ANALYSE D'INVESTISSEMENT
+
+            </div>
+
+
+            <h1>
+                Apprendre à
+                <span>analyser un investissement</span>
+                avant de prendre une décision
+            </h1>
+
+
+            <p class="hero-description">
+
+                Découvrez les méthodes utilisées pour étudier une
+                entreprise, une action ou un marché. Apprenez à
+                combiner analyse fondamentale, analyse technique,
+                indicateurs financiers et gestion du risque.
+
+            </p>
+
+
+            <div class="hero-actions">
+
+                <a
+                    href="#cours"
+                    class="btn btn-primary">
+
+                    <i class="fa-solid fa-play"></i>
+
+                    Commencer le cours
+
+                </a>
+
+
+                <a
+                    href="investissement.html"
+                    class="btn btn-light">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Retour au domaine
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         INFORMATIONS
+    ========================================================== -->
+
+    <section class="course-info">
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+
+            <strong>
+                Chapitre 6
+            </strong>
+
+            <span>
+                Analyse
+            </span>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-regular fa-clock"></i>
+            </div>
+
+            <strong>
+                60–90 min
+            </strong>
+
+            <span>
+                Durée estimée
+            </span>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-signal"></i>
+            </div>
+
+            <strong>
+                Intermédiaire
+            </strong>
+
+            <span>
+                Niveau
+            </span>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-certificate"></i>
+            </div>
+
+            <strong>
+                Certificat
+            </strong>
+
+            <span>
+                Progression
+            </span>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================== -->
+
+    <main id="cours">
+
+
+        <!-- =====================================================
+             OBJECTIFS
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Avant de commencer
+                </span>
+
+                <h2>
+                    Objectifs du chapitre
+                </h2>
+
+                <p>
+                    À la fin de cette leçon, vous devez être capable
+                    de comprendre les principales méthodes d'analyse
+                    utilisées dans l'investissement.
+                </p>
+
+            </div>
+
+
+            <div class="objectives">
+
+                <div class="objective">
+
+                    <div class="objective-icon">
+                        <i class="fa-solid fa-building"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Analyser une entreprise
+                        </strong>
+
+                        <p>
+                            Étudier ses revenus, bénéfices, dettes,
+                            marges et perspectives.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="objective">
+
+                    <div class="objective-icon">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Comprendre les graphiques
+                        </strong>
+
+                        <p>
+                            Identifier tendances, supports,
+                            résistances et volumes.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="objective">
+
+                    <div class="objective-icon">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Utiliser les indicateurs
+                        </strong>
+
+                        <p>
+                            Comprendre le PER, la capitalisation,
+                            le rendement et d'autres ratios.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="objective">
+
+                    <div class="objective-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Maîtriser le risque
+                        </strong>
+
+                        <p>
+                            Apprendre pourquoi une bonne analyse
+                            ne supprime jamais le risque.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 1
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 1
+                </span>
+
+                <h2>
+                    Qu'est-ce que l'analyse d'investissement ?
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        01
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Observer avant de décider
+                        </h3>
+
+                        <div class="lesson-subtitle">
+                            Une décision d'investissement ne devrait
+                            pas reposer uniquement sur une intuition.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    L'analyse d'investissement consiste à recueillir,
+                    étudier et interpréter différentes informations
+                    afin de mieux comprendre un actif, une entreprise
+                    ou un marché.
+                </p>
+
+
+                <p>
+                    L'objectif n'est pas de prédire parfaitement
+                    l'avenir. Les marchés restent incertains. L'analyse
+                    sert surtout à construire une décision plus
+                    structurée et à identifier les risques.
+                </p>
+
+
+                <div class="highlight">
+
+                    <strong>
+                        Principe essentiel :
+                    </strong>
+
+                    Une analyse sérieuse ne garantit jamais un gain.
+                    Elle permet surtout de mieux comprendre ce que
+                    l'on achète, pourquoi on l'achète et quels risques
+                    peuvent accompagner cette décision.
+
+                </div>
+
+
+                <img
+                    src="images/analyse-investissement.jpg"
+                    alt="Analyse d'investissement"
+                    class="lesson-image"
+                    onerror="this.onerror=null;this.src='images/investissement-introduction.jpg';">
+
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 2
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 2
+                </span>
+
+                <h2>
+                    Les deux grandes approches
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        02
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Analyse fondamentale et technique
+                        </h3>
+
+                        <div class="lesson-subtitle">
+                            Deux façons différentes d'étudier un marché.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="concept-grid">
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-building-columns"></i>
+
+                        <h4>
+                            Analyse fondamentale
+                        </h4>
+
+                        <p>
+                            Étudie la situation économique et financière
+                            d'une entreprise ou d'un actif afin d'estimer
+                            sa valeur et ses perspectives.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        <h4>
+                            Analyse technique
+                        </h4>
+
+                        <p>
+                            Étudie principalement les prix, les volumes
+                            et les configurations graphiques afin
+                            d'identifier des tendances potentielles.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-scale-balanced"></i>
+
+                        <h4>
+                            Approche combinée
+                        </h4>
+
+                        <p>
+                            Certains investisseurs utilisent les deux
+                            approches pour avoir une vision plus large.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="blue-box">
+
+                    <strong>
+                        À retenir :
+                    </strong>
+
+                    <br>
+
+                    L'analyse fondamentale cherche davantage à
+                    comprendre <strong>ce que vaut</strong> un actif,
+                    tandis que l'analyse technique s'intéresse
+                    davantage à <strong>la dynamique de son prix</strong>.
+                </div>
+
+
+                <img
+                    src="images/analyse-fondamentale-technique.jpg"
+                    alt="Analyse fondamentale et technique"
+                    class="lesson-image"
+                    onerror="this.onerror=null;this.src='images/investissement-introduction.jpg';">
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 3
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 3
+                </span>
+
+                <h2>
+                    L'analyse fondamentale
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        03
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Comprendre la santé financière d'une entreprise
+                        </h3>
+
+                        <div class="lesson-subtitle">
+                            Les chiffres racontent une partie de l'histoire.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    L'analyse fondamentale cherche notamment à
+                    comprendre comment une entreprise gagne de l'argent,
+                    comment elle utilise son capital et si son modèle
+                    économique semble viable.
+                </p>
+
+
+                <h4>
+                    Les éléments importants à observer
+                </h4>
+
+
+                <ul>
+
+                    <li>
+                        <strong>Chiffre d'affaires :</strong>
+                        montant des ventes réalisées.
+                    </li>
+
+                    <li>
+                        <strong>Bénéfice net :</strong>
+                        résultat restant après les charges et impôts
+                        selon les règles comptables applicables.
+                    </li>
+
+                    <li>
+                        <strong>Marge :</strong>
+                        mesure permettant de comparer un résultat
+                        aux revenus.
+                    </li>
+
+                    <li>
+                        <strong>Dette :</strong>
+                        obligations financières de l'entreprise.
+                    </li>
+
+                    <li>
+                        <strong>Trésorerie :</strong>
+                        ressources financières disponibles à court terme.
+                    </li>
+
+                    <li>
+                        <strong>Flux de trésorerie :</strong>
+                        mouvements réels de liquidités générés ou utilisés
+                        par l'activité.
+                    </li>
+
+                </ul>
+
+
+                <div class="formula">
+
+                    <div class="formula-title">
+                        Exemple de marge nette
+                    </div>
+
+                    <div class="formula-value">
+
+                        Marge nette =
+                        Bénéfice net ÷ Chiffre d'affaires × 100
+
+                    </div>
+
+                </div>
+
+
+                <img
+                    src="images/analyse-fondamentale.jpg"
+                    alt="Analyse fondamentale"
+                    class="lesson-image"
+                    onerror="this.onerror=null;this.src='images/investissement-introduction.jpg';">
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 4
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 4
+                </span>
+
+                <h2>
+                    Les principaux ratios financiers
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        04
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Lire les indicateurs sans les interpréter seuls
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Les ratios permettent de comparer certaines
+                    caractéristiques financières. Ils doivent cependant
+                    être analysés dans leur contexte et comparés, lorsque
+                    cela est pertinent, à des entreprises similaires.
+                </p>
+
+
+                <div class="indicator-grid">
+
+
+                    <div class="indicator">
+
+                        <div class="indicator-title">
+
+                            <i class="fa-solid fa-tag"></i>
+
+                            PER
+
+                        </div>
+
+                        <p>
+                            Le ratio cours/bénéfice compare le prix
+                            d'une action à un bénéfice par action.
+                            Un PER élevé ou faible ne constitue pas,
+                            à lui seul, un signal automatique d'achat
+                            ou de vente.
+                        </p>
+
+                    </div>
+
+
+                    <div class="indicator">
+
+                        <div class="indicator-title">
+
+                            <i class="fa-solid fa-coins"></i>
+
+                            Rendement
+
+                        </div>
+
+                        <p>
+                            Peut mesurer, par exemple, les revenus
+                            distribués par rapport au prix d'un actif.
+                            Le rendement dépend de la définition utilisée.
+                        </p>
+
+                    </div>
+
+
+                    <div class="indicator">
+
+                        <div class="indicator-title">
+
+                            <i class="fa-solid fa-building"></i>
+
+                            Capitalisation
+
+                        </div>
+
+                        <p>
+                            Permet d'estimer la valeur de marché des
+                            actions d'une entreprise.
+                        </p>
+
+                    </div>
+
+
+                    <div class="indicator">
+
+                        <div class="indicator-title">
+
+                            <i class="fa-solid fa-scale-balanced"></i>
+
+                            Endettement
+
+                        </div>
+
+                        <p>
+                            Les ratios d'endettement permettent d'étudier
+                            le poids des dettes et la structure financière
+                            d'une entreprise.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="formula">
+
+                    <div class="formula-title">
+                        Capitalisation boursière
+                    </div>
+
+                    <div class="formula-value">
+
+                        Prix par action × Nombre d'actions
+
+                    </div>
+
+                </div>
+
+
+                <div class="highlight">
+
+                    <strong>
+                        Attention :
+                    </strong>
+
+                    un indicateur isolé peut être trompeur. Il faut
+                    regarder plusieurs informations et comprendre
+                    le secteur, le modèle économique et la période étudiée.
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             VIDEO 1
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Vidéo pédagogique
+                </span>
+
+                <h2>
+                    Comprendre l'analyse fondamentale
+                </h2>
+
+            </div>
+
+
+            <div class="video-card">
+
+                <div class="video-container">
+
+                    <iframe
+                        src="https://www.youtube.com/embed/VIDEO_ANALYSE_FONDAMENTALE"
+                        title="Analyse fondamentale"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
+                <div class="video-caption">
+
+                    <i class="fa-solid fa-circle-play"></i>
+
+                    Comprendre comment étudier la situation financière
+                    d'une entreprise.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 5
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 5
+                </span>
+
+                <h2>
+                    Lire un graphique financier
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        05
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Prix, tendance et volume
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Un graphique permet de représenter l'évolution
+                    historique du prix d'un actif. L'analyse graphique
+                    ne permet pas de connaître avec certitude le prix futur,
+                    mais elle peut aider à organiser l'observation du marché.
+                </p>
+
+
+                <img
+                    src="images/graphique-investissement.jpg"
+                    alt="Graphique financier"
+                    class="lesson-image"
+                    onerror="this.onerror=null;this.src='images/investissement-introduction.jpg';">
+
+
+                <div class="concept-grid">
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+
+                        <h4>
+                            Tendance haussière
+                        </h4>
+
+                        <p>
+                            Mouvement général dans lequel les sommets
+                            et creux progressent sur la période observée.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+
+                        <h4>
+                            Tendance baissière
+                        </h4>
+
+                        <p>
+                            Mouvement général dans lequel les sommets
+                            et creux diminuent sur la période observée.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-arrows-left-right"></i>
+
+                        <h4>
+                            Marché en range
+                        </h4>
+
+                        <p>
+                            Le prix évolue pendant un certain temps
+                            dans une zone relativement limitée.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 6
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 6
+                </span>
+
+                <h2>
+                    Supports, résistances et chandeliers
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        06
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Les notions essentielles de l'analyse technique
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <h4>
+                    Support
+                </h4>
+
+                <p>
+                    Une zone de support correspond à un niveau ou une
+                    zone où le prix a historiquement rencontré une
+                    demande importante. Un support n'est cependant
+                    jamais garanti.
+                </p>
+
+
+                <h4>
+                    Résistance
+                </h4>
+
+                <p>
+                    Une résistance correspond à une zone où l'offre a
+                    historiquement été suffisamment importante pour
+                    ralentir ou inverser temporairement le mouvement
+                    des prix.
+                </p>
+
+
+                <h4>
+                    Chandeliers japonais
+                </h4>
+
+                <p>
+                    Un chandelier représente généralement quatre
+                    informations sur une période : ouverture, plus haut,
+                    plus bas et clôture.
+                </p>
+
+
+                <div class="blue-box">
+
+                    <strong>
+                        Important :
+                    </strong>
+
+                    Une figure graphique ne doit pas être considérée
+                    comme une prédiction certaine. Elle doit être
+                    replacée dans son contexte : tendance, volume,
+                    horizon et risque.
+
+                </div>
+
+
+                <img
+                    src="images/chandeliers-boursiers.jpg"
+                    alt="Chandeliers japonais"
+                    class="lesson-image"
+                    onerror="this.onerror=null;this.src='images/investissement-introduction.jpg';">
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 7
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 7
+                </span>
+
+                <h2>
+                    Les indicateurs techniques
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        07
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Moyennes mobiles, RSI et MACD
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="indicator-grid">
+
+
+                    <div class="indicator">
+
+                        <div class="indicator-title">
+
+                            <i class="fa-solid fa-wave-square"></i>
+
+                            Moyenne mobile
+
+                        </div>
+
+                        <p>
+                            Elle lisse les variations du prix afin de
+                            faciliter l'observation d'une tendance sur
+                            une période donnée.
+                        </p>
+
+                    </div>
+
+
+                    <div class="indicator">
+
+                        <div class="indicator-title">
+
+                            <i class="fa-solid fa-gauge-high"></i>
+
+                            RSI
+
+                        </div>
+
+                        <p>
+                            Le Relative Strength Index mesure la vitesse
+                            et l'ampleur de certaines variations de prix.
+                            Il est souvent utilisé pour étudier le momentum.
+                        </p>
+
+                    </div>
+
+
+                    <div class="indicator">
+
+                        <div class="indicator-title">
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+                            MACD
+
+                        </div>
+
+                        <p>
+                            Indicateur basé sur des moyennes mobiles,
+                            souvent utilisé pour observer le momentum
+                            et certains changements de tendance.
+                        </p>
+
+                    </div>
+
+
+                    <div class="indicator">
+
+                        <div class="indicator-title">
+
+                            <i class="fa-solid fa-chart-simple"></i>
+
+                            Volume
+
+                        </div>
+
+                        <p>
+                            Le volume représente la quantité d'activité
+                            enregistrée sur une période selon le marché
+                            et l'instrument étudiés.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="danger-box">
+
+                    <strong>
+                        ⚠️ Ne surchargez pas votre graphique.
+                    </strong>
+
+                    <br>
+
+                    Utiliser dix indicateurs différents ne signifie pas
+                    automatiquement avoir une meilleure analyse.
+                    Il est préférable de comprendre quelques outils
+                    correctement.
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 8
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 8
+                </span>
+
+                <h2>
+                    Liquidité, spread et volatilité
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        08
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Comprendre le comportement d'un marché
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="concept-grid">
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-droplet"></i>
+
+                        <h4>
+                            Liquidité
+                        </h4>
+
+                        <p>
+                            Facilité avec laquelle un actif peut être
+                            acheté ou vendu sans provoquer un mouvement
+                            important du prix.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-arrows-left-right"></i>
+
+                        <h4>
+                            Spread
+                        </h4>
+
+                        <p>
+                            Différence entre le prix auquel le marché
+                            propose d'acheter et celui auquel il propose
+                            de vendre.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-bolt"></i>
+
+                        <h4>
+                            Volatilité
+                        </h4>
+
+                        <p>
+                            Mesure de l'ampleur et de la variabilité
+                            des mouvements de prix.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="formula">
+
+                    <div class="formula-title">
+                        Spread
+                    </div>
+
+                    <div class="formula-value">
+
+                        Prix vendeur − Prix acheteur
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Un marché très liquide possède généralement davantage
+                    d'acheteurs et de vendeurs actifs, ce qui peut faciliter
+                    l'exécution des transactions. Cela ne signifie toutefois
+                    pas qu'il est sans risque.
+                </p>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 9
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 9
+                </span>
+
+                <h2>
+                    Les types d'ordres
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        09
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Comment une transaction peut être exécutée
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Type d'ordre
+                                </th>
+
+                                <th>
+                                    Principe
+                                </th>
+
+                                <th>
+                                    Point d'attention
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td>
+                                    Ordre au marché
+                                </td>
+
+                                <td>
+                                    Cherche principalement une exécution
+                                    immédiate au meilleur prix disponible.
+                                </td>
+
+                                <td>
+                                    Le prix final peut différer du prix
+                                    observé avant l'exécution.
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Ordre à cours limité
+                                </td>
+
+                                <td>
+                                    Définit un prix maximum à l'achat
+                                    ou minimum à la vente.
+                                </td>
+
+                                <td>
+                                    L'ordre peut ne jamais être exécuté.
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Stop
+                                </td>
+
+                                <td>
+                                    Peut déclencher une instruction
+                                    lorsque le prix atteint un niveau
+                                    déterminé.
+                                </td>
+
+                                <td>
+                                    L'exécution et le prix obtenu ne
+                                    sont pas toujours garantis.
+                                </td>
+
+                            </tr>
+
+
+                            <tr>
+
+                                <td>
+                                    Stop-limit
+                                </td>
+
+                                <td>
+                                    Combine un niveau de déclenchement
+                                    et une limite de prix.
+                                </td>
+
+                                <td>
+                                    Peut ne pas être exécuté si le marché
+                                    traverse rapidement la limite.
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 10
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 10
+                </span>
+
+                <h2>
+                    Les facteurs qui influencent les marchés
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        10
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Pourquoi les prix bougent-ils ?
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    Les prix des actifs peuvent évoluer sous l'effet
+                    de nombreux facteurs. Aucun facteur unique ne permet
+                    d'expliquer tous les mouvements de marché.
+                </p>
+
+
+                <div class="concept-grid">
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-percent"></i>
+
+                        <h4>
+                            Taux d'intérêt
+                        </h4>
+
+                        <p>
+                            Les décisions des banques centrales peuvent
+                            influencer le coût du crédit et les valorisations.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-money-bill-trend-up"></i>
+
+                        <h4>
+                            Inflation
+                        </h4>
+
+                        <p>
+                            Une évolution importante des prix peut modifier
+                            le pouvoir d'achat et les anticipations économiques.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-chart-column"></i>
+
+                        <h4>
+                            Résultats d'entreprise
+                        </h4>
+
+                        <p>
+                            Revenus, bénéfices et perspectives peuvent
+                            modifier les attentes des investisseurs.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-earth-africa"></i>
+
+                        <h4>
+                            Événements mondiaux
+                        </h4>
+
+                        <p>
+                            Crises, conflits, élections, catastrophes
+                            ou changements réglementaires peuvent influencer
+                            certains marchés.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-industry"></i>
+
+                        <h4>
+                            Secteur économique
+                        </h4>
+
+                        <p>
+                            Une entreprise peut être fortement influencée
+                            par les conditions de son secteur.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-users"></i>
+
+                        <h4>
+                            Sentiment du marché
+                        </h4>
+
+                        <p>
+                            Les attentes et émotions collectives peuvent
+                            également influencer les prix à court terme.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             VIDEO 2
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Vidéo pédagogique
+                </span>
+
+                <h2>
+                    Comprendre l'analyse technique
+                </h2>
+
+            </div>
+
+
+            <div class="video-card">
+
+                <div class="video-container">
+
+                    <iframe
+                        src="https://www.youtube.com/embed/VIDEO_ANALYSE_TECHNIQUE"
+                        title="Analyse technique"
+                        allowfullscreen>
+                    </iframe>
+
+                </div>
+
+                <div class="video-caption">
+
+                    <i class="fa-solid fa-circle-play"></i>
+
+                    Découvrez les bases de la lecture d'un graphique
+                    et des indicateurs techniques.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 11
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 11
+                </span>
+
+                <h2>
+                    Construire une analyse étape par étape
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        11
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Une méthode simple pour débuter
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <ol>
+
+                    <li>
+                        <strong>Définir l'actif étudié.</strong>
+                        Action, obligation, fonds, devise, matière première,
+                        etc.
+                    </li>
+
+                    <li>
+                        <strong>Comprendre son fonctionnement.</strong>
+                        Que possède-t-on réellement et comment l'actif
+                        génère-t-il éventuellement une valeur ou un revenu ?
+                    </li>
+
+                    <li>
+                        <strong>Étudier les fondamentaux.</strong>
+                        Revenus, bénéfices, dette, trésorerie, croissance,
+                        concurrence et perspectives.
+                    </li>
+
+                    <li>
+                        <strong>Observer la valorisation.</strong>
+                        Comparer certains ratios et indicateurs pertinents.
+                    </li>
+
+                    <li>
+                        <strong>Étudier le marché.</strong>
+                        Tendance, liquidité, volatilité et contexte général.
+                    </li>
+
+                    <li>
+                        <strong>Définir le scénario.</strong>
+                        Que faudrait-il pour que l'investissement se comporte
+                        comme prévu ?
+                    </li>
+
+                    <li>
+                        <strong>Identifier les risques.</strong>
+                        Que se passe-t-il si l'hypothèse est incorrecte ?
+                    </li>
+
+                    <li>
+                        <strong>Déterminer une taille de position raisonnable.</strong>
+                        Ne jamais concentrer une part disproportionnée du
+                        patrimoine sur une seule idée.
+                    </li>
+
+                </ol>
+
+
+                <div class="blue-box">
+
+                    <strong>
+                        Méthode BMJ :
+                    </strong>
+
+                    <br>
+
+                    Comprendre → Analyser → Comparer → Mesurer le risque
+                    → Décider avec discipline.
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 12
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 12
+                </span>
+
+                <h2>
+                    Gestion du risque
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        12
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Une bonne analyse doit intégrer le scénario négatif
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <p>
+                    L'une des erreurs fréquentes consiste à rechercher
+                    uniquement les raisons pour lesquelles un investissement
+                    pourrait monter.
+                </p>
+
+
+                <p>
+                    Un investisseur discipliné cherche également à répondre
+                    à la question :
+                </p>
+
+
+                <div class="formula">
+
+                    <div class="formula-title">
+                        Question essentielle
+                    </div>
+
+                    <div class="formula-value">
+
+                        « Que se passe-t-il si mon hypothèse est fausse ? »
+
+                    </div>
+
+                </div>
+
+
+                <ul>
+
+                    <li>
+                        Diversifier les investissements lorsque cela
+                        correspond à son objectif.
+                    </li>
+
+                    <li>
+                        Éviter de placer l'argent nécessaire aux dépenses
+                        essentielles dans des actifs risqués.
+                    </li>
+
+                    <li>
+                        Comprendre les frais, spreads et éventuelles taxes.
+                    </li>
+
+                    <li>
+                        Éviter l'effet de levier lorsqu'on ne maîtrise
+                        pas parfaitement son fonctionnement.
+                    </li>
+
+                    <li>
+                        Définir à l'avance le niveau de perte que l'on
+                        peut réellement supporter.
+                    </li>
+
+                    <li>
+                        Ne pas investir uniquement parce qu'un actif
+                        a fortement augmenté récemment.
+                    </li>
+
+                </ul>
+
+
+                <div class="danger-box">
+
+                    <strong>
+                        ⚠️ Le stop-loss n'élimine pas le risque.
+                    </strong>
+
+                    <br>
+
+                    Dans certaines conditions de marché, le prix d'exécution
+                    peut être différent du niveau attendu. Aucun outil de
+                    gestion du risque ne garantit l'absence de perte.
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             LEÇON 13
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Leçon 13
+                </span>
+
+                <h2>
+                    Les erreurs fréquentes
+                </h2>
+
+            </div>
+
+
+            <article class="lesson">
+
+                <div class="lesson-header">
+
+                    <div class="lesson-number">
+                        13
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Ce qu'un débutant doit éviter
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="concept-grid">
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-fire"></i>
+
+                        <h4>
+                            Acheter par excitation
+                        </h4>
+
+                        <p>
+                            Entrer sur un actif uniquement parce qu'il
+                            vient fortement de monter.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-face-angry"></i>
+
+                        <h4>
+                            Décider sous l'émotion
+                        </h4>
+
+                        <p>
+                            Laisser la peur ou la cupidité remplacer
+                            une méthode définie à l'avance.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-rotate"></i>
+
+                        <h4>
+                            Surtrader
+                        </h4>
+
+                        <p>
+                            Multiplier les transactions sans raison
+                            clairement définie.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <h4>
+                            Chercher un indicateur magique
+                        </h4>
+
+                        <p>
+                            Aucun indicateur ne peut prévoir tous
+                            les mouvements du marché.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-percent"></i>
+
+                        <h4>
+                            Ignorer les frais
+                        </h4>
+
+                        <p>
+                            Les frais, spreads et autres coûts peuvent
+                            réduire la performance nette.
+                        </p>
+
+                    </div>
+
+
+                    <div class="concept">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        <h4>
+                            Utiliser trop de levier
+                        </h4>
+
+                        <p>
+                            L'effet de levier augmente également
+                            l'exposition aux pertes.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </article>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             COMPARAISON
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Synthèse
+                </span>
+
+                <h2>
+                    Analyse fondamentale ou technique ?
+                </h2>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Élément
+                            </th>
+
+                            <th>
+                                Fondamentale
+                            </th>
+
+                            <th>
+                                Technique
+                            </th>
+
+                            <th>
+                                Utilité
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                Revenus
+                            </td>
+
+                            <td>
+                                ✓
+                            </td>
+
+                            <td>
+                                —
+                            </td>
+
+                            <td>
+                                Santé économique
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Bénéfices
+                            </td>
+
+                            <td>
+                                ✓
+                            </td>
+
+                            <td>
+                                —
+                            </td>
+
+                            <td>
+                                Rentabilité
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Dette
+                            </td>
+
+                            <td>
+                                ✓
+                            </td>
+
+                            <td>
+                                —
+                            </td>
+
+                            <td>
+                                Risque financier
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Prix historique
+                            </td>
+
+                            <td>
+                                Parfois
+                            </td>
+
+                            <td>
+                                ✓
+                            </td>
+
+                            <td>
+                                Étude du comportement
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Volume
+                            </td>
+
+                            <td>
+                                Peu central
+                            </td>
+
+                            <td>
+                                ✓
+                            </td>
+
+                            <td>
+                                Activité du marché
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Tendance
+                            </td>
+
+                            <td>
+                                Indirectement
+                            </td>
+
+                            <td>
+                                ✓
+                            </td>
+
+                            <td>
+                                Dynamique du prix
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             VOCABULAIRE
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Vocabulaire
+                </span>
+
+                <h2>
+                    Les mots à connaître
+                </h2>
+
+            </div>
+
+
+            <div class="vocabulary">
+
+
+                <div class="word">
+
+                    <strong>
+                        Analyse fondamentale
+                    </strong>
+
+                    <span>
+                        Étude de la situation économique et financière
+                        d'un actif ou d'une entreprise.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Analyse technique
+                    </strong>
+
+                    <span>
+                        Étude des prix, volumes et configurations graphiques.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        PER
+                    </strong>
+
+                    <span>
+                        Ratio comparant le cours d'une action à son bénéfice
+                        par action.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Capitalisation
+                    </strong>
+
+                    <span>
+                        Valeur de marché des actions d'une entreprise.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Volatilité
+                    </strong>
+
+                    <span>
+                        Variabilité des mouvements du prix.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Liquidité
+                    </strong>
+
+                    <span>
+                        Facilité à acheter ou vendre un actif.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Spread
+                    </strong>
+
+                    <span>
+                        Écart entre le prix acheteur et le prix vendeur.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Momentum
+                    </strong>
+
+                    <span>
+                        Dynamique ou force d'un mouvement de prix.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Support
+                    </strong>
+
+                    <span>
+                        Zone où la demande a historiquement pu soutenir
+                        le prix.
+                    </span>
+
+                </div>
+
+
+                <div class="word">
+
+                    <strong>
+                        Résistance
+                    </strong>
+
+                    <span>
+                        Zone où l'offre a historiquement pu freiner
+                        le prix.
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             QUIZ
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <span class="chapter-number">
+                    Évaluation
+                </span>
+
+                <h2>
+                    Quiz — Analyse d'investissement
+                </h2>
+
+                <p>
+                    Répondez aux 10 questions. Vous devez obtenir au
+                    minimum 70 % pour valider le chapitre.
+                </p>
+
+            </div>
+
+
+            <div class="quiz">
+
+                <div class="quiz-intro">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    Prenez votre temps. Le but du quiz est de vérifier
+                    votre compréhension des notions et non votre capacité
+                    à mémoriser mécaniquement les réponses.
+
+                </div>
+
+
+                <!-- QUESTION 1 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        1. Quel est principalement l'objectif de l'analyse
+                        fondamentale ?
+
+                    </div>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="a">
+
+                        Prédire avec certitude le prix de demain.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="b">
+
+                        Étudier la situation économique et financière
+                        d'un actif ou d'une entreprise.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="c">
+
+                        Éliminer complètement le risque.
+
+                    </label>
+
+                </div>
+
+
+                <!-- QUESTION 2 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        2. Que représente généralement le PER ?
+
+                    </div>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="a">
+
+                        Un ratio cours/bénéfice.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="b">
+
+                        Le montant total des dettes uniquement.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="c">
+
+                        Le volume de transactions.
+
+                    </label>
+
+                </div>
+
+
+                <!-- QUESTION 3 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        3. Quelle information est particulièrement utilisée
+                        dans l'analyse technique ?
+
+                    </div>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="a">
+
+                        Le graphique du prix.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="b">
+
+                        Le contrat de travail du dirigeant.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="c">
+
+                        L'adresse personnelle des actionnaires.
+
+                    </label>
+
+                </div>
+
+
+                <!-- QUESTION 4 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        4. Que mesure principalement la volatilité ?
+
+                    </div>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="a">
+
+                        La variabilité des mouvements de prix.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="b">
+
+                        Le nombre d'employés d'une entreprise.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="c">
+
+                        Le montant du salaire moyen.
+
+                    </label>
+
+                </div>
+
+
+                <!-- QUESTION 5 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        5. Comment calcule-t-on simplement la capitalisation
+                        boursière ?
+
+                    </div>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="a">
+
+                        Prix par action × nombre d'actions.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="b">
+
+                        Dette ÷ bénéfice.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="c">
+
+                        Volume × salaire.
+
+                    </label>
+
+                </div>
+
+
+                <!-- QUESTION 6 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        6. Quelle caractéristique correspond à un ordre
+                        à cours limité ?
+
+                    </div>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="a">
+
+                        Il garantit toujours une exécution immédiate.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="b">
+
+                        Il définit une limite de prix pour l'exécution.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q6"
+                            value="c">
+
+                        Il supprime les frais.
+
+                    </label>
+
+                </div>
+
+
+                <!-- QUESTION 7 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        7. Qu'est-ce qu'un marché liquide ?
+
+                    </div>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q7"
+                            value="a">
+
+                        Un marché qui ne peut jamais baisser.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q7"
+                            value="b">
+
+                        Un marché où il est généralement plus facile
+                        d'acheter ou vendre sans impact important sur le prix.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q7"
+                            value="c">
+
+                        Un marché sans aucun risque.
+
+                    </label>
+
+                </div>
+
+
+                <!-- QUESTION 8 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        8. Quel est le rôle principal d'un indice boursier ?
+
+                    </div>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q8"
+                            value="a">
+
+                        Représenter l'évolution d'un ensemble d'actifs
+                        ou d'un segment de marché.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q8"
+                            value="b">
+
+                        Garantir le rendement d'un portefeuille.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q8"
+                            value="c">
+
+                        Empêcher les marchés de baisser.
+
+                    </label>
+
+                </div>
+
+
+                <!-- QUESTION 9 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        9. Une bonne analyse doit-elle considérer
+                        uniquement les scénarios positifs ?
+
+                    </div>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q9"
+                            value="a">
+
+                        Oui.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q9"
+                            value="b">
+
+                        Non, elle doit également considérer les risques
+                        et les scénarios défavorables.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q9"
+                            value="c">
+
+                        Seulement lorsqu'on investit en actions.
+
+                    </label>
+
+                </div>
+
+
+                <!-- QUESTION 10 -->
+
+                <div class="question">
+
+                    <div class="question-title">
+
+                        10. Pourquoi la diversification peut-elle être utile ?
+
+                    </div>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q10"
+                            value="a">
+
+                        Elle garantit un bénéfice.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q10"
+                            value="b">
+
+                        Elle peut réduire le risque lié à la concentration
+                        sur un seul actif.
+
+                    </label>
+
+                    <label class="answer">
+                        <input
+                            type="radio"
+                            name="q10"
+                            value="c">
+
+                        Elle empêche toutes les pertes.
+
+                    </label>
+
+                </div>
+
+
+                <div class="quiz-actions">
+
+                    <button
+                        type="button"
+                        class="quiz-button"
+                        id="submitQuiz">
+
+                        <i class="fa-solid fa-check"></i>
+
+                        Corriger le quiz
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="quizResult"
+                    class="quiz-result">
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             DISCLAIMER
+        ====================================================== -->
+
+        <div class="disclaimer">
+
+            <strong>
+                ⚠️ Information importante :
+            </strong>
+
+            Ce cours est fourni à des fins éducatives.
+            Il ne constitue pas un conseil financier personnalisé,
+            une recommandation d'achat ou de vente, ni une garantie
+            de rendement. Les investissements peuvent entraîner une
+            perte partielle ou totale du capital. Avant toute décision,
+            il est important de tenir compte de sa situation personnelle,
+            de son horizon et de sa tolérance au risque.
+
+        </div>
+
+
+
+        <!-- =====================================================
+             COMPLETION
+        ====================================================== -->
+
+        <section class="completion">
+
+            <div class="completion-icon">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+
+            <h2>
+                Prêt à tester vos connaissances ?
+            </h2>
+
+
+            <p>
+                Terminez le quiz avec au moins 70 % pour valider
+                automatiquement ce chapitre et enregistrer votre
+                progression dans votre formation Investissement.
+            </p>
+
+
+            <a
+                href="#cours"
+                class="btn btn-primary">
+
+                <i class="fa-solid fa-arrow-up"></i>
+
+                Revenir au quiz
+
+            </a>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+
+    <footer>
+
+        <strong>
+            BMJ SERVICE
+        </strong>
+
+        <br>
+
+        Formation • Investissement • Développement des compétences
+
+        <br><br>
+
+        © 2026 BMJ SERVICE — Tous droits réservés.
+
+    </footer>
+
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+
+                /* =================================================
+                   UTILISATEUR
+                ================================================= */
+
+                const currentUser =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "bmj_current_user"
+                        ) || "null"
+                    );
+
+
+                if (!currentUser) {
+
+                    window.location.href =
+                        "connexion.html";
+
+                    return;
+
+                }
+
+
+                const userName =
+                    currentUser.nom ||
+                    currentUser.name ||
+                    "Apprenant BMJ";
+
+
+                const userPhoto =
+                    currentUser.photo ||
+                    "images/user.png";
+
+
+                const userNameElement =
+                    document.getElementById(
+                        "userName"
+                    );
+
+
+                const userPhotoElement =
+                    document.getElementById(
+                        "userPhoto"
+                    );
+
+
+                if (userNameElement) {
+
+                    userNameElement.textContent =
+                        userName;
+
+                }
+
+
+                if (userPhotoElement) {
+
+                    userPhotoElement.src =
+                        userPhoto;
+
+                    userPhotoElement.onerror =
+                        function () {
+
+                            this.onerror = null;
+
+                            this.src =
+                                "images/user.png";
+
+                        };
+
+                }
+
+
+
+                /* =================================================
+                   QUIZ
+                ================================================= */
+
+                const correctAnswers = {
+
+                    q1: "b",
+                    q2: "a",
+                    q3: "a",
+                    q4: "a",
+                    q5: "a",
+                    q6: "b",
+                    q7: "b",
+                    q8: "a",
+                    q9: "b",
+                    q10: "b"
+
+                };
+
+
+                const submitButton =
+                    document.getElementById(
+                        "submitQuiz"
+                    );
+
+
+                const result =
+                    document.getElementById(
+                        "quizResult"
+                    );
+
+
+                submitButton.addEventListener(
+                    "click",
+                    function () {
+
+
+                        let score = 0;
+
+                        let unanswered = 0;
+
+
+                        Object.keys(
+                            correctAnswers
+                        ).forEach(
+                            function (question) {
+
+
+                                const selected =
+                                    document.querySelector(
+                                        `input[name="${question}"]:checked`
+                                    );
+
+
+                                if (!selected) {
+
+                                    unanswered++;
+
+                                    return;
+
+                                }
+
+
+                                if (
+                                    selected.value ===
+                                    correctAnswers[question]
+                                ) {
+
+                                    score++;
+
+                                }
+
+                            }
+                        );
+
+
+                        const total =
+                            Object.keys(
+                                correctAnswers
+                            ).length;
+
+
+                        const percentage =
+                            Math.round(
+                                (score / total) * 100
+                            );
+
+
+                        result.className =
+                            "quiz-result";
+
+
+                        if (unanswered > 0) {
+
+                            result.classList.add(
+                                "error"
+                            );
+
+
+                            result.innerHTML = `
+
+                                <strong>
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    Quiz incomplet
+                                </strong>
+
+                                <br><br>
+
+                                Vous avez encore
+                                <strong>${unanswered}</strong>
+                                question(s) sans réponse.
+
+                                <br>
+
+                                Répondez à toutes les questions
+                                avant de valider le chapitre.
+
+                            `;
+
+
+                            result.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center"
+                            });
+
+
+                            return;
+
+                        }
+
+
+
+                        /* =============================================
+                           SUCCÈS
+                        ============================================= */
+
+                        if (percentage >= 70) {
+
+
+                            result.classList.add(
+                                "success"
+                            );
+
+
+                            result.innerHTML = `
+
+                                <strong>
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    Félicitations !
+                                </strong>
+
+                                <br><br>
+
+                                Votre score est de
+                                <strong>${score}/${total}
+                                (${percentage}%)</strong>.
+
+                                <br><br>
+
+                                Vous avez réussi le quiz.
+                                Le chapitre va être enregistré
+                                dans votre progression.
+
+                            `;
+
+
+                            saveProgression();
+
+
+                        }
+
+                        else {
+
+
+                            result.classList.add(
+                                "error"
+                            );
+
+
+                            result.innerHTML = `
+
+                                <strong>
+                                    <i class="fa-solid fa-circle-xmark"></i>
+                                    Quiz non validé
+                                </strong>
+
+                                <br><br>
+
+                                Votre score est de
+                                <strong>${score}/${total}
+                                (${percentage}%)</strong>.
+
+                                <br><br>
+
+                                Il faut obtenir au moins
+                                <strong>70 %</strong>
+                                pour valider ce chapitre.
+
+                                <br><br>
+
+                                Relisez les notions puis
+                                recommencez le quiz.
+
+                            `;
+
+                        }
+
+
+                        result.scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
+
+
+                    }
+                );
+
+
+
+                /* =================================================
+                   SAUVEGARDE PROGRESSION
+                ================================================= */
+
+                function saveProgression() {
+
+
+                    const userId =
+                        currentUser.id_bmj ||
+                        currentUser.id ||
+                        currentUser.email ||
+                        currentUser.telephone;
+
+
+                    if (!userId) {
+
+                        result.innerHTML += `
+
+                            <br><br>
+
+                            <small>
+                                Impossible d'identifier votre compte.
+                                Votre progression n'a pas pu être
+                                synchronisée.
+                            </small>
+
+                        `;
+
+                        return;
+
+                    }
+
+
+                    const storageKey =
+                        "investissement_progression_" +
+                        userId;
+
+
+                    let progression = [];
+
+
+                    try {
+
+                        progression =
+                            JSON.parse(
+                                localStorage.getItem(
+                                    storageKey
+                                ) || "[]"
+                            );
+
+                    }
+                    catch (error) {
+
+                        progression = [];
+
+                    }
+
+
+                    /*
+                     * Chapitre 4
+                     * Index = 3
+                     *
+                     * Introduction = 0
+                     * Types investissements = 1
+                     * Marchés financiers = 2
+                     * Analyse investissement = 3
+                     */
+
+                    const chapterIndex = 3;
+
+
+                    if (
+                        !progression.includes(
+                            chapterIndex
+                        )
+                    ) {
+
+                        progression.push(
+                            chapterIndex
+                        );
+
+                    }
+
+
+                    localStorage.setItem(
+                        storageKey,
+                        JSON.stringify(
+                            progression
+                        )
+                    );
+
+
+                    /*
+                     * Le parcours contient 8 chapitres.
+                     */
+
+                    const totalChapters = 8;
+
+
+                    const progressionPercent =
+                        Math.min(
+                            100,
+                            Math.round(
+                                (
+                                    progression.length /
+                                    totalChapters
+                                ) * 100
+                            )
+                        );
+
+
+                    currentUser.progressionInvestissement =
+                        progressionPercent;
+
+
+                    localStorage.setItem(
+                        "bmj_current_user",
+                        JSON.stringify(
+                            currentUser
+                        )
+                    );
+
+
+                    /*
+                     * Petit délai afin que
+                     * l'utilisateur voie
+                     * le message de réussite.
+                     */
+
+                    setTimeout(
+                        function () {
+
+                            window.location.href =
+                                "investissement.html";
+
+                        },
+                        1800
+                    );
+
+                }
+
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
