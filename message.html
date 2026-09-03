@@ -1690,24 +1690,29 @@ button {
 ></div>
 
 <script>
-
 /* ============================================================
    BMJ SERVICE
    MESSAGERIE UTILISATEUR
-   VERSION 100% COMPATIBLE AVEC LE NOUVEAU SERVER
+   VERSION CORRIGÉE — NOUVEAU SERVER
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", function () {
 
     /* ============================================================
-       CONFIGURATION
+       1. CONFIGURATION
     ============================================================ */
 
-    const API_URL = "https://back-end-h602.onrender.com";
+    const API_URL =
+        "https://back-end-h602.onrender.com";
 
-    const API_TIMEOUT = 10000;
+    const API_TIMEOUT = 15000;
     const REFRESH_INTERVAL = 30000;
-    const RETRY_DELAY = 1000;
+    const RETRY_DELAY = 1200;
+
+
+    /* ============================================================
+       2. ÉTAT
+    ============================================================ */
 
     let currentUser = null;
     let currentMessages = [];
@@ -1719,24 +1724,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ============================================================
-       ELEMENTS
+       3. ELEMENTS
     ============================================================ */
 
     const messagesContainer =
-        document.getElementById("messagesContainer");
+        document.getElementById(
+            "messagesContainer"
+        );
 
     const messageDetail =
-        document.getElementById("messageDetail");
+        document.getElementById(
+            "messageDetail"
+        );
 
     const messageCount =
-        document.getElementById("messageCount");
+        document.getElementById(
+            "messageCount"
+        );
 
     const toastContainer =
-        document.getElementById("toastContainer");
+        document.getElementById(
+            "toastContainer"
+        );
 
 
     /* ============================================================
-       UTILISATEUR CONNECTÉ
+       4. UTILISATEUR CONNECTÉ
     ============================================================ */
 
     function getCurrentUser() {
@@ -1750,7 +1763,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         for (const key of keys) {
 
-            const raw = localStorage.getItem(key);
+            const raw =
+                localStorage.getItem(key);
 
             if (!raw) {
                 continue;
@@ -1758,7 +1772,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             try {
 
-                const user = JSON.parse(raw);
+                const user =
+                    JSON.parse(raw);
 
                 if (
                     user &&
@@ -1771,10 +1786,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     return user;
                 }
 
-            } catch (error) {
+            }
+            catch (error) {
 
                 console.warn(
-                    "Session utilisateur invalide :",
+                    "Session invalide :",
                     error
                 );
             }
@@ -1790,12 +1806,16 @@ document.addEventListener("DOMContentLoaded", function () {
             return null;
         }
 
-        const id = Number(
-            currentUser.id ||
-            currentUser.user_id
-        );
+        const id =
+            Number(
+                currentUser.id ||
+                currentUser.user_id
+            );
 
-        if (!Number.isInteger(id) || id <= 0) {
+        if (
+            !Number.isInteger(id) ||
+            id <= 0
+        ) {
             return null;
         }
 
@@ -1804,12 +1824,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ============================================================
-       CACHE LOCAL
+       5. CACHE LOCAL
     ============================================================ */
 
     function getCacheKey() {
 
-        const userId = getUserId();
+        const userId =
+            getUserId();
 
         return userId
             ? `bmj_messages_cache_${userId}`
@@ -1819,7 +1840,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function getCacheTimeKey() {
 
-        const userId = getUserId();
+        const userId =
+            getUserId();
 
         return userId
             ? `bmj_messages_cache_time_${userId}`
@@ -1829,7 +1851,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function getCachedMessages() {
 
-        const key = getCacheKey();
+        const key =
+            getCacheKey();
 
         if (!key) {
             return [];
@@ -1851,7 +1874,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? data
                 : [];
 
-        } catch {
+        }
+        catch (error) {
+
+            console.warn(
+                "Cache messages invalide :",
+                error
+            );
 
             return [];
         }
@@ -1860,21 +1889,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function saveCache(messages) {
 
-        const key = getCacheKey();
-        const timeKey = getCacheTimeKey();
+        const key =
+            getCacheKey();
 
-        if (!key || !timeKey) {
+        const timeKey =
+            getCacheTimeKey();
+
+        if (
+            !key ||
+            !timeKey
+        ) {
             return;
         }
 
         try {
 
+            const safeMessages =
+                Array.isArray(messages)
+                    ? messages
+                    : [];
+
             localStorage.setItem(
                 key,
                 JSON.stringify(
-                    Array.isArray(messages)
-                        ? messages
-                        : []
+                    safeMessages
                 )
             );
 
@@ -1883,55 +1921,117 @@ document.addEventListener("DOMContentLoaded", function () {
                 String(Date.now())
             );
 
-        } catch (error) {
+        }
+        catch (error) {
 
             console.warn(
-                "Impossible de sauvegarder la messagerie :",
+                "Impossible de sauvegarder le cache :",
                 error
             );
         }
     }
 
 
+    function clearMessageCache() {
+
+        const key =
+            getCacheKey();
+
+        const timeKey =
+            getCacheTimeKey();
+
+        if (key) {
+            localStorage.removeItem(key);
+        }
+
+        if (timeKey) {
+            localStorage.removeItem(timeKey);
+        }
+    }
+
+
     /* ============================================================
-       SÉCURITÉ HTML
+       6. SÉCURITÉ HTML
     ============================================================ */
 
     function escapeHTML(value) {
 
-        return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+        return String(
+            value ?? ""
+        )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
     }
 
 
-    function truncate(value, length = 100) {
+    function truncate(
+        value,
+        length = 110
+    ) {
 
         const text =
-            String(value || "");
+            String(
+                value || ""
+            );
 
         return text.length > length
-            ? text.substring(0, length) + "..."
+            ? text.substring(
+                0,
+                length
+            ) + "..."
             : text;
     }
 
 
     /* ============================================================
-       DATES
+       7. DATES
     ============================================================ */
+
+    function parseDate(value) {
+
+        if (!value) {
+            return null;
+        }
+
+        const date =
+            new Date(value);
+
+        if (
+            Number.isNaN(
+                date.getTime()
+            )
+        ) {
+            return null;
+        }
+
+        return date;
+    }
+
 
     function formatDate(value) {
 
-        if (!value) {
-            return "";
-        }
+        const date =
+            parseDate(value);
 
-        const date = new Date(value);
-
-        if (isNaN(date.getTime())) {
+        if (!date) {
             return "";
         }
 
@@ -1948,17 +2048,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function formatDateTime(value) {
 
-        if (!value) {
+        const date =
+            parseDate(value);
+
+        if (!date) {
             return "";
         }
 
-        const date = new Date(value);
-
-        if (isNaN(date.getTime())) {
-            return "";
-        }
-
-        return date.toLocaleDateString(
+        return date.toLocaleString(
             "fr-FR",
             {
                 day: "2-digit",
@@ -1972,72 +2069,272 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ============================================================
-       TYPES NOUVEAUX
+       8. NORMALISATION DES MESSAGES
     ============================================================ */
+
+    function normalizeMessage(message) {
+
+        if (
+            !message ||
+            typeof message !== "object"
+        ) {
+            return null;
+        }
+
+        const normalized = {
+            ...message
+        };
+
+
+        /* ID */
+
+        normalized.id =
+            Number(message.id);
+
+
+        /* TYPE */
+
+        normalized.type =
+            getMessageType(message);
+
+
+        /* STATUT */
+
+        normalized.status =
+            normalizeStatus(
+                message.status
+            );
+
+
+        /* PRIORITÉ */
+
+        normalized.priority =
+            normalizePriority(
+                message.priority
+            );
+
+
+        /* AUDIENCE */
+
+        normalized.audience =
+            normalizeAudience(
+                message.audience
+            );
+
+
+        /* DATE */
+
+        normalized.created_at =
+            message.created_at ||
+            message.createdAt ||
+            message.date ||
+            null;
+
+
+        return normalized;
+    }
+
 
     function getMessageType(message) {
 
         const type =
             String(
-                message?.type || ""
-            ).toLowerCase();
+                message?.type ||
+                message?.message_type ||
+                ""
+            )
+                .toLowerCase()
+                .trim();
 
-        if (type === "announcement") {
-            return "announcement";
-        }
-
-        if (type === "individual") {
-            return "individual";
-        }
-
-        if (type === "reply") {
-            return "reply";
-        }
 
         /*
-         * Compatibilité lecture uniquement avec
-         * d'éventuelles anciennes données.
+         * NOUVEAU SERVER
          */
 
-        if (type === "official") {
-            return "announcement";
+        if (
+            type === "official" ||
+            type === "announcement" ||
+            type === "annonce"
+        ) {
+            return "official";
         }
 
-        if (type === "user") {
+
+        if (
+            type === "user_reply" ||
+            type === "reply" ||
+            type === "reponse"
+        ) {
+            return "user_reply";
+        }
+
+
+        if (
+            type === "user" ||
+            type === "individual" ||
+            type === "personal"
+        ) {
+            return "user";
+        }
+
+
+        /*
+         * Si le serveur indique
+         * l'audience officielle.
+         */
+
+        if (
+            message?.audience === "all" ||
+            message?.audience === "standard" ||
+            message?.audience === "premium"
+        ) {
+            return "official";
+        }
+
+
+        return "user";
+    }
+
+
+    function normalizeStatus(status) {
+
+        const value =
+            String(
+                status || ""
+            )
+                .toLowerCase()
+                .trim();
+
+
+        if (
+            value === "read" ||
+            value === "lu"
+        ) {
+            return "read";
+        }
+
+
+        if (
+            value === "replied" ||
+            value === "answered"
+        ) {
+            return "replied";
+        }
+
+
+        return "unread";
+    }
+
+
+    function normalizePriority(priority) {
+
+        const value =
+            String(
+                priority || "normal"
+            )
+                .toLowerCase()
+                .trim();
+
+
+        if (
+            value === "high" ||
+            value === "haute" ||
+            value === "urgent"
+        ) {
+            return "high";
+        }
+
+
+        if (
+            value === "low" ||
+            value === "basse"
+        ) {
+            return "low";
+        }
+
+
+        return "normal";
+    }
+
+
+    function normalizeAudience(audience) {
+
+        const value =
+            String(
+                audience || ""
+            )
+                .toLowerCase()
+                .trim();
+
+
+        if (
+            value === "all" ||
+            value === "tous" ||
+            value === "everyone"
+        ) {
+            return "all";
+        }
+
+
+        if (
+            value === "premium"
+        ) {
+            return "premium";
+        }
+
+
+        if (
+            value === "standard"
+        ) {
+            return "standard";
+        }
+
+
+        if (
+            value === "individual" ||
+            value === "user"
+        ) {
             return "individual";
         }
 
-        if (type === "user_reply") {
-            return "reply";
+
+        if (
+            value === "admin"
+        ) {
+            return "admin";
         }
 
-        return type;
+
+        return value;
     }
 
 
-    function isAnnouncement(message) {
+    function isOfficial(message) {
 
-        return getMessageType(message) ===
-            "announcement";
+        return getMessageType(
+            message
+        ) === "official";
     }
 
 
-    function isIndividual(message) {
+    function isUserMessage(message) {
 
-        return getMessageType(message) ===
-            "individual";
+        return getMessageType(
+            message
+        ) === "user";
     }
 
 
-    function isReply(message) {
+    function isUserReply(message) {
 
-        return getMessageType(message) ===
-            "reply";
+        return getMessageType(
+            message
+        ) === "user_reply";
     }
 
 
     /* ============================================================
-       PEUT RÉPONDRE ?
+       9. RÉPONSE AUTORISÉE
     ============================================================ */
 
     function canReply(message) {
@@ -2046,58 +2343,85 @@ document.addEventListener("DOMContentLoaded", function () {
             return false;
         }
 
+
         /*
-         * Une annonce ne reçoit pas de réponse.
+         * Les annonces officielles
+         * ne reçoivent pas de réponse.
          */
 
-        if (isAnnouncement(message)) {
+        if (
+            isOfficial(message)
+        ) {
             return false;
         }
 
+
         /*
-         * Une réponse ne reçoit pas de réponse.
+         * Une réponse déjà envoyée
+         * ne reçoit pas de réponse.
          */
 
-        if (isReply(message)) {
+        if (
+            isUserReply(message)
+        ) {
             return false;
         }
 
+
         /*
-         * Seuls les messages personnels
-         * envoyés par l'administration
-         * peuvent recevoir une réponse.
+         * Seul un message personnel
+         * venant de l'administration
+         * peut recevoir une réponse.
          */
 
-        if (!isIndividual(message)) {
+        if (
+            !isUserMessage(message)
+        ) {
             return false;
         }
+
 
         if (
             message.sender_type &&
             String(
                 message.sender_type
-            ).toLowerCase() !== "admin"
+            )
+                .toLowerCase() !==
+            "admin"
         ) {
 
             return false;
         }
 
+
         /*
-         * Sécurité supplémentaire :
-         * le message doit appartenir
-         * à l'utilisateur connecté.
+         * Vérification destinataire.
          */
 
-        return Number(
-            message.recipient_user_id
-        ) === Number(
-            getUserId()
+        const userId =
+            getUserId();
+
+
+        const recipientId =
+            Number(
+                message.recipient_user_id ||
+                message.user_id ||
+                message.recipient_id
+            );
+
+
+        return (
+            Number.isInteger(
+                recipientId
+            ) &&
+            recipientId ===
+            Number(userId)
         );
     }
 
 
     /* ============================================================
-       API
+       10. API REQUEST
     ============================================================ */
 
     async function apiRequest(
@@ -2111,9 +2435,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const timer =
             setTimeout(
-                () => controller.abort(),
+                () => {
+                    controller.abort();
+                },
                 timeout
             );
+
 
         try {
 
@@ -2123,7 +2450,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     {
                         ...options,
 
-                        cache: "no-store",
+                        cache:
+                            "no-store",
 
                         signal:
                             controller.signal,
@@ -2140,15 +2468,19 @@ document.addEventListener("DOMContentLoaded", function () {
                                 }
                                 : {}),
 
-                            ...(options.headers || {})
+                            ...(options.headers ||
+                                {})
                         }
                     }
                 );
 
+
             const text =
                 await response.text();
 
+
             let data = null;
+
 
             if (text) {
 
@@ -2157,13 +2489,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     data =
                         JSON.parse(text);
 
-                } catch {
+                }
+                catch (error) {
+
+                    console.error(
+                        "Réponse serveur invalide :",
+                        text
+                    );
 
                     throw new Error(
                         "Réponse invalide du serveur."
                     );
                 }
             }
+
 
             if (!response.ok) {
 
@@ -2174,12 +2513,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
             }
 
+
             return data;
 
-        } catch (error) {
+
+        }
+        catch (error) {
 
             if (
-                error.name ===
+                error?.name ===
                 "AbortError"
             ) {
 
@@ -2190,43 +2532,77 @@ document.addEventListener("DOMContentLoaded", function () {
 
             throw error;
 
-        } finally {
 
-            clearTimeout(timer);
+        }
+        finally {
+
+            clearTimeout(
+                timer
+            );
         }
     }
 
 
     /* ============================================================
-       TOAST
+       11. TOAST
     ============================================================ */
 
-    function showToast(title, text) {
+    function showToast(
+        title,
+        text,
+        type = "info"
+    ) {
 
         if (!toastContainer) {
             return;
         }
 
+
         const toast =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         toast.className =
-            "bmj-toast";
+            `bmj-toast bmj-toast-${type}`;
+
+
+        let icon =
+            "fa-envelope";
+
+
+        if (type === "success") {
+            icon =
+                "fa-circle-check";
+        }
+
+        if (type === "error") {
+            icon =
+                "fa-circle-exclamation";
+        }
+
 
         toast.innerHTML = `
 
             <div class="bmj-toast-icon">
-                <i class="fa-solid fa-envelope"></i>
+
+                <i class="fa-solid ${icon}"></i>
+
             </div>
 
             <div class="bmj-toast-text">
 
                 <span class="bmj-toast-title">
+
                     ${escapeHTML(title)}
+
                 </span>
 
                 <span class="bmj-toast-message">
+
                     ${escapeHTML(text)}
+
                 </span>
 
             </div>
@@ -2236,35 +2612,51 @@ document.addEventListener("DOMContentLoaded", function () {
                 class="bmj-toast-close"
                 aria-label="Fermer"
             >
+
                 <i class="fa-solid fa-xmark"></i>
+
             </button>
 
         `;
 
-        toastContainer.appendChild(toast);
+
+        toastContainer.appendChild(
+            toast
+        );
+
 
         const close =
             toast.querySelector(
                 ".bmj-toast-close"
             );
 
+
         if (close) {
-            close.onclick =
-                () => toast.remove();
+
+            close.addEventListener(
+                "click",
+                () => toast.remove()
+            );
         }
 
-        setTimeout(() => {
 
-            if (toast.parentNode) {
-                toast.remove();
-            }
+        setTimeout(
+            () => {
 
-        }, 5000);
+                if (
+                    toast.isConnected
+                ) {
+                    toast.remove();
+                }
+
+            },
+            5000
+        );
     }
 
 
     /* ============================================================
-       COMPTEUR
+       12. COMPTEUR
     ============================================================ */
 
     function updateCount() {
@@ -2273,51 +2665,87 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+
         const unread =
             currentMessages.filter(
                 message =>
-                    String(
-                        message.status || ""
-                    ).toLowerCase() !== "read"
+                    normalizeStatus(
+                        message.status
+                    ) !== "read"
             ).length;
 
+
+        /*
+         * Le compteur affiche le nombre
+         * de messages non lus.
+         */
+
         messageCount.textContent =
-            unread > 0
-                ? unread
-                : currentMessages.length;
+            unread;
+
 
         messageCount.classList.toggle(
             "has-unread",
             unread > 0
         );
+
+
+        /*
+         * Compatibilité avec d'autres
+         * éléments de compteur éventuels.
+         */
+
+        document
+            .querySelectorAll(
+                "[data-message-unread-count]"
+            )
+            .forEach(element => {
+
+                element.textContent =
+                    unread;
+
+                element.classList.toggle(
+                    "has-unread",
+                    unread > 0
+                );
+            });
     }
 
 
     /* ============================================================
-       RENDU DES MESSAGES
+       13. RENDRE LA LISTE
     ============================================================ */
 
-    function renderMessages(messages) {
+    function renderMessages(
+        messages = currentMessages
+    ) {
 
         if (!messagesContainer) {
             return;
         }
+
 
         const list =
             Array.isArray(messages)
                 ? messages
                 : [];
 
+
         updateCount();
 
-        if (list.length === 0) {
+
+        if (
+            list.length === 0
+        ) {
 
             messagesContainer.innerHTML = `
 
                 <div class="messages-empty">
 
                     <div class="messages-empty-icon">
+
                         <i class="fa-regular fa-envelope-open"></i>
+
                     </div>
 
                     <h3>
@@ -2325,7 +2753,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     </h3>
 
                     <p>
-                        Votre boîte de réception est actuellement vide.
+                        Votre boîte de réception
+                        est actuellement vide.
                     </p>
 
                 </div>
@@ -2335,21 +2764,37 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+
         const sorted =
             [...list].sort(
-                (a, b) =>
-                    new Date(
-                        b.created_at || 0
-                    ) -
-                    new Date(
-                        a.created_at || 0
-                    )
+                (a, b) => {
+
+                    const dateA =
+                        parseDate(
+                            a.created_at
+                        );
+
+                    const dateB =
+                        parseDate(
+                            b.created_at
+                        );
+
+
+                    return (
+                        (dateB?.getTime() || 0) -
+                        (dateA?.getTime() || 0)
+                    );
+                }
             );
+
 
         messagesContainer.innerHTML =
             sorted
-                .map(createMessageItem)
+                .map(
+                    createMessageItem
+                )
                 .join("");
+
 
         messagesContainer
             .querySelectorAll(
@@ -2359,124 +2804,201 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 item.addEventListener(
                     "click",
-                    function () {
+                    () => {
 
-                        openMessage(
+                        const id =
                             Number(
                                 item.dataset.messageId
-                            )
-                        );
+                            );
 
+                        if (
+                            Number.isInteger(
+                                id
+                            )
+                        ) {
+
+                            openMessage(
+                                id
+                            );
+                        }
                     }
                 );
-
             });
     }
 
 
     /* ============================================================
-       CARTE MESSAGE
+       14. CARTE MESSAGE
     ============================================================ */
 
-    function createMessageItem(message) {
+    function createMessageItem(
+        message
+    ) {
 
         const type =
-            getMessageType(message);
+            getMessageType(
+                message
+            );
+
 
         const unread =
-            String(
-                message.status || ""
-            ).toLowerCase() !== "read";
+            normalizeStatus(
+                message.status
+            ) !== "read";
+
 
         let icon =
             "fa-envelope";
 
+
         let title =
-            "Message";
+            "BMJ SERVICE";
+
 
         let badge = `
-            <span class="message-badge badge-personal">
+
+            <span class="
+                message-badge
+                badge-personal
+            ">
+
                 <i class="fa-solid fa-envelope"></i>
+
                 Message
+
             </span>
+
         `;
+
 
         /*
          * MESSAGE PERSONNEL
          */
 
-        if (type === "individual") {
+        if (
+            type === "user"
+        ) {
 
             icon =
                 "fa-user";
 
+
             title =
+                message.sender_name ||
                 "BMJ SERVICE";
 
+
             badge = `
-                <span class="message-badge badge-personal">
+
+                <span class="
+                    message-badge
+                    badge-personal
+                ">
+
                     <i class="fa-solid fa-user"></i>
+
                     Personnel
+
                 </span>
+
             `;
         }
+
 
         /*
          * ANNONCE
          */
 
-        else if (type === "announcement") {
+        else if (
+            type === "official"
+        ) {
 
             icon =
                 "fa-bullhorn";
 
+
             title =
                 "BMJ SERVICE";
 
+
             badge = `
-                <span class="message-badge badge-official">
+
+                <span class="
+                    message-badge
+                    badge-official
+                ">
+
                     <i class="fa-solid fa-bullhorn"></i>
+
                     Annonce
+
                 </span>
+
             `;
         }
 
+
         /*
-         * RÉPONSE UTILISATEUR
+         * RÉPONSE
          */
 
-        else if (type === "reply") {
+        else if (
+            type === "user_reply"
+        ) {
 
             icon =
                 "fa-reply";
 
+
             title =
                 "Votre réponse";
 
+
             badge = `
-                <span class="message-badge badge-reply">
+
+                <span
+                    class="
+                        message-badge
+                        badge-reply
+                    "
+                >
+
                     <i class="fa-solid fa-reply"></i>
+
                     Votre réponse
+
                 </span>
+
             `;
         }
+
 
         return `
 
             <article
+
                 class="
                     message-item
                     ${unread ? "unread" : ""}
-                    ${type === "announcement" ? "official" : ""}
+                    ${type === "official"
+                        ? "official"
+                        : ""}
                 "
-                data-message-id="${Number(message.id)}"
+
+                data-message-id="${escapeHTML(
+                    message.id
+                )}"
             >
 
                 <div class="message-avatar">
 
-                    <i class="fa-solid ${icon}"></i>
+                    <i class="
+                        fa-solid
+                        ${icon}
+                    "></i>
 
                 </div>
+
 
                 <div class="message-info">
 
@@ -2484,19 +3006,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         <div class="message-item-title">
 
-                            ${escapeHTML(title)}
+                            ${escapeHTML(
+                                title
+                            )}
 
                         </div>
 
+
                         <div class="message-date">
 
-                            ${formatDate(
-                                message.created_at
+                            ${escapeHTML(
+                                formatDate(
+                                    message.created_at
+                                )
                             )}
 
                         </div>
 
                     </div>
+
 
                     <div class="message-subject">
 
@@ -2507,27 +3035,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     </div>
 
+
                     <div class="message-preview">
 
                         ${escapeHTML(
                             truncate(
-                                message.content || "",
+                                message.content ||
+                                "",
                                 105
                             )
                         )}
 
                     </div>
 
+
                     <div class="message-badges">
 
                         ${badge}
 
+
                         ${
                             unread
                                 ? `
-                                    <span class="message-badge badge-new">
+
+                                    <span
+                                        class="
+                                            message-badge
+                                            badge-new
+                                        "
+                                    >
+
                                         Nouveau
+
                                     </span>
+
                                 `
                                 : ""
                         }
@@ -2543,7 +3084,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ============================================================
-       OUVRIR MESSAGE
+       15. OUVRIR UN MESSAGE
     ============================================================ */
 
     function openMessage(id) {
@@ -2555,25 +3096,36 @@ document.addEventListener("DOMContentLoaded", function () {
                     Number(id)
             );
 
+
         if (!message) {
 
             showToast(
                 "Message introuvable",
-                "Actualisez votre messagerie."
+                "Actualisez votre messagerie.",
+                "error"
             );
 
             return;
         }
 
+
         currentMessage =
             message;
 
-        renderDetail(message);
+
+        renderMessageDetail(
+            message
+        );
+
+
+        /*
+         * Marquage automatique comme lu.
+         */
 
         if (
-            String(
-                message.status || ""
-            ).toLowerCase() !== "read"
+            normalizeStatus(
+                message.status
+            ) !== "read"
         ) {
 
             markAsRead(
@@ -2584,37 +3136,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ============================================================
-       DETAIL
+       16. DÉTAIL DU MESSAGE
     ============================================================ */
 
-    function renderDetail(message) {
+    function renderMessageDetail(
+        message
+    ) {
 
         if (!messageDetail) {
             return;
         }
 
-        const type =
-            getMessageType(message);
 
-        const announcement =
-            type === "announcement";
+        const type =
+            getMessageType(
+                message
+            );
+
+
+        const official =
+            type === "official";
+
 
         const reply =
-            type === "reply";
+            type === "user_reply";
+
 
         const replyAllowed =
-            canReply(message);
+            canReply(
+                message
+            );
+
 
         let icon =
             "fa-envelope";
 
+
         let label =
             "Message";
+
 
         let typeClass =
             "individual";
 
-        if (type === "individual") {
+
+        if (
+            type === "user"
+        ) {
 
             icon =
                 "fa-user";
@@ -2626,7 +3194,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 "individual";
         }
 
-        if (announcement) {
+
+        if (
+            official
+        ) {
 
             icon =
                 "fa-bullhorn";
@@ -2638,7 +3209,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 "official";
         }
 
-        if (reply) {
+
+        if (
+            reply
+        ) {
 
             icon =
                 "fa-reply";
@@ -2650,18 +3224,33 @@ document.addEventListener("DOMContentLoaded", function () {
                 "reply";
         }
 
-        const priority =
-            String(
-                message.priority ||
-                "normal"
-            ).toLowerCase();
 
-        const priorityLabel =
-            priority === "urgent"
-                ? "Urgent"
-                : priority === "important"
-                    ? "Important"
-                    : "Normal";
+        const priority =
+            normalizePriority(
+                message.priority
+            );
+
+
+        let priorityLabel =
+            "Normale";
+
+
+        if (
+            priority === "high"
+        ) {
+
+            priorityLabel =
+                "Haute";
+        }
+
+
+        if (
+            priority === "low"
+        ) {
+
+            priorityLabel =
+                "Basse";
+        }
 
 
         messageDetail.innerHTML = `
@@ -2681,14 +3270,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 </button>
 
 
-                <div class="
-                    detail-type
-                    ${typeClass}
-                ">
+                <div
+                    class="
+                        detail-type
+                        ${escapeHTML(
+                            typeClass
+                        )}
+                    "
+                >
 
-                    <i class="fa-solid ${icon}"></i>
+                    <i
+                        class="
+                            fa-solid
+                            ${icon}
+                        "
+                    ></i>
 
-                    ${escapeHTML(label)}
+                    ${escapeHTML(
+                        label
+                    )}
 
                 </div>
 
@@ -2707,10 +3307,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <span>
 
-                        <i class="fa-regular fa-calendar"></i>
+                        <i
+                            class="
+                                fa-regular
+                                fa-calendar
+                            "
+                        ></i>
 
-                        ${formatDateTime(
-                            message.created_at
+                        ${escapeHTML(
+                            formatDateTime(
+                                message.created_at
+                            )
                         )}
 
                     </span>
@@ -2719,7 +3326,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     <span
                         class="
                             priority
-                            ${escapeHTML(priority)}
+                            ${escapeHTML(
+                                priority
+                            )}
                         "
                     >
 
@@ -2739,19 +3348,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="message-content">
 
                     ${escapeHTML(
-                        message.content || ""
+                        message.content ||
+                        ""
                     )}
 
                 </div>
 
 
                 ${
-                    announcement
+                    official
                         ? `
 
                             <div class="no-reply">
 
-                                <i class="fa-solid fa-bullhorn"></i>
+                                <i
+                                    class="
+                                        fa-solid
+                                        fa-bullhorn
+                                    "
+                                ></i>
 
                                 <div>
 
@@ -2779,7 +3394,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             <div class="no-reply">
 
-                                <i class="fa-solid fa-circle-check"></i>
+                                <i
+                                    class="
+                                        fa-solid
+                                        fa-circle-check
+                                    "
+                                ></i>
 
                                 <div>
 
@@ -2799,6 +3419,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         `
                         : ""
                 }
+
 
             </div>
 
@@ -2822,10 +3443,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 "detailBack"
             );
 
+
         if (back) {
 
-            back.onclick =
-                closeDetail;
+            back.addEventListener(
+                "click",
+                closeDetail
+            );
         }
 
 
@@ -2833,6 +3457,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById(
                 "messageReplyForm"
             );
+
 
         if (form) {
 
@@ -2845,7 +3470,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ============================================================
-       ZONE DE RÉPONSE
+       17. ZONE DE RÉPONSE
     ============================================================ */
 
     function createReplyBox() {
@@ -2856,9 +3481,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 <div class="reply-info">
 
-                    <i class="fa-solid fa-reply"></i>
+                    <i
+                        class="
+                            fa-solid
+                            fa-reply
+                        "
+                    ></i>
 
-                    Vous pouvez répondre à ce message
+                    Vous pouvez répondre
+                    à ce message
 
                 </div>
 
@@ -2876,16 +3507,32 @@ document.addEventListener("DOMContentLoaded", function () {
                     ></textarea>
 
 
-                    <button
-                        type="submit"
-                        class="reply-btn"
-                        id="replyButton"
-                        title="Envoyer"
-                    >
+                    <div class="reply-footer">
 
-                        <i class="fa-solid fa-paper-plane"></i>
+                        <span
+                            id="replyCounter"
+                        >
+                            0 / 5000
+                        </span>
 
-                    </button>
+
+                        <button
+                            type="submit"
+                            class="reply-btn"
+                            id="replyButton"
+                            title="Envoyer la réponse"
+                        >
+
+                            <i
+                                class="
+                                    fa-solid
+                                    fa-paper-plane
+                                "
+                            ></i>
+
+                        </button>
+
+                    </div>
 
                 </form>
 
@@ -2896,30 +3543,94 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ============================================================
-       ENVOYER UNE RÉPONSE
-       NOUVELLE ROUTE :
-       POST /api/utilisateurs/:id/messages/:messageId/reply
+       18. COMPTEUR RÉPONSE
     ============================================================ */
 
-    async function sendReply(event) {
+    function initReplyCounter() {
+
+        const textarea =
+            document.getElementById(
+                "replyContent"
+            );
+
+
+        const counter =
+            document.getElementById(
+                "replyCounter"
+            );
+
+
+        if (
+            !textarea ||
+            !counter
+        ) {
+            return;
+        }
+
+
+        const update =
+            () => {
+
+                counter.textContent =
+                    `${textarea.value.length} / 5000`;
+            };
+
+
+        textarea.addEventListener(
+            "input",
+            update
+        );
+
+
+        update();
+    }
+
+
+    /* ============================================================
+       19. ENVOYER UNE RÉPONSE
+       
+       POST
+       /api/utilisateurs/:userId/messages/:messageId/reply
+    ============================================================ */
+
+    async function sendReply(
+        event
+    ) {
 
         event.preventDefault();
+
 
         if (!currentMessage) {
             return;
         }
 
+
         const userId =
             getUserId();
 
+
+        if (!userId) {
+
+            showToast(
+                "Connexion requise",
+                "Votre session utilisateur est introuvable.",
+                "error"
+            );
+
+            return;
+        }
+
+
         if (
-            !userId ||
-            !canReply(currentMessage)
+            !canReply(
+                currentMessage
+            )
         ) {
 
             showToast(
                 "Réponse impossible",
-                "Vous ne pouvez pas répondre à ce message."
+                "Vous ne pouvez pas répondre à ce message.",
+                "error"
             );
 
             return;
@@ -2931,10 +3642,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 "replyContent"
             );
 
+
         const button =
             document.getElementById(
                 "replyButton"
             );
+
 
         if (!textarea) {
             return;
@@ -2944,7 +3657,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const content =
             textarea.value.trim();
 
+
         if (!content) {
+
+            showToast(
+                "Réponse vide",
+                "Veuillez écrire votre réponse.",
+                "error"
+            );
 
             textarea.focus();
 
@@ -2952,11 +3672,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (content.length > 5000) {
+        if (
+            content.length > 5000
+        ) {
 
             showToast(
                 "Réponse trop longue",
-                "Maximum 5000 caractères."
+                "Votre réponse ne peut pas dépasser 5000 caractères.",
+                "error"
             );
 
             return;
@@ -2965,10 +3688,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (button) {
 
-            button.disabled = true;
+            button.disabled =
+                true;
 
             button.innerHTML = `
-                <i class="fa-solid fa-spinner fa-spin"></i>
+
+                <i
+                    class="
+                        fa-solid
+                        fa-spinner
+                        fa-spin
+                    "
+                ></i>
+
             `;
         }
 
@@ -2985,7 +3717,8 @@ document.addEventListener("DOMContentLoaded", function () {
                     )}/reply`,
 
                     {
-                        method: "POST",
+                        method:
+                            "POST",
 
                         body:
                             JSON.stringify({
@@ -2995,42 +3728,108 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-            if (!data?.success) {
+            if (
+                data &&
+                data.success === false
+            ) {
 
                 throw new Error(
-                    data?.message ||
-                    "Impossible d'envoyer votre réponse."
+                    data.message ||
+                    "Impossible d'envoyer la réponse."
                 );
+            }
+
+
+            /*
+             * Si le serveur retourne
+             * directement le message créé,
+             * on peut l'ajouter au cache.
+             */
+
+            const createdMessage =
+                data?.message ||
+                data?.data ||
+                null;
+
+
+            if (
+                createdMessage &&
+                createdMessage.id
+            ) {
+
+                const normalized =
+                    normalizeMessage(
+                        createdMessage
+                    );
+
+
+                if (normalized) {
+
+                    const exists =
+                        currentMessages.some(
+                            item =>
+                                Number(
+                                    item.id
+                                ) ===
+                                Number(
+                                    normalized.id
+                                )
+                        );
+
+
+                    if (!exists) {
+
+                        currentMessages.unshift(
+                            normalized
+                        );
+
+                        saveCache(
+                            currentMessages
+                        );
+                    }
+                }
             }
 
 
             showToast(
                 "Réponse envoyée",
-                "Votre message a été transmis à BMJ SERVICE."
+                "Votre message a été transmis à BMJ SERVICE.",
+                "success"
             );
 
 
-            textarea.value = "";
-
+            /*
+             * On ferme le détail.
+             */
 
             closeDetail();
 
 
-            await syncMessages(true);
+            /*
+             * On resynchronise avec
+             * PostgreSQL pour avoir
+             * la vraie conversation.
+             */
+
+            await syncMessages(
+                true
+            );
 
 
-        } catch (error) {
+        }
+        catch (error) {
 
             console.error(
-                "Erreur réponse messagerie :",
+                "Erreur envoi réponse :",
                 error
             );
 
 
             showToast(
                 "Erreur",
-                error.message ||
-                "Impossible d'envoyer votre réponse."
+                error?.message ||
+                "Impossible d'envoyer votre réponse.",
+                "error"
             );
 
 
@@ -3040,7 +3839,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     false;
 
                 button.innerHTML = `
-                    <i class="fa-solid fa-paper-plane"></i>
+
+                    <i
+                        class="
+                            fa-solid
+                            fa-paper-plane
+                        "
+                    ></i>
+
                 `;
             }
         }
@@ -3048,36 +3854,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ============================================================
-       MARQUER COMME LU
-       PATCH /api/utilisateurs/:id/messages/:messageId/read
+       20. MARQUER COMME LU
+       
+       PATCH
+       /api/utilisateurs/:userId/messages/:messageId/read
     ============================================================ */
 
-    async function markAsRead(messageId) {
+    async function markAsRead(
+        messageId
+    ) {
 
         const userId =
             getUserId();
 
-        const message =
-            currentMessages.find(
-                item =>
-                    Number(item.id) ===
-                    Number(messageId)
-            );
 
         if (
             !userId ||
-            !message
+            !messageId
         ) {
             return;
         }
 
 
+        const message =
+            currentMessages.find(
+                item =>
+                    Number(
+                        item.id
+                    ) ===
+                    Number(
+                        messageId
+                    )
+            );
+
+
+        if (!message) {
+            return;
+        }
+
+
         /*
-         * Mise à jour immédiate de l'interface
+         * Mise à jour immédiate
+         * de l'interface.
          */
 
         message.status =
             "read";
+
 
         message.read_at =
             new Date().toISOString();
@@ -3088,13 +3911,11 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
 
-        renderMessages(
-            currentMessages
-        );
+        updateCount();
 
 
         /*
-         * Mise à jour serveur
+         * Mise à jour serveur.
          */
 
         try {
@@ -3108,55 +3929,111 @@ document.addEventListener("DOMContentLoaded", function () {
                 )}/read`,
 
                 {
-                    method: "PATCH"
+                    method:
+                        "PATCH"
                 },
 
-                6000
+                8000
             );
 
-        } catch (error) {
+        }
+        catch (error) {
 
             console.warn(
-                "Impossible de marquer le message comme lu :",
+                "Erreur marquage comme lu :",
                 error
             );
+
+            /*
+             * On ne remet pas l'interface
+             * en arrière : le serveur pourra
+             * être resynchronisé plus tard.
+             */
         }
     }
 
 
     /* ============================================================
-       SYNCHRONISATION AVEC LE SERVEUR
-       
-       ROUTE UNIQUE :
-       GET /api/utilisateurs/:id/messages
-       
-       Cette route doit renvoyer :
-       - messages individuels
-       - annonces all
-       - annonces standard
-       - annonces premium
-       - réponses de l'utilisateur
+       21. EXTRAIRE LES MESSAGES DE LA RÉPONSE
     ============================================================ */
 
-    async function syncMessages(force = false) {
+    function extractMessages(data) {
+
+        if (
+            Array.isArray(data)
+        ) {
+            return data;
+        }
+
+
+        if (
+            Array.isArray(
+                data?.messages
+            )
+        ) {
+            return data.messages;
+        }
+
+
+        if (
+            Array.isArray(
+                data?.data
+            )
+        ) {
+            return data.data;
+        }
+
+
+        if (
+            Array.isArray(
+                data?.results
+            )
+        ) {
+            return data.results;
+        }
+
+
+        return [];
+    }
+
+
+    /* ============================================================
+       22. SYNCHRONISATION
+       
+       GET
+       /api/utilisateurs/:userId/messages
+    ============================================================ */
+
+    async function syncMessages(
+        force = false
+    ) {
 
         const userId =
             getUserId();
+
 
         if (!userId) {
             return false;
         }
 
 
-        if (syncInProgress) {
+        if (
+            syncInProgress
+        ) {
             return false;
         }
 
 
+        /*
+         * Évite de faire plusieurs
+         * requêtes immédiatement.
+         */
+
         if (
             !force &&
             Date.now() -
-            lastSyncTime < 3000
+            lastSyncTime <
+            3000
         ) {
 
             return false;
@@ -3165,6 +4042,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         syncInProgress =
             true;
+
 
         lastSyncTime =
             Date.now();
@@ -3176,7 +4054,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /*
-             * PREMIÈRE TENTATIVE
+             * Première tentative.
              */
 
             try {
@@ -3189,15 +4067,18 @@ document.addEventListener("DOMContentLoaded", function () {
                         )}/messages`,
 
                         {
-                            method: "GET"
+                            method:
+                                "GET"
                         }
                     );
 
-            } catch (firstError) {
+            }
+            catch (firstError) {
 
-                /*
-                 * DEUXIÈME TENTATIVE
-                 */
+                console.warn(
+                    "Première synchronisation échouée, nouvelle tentative..."
+                );
+
 
                 await new Promise(
                     resolve =>
@@ -3216,72 +4097,120 @@ document.addEventListener("DOMContentLoaded", function () {
                         )}/messages`,
 
                         {
-                            method: "GET"
+                            method:
+                                "GET"
                         }
                     );
             }
 
 
-            if (!data?.success) {
+            /*
+             * Le serveur peut renvoyer
+             * success:true.
+             */
+
+            if (
+                data &&
+                data.success === false
+            ) {
 
                 throw new Error(
-                    data?.message ||
+                    data.message ||
                     "Impossible de récupérer les messages."
                 );
             }
 
 
-            /*
-             * Le serveur peut utiliser :
-             *
-             * data.messages
-             *
-             * ou éventuellement :
-             *
-             * data.data
-             */
-
-            let messages =
-                Array.isArray(data.messages)
-                    ? data.messages
-                    : Array.isArray(data.data)
-                        ? data.data
-                        : [];
-
-
-            /*
-             * Nettoyage des données invalides
-             */
-
-            messages =
-                messages.filter(
-                    message =>
-                        message &&
-                        message.id
+            const rawMessages =
+                extractMessages(
+                    data
                 );
 
 
             /*
-             * Tri du plus récent au plus ancien
+             * Normalisation.
+             */
+
+            const normalizedMessages =
+                rawMessages
+                    .map(
+                        normalizeMessage
+                    )
+                    .filter(
+                        message =>
+                            message &&
+                            Number.isInteger(
+                                message.id
+                            ) &&
+                            message.id > 0
+                    );
+
+
+            /*
+             * Suppression des doublons
+             * par ID.
+             */
+
+            const unique =
+                new Map();
+
+
+            normalizedMessages.forEach(
+                message => {
+
+                    unique.set(
+                        Number(
+                            message.id
+                        ),
+                        message
+                    );
+                }
+            );
+
+
+            const messages =
+                Array.from(
+                    unique.values()
+                );
+
+
+            /*
+             * Tri récent → ancien.
              */
 
             messages.sort(
-                (a, b) =>
-                    new Date(
-                        b.created_at || 0
-                    ) -
-                    new Date(
-                        a.created_at || 0
-                    )
+                (a, b) => {
+
+                    const dateA =
+                        parseDate(
+                            a.created_at
+                        );
+
+                    const dateB =
+                        parseDate(
+                            b.created_at
+                        );
+
+
+                    return (
+                        (dateB?.getTime() || 0) -
+                        (dateA?.getTime() || 0)
+                    );
+                }
             );
 
 
             /*
-             * Ancienne liste
+             * Ancienne liste.
              */
 
             const previous =
-                currentMessages;
+                Array.isArray(
+                    currentMessages
+                )
+                    ? currentMessages
+                    : [];
+
 
             const previousIds =
                 new Set(
@@ -3295,7 +4224,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /*
-             * Nouvelle liste complète
+             * Nouvelle liste.
              */
 
             currentMessages =
@@ -3303,7 +4232,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /*
-             * Sauvegarde
+             * Sauvegarde cache.
              */
 
             saveCache(
@@ -3312,7 +4241,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /*
-             * Affichage
+             * Affichage.
              */
 
             renderMessages(
@@ -3321,7 +4250,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /*
-             * Détection des nouveaux messages
+             * Détection nouveaux messages.
              */
 
             const newMessages =
@@ -3336,8 +4265,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             /*
-             * Notification uniquement
-             * après le premier chargement
+             * Ne pas afficher de toast
+             * lors du tout premier chargement.
              */
 
             if (
@@ -3345,38 +4274,67 @@ document.addEventListener("DOMContentLoaded", function () {
                 newMessages.length > 0
             ) {
 
-                const adminMessages =
+                /*
+                 * Les réponses de l'utilisateur
+                 * ne doivent pas déclencher
+                 * une notification "nouveau message".
+                 */
+
+                const incoming =
                     newMessages.filter(
                         message =>
-                            !isReply(message)
+                            !isUserReply(
+                                message
+                            )
                     );
 
 
                 if (
-                    adminMessages.length > 0
+                    incoming.length > 0
                 ) {
 
                     const latest =
-                        [...adminMessages]
+                        [...incoming]
                             .sort(
                                 (a, b) =>
-                                    new Date(
-                                        b.created_at || 0
+                                    (
+                                        parseDate(
+                                            b.created_at
+                                        )?.getTime() ||
+                                        0
                                     ) -
-                                    new Date(
-                                        a.created_at || 0
+                                    (
+                                        parseDate(
+                                            a.created_at
+                                        )?.getTime() ||
+                                        0
                                     )
                             )[0];
 
 
-                    showToast(
-                        isAnnouncement(latest)
-                            ? "Nouvelle annonce"
-                            : "Nouveau message",
+                    if (
+                        isOfficial(
+                            latest
+                        )
+                    ) {
 
-                        latest.subject ||
-                        "Vous avez reçu un nouveau message."
-                    );
+                        showToast(
+                            "Nouvelle annonce",
+                            latest.subject ||
+                            "Vous avez reçu une nouvelle annonce.",
+                            "info"
+                        );
+
+                    }
+                    else {
+
+                        showToast(
+                            "Nouveau message",
+                            latest.subject ||
+                            "Vous avez reçu un nouveau message.",
+                            "info"
+                        );
+                    }
                 }
             }
 
@@ -3384,17 +4342,18 @@ document.addEventListener("DOMContentLoaded", function () {
             return true;
 
 
-        } catch (error) {
+        }
+        catch (error) {
 
             console.warn(
-                "Synchronisation messagerie :",
+                "Synchronisation messagerie échouée :",
                 error
             );
 
 
             /*
-             * Si le serveur est temporairement
-             * indisponible, on garde le cache.
+             * Si le serveur n'est pas disponible,
+             * on conserve les données locales.
              */
 
             if (
@@ -3404,12 +4363,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 const cached =
                     getCachedMessages();
 
+
                 if (
                     cached.length > 0
                 ) {
 
                     currentMessages =
-                        cached;
+                        cached
+                            .map(
+                                normalizeMessage
+                            )
+                            .filter(
+                                Boolean
+                            );
+
 
                     renderMessages(
                         currentMessages
@@ -3421,7 +4388,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return false;
 
 
-        } finally {
+        }
+        finally {
 
             syncInProgress =
                 false;
@@ -3430,7 +4398,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ============================================================
-       CHARGEMENT INITIAL
+       23. CHARGEMENT INITIAL
     ============================================================ */
 
     async function loadMessages() {
@@ -3445,38 +4413,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!userId) {
 
-            if (messagesContainer) {
-
-                messagesContainer.innerHTML = `
-
-                    <div class="messages-empty">
-
-                        <div class="messages-empty-icon">
-
-                            <i class="fa-solid fa-user-lock"></i>
-
-                        </div>
-
-                        <h3>
-                            Connexion requise
-                        </h3>
-
-                        <p>
-                            Connectez-vous pour accéder
-                            à votre messagerie.
-                        </p>
-
-                    </div>
-
-                `;
-            }
+            showLoginState();
 
             return;
         }
 
 
         /*
-         * Afficher immédiatement le cache
+         * Affichage instantané du cache.
          */
 
         const cached =
@@ -3488,25 +4432,122 @@ document.addEventListener("DOMContentLoaded", function () {
         ) {
 
             currentMessages =
-                cached;
+                cached
+                    .map(
+                        normalizeMessage
+                    )
+                    .filter(
+                        Boolean
+                    );
+
 
             renderMessages(
                 currentMessages
             );
         }
+        else {
+
+            showLoadingState();
+        }
 
 
         /*
-         * Puis récupérer la vraie liste
-         * depuis PostgreSQL
+         * Puis synchronisation serveur.
          */
 
-        await syncMessages(true);
+        await syncMessages(
+            true
+        );
     }
 
 
     /* ============================================================
-       FERMER LE MESSAGE
+       24. ÉTAT CHARGEMENT
+    ============================================================ */
+
+    function showLoadingState() {
+
+        if (!messagesContainer) {
+            return;
+        }
+
+
+        messagesContainer.innerHTML = `
+
+            <div class="messages-empty">
+
+                <div class="messages-empty-icon">
+
+                    <i
+                        class="
+                            fa-solid
+                            fa-spinner
+                            fa-spin
+                        "
+                    ></i>
+
+                </div>
+
+                <h3>
+                    Chargement...
+                </h3>
+
+                <p>
+                    Récupération de vos messages.
+                </p>
+
+            </div>
+
+        `;
+    }
+
+
+    /* ============================================================
+       25. ÉTAT NON CONNECTÉ
+    ============================================================ */
+
+    function showLoginState() {
+
+        if (!messagesContainer) {
+            return;
+        }
+
+
+        messagesContainer.innerHTML = `
+
+            <div class="messages-empty">
+
+                <div class="messages-empty-icon">
+
+                    <i
+                        class="
+                            fa-solid
+                            fa-user-lock
+                        "
+                    ></i>
+
+                </div>
+
+                <h3>
+                    Connexion requise
+                </h3>
+
+                <p>
+                    Connectez-vous pour accéder
+                    à votre messagerie.
+                </p>
+
+            </div>
+
+        `;
+
+
+        updateCount();
+    }
+
+
+    /* ============================================================
+       26. FERMER LE DÉTAIL
     ============================================================ */
 
     function closeDetail() {
@@ -3525,6 +4566,11 @@ document.addEventListener("DOMContentLoaded", function () {
             null;
 
 
+        /*
+         * Sur desktop, on remet
+         * l'état vide.
+         */
+
         if (
             window.innerWidth > 850
         ) {
@@ -3535,7 +4581,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <div class="detail-empty-icon">
 
-                        <i class="fa-regular fa-envelope-open"></i>
+                        <i
+                            class="
+                                fa-regular
+                                fa-envelope-open
+                            "
+                        ></i>
 
                     </div>
 
@@ -3544,8 +4595,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     </h3>
 
                     <p>
-                        Choisissez un message dans votre boîte
-                        de réception pour le lire.
+                        Choisissez un message
+                        dans votre boîte de réception
+                        pour le lire.
                     </p>
 
                 </div>
@@ -3556,7 +4608,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* ============================================================
-       BOUTON RETOUR
+       27. RETOUR
     ============================================================ */
 
     const backButton =
@@ -3567,7 +4619,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (backButton) {
 
-        backButton.onclick =
+        backButton.addEventListener(
+            "click",
             function () {
 
                 if (
@@ -3576,81 +4629,71 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     window.history.back();
 
-                } else {
+                }
+                else {
 
                     window.location.href =
                         "index.html";
                 }
-            };
+
+            }
+        );
     }
 
 
     /* ============================================================
-       INITIALISATION
+       28. RAFRAÎCHISSEMENT AUTOMATIQUE
     ============================================================ */
 
-    currentUser =
-        getCurrentUser();
+    function startAutoRefresh() {
 
+        if (
+            refreshTimer
+        ) {
 
-    if (!currentUser) {
-
-        if (messagesContainer) {
-
-            messagesContainer.innerHTML = `
-
-                <div class="messages-empty">
-
-                    <div class="messages-empty-icon">
-
-                        <i class="fa-solid fa-user-lock"></i>
-
-                    </div>
-
-                    <h3>
-                        Connexion requise
-                    </h3>
-
-                    <p>
-                        Veuillez vous connecter pour accéder
-                        à votre messagerie.
-                    </p>
-
-                </div>
-
-            `;
+            clearInterval(
+                refreshTimer
+            );
         }
 
-        return;
+
+        refreshTimer =
+            setInterval(
+                function () {
+
+                    /*
+                     * Ne pas solliciter Render
+                     * si l'utilisateur n'est pas
+                     * devant la page.
+                     */
+
+                    if (
+                        document.visibilityState !==
+                        "visible"
+                    ) {
+                        return;
+                    }
+
+
+                    if (
+                        syncInProgress
+                    ) {
+                        return;
+                    }
+
+
+                    syncMessages(
+                        false
+                    );
+
+                },
+                REFRESH_INTERVAL
+            );
     }
 
 
-    loadMessages();
-
-
     /* ============================================================
-       ACTUALISATION AUTOMATIQUE
-    ============================================================ */
-
-    refreshTimer =
-        setInterval(
-            function () {
-
-                if (
-                    document.visibilityState ===
-                    "visible"
-                ) {
-
-                    syncMessages(false);
-                }
-
-            },
-            REFRESH_INTERVAL
-        );
-
-
-    /* ============================================================
-       RETOUR SUR LA PAGE
+       29. RETOUR SUR LA PAGE
     ============================================================ */
 
     document.addEventListener(
@@ -3662,14 +4705,61 @@ document.addEventListener("DOMContentLoaded", function () {
                 "visible"
             ) {
 
-                syncMessages(true);
+                /*
+                 * Quand l'utilisateur revient
+                 * sur la page, on récupère
+                 * immédiatement les nouveaux messages.
+                 */
+
+                syncMessages(
+                    true
+                );
             }
         }
     );
 
 
     /* ============================================================
-       API PUBLIQUE
+       30. RECONNEXION RÉSEAU
+    ============================================================ */
+
+    window.addEventListener(
+        "online",
+        function () {
+
+            showToast(
+                "Connexion rétablie",
+                "Synchronisation de la messagerie...",
+                "success"
+            );
+
+
+            syncMessages(
+                true
+            );
+        }
+    );
+
+
+    /* ============================================================
+       31. DÉCONNEXION RÉSEAU
+    ============================================================ */
+
+    window.addEventListener(
+        "offline",
+        function () {
+
+            showToast(
+                "Connexion interrompue",
+                "Vos messages enregistrés restent disponibles.",
+                "error"
+            );
+        }
+    );
+
+
+    /* ============================================================
+       32. API PUBLIQUE
     ============================================================ */
 
     window.BMJMessages = {
@@ -3682,36 +4772,74 @@ document.addEventListener("DOMContentLoaded", function () {
 
         closeDetail,
 
+        markAsRead,
+
         getCachedMessages,
 
         getCurrentUser,
 
         getCurrentUserId:
-            getUserId
+            getUserId,
 
+        clearCache:
+            clearMessageCache
     };
 
 
     /* ============================================================
-       NETTOYAGE
+       33. INITIALISATION
+    ============================================================ */
+
+    currentUser =
+        getCurrentUser();
+
+
+    if (!currentUser) {
+
+        showLoginState();
+
+        return;
+    }
+
+
+    /*
+     * Chargement.
+     */
+
+    loadMessages();
+
+
+    /*
+     * Actualisation toutes les 30 secondes.
+     */
+
+    startAutoRefresh();
+
+
+    /* ============================================================
+       34. NETTOYAGE
     ============================================================ */
 
     window.addEventListener(
         "beforeunload",
         function () {
 
-            if (refreshTimer) {
+            if (
+                refreshTimer
+            ) {
 
                 clearInterval(
                     refreshTimer
                 );
-            }
 
+                refreshTimer =
+                    null;
+            }
         }
     );
 
-});
 
+});
 </script>
 
 </body>
