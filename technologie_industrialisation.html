@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Technologie et Industrialisation | BMJ SERVICE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --blue: #1667d9;
+            --dark-blue: #0d2448;
+            --cyan: #16b6c9;
+            --gold: #d4af37;
+            --light-blue: #edf5ff;
+            --white: #ffffff;
+            --gray: #667085;
+            --dark: #132033;
+            --border: #e5eaf2;
+            --shadow: 0 15px 45px rgba(13, 36, 72, .10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f8fbff;
+            color: var(--dark);
+            line-height: 1.7;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 76px;
+            background: rgba(255,255,255,.96);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(229,234,242,.9);
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1250px;
+            height: 100%;
+            margin: auto;
+            padding: 0 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo img {
+            width: 145px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-profile img {
+            width: 42px;
+            height: 42px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 720px;
+            margin-top: 76px;
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(90deg,
+                rgba(7,25,52,.95) 0%,
+                rgba(13,36,72,.82) 48%,
+                rgba(13,36,72,.40) 100%),
+                url("images/technologie-banner.jpg") center/cover no-repeat;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            right: -180px;
+            top: -180px;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 50%;
+        }
+
+        .hero-container {
+            max-width: 1250px;
+            width: 100%;
+            margin: auto;
+            padding: 70px 25px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            max-width: 760px;
+            color: white;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 9px 18px;
+            border-radius: 50px;
+            background: rgba(22,182,201,.16);
+            border: 1px solid rgba(22,182,201,.55);
+            color: #8df1fa;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5vw, 68px);
+            line-height: 1.12;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: #58dce8;
+        }
+
+        .hero-description {
+            max-width: 690px;
+            color: rgba(255,255,255,.86);
+            font-size: 18px;
+            margin-bottom: 35px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 24px;
+            border-radius: 9px;
+            font-weight: 600;
+            transition: .3s;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--blue);
+            color: white;
+            box-shadow: 0 8px 25px rgba(22,103,217,.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background: #0f59bd;
+        }
+
+        .btn-outline {
+            color: white;
+            border: 1px solid rgba(255,255,255,.45);
+            background: rgba(255,255,255,.06);
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--dark-blue);
+        }
+
+        /* ================= STATS ================= */
+
+        .hero-stats {
+            margin-top: 55px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 800px;
+            border-top: 1px solid rgba(255,255,255,.18);
+            padding-top: 28px;
+        }
+
+        .stat {
+            padding-right: 25px;
+            border-right: 1px solid rgba(255,255,255,.15);
+        }
+
+        .stat:last-child {
+            border-right: none;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 27px;
+            color: white;
+        }
+
+        .stat span {
+            color: rgba(255,255,255,.65);
+            font-size: 12px;
+        }
+
+        /* ================= INFO ================= */
+
+        .info-section {
+            max-width: 1250px;
+            margin: -55px auto 0;
+            padding: 0 25px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background: white;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .info-box {
+            padding: 28px 25px;
+            border-right: 1px solid var(--border);
+        }
+
+        .info-box:last-child {
+            border-right: none;
+        }
+
+        .info-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--light-blue);
+            color: var(--blue);
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .info-box h3 {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .info-box p {
+            color: var(--gray);
+            font-size: 12px;
+        }
+
+        /* ================= GENERAL ================= */
+
+        section {
+            padding: 100px 25px;
+        }
+
+        .section-container {
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 750px;
+            margin: 0 auto 55px;
+        }
+
+        .section-label {
+            color: var(--blue);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(28px, 4vw, 42px);
+            line-height: 1.25;
+            color: var(--dark-blue);
+            margin-bottom: 15px;
+        }
+
+        .section-header p {
+            color: var(--gray);
+        }
+
+        /* ================= INTRODUCTION ================= */
+
+        .intro {
+            background: white;
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 70px;
+            align-items: center;
+        }
+
+        .intro-text h2 {
+            color: var(--dark-blue);
+            font-size: 36px;
+            line-height: 1.25;
+            margin-bottom: 20px;
+        }
+
+        .intro-text p {
+            color: var(--gray);
+            margin-bottom: 18px;
+        }
+
+        .highlight {
+            margin-top: 28px;
+            padding: 20px;
+            border-left: 4px solid var(--cyan);
+            background: var(--light-blue);
+            border-radius: 0 12px 12px 0;
+            color: var(--dark-blue);
+            font-weight: 500;
+        }
+
+        .technology-panel {
+            position: relative;
+            min-height: 430px;
+            border-radius: 22px;
+            overflow: hidden;
+            background:
+                linear-gradient(135deg,
+                rgba(13,36,72,.88),
+                rgba(22,103,217,.55)),
+                url("images/technologie.jpg") center/cover no-repeat;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-content {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            right: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            background: rgba(255,255,255,.94);
+        }
+
+        .panel-content h3 {
+            color: var(--dark-blue);
+            margin-bottom: 7px;
+        }
+
+        .panel-content p {
+            color: var(--gray);
+            font-size: 13px;
+        }
+
+        /* ================= OBJECTIFS ================= */
+
+        .objectives {
+            background: #f4f8fd;
+        }
+
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .objective {
+            padding: 28px 22px;
+            background: white;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            transition: .3s;
+        }
+
+        .objective:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow);
+        }
+
+        .objective-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: rgba(22,103,217,.13);
+            margin-bottom: 10px;
+        }
+
+        .objective h3 {
+            font-size: 16px;
+            margin-bottom: 9px;
+            color: var(--dark-blue);
+        }
+
+        .objective p {
+            font-size: 13px;
+            color: var(--gray);
+        }
+
+        /* ================= PROGRESSION ================= */
+
+        .progress-container {
+            max-width: 800px;
+            margin: 0 auto 55px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .progress-track {
+            height: 9px;
+            background: #dfe8f3;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--blue), var(--cyan));
+            border-radius: 20px;
+            transition: width .5s;
+        }
+
+        /* ================= CHAPTERS ================= */
+
+        .chapters {
+            background: white;
+        }
+
+        .chapters-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .chapter {
+            position: relative;
+            padding: 32px;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: white;
+            transition: .3s;
+            overflow: hidden;
+        }
+
+        .chapter:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow);
+            border-color: rgba(22,103,217,.25);
+        }
+
+        .chapter.final {
+            grid-column: span 2;
+            background:
+                linear-gradient(135deg, #f0f7ff, #ffffff);
+            border-color: rgba(22,103,217,.25);
+        }
+
+        .chapter-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark-blue);
+            color: white;
+            font-weight: 700;
+            margin-bottom: 22px;
+        }
+
+        .chapter:nth-child(2) .chapter-number {
+            background: #1675b8;
+        }
+
+        .chapter:nth-child(3) .chapter-number {
+            background: #0b8c99;
+        }
+
+        .chapter:nth-child(4) .chapter-number {
+            background: #1667d9;
+        }
+
+        .chapter.final .chapter-number {
+            background: var(--gold);
+            color: var(--dark-blue);
+        }
+
+        .chapter h3 {
+            color: var(--dark-blue);
+            font-size: 19px;
+            margin-bottom: 12px;
+        }
+
+        .chapter p {
+            color: var(--gray);
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .chapter-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .topic {
+            padding: 5px 10px;
+            background: #f1f5fa;
+            border-radius: 50px;
+            color: #536174;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .chapter-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--blue);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .chapter-link i {
+            transition: .3s;
+        }
+
+        .chapter:hover .chapter-link i {
+            transform: translateX(5px);
+        }
+
+        /* ================= SECTEURS ================= */
+
+        .sectors {
+            background: #f4f8fd;
+        }
+
+        .sectors-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .sector {
+            min-height: 210px;
+            padding: 30px;
+            border-radius: 18px;
+            background: white;
+            border: 1px solid var(--border);
+        }
+
+        .sector i {
+            font-size: 28px;
+            color: var(--blue);
+            margin-bottom: 18px;
+        }
+
+        .sector h3 {
+            color: var(--dark-blue);
+            font-size: 17px;
+            margin-bottom: 8px;
+        }
+
+        .sector p {
+            color: var(--gray);
+            font-size: 13px;
+        }
+
+        /* ================= CTA ================= */
+
+        .cta {
+            padding: 90px 25px;
+            background:
+                linear-gradient(110deg, #0b1f3c, #145bbd);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-container {
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .cta h2 {
+            font-size: clamp(28px, 4vw, 45px);
+            line-height: 1.2;
+            margin-bottom: 18px;
+        }
+
+        .cta p {
+            color: rgba(255,255,255,.78);
+            margin-bottom: 30px;
+        }
+
+        .cta .btn {
+            background: white;
+            color: var(--dark-blue);
+        }
+
+        .cta .btn:hover {
+            transform: translateY(-3px);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #08172d;
+            color: white;
+            padding: 45px 25px 25px;
+        }
+
+        .footer-container {
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        .footer-main {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            padding-bottom: 30px;
+        }
+
+        .footer-brand {
+            max-width: 430px;
+        }
+
+        .footer-brand img {
+            width: 135px;
+            margin-bottom: 15px;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,.58);
+            font-size: 12px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,.65);
+            font-size: 12px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,.1);
+            padding-top: 20px;
+            color: rgba(255,255,255,.45);
+            font-size: 11px;
+            text-align: center;
+        }
+
+        /* ================= POPUP ================= */
+
+        .certificate-popup {
+            position: fixed;
+            inset: 0;
+            background: rgba(4,17,35,.72);
+            backdrop-filter: blur(7px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 3000;
+        }
+
+        .certificate-popup.show {
+            display: flex;
+        }
+
+        .popup-content {
+            width: 100%;
+            max-width: 470px;
+            padding: 42px 30px;
+            border-radius: 22px;
+            background: white;
+            text-align: center;
+            box-shadow: 0 25px 70px rgba(0,0,0,.25);
+            animation: popup .35s ease;
+        }
+
+        @keyframes popup {
+            from {
+                opacity: 0;
+                transform: scale(.9) translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .popup-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eef8ff;
+            color: var(--blue);
+            font-size: 31px;
+        }
+
+        .popup-content h2 {
+            color: var(--dark-blue);
+            margin-bottom: 12px;
+        }
+
+        .popup-content p {
+            color: var(--gray);
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .popup-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .close-popup {
+            background: #eef2f6;
+            color: var(--dark-blue);
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .hero {
+                min-height: 680px;
+            }
+
+            .hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .stat:nth-child(2) {
+                border-right: none;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-box:nth-child(2) {
+                border-right: none;
+            }
+
+            .info-box:nth-child(-n+2) {
+                border-bottom: 1px solid var(--border);
+            }
+
+            .intro-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .objectives-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .sectors-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            header {
+                height: 68px;
+            }
+
+            .header-container {
+                padding: 0 16px;
+            }
+
+            .logo img {
+                width: 120px;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .hero {
+                margin-top: 68px;
+                min-height: 700px;
+            }
+
+            .hero-container {
+                padding: 60px 20px;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .info-section {
+                padding: 0 15px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-box,
+            .info-box:nth-child(2) {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .info-box:last-child {
+                border-bottom: none;
+            }
+
+            section {
+                padding: 70px 18px;
+            }
+
+            .objectives-grid,
+            .sectors-grid,
+            .chapters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chapter.final {
+                grid-column: span 1;
+            }
+
+            .technology-panel {
+                min-height: 340px;
+            }
+
+            .footer-main {
+                flex-direction: column;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header>
+    <div class="header-container">
+
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="BMJ SERVICE">
+        </a>
+
+        <div class="user-profile">
+            <span class="user-name" id="userName">Mon espace</span>
+            <img src="images/user.png" alt="Profil utilisateur">
+        </div>
+
+    </div>
+</header>
+
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-container">
+
+        <div class="hero-content">
+
+            <div class="hero-badge">
+                <i class="fa-solid fa-microchip"></i>
+                Domaine de formation
+            </div>
+
+            <h1>
+                Technologie et
+                <span>Industrialisation</span>
+            </h1>
+
+            <p class="hero-description">
+                Explorez les technologies modernes, les processus industriels,
+                l'innovation et les solutions technologiques qui transforment
+                les entreprises et notre société.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="#programme" class="btn btn-primary">
+                    <i class="fa-solid fa-rocket"></i>
+                    Commencer la formation
+                </a>
+
+                <a href="#introduction" class="btn btn-outline">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Découvrir le programme
+                </a>
+
+            </div>
+
+            <div class="hero-stats">
+
+                <div class="stat">
+                    <strong>05</strong>
+                    <span>Chapitres</span>
+                </div>
+
+                <div class="stat">
+                    <strong>16</strong>
+                    <span>Semaines recommandées</span>
+                </div>
+
+                <div class="stat">
+                    <strong>100%</strong>
+                    <span>Accessible débutant</span>
+                </div>
+
+                <div class="stat">
+                    <strong>01</strong>
+                    <span>Projet final</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= INFO ================= -->
+
+<div class="info-section">
+
+    <div class="info-grid">
+
+        <div class="info-box">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-book-open"></i>
+            </div>
+
+            <h3>5 Chapitres</h3>
+
+            <p>
+                Un parcours progressif couvrant les principales notions.
+            </p>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-calendar-days"></i>
+            </div>
+
+            <h3>16 semaines</h3>
+
+            <p>
+                Un rythme recommandé pour maîtriser progressivement les concepts.
+            </p>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-user-graduate"></i>
+            </div>
+
+            <h3>Débutant</h3>
+
+            <p>
+                Aucun niveau technique avancé n'est nécessaire pour commencer.
+            </p>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <div class="info-icon">
+                <i class="fa-solid fa-certificate"></i>
+            </div>
+
+            <h3>Certificat</h3>
+
+            <p>
+                Validez votre parcours et obtenez votre certificat de formation.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= INTRODUCTION ================= -->
+
+<section class="intro" id="introduction">
+
+    <div class="section-container">
+
+        <div class="intro-grid">
+
+            <div class="intro-text">
+
+                <div class="section-label">
+                    Comprendre la transformation
+                </div>
+
+                <h2>
+                    La technologie au cœur de l'avenir
+                </h2>
+
+                <p>
+                    La technologie transforme profondément la manière dont
+                    les entreprises produisent, communiquent, innovent et
+                    répondent aux besoins de leurs clients.
+                </p>
+
+                <p>
+                    Cette formation vous permet de découvrir les grands
+                    principes des technologies modernes et de comprendre
+                    comment ils sont utilisés dans les environnements
+                    industriels et professionnels.
+                </p>
+
+                <p>
+                    Vous découvrirez également l'automatisation, la robotique,
+                    les systèmes connectés, l'industrie 4.0, les données et
+                    les nouvelles approches permettant d'améliorer les
+                    performances des organisations.
+                </p>
+
+                <div class="highlight">
+                    <i class="fa-solid fa-lightbulb"></i>
+                    Comprendre la technologie, c'est apprendre à identifier
+                    les problèmes, imaginer des solutions et créer de nouvelles
+                    opportunités.
+                </div>
+
+            </div>
+
+
+            <div class="technology-panel">
+
+                <div class="panel-content">
+
+                    <h3>
+                        Innovation & transformation
+                    </h3>
+
+                    <p>
+                        Des technologies numériques aux systèmes industriels
+                        intelligents, découvrez les outils qui façonnent
+                        l'industrie de demain.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= OBJECTIFS ================= -->
+
+<section class="objectives">
+
+    <div class="section-container">
+
+        <div class="section-header">
+
+            <div class="section-label">
+                Ce que vous allez apprendre
+            </div>
+
+            <h2>
+                Développez une vision technologique
+            </h2>
+
+            <p>
+                Acquérez des connaissances utiles pour comprendre,
+                analyser et participer aux transformations technologiques
+                et industrielles.
+            </p>
+
+        </div>
+
+
+        <div class="objectives-grid">
+
+            <div class="objective">
+
+                <div class="objective-number">01</div>
+
+                <h3>
+                    Technologies modernes
+                </h3>
+
+                <p>
+                    Comprendre les principales technologies numériques,
+                    électroniques, mécaniques et énergétiques.
+                </p>
+
+            </div>
+
+
+            <div class="objective">
+
+                <div class="objective-number">02</div>
+
+                <h3>
+                    Processus industriels
+                </h3>
+
+                <p>
+                    Découvrir les chaînes de production, la qualité,
+                    la maintenance et l'organisation industrielle.
+                </p>
+
+            </div>
+
+
+            <div class="objective">
+
+                <div class="objective-number">03</div>
+
+                <h3>
+                    Automatisation & robotique
+                </h3>
+
+                <p>
+                    Comprendre les systèmes automatisés, les capteurs,
+                    les machines intelligentes et les robots.
+                </p>
+
+            </div>
+
+
+            <div class="objective">
+
+                <div class="objective-number">04</div>
+
+                <h3>
+                    Innovation technologique
+                </h3>
+
+                <p>
+                    Apprendre à transformer un besoin réel en idée,
+                    solution et projet technologique.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PROGRAMME ================= -->
+
+<section class="chapters" id="programme">
+
+    <div class="section-container">
+
+        <div class="section-header">
+
+            <div class="section-label">
+                Parcours de formation
+            </div>
+
+            <h2>
+                Votre parcours Technologie & Industrialisation
+            </h2>
+
+            <p>
+                Suivez les cinq étapes du programme et construisez
+                progressivement vos connaissances.
+            </p>
+
+        </div>
+
+
+        <div class="progress-container">
+
+            <div class="progress-top">
+
+                <span>Votre progression</span>
+
+                <span id="progressText">0%</span>
+
+            </div>
+
+            <div class="progress-track">
+
+                <div class="progress-bar" id="progressBar"></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="chapters-grid">
+
+            <!-- CHAPITRE 1 -->
+
+            <article class="chapter">
+
+                <div class="chapter-number">
+                    01
+                </div>
+
+                <h3>
+                    Introduction aux Technologies Modernes
+                </h3>
+
+                <p>
+                    Découvrez les fondamentaux de la technologie,
+                    son évolution et son rôle dans la transformation
+                    des activités humaines et professionnelles.
+                </p>
+
+                <div class="chapter-topics">
+
+                    <span class="topic">Technologie</span>
+                    <span class="topic">Numérique</span>
+                    <span class="topic">Électronique</span>
+                    <span class="topic">Énergie</span>
+                    <span class="topic">Communication</span>
+
+                </div>
+
+                <a href="introduction_technologie.html"
+                   class="chapter-link"
+                   data-chapter="1">
+
+                    Étudier ce chapitre
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+            <!-- CHAPITRE 2 -->
+
+            <article class="chapter">
+
+                <div class="chapter-number">
+                    02
+                </div>
+
+                <h3>
+                    Processus Industriels et Production
+                </h3>
+
+                <p>
+                    Comprenez comment les entreprises organisent leurs
+                    processus de production, leurs équipements et leurs
+                    opérations pour améliorer leurs performances.
+                </p>
+
+                <div class="chapter-topics">
+
+                    <span class="topic">Production</span>
+                    <span class="topic">Qualité</span>
+                    <span class="topic">Maintenance</span>
+                    <span class="topic">Sécurité</span>
+                    <span class="topic">Opérations</span>
+
+                </div>
+
+                <a href="processus_industriels.html"
+                   class="chapter-link"
+                   data-chapter="2">
+
+                    Étudier ce chapitre
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+            <!-- CHAPITRE 3 -->
+
+            <article class="chapter">
+
+                <div class="chapter-number">
+                    03
+                </div>
+
+                <h3>
+                    Innovation, Automatisation et Robotique
+                </h3>
+
+                <p>
+                    Explorez les systèmes automatisés, les robots,
+                    les capteurs et les technologies permettant
+                    d'améliorer la précision et la productivité.
+                </p>
+
+                <div class="chapter-topics">
+
+                    <span class="topic">Automatisation</span>
+                    <span class="topic">Robotique</span>
+                    <span class="topic">Capteurs</span>
+                    <span class="topic">Machines</span>
+                    <span class="topic">Innovation</span>
+
+                </div>
+
+                <a href="innovation_automatisation.html"
+                   class="chapter-link"
+                   data-chapter="3">
+
+                    Étudier ce chapitre
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+            <!-- CHAPITRE 4 -->
+
+            <article class="chapter">
+
+                <div class="chapter-number">
+                    04
+                </div>
+
+                <h3>
+                    Industrie 4.0 et Transformation Numérique
+                </h3>
+
+                <p>
+                    Découvrez les usines connectées, l'Internet des objets,
+                    les données, l'intelligence artificielle et les
+                    nouvelles technologies industrielles.
+                </p>
+
+                <div class="chapter-topics">
+
+                    <span class="topic">Industrie 4.0</span>
+                    <span class="topic">IoT</span>
+                    <span class="topic">Données</span>
+                    <span class="topic">IA</span>
+                    <span class="topic">Cybersécurité</span>
+
+                </div>
+
+                <a href="industrie_4_0.html"
+                   class="chapter-link"
+                   data-chapter="4">
+
+                    Étudier ce chapitre
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+
+            <!-- CHAPITRE 5 -->
+
+            <article class="chapter final">
+
+                <div class="chapter-number">
+                    05
+                </div>
+
+                <h3>
+                    Projet Final : Concevoir une Solution Technologique
+                </h3>
+
+                <p>
+                    Mettez en pratique les connaissances acquises en
+                    identifiant un problème réel, en imaginant une
+                    solution technologique, en construisant votre projet
+                    et en présentant votre démarche.
+                </p>
+
+                <div class="chapter-topics">
+
+                    <span class="topic">Analyse du besoin</span>
+                    <span class="topic">Conception</span>
+                    <span class="topic">Prototype</span>
+                    <span class="topic">Tests</span>
+                    <span class="topic">Présentation</span>
+
+                </div>
+
+                <a href="projet_final_technologie.html"
+                   class="chapter-link"
+                   data-chapter="5">
+
+                    Réaliser mon projet final
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </a>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= SECTEURS ================= -->
+
+<section class="sectors">
+
+    <div class="section-container">
+
+        <div class="section-header">
+
+            <div class="section-label">
+                Applications professionnelles
+            </div>
+
+            <h2>
+                Où utiliser ces compétences ?
+            </h2>
+
+            <p>
+                Les connaissances technologiques et industrielles
+                peuvent être utilisées dans de nombreux secteurs.
+            </p>
+
+        </div>
+
+
+        <div class="sectors-grid">
+
+            <div class="sector">
+
+                <i class="fa-solid fa-industry"></i>
+
+                <h3>
+                    Industrie manufacturière
+                </h3>
+
+                <p>
+                    Production, optimisation des chaînes de fabrication,
+                    contrôle qualité et amélioration des performances.
+                </p>
+
+            </div>
+
+
+            <div class="sector">
+
+                <i class="fa-solid fa-robot"></i>
+
+                <h3>
+                    Robotique & automatisation
+                </h3>
+
+                <p>
+                    Machines intelligentes, robots industriels,
+                    systèmes automatisés et contrôle des équipements.
+                </p>
+
+            </div>
+
+
+            <div class="sector">
+
+                <i class="fa-solid fa-bolt"></i>
+
+                <h3>
+                    Énergie & systèmes intelligents
+                </h3>
+
+                <p>
+                    Technologies énergétiques, systèmes intelligents,
+                    efficacité énergétique et nouvelles solutions.
+                </p>
+
+            </div>
+
+
+            <div class="sector">
+
+                <i class="fa-solid fa-code"></i>
+
+                <h3>
+                    Numérique & logiciels
+                </h3>
+
+                <p>
+                    Applications, plateformes numériques, systèmes
+                    d'information et solutions technologiques.
+                </p>
+
+            </div>
+
+
+            <div class="sector">
+
+                <i class="fa-solid fa-wifi"></i>
+
+                <h3>
+                    IoT & objets connectés
+                </h3>
+
+                <p>
+                    Capteurs, appareils connectés, collecte de données
+                    et systèmes intelligents.
+                </p>
+
+            </div>
+
+
+            <div class="sector">
+
+                <i class="fa-solid fa-screwdriver-wrench"></i>
+
+                <h3>
+                    Maintenance industrielle
+                </h3>
+
+                <p>
+                    Maintenance préventive, diagnostic, équipements
+                    industriels et amélioration de la disponibilité.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= CTA ================= -->
+
+<section class="cta">
+
+    <div class="cta-container">
+
+        <h2>
+            Transformez la technologie en opportunité
+        </h2>
+
+        <p>
+            Apprenez à comprendre les systèmes modernes, améliorer
+            les processus et concevoir des solutions technologiques
+            adaptées aux besoins des entreprises et de la société.
+        </p>
+
+        <a href="#programme" class="btn">
+            <i class="fa-solid fa-play"></i>
+            Commencer maintenant
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-container">
+
+        <div class="footer-main">
+
+            <div class="footer-brand">
+
+                <img src="images/logo.png" alt="BMJ SERVICE">
+
+                <p>
+                    Formation Technologie & Industrialisation.
+                    Apprenez aujourd'hui. Innovez demain.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="index.html">
+                    Accueil
+                </a>
+
+                <a href="#programme">
+                    Programme
+                </a>
+
+                <a href="certificat_technologie.html">
+                    Certificat
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © <span id="year"></span> BMJ SERVICE — Tous droits réservés.
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- ================= CERTIFICATE POPUP ================= -->
+
+<div class="certificate-popup" id="certificatePopup">
+
+    <div class="popup-content">
+
+        <div class="popup-icon">
+            <i class="fa-solid fa-award"></i>
+        </div>
+
+        <h2>
+            Félicitations !
+        </h2>
+
+        <p>
+            Vous avez terminé le parcours
+            <strong>Technologie et Industrialisation</strong>.
+            Votre certificat est maintenant disponible.
+        </p>
+
+        <div class="popup-buttons">
+
+            <a href="certificat_technologie.html"
+               class="btn btn-primary">
+                <i class="fa-solid fa-certificate"></i>
+                Voir mon certificat
+            </a>
+
+            <button class="btn close-popup" id="closePopup">
+                Fermer
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* ============================================================
+       BMJ SERVICE
+       TECHNOLOGIE & INDUSTRIALISATION
+       PROGRESSION
+       ============================================================ */
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const totalChapters = 5;
+
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progressText");
+        const popup = document.getElementById("certificatePopup");
+        const closePopup = document.getElementById("closePopup");
+        const userName = document.getElementById("userName");
+
+        document.getElementById("year").textContent =
+            new Date().getFullYear();
+
+
+        /* ========================================================
+           UTILISATEUR
+           ======================================================== */
+
+        let currentUser = null;
+
+        try {
+
+            currentUser =
+                JSON.parse(localStorage.getItem("bmj_current_user"));
+
+        } catch (error) {
+
+            currentUser = null;
+
+        }
+
+
+        let userIdentifier = "guest";
+
+        if (currentUser) {
+
+            userIdentifier =
+                currentUser.id ||
+                currentUser.email ||
+                currentUser.telephone ||
+                "guest";
+
+            if (currentUser.nom) {
+
+                userName.textContent = currentUser.nom;
+
+            } else if (currentUser.name) {
+
+                userName.textContent = currentUser.name;
+
+            }
+
+        }
+
+
+        /* ========================================================
+           CLE PROGRESSION
+           ======================================================== */
+
+        const progressKey =
+            "technologie_progression_" + userIdentifier;
+
+
+        let progression = [];
+
+        try {
+
+            progression =
+                JSON.parse(localStorage.getItem(progressKey)) || [];
+
+        } catch (error) {
+
+            progression = [];
+
+        }
+
+
+        if (!Array.isArray(progression)) {
+
+            progression = [];
+
+        }
+
+
+        /* ========================================================
+           CALCUL PROGRESSION
+           ======================================================== */
+
+        function updateProgress() {
+
+            const completed =
+                progression.filter(Boolean).length;
+
+            const percent =
+                Math.round((completed / totalChapters) * 100);
+
+            progressBar.style.width = percent + "%";
+
+            progressText.textContent =
+                percent + "%";
+
+
+            /* ================================================
+               PARCOURS TERMINE
+               ================================================ */
+
+            if (percent === 100) {
+
+                saveCertificate();
+
+                setTimeout(function () {
+
+                    popup.classList.add("show");
+
+                }, 500);
+
+            }
+
+        }
+
+
+        /* ========================================================
+           ENREGISTRER CERTIFICAT
+           ======================================================== */
+
+        function saveCertificate() {
+
+            const certificate = {
+
+                domaine: "Technologie et Industrialisation",
+
+                progression: 100,
+
+                date: new Date().toISOString(),
+
+                user: currentUser || null
+
+            };
+
+
+            localStorage.setItem(
+                "bmj_certificate_technologie",
+                JSON.stringify(certificate)
+            );
+
+
+            /* Compatibilité avec le système utilisateur */
+
+            if (currentUser) {
+
+                currentUser.progressionTechnologie = 100;
+
+                localStorage.setItem(
+                    "bmj_current_user",
+                    JSON.stringify(currentUser)
+                );
+
+            }
+
+        }
+
+
+        /* ========================================================
+           LIENS DES CHAPITRES
+           ======================================================== */
+
+        document.querySelectorAll(
+            ".chapter-link[data-chapter]"
+        ).forEach(function (link) {
+
+            link.addEventListener("click", function () {
+
+                const chapter =
+                    parseInt(this.dataset.chapter);
+
+                if (!chapter) return;
+
+
+                /* Marque le chapitre comme commencé */
+
+                if (!progression[chapter - 1]) {
+
+                    progression[chapter - 1] = false;
+
+                    localStorage.setItem(
+                        progressKey,
+                        JSON.stringify(progression)
+                    );
+
+                }
+
+            });
+
+        });
+
+
+        /* ========================================================
+           FONCTION GLOBALE POUR LES CHAPITRES
+           Les pages de cours peuvent appeler :
+           
+           window.completeTechnologyChapter(1);
+           
+           ======================================================== */
+
+        window.completeTechnologyChapter =
+            function (chapterNumber) {
+
+                if (
+                    chapterNumber < 1 ||
+                    chapterNumber > totalChapters
+                ) {
+
+                    return;
+
+                }
+
+
+                progression[chapterNumber - 1] = true;
+
+
+                localStorage.setItem(
+                    progressKey,
+                    JSON.stringify(progression)
+                );
+
+
+                updateProgress();
+
+            };
+
+
+        /* ========================================================
+           FERMER POPUP
+           ======================================================== */
+
+        closePopup.addEventListener(
+            "click",
+            function () {
+
+                popup.classList.remove("show");
+
+            }
+        );
+
+
+        popup.addEventListener(
+            "click",
+            function (event) {
+
+                if (event.target === popup) {
+
+                    popup.classList.remove("show");
+
+                }
+
+            }
+        );
+
+
+        /* ========================================================
+           INITIALISATION
+           ======================================================== */
+
+        updateProgress();
+
+    });
+
+</script>
+
+</body>
+</html>

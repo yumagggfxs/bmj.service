@@ -1,0 +1,3660 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Introduction à l'Intelligence Artificielle | BMJ SERVICE</title>
+
+    <link rel="icon" type="image/png" href="images/logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+<style>
+
+/* =========================================================
+   BMJ SERVICE
+   CHAPITRE 1 — INTRODUCTION À L'INTELLIGENCE ARTIFICIELLE
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', Arial, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #f4f6fb;
+    color: #252b3a;
+    line-height: 1.7;
+}
+
+:root {
+    --blue: #3157d5;
+    --dark-blue: #17275c;
+    --purple: #7047d7;
+    --cyan: #16a6c7;
+    --gold: #d4af37;
+    --light-blue: #eef2ff;
+    --light-purple: #f3efff;
+    --white: #fff;
+    --gray: #697181;
+    --dark: #151b2f;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 72px;
+
+    background: rgba(255,255,255,.97);
+
+    backdrop-filter: blur(15px);
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 0 40px;
+
+    box-shadow: 0 5px 25px rgba(20,30,70,.08);
+
+    z-index: 1000;
+}
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+.logo img {
+
+    width: 46px;
+    height: 46px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+}
+
+.logo h2 {
+
+    color: var(--blue);
+
+    font-size: 21px;
+
+    font-weight: 800;
+}
+
+.logo span {
+
+    color: var(--gold);
+}
+
+.user-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+.user-area img {
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    object-fit: cover;
+
+    border: 2px solid var(--gold);
+}
+
+.user-area h4 {
+
+    color: var(--dark-blue);
+
+    font-size: 13px;
+}
+
+.user-area small {
+
+    color: #777;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+
+    margin-top: 72px;
+
+    min-height: 520px;
+
+    padding: 70px 8%;
+
+    display: flex;
+
+    align-items: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    color: white;
+
+    background:
+
+        linear-gradient(
+            120deg,
+            rgba(16,31,86,.97),
+            rgba(49,87,213,.84),
+            rgba(65,35,125,.62)
+        ),
+
+        url("images/ia-introduction.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+}
+
+.hero::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 500px;
+    height: 500px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    right: -170px;
+
+    top: -190px;
+}
+
+.hero::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    right: 80px;
+
+    bottom: -190px;
+}
+
+.hero-content {
+
+    max-width: 900px;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+.badge {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 9px 18px;
+
+    border-radius: 30px;
+
+    background: var(--gold);
+
+    color: #17275c;
+
+    font-size: 12px;
+
+    font-weight: 800;
+}
+
+.hero h1 {
+
+    font-size: 52px;
+
+    line-height: 1.15;
+
+    margin: 23px 0 18px;
+
+    font-weight: 800;
+}
+
+.hero h1 span {
+
+    color: #f4d76e;
+}
+
+.hero p {
+
+    max-width: 780px;
+
+    font-size: 17px;
+
+    color: rgba(255,255,255,.9);
+}
+
+.hero-meta {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    margin-top: 28px;
+}
+
+.meta {
+
+    padding: 9px 15px;
+
+    background: rgba(255,255,255,.1);
+
+    border: 1px solid rgba(255,255,255,.2);
+
+    border-radius: 30px;
+
+    font-size: 12px;
+}
+
+.meta i {
+
+    color: #f4d76e;
+
+    margin-right: 5px;
+}
+
+
+/* =========================================================
+   NAVIGATION RAPIDE
+========================================================= */
+
+.quick-nav {
+
+    width: 86%;
+
+    margin: -30px auto 40px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    box-shadow: 0 12px 35px rgba(20,30,70,.09);
+
+    padding: 18px;
+
+    position: relative;
+
+    z-index: 10;
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+.quick-nav a {
+
+    text-decoration: none;
+
+    color: var(--dark-blue);
+
+    background: #f3f5ff;
+
+    padding: 9px 15px;
+
+    border-radius: 25px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.quick-nav a:hover {
+
+    background: var(--blue);
+
+    color: white;
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   CONTENU
+========================================================= */
+
+.main {
+
+    width: 86%;
+
+    max-width: 1250px;
+
+    margin: auto;
+}
+
+.section {
+
+    background: white;
+
+    border-radius: 25px;
+
+    padding: 42px;
+
+    margin-bottom: 30px;
+
+    box-shadow: 0 10px 30px rgba(30,40,90,.06);
+}
+
+.section-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 22px;
+}
+
+.section-title .number {
+
+    width: 48px;
+    height: 48px;
+
+    min-width: 48px;
+
+    border-radius: 15px;
+
+    background: var(--light-blue);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    color: var(--blue);
+
+    font-weight: 800;
+}
+
+.section-title h2 {
+
+    color: var(--dark-blue);
+
+    font-size: 27px;
+}
+
+.section p {
+
+    color: var(--gray);
+
+    margin-bottom: 16px;
+}
+
+.section strong {
+
+    color: var(--dark-blue);
+}
+
+
+/* =========================================================
+   CARTES
+========================================================= */
+
+.cards {
+
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+
+    margin-top: 25px;
+}
+
+.card {
+
+    background: #f8f9ff;
+
+    border: 1px solid #e4e8f7;
+
+    border-radius: 19px;
+
+    padding: 25px;
+
+    transition: .3s;
+}
+
+.card:hover {
+
+    transform: translateY(-5px);
+
+    border-color: var(--blue);
+
+    box-shadow: 0 12px 25px rgba(49,87,213,.1);
+}
+
+.card i {
+
+    font-size: 28px;
+
+    color: var(--purple);
+
+    margin-bottom: 14px;
+}
+
+.card h3 {
+
+    color: var(--dark-blue);
+
+    font-size: 17px;
+
+    margin-bottom: 8px;
+}
+
+.card p {
+
+    font-size: 13px;
+
+    margin: 0;
+}
+
+
+/* =========================================================
+   LISTES
+========================================================= */
+
+.lesson-list {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+.lesson {
+
+    padding: 18px;
+
+    border-radius: 15px;
+
+    background: #f8f9ff;
+
+    border-left: 4px solid var(--blue);
+}
+
+.lesson h3 {
+
+    color: var(--dark-blue);
+
+    font-size: 15px;
+
+    margin-bottom: 5px;
+}
+
+.lesson h3 i {
+
+    color: var(--purple);
+
+    margin-right: 7px;
+}
+
+.lesson p {
+
+    font-size: 13px;
+
+    margin: 0;
+}
+
+
+/* =========================================================
+   ENCART IMPORTANT
+========================================================= */
+
+.highlight {
+
+    padding: 25px;
+
+    border-radius: 20px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            var(--dark-blue),
+            var(--blue),
+            var(--purple)
+        );
+
+    color: white;
+
+    margin: 25px 0;
+}
+
+.highlight h3 {
+
+    color: #f4d76e;
+
+    margin-bottom: 8px;
+}
+
+.highlight p {
+
+    color: rgba(255,255,255,.87);
+
+    margin: 0;
+}
+
+
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.lesson-image {
+
+    width: 100%;
+
+    height: 310px;
+
+    object-fit: cover;
+
+    border-radius: 22px;
+
+    margin: 20px 0;
+
+    display: block;
+}
+
+
+/* =========================================================
+   TABLEAU
+========================================================= */
+
+.table-wrapper {
+
+    overflow-x: auto;
+
+    margin-top: 20px;
+}
+
+table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 650px;
+}
+
+th {
+
+    background: var(--dark-blue);
+
+    color: white;
+
+    padding: 14px;
+
+    text-align: left;
+
+    font-size: 13px;
+}
+
+td {
+
+    padding: 13px;
+
+    border-bottom: 1px solid #e5e8f1;
+
+    color: var(--gray);
+
+    font-size: 13px;
+}
+
+tr:nth-child(even) {
+
+    background: #f8f9ff;
+}
+
+
+/* =========================================================
+   ÉTAPES
+========================================================= */
+
+.steps {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+.step {
+
+    text-align: center;
+
+    padding: 22px 15px;
+
+    background: #f8f9ff;
+
+    border-radius: 18px;
+}
+
+.step-number {
+
+    width: 42px;
+    height: 42px;
+
+    margin: auto auto 12px;
+
+    border-radius: 50%;
+
+    background: var(--blue);
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: 800;
+}
+
+.step h3 {
+
+    color: var(--dark-blue);
+
+    font-size: 14px;
+
+    margin-bottom: 5px;
+}
+
+.step p {
+
+    font-size: 12px;
+
+    margin: 0;
+}
+
+
+/* =========================================================
+   TERMINOLOGIE
+========================================================= */
+
+.terms {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 14px;
+
+    margin-top: 20px;
+}
+
+.term {
+
+    padding: 18px;
+
+    background: #f8f9ff;
+
+    border-radius: 16px;
+
+    border: 1px solid #e5e8f4;
+}
+
+.term h3 {
+
+    color: var(--blue);
+
+    font-size: 15px;
+
+    margin-bottom: 5px;
+}
+
+.term p {
+
+    font-size: 13px;
+
+    margin: 0;
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.video-box {
+
+    margin-top: 25px;
+
+    background: #101421;
+
+    border-radius: 22px;
+
+    padding: 12px;
+
+    overflow: hidden;
+}
+
+.video-box video {
+
+    width: 100%;
+
+    max-height: 430px;
+
+    display: block;
+
+    border-radius: 15px;
+
+    background: #000;
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+.quiz {
+
+    background: white;
+
+    border-radius: 25px;
+
+    padding: 42px;
+
+    margin: 30px 0;
+
+    box-shadow: 0 10px 30px rgba(30,40,90,.07);
+}
+
+.quiz-header {
+
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+.quiz-header i {
+
+    font-size: 40px;
+
+    color: var(--purple);
+
+    margin-bottom: 10px;
+}
+
+.quiz-header h2 {
+
+    color: var(--dark-blue);
+
+    font-size: 28px;
+}
+
+.quiz-header p {
+
+    color: var(--gray);
+
+    font-size: 13px;
+}
+
+.question {
+
+    padding: 22px;
+
+    border-radius: 18px;
+
+    background: #f8f9ff;
+
+    margin-bottom: 18px;
+}
+
+.question h3 {
+
+    color: var(--dark-blue);
+
+    font-size: 15px;
+
+    margin-bottom: 14px;
+}
+
+.option {
+
+    display: block;
+
+    background: white;
+
+    border: 1px solid #e1e5f0;
+
+    border-radius: 12px;
+
+    padding: 11px 14px;
+
+    margin: 8px 0;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    transition: .25s;
+}
+
+.option:hover {
+
+    border-color: var(--blue);
+
+    background: var(--light-blue);
+}
+
+.option input {
+
+    margin-right: 9px;
+
+    accent-color: var(--blue);
+}
+
+.quiz-button {
+
+    display: block;
+
+    margin: 25px auto 0;
+
+    border: none;
+
+    padding: 15px 30px;
+
+    border-radius: 35px;
+
+    background: var(--blue);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-weight: 700;
+
+    transition: .3s;
+}
+
+.quiz-button:hover {
+
+    background: var(--purple);
+
+    transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   RESULTAT
+========================================================= */
+
+.quiz-result {
+
+    display: none;
+
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border-radius: 17px;
+
+    text-align: center;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   POPUP
+========================================================= */
+
+.popup {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(5,10,30,.75);
+
+    display: none;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 9999;
+
+    padding: 20px;
+}
+
+.popup-box {
+
+    width: 440px;
+
+    max-width: 100%;
+
+    background: white;
+
+    border-radius: 28px;
+
+    padding: 38px 30px;
+
+    text-align: center;
+
+    box-shadow: 0 30px 70px rgba(0,0,0,.3);
+
+    animation: popup .3s ease;
+}
+
+.popup-icon {
+
+    width: 78px;
+    height: 78px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: linear-gradient(
+        135deg,
+        #d4af37,
+        #f6dc75
+    );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 35px;
+
+    color: var(--dark-blue);
+}
+
+.popup-box h2 {
+
+    color: var(--dark-blue);
+
+    margin: 18px 0 10px;
+}
+
+.popup-box p {
+
+    color: var(--gray);
+
+    font-size: 13px;
+
+    line-height: 1.7;
+}
+
+.popup-button {
+
+    margin-top: 20px;
+
+    padding: 13px 25px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background: var(--blue);
+
+    color: white;
+
+    cursor: pointer;
+
+    font-weight: 700;
+}
+
+@keyframes popup {
+
+    from {
+        transform: scale(.75);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+
+    margin-top: 60px;
+
+    padding: 40px 20px;
+
+    text-align: center;
+
+    background: #111d48;
+
+    color: white;
+}
+
+footer h3 {
+
+    color: #f4d76e;
+
+    margin-bottom: 7px;
+}
+
+footer p {
+
+    color: rgba(255,255,255,.7);
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:950px) {
+
+    .cards {
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .steps {
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+@media(max-width:700px) {
+
+    header {
+
+        padding: 0 15px;
+    }
+
+    .logo h2 {
+
+        font-size: 18px;
+    }
+
+    .user-area small {
+
+        display: none;
+    }
+
+    .hero {
+
+        padding: 55px 25px;
+
+        min-height: 560px;
+    }
+
+    .hero h1 {
+
+        font-size: 36px;
+    }
+
+    .hero p {
+
+        font-size: 15px;
+    }
+
+    .main,
+    .quick-nav {
+
+        width: 92%;
+    }
+
+    .section,
+    .quiz {
+
+        padding: 27px 22px;
+    }
+
+    .cards,
+    .lesson-list,
+    .steps,
+    .terms {
+
+        grid-template-columns: 1fr;
+    }
+
+    .lesson-image {
+
+        height: 230px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <div class="logo">
+
+        <img
+            src="images/logo.png"
+            alt="BMJ SERVICE"
+        >
+
+        <h2>
+            BMJ <span>SERVICE</span>
+        </h2>
+
+    </div>
+
+
+    <div class="user-area">
+
+        <img
+            id="photoUtilisateur"
+            src="images/user.png"
+            alt="Utilisateur"
+        >
+
+        <div>
+
+            <h4 id="nomUtilisateur">
+                Apprenant
+            </h4>
+
+            <small>
+                Intelligence Artificielle
+            </small>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="badge">
+
+            <i class="fa-solid fa-brain"></i>
+
+            CHAPITRE 1 — INTELLIGENCE ARTIFICIELLE
+
+        </span>
+
+
+        <h1>
+
+            Introduction à
+
+            <span>
+                l'Intelligence Artificielle
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Découvrez les fondamentaux de l'intelligence
+            artificielle, son fonctionnement, les données,
+            les algorithmes, le machine learning, les modèles
+            génératifs, les outils IA et leurs applications
+            dans le monde professionnel.
+
+        </p>
+
+
+        <div class="hero-meta">
+
+            <span class="meta">
+
+                <i class="fa-solid fa-book"></i>
+
+                Leçon complète
+
+            </span>
+
+
+            <span class="meta">
+
+                <i class="fa-solid fa-signal"></i>
+
+                Niveau débutant
+
+            </span>
+
+
+            <span class="meta">
+
+                <i class="fa-solid fa-robot"></i>
+
+                Notions IA
+
+            </span>
+
+
+            <span class="meta">
+
+                <i class="fa-solid fa-certificate"></i>
+
+                Quiz de validation
+
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav class="quick-nav">
+
+    <a href="#definition">
+        Qu'est-ce que l'IA ?
+    </a>
+
+    <a href="#fonctionnement">
+        Fonctionnement
+    </a>
+
+    <a href="#donnees">
+        Données
+    </a>
+
+    <a href="#machine">
+        Machine Learning
+    </a>
+
+    <a href="#generative">
+        IA générative
+    </a>
+
+    <a href="#applications">
+        Applications
+    </a>
+
+    <a href="#outils">
+        Outils IA
+    </a>
+
+    <a href="#ethique">
+        Éthique
+    </a>
+
+    <a href="#quiz">
+        Quiz
+    </a>
+
+</nav>
+
+
+
+<main class="main">
+
+
+<!-- =====================================================
+     SECTION 1 — DEFINITION
+===================================================== -->
+
+<section
+    class="section"
+    id="definition"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            01
+        </div>
+
+        <h2>
+            Qu'est-ce que l'Intelligence Artificielle ?
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        L'intelligence artificielle, souvent appelée
+        <strong>IA</strong>, désigne un ensemble de
+        méthodes et de technologies permettant à des
+        systèmes informatiques d'effectuer des tâches
+        qui nécessitent habituellement certaines capacités
+        humaines, comme analyser des informations,
+        reconnaître des images, comprendre du langage
+        ou produire du contenu.
+
+    </p>
+
+
+    <p>
+
+        L'IA ne correspond pas à une seule technologie.
+        Elle regroupe plusieurs domaines : apprentissage
+        automatique, réseaux neuronaux, traitement du
+        langage naturel, vision par ordinateur,
+        systèmes de recommandation, IA générative
+        et bien d'autres.
+
+    </p>
+
+
+    <p>
+
+        Aujourd'hui, l'intelligence artificielle est
+        utilisée dans l'éducation, la finance, la santé,
+        l'agriculture, le commerce, la cybersécurité,
+        les entreprises, les transports et de nombreux
+        autres secteurs.
+
+    </p>
+
+
+    <div class="highlight">
+
+        <h3>
+            🧠 Principe essentiel
+        </h3>
+
+        <p>
+
+            Une intelligence artificielle fonctionne à
+            partir de données, de méthodes de calcul et
+            de modèles conçus pour produire des résultats
+            selon une tâche donnée. Elle ne doit pas être
+            considérée comme une intelligence humaine
+            parfaite.
+
+        </p>
+
+    </div>
+
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-brain"></i>
+
+            <h3>
+                Apprentissage
+            </h3>
+
+            <p>
+
+                Certains systèmes apprennent des régularités
+                à partir de données afin d'améliorer leurs
+                prédictions ou leurs résultats.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-language"></i>
+
+            <h3>
+                Compréhension du langage
+            </h3>
+
+            <p>
+
+                Les systèmes modernes peuvent analyser,
+                générer et transformer du texte ou
+                traiter différentes formes de langage.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-eye"></i>
+
+            <h3>
+                Vision artificielle
+            </h3>
+
+            <p>
+
+                L'IA peut analyser des images et des vidéos
+                afin de détecter ou classifier différents
+                éléments.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 2 — HISTOIRE ET EVOLUTION
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="number">
+            02
+        </div>
+
+        <h2>
+            L'évolution de l'intelligence artificielle
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        L'idée de créer des machines capables de réaliser
+        certaines tâches intellectuelles existe depuis
+        plusieurs décennies. Les premières recherches
+        en intelligence artificielle se sont développées
+        au milieu du XXe siècle.
+
+    </p>
+
+
+    <div class="lesson-list">
+
+
+        <div class="lesson">
+
+            <h3>
+                <i class="fa-solid fa-gears"></i>
+                Premières machines
+            </h3>
+
+            <p>
+
+                Les premiers systèmes étaient principalement
+                basés sur des règles et des instructions
+                définies par les programmeurs.
+
+            </p>
+
+        </div>
+
+
+        <div class="lesson">
+
+            <h3>
+                <i class="fa-solid fa-chart-line"></i>
+                Apprentissage automatique
+            </h3>
+
+            <p>
+
+                Les systèmes ont progressivement commencé
+                à apprendre des modèles à partir de données.
+
+            </p>
+
+        </div>
+
+
+        <div class="lesson">
+
+            <h3>
+                <i class="fa-solid fa-network-wired"></i>
+                Réseaux neuronaux
+            </h3>
+
+            <p>
+
+                Les réseaux neuronaux artificiels ont permis
+                de traiter des problèmes complexes grâce
+                à plusieurs couches de calcul.
+
+            </p>
+
+        </div>
+
+
+        <div class="lesson">
+
+            <h3>
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                IA générative
+            </h3>
+
+            <p>
+
+                Les modèles modernes peuvent générer
+                du texte, des images, du code, de l'audio
+                et d'autres types de contenus.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 3 — FONCTIONNEMENT
+===================================================== -->
+
+<section
+    class="section"
+    id="fonctionnement"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            03
+        </div>
+
+        <h2>
+            Comment fonctionne une IA ?
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Pour comprendre l'intelligence artificielle,
+        il faut comprendre la relation entre les
+        <strong>données</strong>, les <strong>algorithmes</strong>
+        et les <strong>modèles</strong>.
+
+    </p>
+
+
+    <img
+        class="lesson-image"
+        src="images/fonctionnement-ia.jpg"
+        alt="Fonctionnement de l'intelligence artificielle"
+    >
+
+
+    <div class="steps">
+
+
+        <div class="step">
+
+            <div class="step-number">
+                1
+            </div>
+
+            <h3>
+                Données
+            </h3>
+
+            <p>
+                Collecter et préparer les informations.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                2
+            </div>
+
+            <h3>
+                Entraînement
+            </h3>
+
+            <p>
+                Le modèle apprend des régularités.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                3
+            </div>
+
+            <h3>
+                Modèle
+            </h3>
+
+            <p>
+                Le système représente ce qu'il a appris.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                4
+            </div>
+
+            <h3>
+                Résultat
+            </h3>
+
+            <p>
+                Le modèle produit une prédiction ou réponse.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <h3>
+            Exemple simple
+        </h3>
+
+        <p>
+
+            Pour entraîner un système capable de reconnaître
+            des chats, on peut lui fournir de nombreuses
+            images correctement identifiées. Le modèle
+            recherche des caractéristiques et des régularités
+            dans ces données. Lorsqu'une nouvelle image
+            est présentée, il peut alors produire une
+            prédiction.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 4 — DONNEES
+===================================================== -->
+
+<section
+    class="section"
+    id="donnees"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            04
+        </div>
+
+        <h2>
+            Les données : le carburant de l'IA
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Les données jouent un rôle fondamental dans
+        de nombreux systèmes d'intelligence artificielle.
+        Elles peuvent prendre différentes formes :
+        texte, images, vidéos, sons, chiffres ou données
+        provenant de capteurs.
+
+    </p>
+
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-file-lines"></i>
+
+            <h3>
+                Données textuelles
+            </h3>
+
+            <p>
+
+                Documents, articles, conversations,
+                livres, descriptions et autres contenus
+                textuels.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-image"></i>
+
+            <h3>
+                Données visuelles
+            </h3>
+
+            <p>
+
+                Photographies, illustrations, scanners
+                et images utilisées pour entraîner
+                ou analyser des modèles.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-chart-simple"></i>
+
+            <h3>
+                Données numériques
+            </h3>
+
+            <p>
+
+                Prix, ventes, statistiques, mesures,
+                températures et autres informations
+                quantitatives.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <h3>
+            Qualité des données
+        </h3>
+
+        <p>
+
+            Une grande quantité de données ne garantit
+            pas automatiquement un bon résultat. Les
+            données doivent être pertinentes, suffisamment
+            représentatives et correctement préparées
+            pour la tâche étudiée.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 5 — MACHINE LEARNING
+===================================================== -->
+
+<section
+    class="section"
+    id="machine"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            05
+        </div>
+
+        <h2>
+            Comprendre le Machine Learning
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Le <strong>Machine Learning</strong>, ou
+        apprentissage automatique, est une branche
+        importante de l'intelligence artificielle.
+        Il permet à un système d'apprendre des relations
+        à partir de données au lieu de programmer
+        manuellement chaque règle.
+
+    </p>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Type
+                    </th>
+
+                    <th>
+                        Principe
+                    </th>
+
+                    <th>
+                        Exemple
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        Apprentissage supervisé
+                    </td>
+
+                    <td>
+                        Le modèle apprend à partir de données
+                        accompagnées de réponses connues.
+                    </td>
+
+                    <td>
+                        Classification d'emails.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Apprentissage non supervisé
+                    </td>
+
+                    <td>
+                        Le modèle recherche des structures
+                        ou groupes dans les données.
+                    </td>
+
+                    <td>
+                        Regrouper des clients.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Apprentissage par renforcement
+                    </td>
+
+                    <td>
+                        Le système apprend en fonction
+                        de récompenses et de pénalités.
+                    </td>
+
+                    <td>
+                        Jeux et contrôle de systèmes.
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 6 — RESEAUX NEURONAUX
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="number">
+            06
+        </div>
+
+        <h2>
+            Les réseaux neuronaux artificiels
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Les réseaux neuronaux artificiels sont des modèles
+        inspirés de manière générale du fonctionnement
+        des neurones biologiques. Ils sont constitués
+        de couches de calcul permettant de transformer
+        progressivement les informations reçues.
+
+    </p>
+
+
+    <img
+        class="lesson-image"
+        src="images/reseau-neuronal.jpg"
+        alt="Réseau neuronal artificiel"
+    >
+
+
+    <div class="lesson-list">
+
+
+        <div class="lesson">
+
+            <h3>
+                Couche d'entrée
+            </h3>
+
+            <p>
+
+                Elle reçoit les données fournies au modèle.
+
+            </p>
+
+        </div>
+
+
+        <div class="lesson">
+
+            <h3>
+                Couches intermédiaires
+            </h3>
+
+            <p>
+
+                Elles effectuent différentes transformations
+                mathématiques sur les informations.
+
+            </p>
+
+        </div>
+
+
+        <div class="lesson">
+
+            <h3>
+                Couche de sortie
+            </h3>
+
+            <p>
+
+                Elle produit le résultat attendu par
+                la tâche du modèle.
+
+            </p>
+
+        </div>
+
+
+        <div class="lesson">
+
+            <h3>
+                Paramètres
+            </h3>
+
+            <p>
+
+                Les paramètres sont ajustés pendant
+                l'entraînement afin d'améliorer les résultats.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 7 — IA GENERATIVE
+===================================================== -->
+
+<section
+    class="section"
+    id="generative"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            07
+        </div>
+
+        <h2>
+            Découvrir l'IA générative
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        L'IA générative désigne des systèmes capables
+        de produire de nouveaux contenus à partir
+        d'instructions ou de données d'entrée.
+        Elle est devenue l'une des applications
+        les plus visibles de l'intelligence artificielle.
+
+    </p>
+
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-pen-nib"></i>
+
+            <h3>
+                Génération de texte
+            </h3>
+
+            <p>
+
+                Création, résumé, reformulation,
+                traduction et assistance rédactionnelle.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-image"></i>
+
+            <h3>
+                Génération d'images
+            </h3>
+
+            <p>
+
+                Création d'images à partir de descriptions
+                textuelles ou modification d'images existantes.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-code"></i>
+
+            <h3>
+                Génération de code
+            </h3>
+
+            <p>
+
+                Assistance dans la création, l'explication
+                et la correction de programmes informatiques.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <h3>
+            ⚠️ Une réponse IA doit être vérifiée
+        </h3>
+
+        <p>
+
+            Un système d'IA générative peut produire une
+            réponse convaincante mais incorrecte. L'utilisateur
+            doit donc vérifier les informations importantes,
+            surtout lorsqu'elles concernent des décisions
+            professionnelles, financières, juridiques,
+            médicales ou techniques.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 8 — TERMINOLOGIE
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="number">
+            08
+        </div>
+
+        <h2>
+            Les notions essentielles à connaître
+        </h2>
+
+    </div>
+
+
+    <div class="terms">
+
+
+        <div class="term">
+
+            <h3>
+                Algorithme
+            </h3>
+
+            <p>
+
+                Ensemble d'étapes ou de méthodes permettant
+                de résoudre un problème ou d'effectuer
+                un traitement.
+
+            </p>
+
+        </div>
+
+
+        <div class="term">
+
+            <h3>
+                Modèle
+            </h3>
+
+            <p>
+
+                Système entraîné ou configuré pour réaliser
+                une tâche à partir d'informations fournies.
+
+            </p>
+
+        </div>
+
+
+        <div class="term">
+
+            <h3>
+                Entraînement
+            </h3>
+
+            <p>
+
+                Processus durant lequel les paramètres
+                d'un modèle sont ajustés à partir
+                de données.
+
+            </p>
+
+        </div>
+
+
+        <div class="term">
+
+            <h3>
+                Prompt
+            </h3>
+
+            <p>
+
+                Instruction donnée à un système d'IA
+                générative afin d'obtenir un résultat.
+
+            </p>
+
+        </div>
+
+
+        <div class="term">
+
+            <h3>
+                Paramètre
+            </h3>
+
+            <p>
+
+                Valeur interne ajustée pendant l'apprentissage
+                d'un modèle.
+
+            </p>
+
+        </div>
+
+
+        <div class="term">
+
+            <h3>
+                Inférence
+            </h3>
+
+            <p>
+
+                Utilisation d'un modèle entraîné pour
+                produire une prédiction ou une réponse.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 9 — APPLICATIONS
+===================================================== -->
+
+<section
+    class="section"
+    id="applications"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            09
+        </div>
+
+        <h2>
+            Les applications de l'IA
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        L'intelligence artificielle est utilisée dans
+        de nombreux secteurs. Son intérêt dépend surtout
+        du problème à résoudre, de la qualité des données
+        et de la manière dont la technologie est intégrée
+        dans le travail humain.
+
+    </p>
+
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-building"></i>
+
+            <h3>
+                Entreprises
+            </h3>
+
+            <p>
+
+                Automatisation, analyse de données,
+                assistance aux employés et optimisation
+                des processus.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-chart-line"></i>
+
+            <h3>
+                Finance
+            </h3>
+
+            <p>
+
+                Analyse de données, détection d'anomalies,
+                évaluation de risques et automatisation.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+            <h3>
+                Éducation
+            </h3>
+
+            <p>
+
+                Tutorat personnalisé, création d'exercices,
+                résumé et assistance à l'apprentissage.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-tractor"></i>
+
+            <h3>
+                Agriculture
+            </h3>
+
+            <p>
+
+                Analyse d'images, prévision, suivi des
+                cultures et optimisation de certaines
+                opérations agricoles.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <h3>
+                Cybersécurité
+            </h3>
+
+            <p>
+
+                Détection d'activités inhabituelles,
+                analyse de journaux et assistance
+                à la surveillance.
+
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <i class="fa-solid fa-bullhorn"></i>
+
+            <h3>
+                Marketing
+            </h3>
+
+            <p>
+
+                Analyse de campagnes, segmentation,
+                création de contenu et personnalisation.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 10 — OUTILS IA
+===================================================== -->
+
+<section
+    class="section"
+    id="outils"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            10
+        </div>
+
+        <h2>
+            Découvrir les outils d'intelligence artificielle
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        L'écosystème de l'IA comprend aujourd'hui de
+        nombreux outils spécialisés. Certains sont conçus
+        pour la conversation, d'autres pour les images,
+        le code, l'audio, la vidéo ou l'analyse de données.
+
+    </p>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Catégorie
+                    </th>
+
+                    <th>
+                        Utilisation
+                    </th>
+
+                    <th>
+                        Exemple de tâche
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        Assistants IA
+                    </td>
+
+                    <td>
+                        Questions, rédaction et analyse
+                    </td>
+
+                    <td>
+                        Préparer un document.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        IA image
+                    </td>
+
+                    <td>
+                        Création et transformation visuelle
+                    </td>
+
+                    <td>
+                        Créer une illustration.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        IA code
+                    </td>
+
+                    <td>
+                        Développement informatique
+                    </td>
+
+                    <td>
+                        Expliquer ou corriger du code.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        IA audio
+                    </td>
+
+                    <td>
+                        Voix, transcription et traitement audio
+                    </td>
+
+                    <td>
+                        Transformer une voix en texte.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        IA vidéo
+                    </td>
+
+                    <td>
+                        Création et modification vidéo
+                    </td>
+
+                    <td>
+                        Générer une séquence vidéo.
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 11 — PROMPT
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="number">
+            11
+        </div>
+
+        <h2>
+            Les bases du Prompt Engineering
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Pour utiliser efficacement une IA générative,
+        il est important de savoir formuler correctement
+        ses instructions. Une demande claire donne
+        généralement de meilleures conditions pour obtenir
+        un résultat utile.
+
+    </p>
+
+
+    <div class="steps">
+
+
+        <div class="step">
+
+            <div class="step-number">
+                1
+            </div>
+
+            <h3>
+                Contexte
+            </h3>
+
+            <p>
+                Expliquez la situation.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                2
+            </div>
+
+            <h3>
+                Objectif
+            </h3>
+
+            <p>
+                Dites ce que vous voulez obtenir.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                3
+            </div>
+
+            <h3>
+                Contraintes
+            </h3>
+
+            <p>
+                Précisez les limites.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                4
+            </div>
+
+            <h3>
+                Format
+            </h3>
+
+            <p>
+                Indiquez la forme souhaitée.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <h3>
+            Exemple de bonne instruction
+        </h3>
+
+        <p>
+
+            Au lieu d'écrire simplement :
+            « Explique-moi le marketing »,
+            une instruction plus précise peut demander
+            une explication destinée à un débutant,
+            avec des exemples concrets et une structure
+            en plusieurs parties.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 12 — ETHIQUE
+===================================================== -->
+
+<section
+    class="section"
+    id="ethique"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            12
+        </div>
+
+        <h2>
+            Utiliser l'IA de manière responsable
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        L'intelligence artificielle offre de nombreuses
+        possibilités, mais son utilisation doit rester
+        responsable. Il est important de comprendre
+        ses limites et les risques liés à l'utilisation
+        des données et des résultats produits.
+
+    </p>
+
+
+    <div class="lesson-list">
+
+
+        <div class="lesson">
+
+            <h3>
+                🔐 Protection des données
+            </h3>
+
+            <p>
+
+                Évitez de transmettre des informations
+                sensibles ou confidentielles à un outil
+                d'IA sans comprendre les conditions
+                d'utilisation du service.
+
+            </p>
+
+        </div>
+
+
+        <div class="lesson">
+
+            <h3>
+                🔎 Vérification
+            </h3>
+
+            <p>
+
+                Les réponses produites doivent être
+                vérifiées lorsqu'elles servent à prendre
+                des décisions importantes.
+
+            </p>
+
+        </div>
+
+
+        <div class="lesson">
+
+            <h3>
+                ⚖️ Biais
+            </h3>
+
+            <p>
+
+                Les modèles peuvent reproduire certains
+                biais présents dans les données utilisées
+                pour leur développement.
+
+            </p>
+
+        </div>
+
+
+        <div class="lesson">
+
+            <h3>
+                👤 Intervention humaine
+            </h3>
+
+            <p>
+
+                L'IA doit être utilisée comme un outil
+                d'assistance et non comme une raison
+                d'abandonner systématiquement le jugement
+                humain.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 13 — VIDEO
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="number">
+            13
+        </div>
+
+        <h2>
+            Vidéo — Comprendre l'IA en quelques minutes
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Regardez cette vidéo pour revoir les principales
+        notions abordées dans ce premier chapitre.
+
+    </p>
+
+
+    <div class="video-box">
+
+        <video
+            controls
+            preload="metadata"
+        >
+
+            <source
+                src="videos/introduction-ia.mp4"
+                type="video/mp4"
+            >
+
+            Votre navigateur ne supporte pas la lecture
+            de cette vidéo.
+
+        </video>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUIZ
+===================================================== -->
+
+<section
+    class="quiz"
+    id="quiz"
+>
+
+    <div class="quiz-header">
+
+        <i class="fa-solid fa-circle-question"></i>
+
+        <h2>
+            Quiz — Chapitre 1
+        </h2>
+
+        <p>
+
+            Répondez correctement à au moins
+            70 % des questions pour valider
+            ce chapitre.
+
+        </p>
+
+    </div>
+
+
+
+    <!-- QUESTION 1 -->
+
+    <div class="question">
+
+        <h3>
+            1. Que signifie IA ?
+        </h3>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q1"
+                value="a"
+            >
+
+            Intelligence Artificielle
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q1"
+                value="b"
+            >
+
+            Information Automatique
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q1"
+                value="c"
+            >
+
+            Internet Avancé
+
+        </label>
+
+    </div>
+
+
+
+    <!-- QUESTION 2 -->
+
+    <div class="question">
+
+        <h3>
+            2. Quel élément joue un rôle fondamental
+            dans de nombreux systèmes d'IA ?
+        </h3>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q2"
+                value="a"
+            >
+
+            Les données
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q2"
+                value="b"
+            >
+
+            Les câbles uniquement
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q2"
+                value="c"
+            >
+
+            Les écrans uniquement
+
+        </label>
+
+    </div>
+
+
+
+    <!-- QUESTION 3 -->
+
+    <div class="question">
+
+        <h3>
+            3. Qu'est-ce que le Machine Learning ?
+        </h3>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q3"
+                value="a"
+            >
+
+            Une branche de l'IA permettant à des systèmes
+            d'apprendre à partir de données.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q3"
+                value="b"
+            >
+
+            Un système uniquement destiné aux jeux vidéo.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q3"
+                value="c"
+            >
+
+            Un langage de programmation obligatoire.
+
+        </label>
+
+    </div>
+
+
+
+    <!-- QUESTION 4 -->
+
+    <div class="question">
+
+        <h3>
+            4. Que peut produire une IA générative ?
+        </h3>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q4"
+                value="a"
+            >
+
+            Du texte, des images ou du code selon
+            les capacités du système.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q4"
+                value="b"
+            >
+
+            Uniquement des calculs simples.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q4"
+                value="c"
+            >
+
+            Uniquement des fichiers Excel.
+
+        </label>
+
+    </div>
+
+
+
+    <!-- QUESTION 5 -->
+
+    <div class="question">
+
+        <h3>
+            5. Pourquoi faut-il vérifier les réponses
+            produites par une IA ?
+        </h3>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q5"
+                value="a"
+            >
+
+            Parce qu'une IA peut produire des informations
+            incorrectes ou incomplètes.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q5"
+                value="b"
+            >
+
+            Parce qu'une IA ne produit jamais de réponse.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q5"
+                value="c"
+            >
+
+            Parce que toutes les IA sont des moteurs de recherche.
+
+        </label>
+
+    </div>
+
+
+
+    <button
+        class="quiz-button"
+        onclick="verifierQuiz()"
+    >
+
+        <i class="fa-solid fa-check"></i>
+
+        Valider le quiz
+
+    </button>
+
+
+    <div
+        class="quiz-result"
+        id="quizResult"
+    ></div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <h3>
+        BMJ SERVICE
+    </h3>
+
+    <p>
+        Intelligence Artificielle — Chapitre 1
+    </p>
+
+    <p>
+        Apprenez aujourd'hui. Innovez demain.
+    </p>
+
+</footer>
+
+
+
+<!-- =====================================================
+     POPUP VALIDATION
+===================================================== -->
+
+<div
+    class="popup"
+    id="successPopup"
+>
+
+    <div class="popup-box">
+
+        <div class="popup-icon">
+
+            <i class="fa-solid fa-brain"></i>
+
+        </div>
+
+
+        <h2>
+            Chapitre validé !
+        </h2>
+
+
+        <p>
+
+            Félicitations ! Vous avez réussi le
+            quiz du chapitre 1.
+
+            <br><br>
+
+            Votre progression Intelligence Artificielle
+            a été mise à jour.
+
+        </p>
+
+
+        <button
+            class="popup-button"
+            onclick="retourFormation()"
+        >
+
+            Continuer la formation
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   BMJ SERVICE
+   CHAPITRE 1 — INTELLIGENCE ARTIFICIELLE
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const utilisateur = JSON.parse(
+
+            localStorage.getItem(
+                "bmj_current_user"
+            )
+
+        );
+
+
+        if (!utilisateur) {
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+
+        }
+
+
+        const photo =
+            document.getElementById(
+                "photoUtilisateur"
+            );
+
+
+        const nom =
+            document.getElementById(
+                "nomUtilisateur"
+            );
+
+
+        if (photo) {
+
+            photo.src =
+                utilisateur.photo ||
+                "images/user.png";
+
+        }
+
+
+        if (nom) {
+
+            nom.textContent =
+
+                utilisateur.nom ||
+
+                utilisateur.name ||
+
+                "Apprenant";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+function verifierQuiz() {
+
+    const bonnesReponses = {
+
+        q1: "a",
+
+        q2: "a",
+
+        q3: "a",
+
+        q4: "a",
+
+        q5: "a"
+
+    };
+
+
+    let score = 0;
+
+    let total =
+        Object.keys(
+            bonnesReponses
+        ).length;
+
+
+    for (
+        let question in bonnesReponses
+    ) {
+
+        const reponse =
+            document.querySelector(
+                'input[name="' +
+                question +
+                '"]:checked'
+            );
+
+
+        if (
+            reponse &&
+            reponse.value ===
+            bonnesReponses[question]
+        ) {
+
+            score++;
+
+        }
+
+    }
+
+
+    const pourcentage = Math.round(
+
+        (score / total) * 100
+
+    );
+
+
+    const resultat =
+        document.getElementById(
+            "quizResult"
+        );
+
+
+    resultat.style.display =
+        "block";
+
+
+    if (pourcentage >= 70) {
+
+        resultat.style.background =
+            "#eef2ff";
+
+        resultat.style.color =
+            "#17275c";
+
+
+        resultat.innerHTML =
+
+            "🎉 Excellent ! Vous avez obtenu " +
+
+            pourcentage +
+
+            "%. Le chapitre est validé.";
+
+
+        validerChapitreIA();
+
+
+    } else {
+
+        resultat.style.background =
+            "#fff0f0";
+
+        resultat.style.color =
+            "#9b2525";
+
+
+        resultat.innerHTML =
+
+            "❌ Votre score est de " +
+
+            pourcentage +
+
+            "%. Vous devez obtenir au moins 70 %. Relisez les leçons puis réessayez.";
+
+    }
+
+}
+
+
+/* =========================================================
+   VALIDATION CHAPITRE 1 — IA
+========================================================= */
+
+function validerChapitreIA() {
+
+    const utilisateur =
+        JSON.parse(
+
+            localStorage.getItem(
+                "bmj_current_user"
+            )
+
+        );
+
+
+    if (!utilisateur) {
+
+        window.location.href =
+            "connexion.html";
+
+        return;
+
+    }
+
+
+    const identifiant =
+
+        utilisateur.id_bmj ||
+
+        utilisateur.id ||
+
+        utilisateur.email;
+
+
+    const cle =
+
+        "ia_progression_" +
+
+        identifiant;
+
+
+    let chapitres = JSON.parse(
+
+        localStorage.getItem(
+            cle
+        )
+
+    ) || [];
+
+
+    /*
+       CHAPITRE 1 = INDEX 0
+    */
+
+    if (!chapitres.includes(0)) {
+
+        chapitres.push(0);
+
+    }
+
+
+    chapitres.sort(
+        function(a,b) {
+            return a-b;
+        }
+    );
+
+
+    localStorage.setItem(
+
+        cle,
+
+        JSON.stringify(
+            chapitres
+        )
+
+    );
+
+
+    /*
+       PROGRESSION DU DOMAINE IA
+
+       5 chapitres au total
+    */
+
+    utilisateur.progressionIA =
+
+        Math.round(
+            (chapitres.length / 5) * 100
+        );
+
+
+    localStorage.setItem(
+
+        "bmj_current_user",
+
+        JSON.stringify(
+            utilisateur
+        )
+
+    );
+
+
+    document.getElementById(
+        "successPopup"
+    ).style.display =
+        "flex";
+
+}
+
+
+/* =========================================================
+   RETOUR FORMATION
+========================================================= */
+
+function retourFormation() {
+
+    window.location.href =
+        "ia.html";
+
+}
+
+</script>
+
+
+</body>
+
+</html>

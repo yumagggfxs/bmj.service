@@ -1,0 +1,3180 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Les Outils IA | BMJ SERVICE</title>
+
+<link rel="icon" type="image/png" href="images/logo.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+>
+
+<style>
+
+/* =========================================================
+   BMJ SERVICE
+   CHAPITRE 2 — LES OUTILS D'INTELLIGENCE ARTIFICIELLE
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',Arial,sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#f4f6fb;
+    color:#252b3a;
+    line-height:1.7;
+}
+
+:root{
+    --blue:#3157d5;
+    --dark-blue:#17275c;
+    --purple:#7047d7;
+    --cyan:#159fbd;
+    --gold:#d4af37;
+    --light-blue:#eef2ff;
+    --light-purple:#f4f0ff;
+    --white:#fff;
+    --gray:#697181;
+    --dark:#12182d;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:72px;
+
+    background:rgba(255,255,255,.97);
+    backdrop-filter:blur(15px);
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:0 40px;
+
+    box-shadow:0 5px 25px rgba(20,30,70,.08);
+
+    z-index:1000;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.logo img{
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    object-fit:cover;
+}
+
+.logo h2{
+    color:var(--blue);
+    font-size:21px;
+    font-weight:800;
+}
+
+.logo span{
+    color:var(--gold);
+}
+
+.user-area{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.user-area img{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid var(--gold);
+}
+
+.user-area h4{
+    color:var(--dark-blue);
+    font-size:13px;
+}
+
+.user-area small{
+    color:#777;
+    font-size:11px;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+    margin-top:72px;
+    min-height:530px;
+
+    padding:70px 8%;
+
+    display:flex;
+    align-items:center;
+
+    position:relative;
+    overflow:hidden;
+
+    color:white;
+
+    background:
+    linear-gradient(
+        120deg,
+        rgba(15,27,78,.97),
+        rgba(49,87,213,.86),
+        rgba(112,71,215,.70)
+    ),
+    url("images/outils-ia.jpg");
+
+    background-size:cover;
+    background-position:center;
+}
+
+.hero::before{
+    content:"";
+
+    position:absolute;
+
+    width:500px;
+    height:500px;
+
+    border-radius:50%;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    right:-180px;
+    top:-200px;
+}
+
+.hero::after{
+    content:"";
+
+    position:absolute;
+
+    width:260px;
+    height:260px;
+
+    border-radius:50%;
+
+    border:1px solid rgba(255,255,255,.10);
+
+    right:100px;
+    bottom:-180px;
+}
+
+.hero-content{
+    max-width:900px;
+    position:relative;
+    z-index:2;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+
+    padding:9px 18px;
+
+    border-radius:30px;
+
+    background:var(--gold);
+
+    color:var(--dark-blue);
+
+    font-size:12px;
+    font-weight:800;
+}
+
+.hero h1{
+    font-size:52px;
+    line-height:1.15;
+
+    margin:23px 0 18px;
+
+    font-weight:800;
+}
+
+.hero h1 span{
+    color:#f4d76e;
+}
+
+.hero p{
+    max-width:780px;
+
+    font-size:17px;
+
+    color:rgba(255,255,255,.9);
+}
+
+.hero-meta{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+
+    margin-top:28px;
+}
+
+.meta{
+    padding:9px 15px;
+
+    background:rgba(255,255,255,.10);
+
+    border:1px solid rgba(255,255,255,.20);
+
+    border-radius:30px;
+
+    font-size:12px;
+}
+
+.meta i{
+    color:#f4d76e;
+    margin-right:5px;
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+.quick-nav{
+    width:86%;
+
+    margin:-30px auto 40px;
+
+    background:white;
+
+    border-radius:20px;
+
+    box-shadow:0 12px 35px rgba(20,30,70,.09);
+
+    padding:18px;
+
+    position:relative;
+    z-index:10;
+
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.quick-nav a{
+    text-decoration:none;
+
+    color:var(--dark-blue);
+
+    background:#f3f5ff;
+
+    padding:9px 15px;
+
+    border-radius:25px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    transition:.3s;
+}
+
+.quick-nav a:hover{
+    background:var(--blue);
+    color:white;
+    transform:translateY(-2px);
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+    width:86%;
+    max-width:1250px;
+    margin:auto;
+}
+
+.section{
+    background:white;
+
+    border-radius:25px;
+
+    padding:42px;
+
+    margin-bottom:30px;
+
+    box-shadow:0 10px 30px rgba(30,40,90,.06);
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    margin-bottom:22px;
+}
+
+.section-title .number{
+    width:48px;
+    height:48px;
+    min-width:48px;
+
+    border-radius:15px;
+
+    background:var(--light-blue);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:var(--blue);
+
+    font-weight:800;
+}
+
+.section-title h2{
+    color:var(--dark-blue);
+    font-size:27px;
+}
+
+.section p{
+    color:var(--gray);
+    margin-bottom:16px;
+}
+
+.section strong{
+    color:var(--dark-blue);
+}
+
+
+/* =========================================================
+   TOOL GRID
+========================================================= */
+
+.tool-grid{
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:18px;
+
+    margin-top:28px;
+}
+
+.tool{
+    padding:27px;
+
+    border-radius:20px;
+
+    background:#f8f9ff;
+
+    border:1px solid #e3e7f6;
+
+    transition:.3s;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.tool::after{
+    content:"";
+
+    position:absolute;
+
+    width:90px;
+    height:90px;
+
+    border-radius:50%;
+
+    background:rgba(49,87,213,.05);
+
+    right:-35px;
+    bottom:-35px;
+}
+
+.tool:hover{
+    transform:translateY(-6px);
+
+    border-color:var(--blue);
+
+    box-shadow:0 15px 30px rgba(49,87,213,.10);
+}
+
+.tool-icon{
+    width:52px;
+    height:52px;
+
+    border-radius:16px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:var(--light-blue);
+
+    color:var(--blue);
+
+    font-size:22px;
+
+    margin-bottom:17px;
+}
+
+.tool h3{
+    color:var(--dark-blue);
+    font-size:17px;
+    margin-bottom:8px;
+}
+
+.tool p{
+    font-size:13px;
+    margin:0;
+}
+
+
+/* =========================================================
+   HIGHLIGHT
+========================================================= */
+
+.highlight{
+    padding:25px;
+
+    border-radius:20px;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--dark-blue),
+        var(--blue),
+        var(--purple)
+    );
+
+    color:white;
+
+    margin:25px 0;
+}
+
+.highlight h3{
+    color:#f4d76e;
+    margin-bottom:8px;
+}
+
+.highlight p{
+    color:rgba(255,255,255,.88);
+    margin:0;
+}
+
+
+/* =========================================================
+   USE CASE
+========================================================= */
+
+.use-case{
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:18px;
+
+    margin-top:25px;
+}
+
+.use{
+    padding:21px;
+
+    border-radius:17px;
+
+    background:#f8f9ff;
+
+    border-left:4px solid var(--blue);
+}
+
+.use h3{
+    color:var(--dark-blue);
+
+    font-size:15px;
+
+    margin-bottom:6px;
+}
+
+.use h3 i{
+    color:var(--purple);
+
+    margin-right:7px;
+}
+
+.use p{
+    font-size:13px;
+
+    margin:0;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrapper{
+    overflow-x:auto;
+    margin-top:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:750px;
+}
+
+th{
+    background:var(--dark-blue);
+
+    color:white;
+
+    padding:14px;
+
+    text-align:left;
+
+    font-size:13px;
+}
+
+td{
+    padding:14px;
+
+    border-bottom:1px solid #e5e8f1;
+
+    color:var(--gray);
+
+    font-size:13px;
+}
+
+tr:nth-child(even){
+    background:#f8f9ff;
+}
+
+
+/* =========================================================
+   STEPS
+========================================================= */
+
+.steps{
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:15px;
+
+    margin-top:25px;
+}
+
+.step{
+    text-align:center;
+
+    padding:23px 15px;
+
+    background:#f8f9ff;
+
+    border-radius:18px;
+}
+
+.step-number{
+    width:42px;
+    height:42px;
+
+    margin:auto auto 12px;
+
+    border-radius:50%;
+
+    background:var(--blue);
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-weight:800;
+}
+
+.step h3{
+    color:var(--dark-blue);
+
+    font-size:14px;
+
+    margin-bottom:5px;
+}
+
+.step p{
+    font-size:12px;
+    margin:0;
+}
+
+
+/* =========================================================
+   PROMPT BOX
+========================================================= */
+
+.prompt-box{
+    margin-top:25px;
+
+    padding:25px;
+
+    border-radius:20px;
+
+    background:#10162d;
+
+    color:white;
+}
+
+.prompt-label{
+    display:inline-block;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    background:var(--purple);
+
+    font-size:11px;
+
+    font-weight:700;
+
+    margin-bottom:12px;
+}
+
+.prompt-box p{
+    color:#dce1f4;
+
+    font-size:14px;
+
+    margin:0;
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.video-box{
+    margin-top:25px;
+
+    background:#101421;
+
+    border-radius:22px;
+
+    padding:12px;
+
+    overflow:hidden;
+}
+
+.video-box video{
+    width:100%;
+
+    max-height:430px;
+
+    display:block;
+
+    border-radius:15px;
+
+    background:#000;
+}
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+.quiz{
+    background:white;
+
+    border-radius:25px;
+
+    padding:42px;
+
+    margin:30px 0;
+
+    box-shadow:0 10px 30px rgba(30,40,90,.07);
+}
+
+.quiz-header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.quiz-header i{
+    font-size:40px;
+
+    color:var(--purple);
+
+    margin-bottom:10px;
+}
+
+.quiz-header h2{
+    color:var(--dark-blue);
+    font-size:28px;
+}
+
+.quiz-header p{
+    color:var(--gray);
+    font-size:13px;
+}
+
+.question{
+    padding:22px;
+
+    border-radius:18px;
+
+    background:#f8f9ff;
+
+    margin-bottom:18px;
+}
+
+.question h3{
+    color:var(--dark-blue);
+
+    font-size:15px;
+
+    margin-bottom:14px;
+}
+
+.option{
+    display:block;
+
+    background:white;
+
+    border:1px solid #e1e5f0;
+
+    border-radius:12px;
+
+    padding:11px 14px;
+
+    margin:8px 0;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    transition:.25s;
+}
+
+.option:hover{
+    border-color:var(--blue);
+
+    background:var(--light-blue);
+}
+
+.option input{
+    margin-right:9px;
+
+    accent-color:var(--blue);
+}
+
+.quiz-button{
+    display:block;
+
+    margin:25px auto 0;
+
+    border:none;
+
+    padding:15px 30px;
+
+    border-radius:35px;
+
+    background:var(--blue);
+
+    color:white;
+
+    cursor:pointer;
+
+    font-weight:700;
+
+    transition:.3s;
+}
+
+.quiz-button:hover{
+    background:var(--purple);
+
+    transform:translateY(-3px);
+}
+
+.quiz-result{
+    display:none;
+
+    margin-top:20px;
+
+    padding:20px;
+
+    border-radius:17px;
+
+    text-align:center;
+
+    font-weight:600;
+}
+
+
+/* =========================================================
+   POPUP
+========================================================= */
+
+.popup{
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(5,10,30,.75);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+    padding:20px;
+}
+
+.popup-box{
+    width:440px;
+
+    max-width:100%;
+
+    background:white;
+
+    border-radius:28px;
+
+    padding:38px 30px;
+
+    text-align:center;
+
+    box-shadow:0 30px 70px rgba(0,0,0,.3);
+
+    animation:popup .3s ease;
+}
+
+.popup-icon{
+    width:78px;
+    height:78px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        135deg,
+        #d4af37,
+        #f6dc75
+    );
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    font-size:35px;
+
+    color:var(--dark-blue);
+}
+
+.popup-box h2{
+    color:var(--dark-blue);
+
+    margin:18px 0 10px;
+}
+
+.popup-box p{
+    color:var(--gray);
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+.popup-button{
+    margin-top:20px;
+
+    padding:13px 25px;
+
+    border:none;
+
+    border-radius:30px;
+
+    background:var(--blue);
+
+    color:white;
+
+    cursor:pointer;
+
+    font-weight:700;
+}
+
+@keyframes popup{
+
+    from{
+        transform:scale(.75);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+    margin-top:60px;
+
+    padding:40px 20px;
+
+    text-align:center;
+
+    background:#111d48;
+
+    color:white;
+}
+
+footer h3{
+    color:#f4d76e;
+    margin-bottom:7px;
+}
+
+footer p{
+    color:rgba(255,255,255,.7);
+    font-size:12px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:950px){
+
+    .tool-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .steps{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:700px){
+
+    header{
+        padding:0 15px;
+    }
+
+    .logo h2{
+        font-size:18px;
+    }
+
+    .user-area small{
+        display:none;
+    }
+
+    .hero{
+        padding:55px 25px;
+        min-height:580px;
+    }
+
+    .hero h1{
+        font-size:36px;
+    }
+
+    .hero p{
+        font-size:15px;
+    }
+
+    .main,
+    .quick-nav{
+        width:92%;
+    }
+
+    .section,
+    .quiz{
+        padding:27px 22px;
+    }
+
+    .tool-grid,
+    .use-case,
+    .steps{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+    <div class="logo">
+
+        <img
+            src="images/logo.png"
+            alt="BMJ SERVICE"
+        >
+
+        <h2>
+            BMJ <span>SERVICE</span>
+        </h2>
+
+    </div>
+
+
+    <div class="user-area">
+
+        <img
+            id="photoUtilisateur"
+            src="images/user.png"
+            alt="Utilisateur"
+        >
+
+        <div>
+
+            <h4 id="nomUtilisateur">
+                Apprenant
+            </h4>
+
+            <small>
+                Intelligence Artificielle
+            </small>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="badge">
+
+            <i class="fa-solid fa-robot"></i>
+
+            CHAPITRE 2 — OUTILS IA
+
+        </span>
+
+
+        <h1>
+
+            Découvrez les
+
+            <span>
+                Outils d'Intelligence Artificielle
+            </span>
+
+        </h1>
+
+
+        <p>
+
+            Explorez les principales catégories d'outils
+            IA, leurs usages, leurs possibilités et leurs
+            limites. Apprenez à choisir le bon outil selon
+            votre objectif et à intégrer l'intelligence
+            artificielle dans votre travail.
+
+        </p>
+
+
+        <div class="hero-meta">
+
+            <span class="meta">
+
+                <i class="fa-solid fa-toolbox"></i>
+
+                Outils IA
+
+            </span>
+
+
+            <span class="meta">
+
+                <i class="fa-solid fa-signal"></i>
+
+                Niveau débutant
+
+            </span>
+
+
+            <span class="meta">
+
+                <i class="fa-solid fa-laptop-code"></i>
+
+                Applications pratiques
+
+            </span>
+
+
+            <span class="meta">
+
+                <i class="fa-solid fa-certificate"></i>
+
+                Quiz de validation
+
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav class="quick-nav">
+
+    <a href="#introduction">
+        Introduction
+    </a>
+
+    <a href="#categories">
+        Catégories
+    </a>
+
+    <a href="#texte">
+        Texte
+    </a>
+
+    <a href="#image">
+        Images
+    </a>
+
+    <a href="#code">
+        Code
+    </a>
+
+    <a href="#audio">
+        Audio
+    </a>
+
+    <a href="#video">
+        Vidéo
+    </a>
+
+    <a href="#choisir">
+        Choisir
+    </a>
+
+    <a href="#workflow">
+        Workflow
+    </a>
+
+    <a href="#quiz">
+        Quiz
+    </a>
+
+</nav>
+
+
+
+<main class="main">
+
+
+<!-- =====================================================
+     SECTION 1
+===================================================== -->
+
+<section
+    class="section"
+    id="introduction"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            01
+        </div>
+
+        <h2>
+            Pourquoi utiliser des outils IA ?
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        L'intelligence artificielle est devenue accessible
+        à travers de nombreux outils destinés aussi bien
+        aux professionnels qu'aux étudiants, entrepreneurs,
+        créateurs de contenu et développeurs.
+
+    </p>
+
+
+    <p>
+
+        Ces outils peuvent aider à rechercher des idées,
+        rédiger des documents, analyser des informations,
+        générer des images, écrire du code, transcrire
+        de l'audio ou automatiser certaines tâches.
+
+    </p>
+
+
+    <p>
+
+        Cependant, l'objectif n'est pas simplement d'utiliser
+        le plus grand nombre d'outils possible. Le véritable
+        avantage consiste à choisir <strong>l'outil adapté
+        au problème</strong> et à savoir l'utiliser
+        correctement.
+
+    </p>
+
+
+    <div class="highlight">
+
+        <h3>
+            💡 L'IA comme assistant
+        </h3>
+
+        <p>
+
+            Un bon utilisateur ne demande pas seulement
+            « quelle IA utiliser ? ». Il commence par
+            identifier le résultat qu'il souhaite obtenir,
+            puis sélectionne l'outil capable de répondre
+            efficacement à ce besoin.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 2 — CATEGORIES
+===================================================== -->
+
+<section
+    class="section"
+    id="categories"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            02
+        </div>
+
+        <h2>
+            Les grandes catégories d'outils IA
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Les outils d'intelligence artificielle peuvent
+        être regroupés selon le type de tâche qu'ils
+        permettent de réaliser.
+
+    </p>
+
+
+    <div class="tool-grid">
+
+
+        <div class="tool">
+
+            <div class="tool-icon">
+
+                <i class="fa-solid fa-comments"></i>
+
+            </div>
+
+            <h3>
+                Assistants conversationnels
+            </h3>
+
+            <p>
+
+                Ils permettent de poser des questions,
+                demander des explications, rédiger des
+                textes et analyser différents contenus.
+
+            </p>
+
+        </div>
+
+
+        <div class="tool">
+
+            <div class="tool-icon">
+
+                <i class="fa-solid fa-image"></i>
+
+            </div>
+
+            <h3>
+                Génération d'images
+            </h3>
+
+            <p>
+
+                Ils peuvent créer ou transformer des
+                images à partir d'instructions textuelles
+                ou visuelles.
+
+            </p>
+
+        </div>
+
+
+        <div class="tool">
+
+            <div class="tool-icon">
+
+                <i class="fa-solid fa-code"></i>
+
+            </div>
+
+            <h3>
+                Outils de programmation
+            </h3>
+
+            <p>
+
+                Ils assistent les développeurs dans
+                l'écriture, l'explication, la recherche
+                d'erreurs et l'amélioration du code.
+
+            </p>
+
+        </div>
+
+
+        <div class="tool">
+
+            <div class="tool-icon">
+
+                <i class="fa-solid fa-microphone"></i>
+
+            </div>
+
+            <h3>
+                Outils audio
+            </h3>
+
+            <p>
+
+                Transcription, synthèse vocale,
+                traitement audio et assistance
+                à la production sonore.
+
+            </p>
+
+        </div>
+
+
+        <div class="tool">
+
+            <div class="tool-icon">
+
+                <i class="fa-solid fa-video"></i>
+
+            </div>
+
+            <h3>
+                Outils vidéo
+            </h3>
+
+            <p>
+
+                Création, montage, génération et
+                transformation de contenus vidéo
+                avec différentes technologies IA.
+
+            </p>
+
+        </div>
+
+
+        <div class="tool">
+
+            <div class="tool-icon">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+            <h3>
+                Analyse de données
+            </h3>
+
+            <p>
+
+                Certains outils permettent d'explorer,
+                résumer, visualiser et interpréter
+                des données.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 3 — TEXTE
+===================================================== -->
+
+<section
+    class="section"
+    id="texte"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            03
+        </div>
+
+        <h2>
+            Les outils IA pour le texte
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Les assistants textuels sont parmi les outils
+        d'IA les plus utilisés. Ils peuvent aider à
+        rédiger, résumer, traduire, expliquer ou
+        restructurer des informations.
+
+    </p>
+
+
+    <div class="use-case">
+
+
+        <div class="use">
+
+            <h3>
+                <i class="fa-solid fa-pen"></i>
+                Rédaction
+            </h3>
+
+            <p>
+
+                Créer un brouillon d'article, d'email,
+                de rapport, de présentation ou de
+                publication.
+
+            </p>
+
+        </div>
+
+
+        <div class="use">
+
+            <h3>
+                <i class="fa-solid fa-language"></i>
+                Traduction
+            </h3>
+
+            <p>
+
+                Traduire ou reformuler un contenu dans
+                différentes langues.
+
+            </p>
+
+        </div>
+
+
+        <div class="use">
+
+            <h3>
+                <i class="fa-solid fa-compress"></i>
+                Résumé
+            </h3>
+
+            <p>
+
+                Transformer un long contenu en synthèse
+                plus courte et structurée.
+
+            </p>
+
+        </div>
+
+
+        <div class="use">
+
+            <h3>
+                <i class="fa-solid fa-lightbulb"></i>
+                Idéation
+            </h3>
+
+            <p>
+
+                Générer des idées pour un projet,
+                une campagne, une entreprise ou
+                une formation.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="prompt-box">
+
+        <span class="prompt-label">
+            EXEMPLE DE PROMPT
+        </span>
+
+        <p>
+
+            « Agis comme un formateur débutant en
+            intelligence artificielle. Explique-moi
+            la différence entre IA, Machine Learning
+            et Deep Learning avec des exemples simples. »
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 4 — IMAGES
+===================================================== -->
+
+<section
+    class="section"
+    id="image"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            04
+        </div>
+
+        <h2>
+            Les outils IA pour créer des images
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Les générateurs d'images utilisent des modèles
+        capables de transformer des descriptions ou
+        d'autres informations en contenus visuels.
+
+    </p>
+
+
+    <div class="tool-grid">
+
+
+        <div class="tool">
+
+            <div class="tool-icon">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+
+            <h3>
+                Création
+            </h3>
+
+            <p>
+
+                Produire une illustration à partir
+                d'une description précise.
+
+            </p>
+
+        </div>
+
+
+        <div class="tool">
+
+            <div class="tool-icon">
+                <i class="fa-solid fa-pen-ruler"></i>
+            </div>
+
+            <h3>
+                Design
+            </h3>
+
+            <p>
+
+                Explorer rapidement des concepts
+                graphiques et visuels.
+
+            </p>
+
+        </div>
+
+
+        <div class="tool">
+
+            <div class="tool-icon">
+                <i class="fa-solid fa-arrows-rotate"></i>
+            </div>
+
+            <h3>
+                Transformation
+            </h3>
+
+            <p>
+
+                Modifier ou transformer une image
+                selon une instruction.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <h3>
+            🎨 La précision du prompt compte
+        </h3>
+
+        <p>
+
+            Pour obtenir une image cohérente, décrivez
+            le sujet, le contexte, l'environnement,
+            la composition et le style visuel souhaité.
+            Plus la demande est claire, plus le résultat
+            peut être orienté vers votre objectif.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 5 — CODE
+===================================================== -->
+
+<section
+    class="section"
+    id="code"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            05
+        </div>
+
+        <h2>
+            Les outils IA pour programmer
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        L'IA peut également accompagner les développeurs
+        dans différentes étapes du développement logiciel.
+        Elle peut expliquer un code, proposer une structure,
+        détecter certaines erreurs et suggérer des
+        améliorations.
+
+    </p>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Besoin
+                    </th>
+
+                    <th>
+                        Utilisation de l'IA
+                    </th>
+
+                    <th>
+                        Attention
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        Apprendre
+                    </td>
+
+                    <td>
+                        Demander une explication d'un concept.
+                    </td>
+
+                    <td>
+                        Comprendre soi-même le fonctionnement.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Écrire du code
+                    </td>
+
+                    <td>
+                        Générer une première version.
+                    </td>
+
+                    <td>
+                        Tester et relire le code.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Déboguer
+                    </td>
+
+                    <td>
+                        Analyser un message d'erreur.
+                    </td>
+
+                    <td>
+                        Vérifier que la correction est correcte.
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Optimiser
+                    </td>
+
+                    <td>
+                        Chercher des améliorations.
+                    </td>
+
+                    <td>
+                        Mesurer réellement les performances.
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <div class="prompt-box">
+
+        <span class="prompt-label">
+            EXEMPLE
+        </span>
+
+        <p>
+
+            « Analyse ce code JavaScript, explique-moi
+            pourquoi cette fonction ne fonctionne pas,
+            puis propose une correction en conservant
+            la structure actuelle du programme. »
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 6 — AUDIO
+===================================================== -->
+
+<section
+    class="section"
+    id="audio"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            06
+        </div>
+
+        <h2>
+            Les outils IA pour l'audio
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        L'intelligence artificielle est également utilisée
+        pour comprendre, transformer et générer des
+        contenus audio.
+
+    </p>
+
+
+    <div class="use-case">
+
+
+        <div class="use">
+
+            <h3>
+                <i class="fa-solid fa-file-audio"></i>
+                Transcription
+            </h3>
+
+            <p>
+
+                Transformer automatiquement un enregistrement
+                vocal en texte.
+
+            </p>
+
+        </div>
+
+
+        <div class="use">
+
+            <h3>
+                <i class="fa-solid fa-volume-high"></i>
+                Synthèse vocale
+            </h3>
+
+            <p>
+
+                Générer une voix à partir d'un texte
+                écrit.
+
+            </p>
+
+        </div>
+
+
+        <div class="use">
+
+            <h3>
+                <i class="fa-solid fa-language"></i>
+                Traduction audio
+            </h3>
+
+            <p>
+
+                Faciliter la conversion d'un contenu
+                oral vers une autre langue.
+
+            </p>
+
+        </div>
+
+
+        <div class="use">
+
+            <h3>
+                <i class="fa-solid fa-wave-square"></i>
+                Traitement sonore
+            </h3>
+
+            <p>
+
+                Certaines technologies peuvent aider
+                à nettoyer ou analyser un enregistrement.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 7 — VIDEO
+===================================================== -->
+
+<section
+    class="section"
+    id="video"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            07
+        </div>
+
+        <h2>
+            Les outils IA pour la vidéo
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Les technologies génératives permettent désormais
+        d'assister différentes étapes de production vidéo :
+        création d'idées, génération de scènes, montage,
+        sous-titrage ou transformation de contenu.
+
+    </p>
+
+
+    <div class="steps">
+
+
+        <div class="step">
+
+            <div class="step-number">
+                1
+            </div>
+
+            <h3>
+                Idée
+            </h3>
+
+            <p>
+                Définir le concept de la vidéo.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                2
+            </div>
+
+            <h3>
+                Script
+            </h3>
+
+            <p>
+                Préparer le texte et la structure.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                3
+            </div>
+
+            <h3>
+                Production
+            </h3>
+
+            <p>
+                Créer ou assembler les éléments.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                4
+            </div>
+
+            <h3>
+                Vérification
+            </h3>
+
+            <p>
+                Contrôler le résultat final.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <h3>
+            🎬 L'IA accélère, mais ne remplace pas le contrôle
+        </h3>
+
+        <p>
+
+            Une vidéo générée automatiquement peut contenir
+            des incohérences visuelles, textuelles ou sonores.
+            Une vérification humaine reste importante avant
+            publication.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 8 — CHOISIR UN OUTIL
+===================================================== -->
+
+<section
+    class="section"
+    id="choisir"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            08
+        </div>
+
+        <h2>
+            Comment choisir le bon outil IA ?
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        Le meilleur outil n'est pas nécessairement celui
+        qui possède le plus de fonctionnalités. Il doit
+        surtout correspondre au résultat recherché,
+        au budget, au niveau de l'utilisateur et aux
+        contraintes du projet.
+
+    </p>
+
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Critère
+                    </th>
+
+                    <th>
+                        Question à se poser
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr>
+
+                    <td>
+                        Objectif
+                    </td>
+
+                    <td>
+                        Quel résultat est-ce que je veux obtenir ?
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Qualité
+                    </td>
+
+                    <td>
+                        Le résultat est-il suffisamment précis ?
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Facilité
+                    </td>
+
+                    <td>
+                        L'outil est-il adapté à mon niveau ?
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Coût
+                    </td>
+
+                    <td>
+                        Existe-t-il une limite ou un abonnement ?
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Confidentialité
+                    </td>
+
+                    <td>
+                        Que deviennent les données que je fournis ?
+                    </td>
+
+                </tr>
+
+
+                <tr>
+
+                    <td>
+                        Fiabilité
+                    </td>
+
+                    <td>
+                        Puis-je vérifier facilement les résultats ?
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 9 — WORKFLOW
+===================================================== -->
+
+<section
+    class="section"
+    id="workflow"
+>
+
+    <div class="section-title">
+
+        <div class="number">
+            09
+        </div>
+
+        <h2>
+            Construire un workflow avec l'IA
+        </h2>
+
+    </div>
+
+
+    <p>
+
+        L'utilisation professionnelle de l'IA devient
+        beaucoup plus efficace lorsqu'elle est intégrée
+        dans un processus de travail organisé.
+
+    </p>
+
+
+    <div class="steps">
+
+
+        <div class="step">
+
+            <div class="step-number">
+                1
+            </div>
+
+            <h3>
+                Identifier
+            </h3>
+
+            <p>
+                Définir la tâche à réaliser.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                2
+            </div>
+
+            <h3>
+                Préparer
+            </h3>
+
+            <p>
+                Préparer les données ou instructions.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                3
+            </div>
+
+            <h3>
+                Générer
+            </h3>
+
+            <p>
+                Utiliser l'outil IA approprié.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">
+                4
+            </div>
+
+            <h3>
+                Vérifier
+            </h3>
+
+            <p>
+                Contrôler et améliorer le résultat.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="highlight">
+
+        <h3>
+            🚀 Le vrai avantage
+        </h3>
+
+        <p>
+
+            L'intérêt de l'IA ne réside pas uniquement
+            dans la génération automatique d'un résultat.
+            Sa véritable valeur apparaît lorsqu'elle
+            permet de réduire les tâches répétitives,
+            accélérer la recherche d'idées et améliorer
+            un processus de travail.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SECTION 10 — BONNES PRATIQUES
+===================================================== -->
+
+<section class="section">
+
+    <div class="section-title">
+
+        <div class="number">
+            10
+        </div>
+
+        <h2>
+            Bonnes pratiques avec les outils IA
+        </h2>
+
+    </div>
+
+
+    <div class="use-case">
+
+
+        <div class="use">
+
+            <h3>
+                🔎 Vérifier
+            </h3>
+
+            <p>
+
+                Contrôlez les informations importantes
+                avant de les utiliser ou de les publier.
+
+            </p>
+
+        </div>
+
+
+        <div class="use">
+
+            <h3>
+                🎯 Être précis
+            </h3>
+
+            <p>
+
+                Donnez suffisamment de contexte et
+                indiquez clairement votre objectif.
+
+            </p>
+
+        </div>
+
+
+        <div class="use">
+
+            <h3>
+                🔐 Protéger les données
+            </h3>
+
+            <p>
+
+                Évitez de transmettre des informations
+                confidentielles sans connaître les
+                conditions du service.
+
+            </p>
+
+        </div>
+
+
+        <div class="use">
+
+            <h3>
+                🧠 Garder son jugement
+            </h3>
+
+            <p>
+
+                Utilisez l'IA comme assistance et
+                conservez la responsabilité du résultat.
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     QUIZ
+===================================================== -->
+
+<section
+    class="quiz"
+    id="quiz"
+>
+
+    <div class="quiz-header">
+
+        <i class="fa-solid fa-circle-question"></i>
+
+        <h2>
+            Quiz — Chapitre 2
+        </h2>
+
+        <p>
+
+            Obtenez au moins 70 % pour valider
+            ce chapitre.
+
+        </p>
+
+    </div>
+
+
+
+    <!-- QUESTION 1 -->
+
+    <div class="question">
+
+        <h3>
+            1. Pourquoi existe-t-il plusieurs catégories
+            d'outils IA ?
+        </h3>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q1"
+                value="a"
+            >
+
+            Parce que les outils sont conçus pour
+            différentes tâches.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q1"
+                value="b"
+            >
+
+            Parce qu'aucun outil IA ne fonctionne.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q1"
+                value="c"
+            >
+
+            Parce que tous les outils font exactement
+            la même chose.
+
+        </label>
+
+    </div>
+
+
+
+    <!-- QUESTION 2 -->
+
+    <div class="question">
+
+        <h3>
+            2. Quel outil est particulièrement adapté
+            à la génération de texte ?
+        </h3>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q2"
+                value="a"
+            >
+
+            Un assistant conversationnel.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q2"
+                value="b"
+            >
+
+            Un microphone sans logiciel.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q2"
+                value="c"
+            >
+
+            Une imprimante.
+
+        </label>
+
+    </div>
+
+
+
+    <!-- QUESTION 3 -->
+
+    <div class="question">
+
+        <h3>
+            3. Comment l'IA peut-elle aider un développeur ?
+        </h3>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q3"
+                value="a"
+            >
+
+            En expliquant ou en proposant du code.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q3"
+                value="b"
+            >
+
+            En supprimant automatiquement toutes
+            les erreurs d'un ordinateur.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q3"
+                value="c"
+            >
+
+            En remplaçant obligatoirement le développeur.
+
+        </label>
+
+    </div>
+
+
+
+    <!-- QUESTION 4 -->
+
+    <div class="question">
+
+        <h3>
+            4. Quel critère est important pour choisir
+            un outil IA ?
+        </h3>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q4"
+                value="a"
+            >
+
+            L'objectif recherché.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q4"
+                value="b"
+            >
+
+            Uniquement la couleur de son interface.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q4"
+                value="c"
+            >
+
+            Le nombre de boutons uniquement.
+
+        </label>
+
+    </div>
+
+
+
+    <!-- QUESTION 5 -->
+
+    <div class="question">
+
+        <h3>
+            5. Pourquoi faut-il vérifier les résultats
+            produits par un outil IA ?
+        </h3>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q5"
+                value="a"
+            >
+
+            Parce qu'un résultat IA peut contenir
+            des erreurs ou des informations inexactes.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q5"
+                value="b"
+            >
+
+            Parce que l'IA ne peut produire aucun contenu.
+
+        </label>
+
+
+        <label class="option">
+
+            <input
+                type="radio"
+                name="q5"
+                value="c"
+            >
+
+            Parce que tous les outils IA sont identiques.
+
+        </label>
+
+    </div>
+
+
+
+    <button
+        class="quiz-button"
+        onclick="verifierQuiz()"
+    >
+
+        <i class="fa-solid fa-check"></i>
+
+        Valider le quiz
+
+    </button>
+
+
+    <div
+        class="quiz-result"
+        id="quizResult"
+    ></div>
+
+</section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <h3>
+        BMJ SERVICE
+    </h3>
+
+    <p>
+        Intelligence Artificielle — Chapitre 2
+    </p>
+
+    <p>
+        Apprenez aujourd'hui. Innovez demain.
+    </p>
+
+</footer>
+
+
+
+<!-- =====================================================
+     POPUP
+===================================================== -->
+
+<div
+    class="popup"
+    id="successPopup"
+>
+
+    <div class="popup-box">
+
+        <div class="popup-icon">
+
+            <i class="fa-solid fa-robot"></i>
+
+        </div>
+
+
+        <h2>
+            Chapitre validé !
+        </h2>
+
+
+        <p>
+
+            Félicitations ! Vous avez réussi le
+            quiz du chapitre 2.
+
+            <br><br>
+
+            Votre progression Intelligence Artificielle
+            a été mise à jour.
+
+        </p>
+
+
+        <button
+            class="popup-button"
+            onclick="retourFormation()"
+        >
+
+            Continuer la formation
+
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   BMJ SERVICE
+   CHAPITRE 2 — OUTILS IA
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+        const utilisateur = JSON.parse(
+
+            localStorage.getItem(
+                "bmj_current_user"
+            )
+
+        );
+
+
+        if(!utilisateur){
+
+            window.location.href =
+                "connexion.html";
+
+            return;
+
+        }
+
+
+        const photo =
+            document.getElementById(
+                "photoUtilisateur"
+            );
+
+
+        const nom =
+            document.getElementById(
+                "nomUtilisateur"
+            );
+
+
+        if(photo){
+
+            photo.src =
+                utilisateur.photo ||
+                "images/user.png";
+
+        }
+
+
+        if(nom){
+
+            nom.textContent =
+
+                utilisateur.nom ||
+
+                utilisateur.name ||
+
+                "Apprenant";
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   QUIZ
+========================================================= */
+
+function verifierQuiz(){
+
+    const bonnesReponses = {
+
+        q1:"a",
+        q2:"a",
+        q3:"a",
+        q4:"a",
+        q5:"a"
+
+    };
+
+
+    let score = 0;
+
+
+    const total =
+        Object.keys(
+            bonnesReponses
+        ).length;
+
+
+    for(
+        let question in bonnesReponses
+    ){
+
+        const reponse =
+            document.querySelector(
+                'input[name="' +
+                question +
+                '"]:checked'
+            );
+
+
+        if(
+            reponse &&
+            reponse.value ===
+            bonnesReponses[question]
+        ){
+
+            score++;
+
+        }
+
+    }
+
+
+    const pourcentage =
+        Math.round(
+            (score / total) * 100
+        );
+
+
+    const resultat =
+        document.getElementById(
+            "quizResult"
+        );
+
+
+    resultat.style.display =
+        "block";
+
+
+    if(pourcentage >= 70){
+
+        resultat.style.background =
+            "#eef2ff";
+
+        resultat.style.color =
+            "#17275c";
+
+
+        resultat.innerHTML =
+
+            "🎉 Excellent ! Vous avez obtenu " +
+
+            pourcentage +
+
+            "%. Le chapitre est validé.";
+
+
+        validerChapitreIA();
+
+    }
+
+    else{
+
+        resultat.style.background =
+            "#fff0f0";
+
+        resultat.style.color =
+            "#9b2525";
+
+
+        resultat.innerHTML =
+
+            "❌ Votre score est de " +
+
+            pourcentage +
+
+            "%. Vous devez obtenir au moins 70 %. Relisez les leçons puis réessayez.";
+
+    }
+
+}
+
+
+/* =========================================================
+   VALIDATION CHAPITRE 2
+========================================================= */
+
+function validerChapitreIA(){
+
+    const utilisateur =
+        JSON.parse(
+
+            localStorage.getItem(
+                "bmj_current_user"
+            )
+
+        );
+
+
+    if(!utilisateur){
+
+        window.location.href =
+            "connexion.html";
+
+        return;
+
+    }
+
+
+    const identifiant =
+
+        utilisateur.id_bmj ||
+
+        utilisateur.id ||
+
+        utilisateur.email;
+
+
+    const cle =
+
+        "ia_progression_" +
+
+        identifiant;
+
+
+    let chapitres = JSON.parse(
+
+        localStorage.getItem(
+            cle
+        )
+
+    ) || [];
+
+
+    /*
+       CHAPITRE 2 = INDEX 1
+    */
+
+    if(!chapitres.includes(1)){
+
+        chapitres.push(1);
+
+    }
+
+
+    chapitres.sort(
+        function(a,b){
+            return a-b;
+        }
+    );
+
+
+    localStorage.setItem(
+
+        cle,
+
+        JSON.stringify(
+            chapitres
+        )
+
+    );
+
+
+    /*
+       5 CHAPITRES AU TOTAL
+    */
+
+    utilisateur.progressionIA =
+
+        Math.round(
+            (chapitres.length / 5) * 100
+        );
+
+
+    localStorage.setItem(
+
+        "bmj_current_user",
+
+        JSON.stringify(
+            utilisateur
+        )
+
+    );
+
+
+    document.getElementById(
+        "successPopup"
+    ).style.display =
+        "flex";
+
+}
+
+
+/* =========================================================
+   RETOUR
+========================================================= */
+
+function retourFormation(){
+
+    window.location.href =
+        "ia.html";
+
+}
+
+</script>
+
+
+</body>
+
+</html>

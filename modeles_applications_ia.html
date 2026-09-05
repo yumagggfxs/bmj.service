@@ -1,0 +1,2883 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Modèles et Applications de l'IA | BMJ SERVICE</title>
+
+    <link rel="icon" href="images/logo.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        :root {
+            --blue: #3157d5;
+            --dark-blue: #17275c;
+            --purple: #7047d7;
+            --cyan: #16a6c7;
+            --gold: #d4af37;
+            --light-blue: #eef2ff;
+            --light-purple: #f3efff;
+            --white: #ffffff;
+            --gray: #697181;
+            --dark: #151b2f;
+            --border: #e7eaf3;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f7f8fc;
+            color: var(--dark);
+            line-height: 1.8;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            height: 72px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+
+            background: rgba(255,255,255,.96);
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-area img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--dark-blue);
+        }
+
+        .logo-text span {
+            color: var(--blue);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile img {
+            width: 39px;
+            height: 39px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--blue);
+        }
+
+        .profile span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark-blue);
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            margin-top: 72px;
+            min-height: 550px;
+
+            position: relative;
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    110deg,
+                    rgba(18,31,82,.96),
+                    rgba(49,87,213,.88),
+                    rgba(112,71,215,.82)
+                ),
+                url("images/modeles-applications-ia.jpg");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+
+            width: 430px;
+            height: 430px;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,.07);
+
+            top: -180px;
+            right: -100px;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+
+            width: 310px;
+            height: 310px;
+
+            border-radius: 50%;
+
+            border: 60px solid rgba(255,255,255,.05);
+
+            bottom: -180px;
+            left: -100px;
+        }
+
+        .hero-content {
+            width: 86%;
+            max-width: 1250px;
+            margin: auto;
+
+            position: relative;
+            z-index: 2;
+
+            color: white;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            background: rgba(255,255,255,.13);
+
+            border: 1px solid rgba(255,255,255,.25);
+
+            padding: 8px 16px;
+
+            border-radius: 50px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: .5px;
+
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            max-width: 900px;
+
+            font-size: clamp(35px, 5vw, 60px);
+
+            line-height: 1.12;
+
+            font-weight: 800;
+
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: #dce4ff;
+        }
+
+        .hero-description {
+            max-width: 850px;
+
+            font-size: 17px;
+
+            color: rgba(255,255,255,.9);
+
+            margin-bottom: 28px;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero-meta div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 9px 14px;
+
+            border-radius: 10px;
+
+            background: rgba(255,255,255,.1);
+
+            font-size: 12px;
+        }
+
+        /* =========================
+           QUICK NAV
+        ========================= */
+
+        .quick-nav {
+            width: 86%;
+            max-width: 1150px;
+
+            margin: -35px auto 35px;
+
+            position: relative;
+            z-index: 20;
+
+            background: white;
+
+            padding: 18px 24px;
+
+            border-radius: 18px;
+
+            box-shadow: 0 15px 45px rgba(23,39,92,.12);
+
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            gap: 8px;
+        }
+
+        .quick-nav a {
+            text-decoration: none;
+
+            color: var(--dark-blue);
+
+            padding: 9px 14px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            transition: .25s;
+        }
+
+        .quick-nav a:hover {
+            background: var(--light-blue);
+            color: var(--blue);
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        main {
+            width: 86%;
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        .section {
+            background: white;
+
+            padding: 42px;
+
+            border-radius: 25px;
+
+            margin-bottom: 30px;
+
+            box-shadow: 0 8px 35px rgba(20,30,70,.055);
+
+            border: 1px solid rgba(231,234,243,.7);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            margin-bottom: 27px;
+        }
+
+        .number {
+            min-width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--light-blue);
+
+            color: var(--blue);
+
+            border-radius: 14px;
+
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .section-title h2 {
+            color: var(--dark-blue);
+
+            font-size: 25px;
+
+            line-height: 1.3;
+        }
+
+        .section p {
+            color: var(--gray);
+
+            font-size: 15px;
+
+            margin-bottom: 18px;
+        }
+
+        .section strong {
+            color: var(--dark-blue);
+        }
+
+        .lead {
+            font-size: 17px !important;
+            color: #424b60 !important;
+        }
+
+        /* =========================
+           HIGHLIGHT
+        ========================= */
+
+        .highlight {
+            margin: 28px 0;
+
+            padding: 25px 28px;
+
+            border-left: 5px solid var(--blue);
+
+            background: var(--light-blue);
+
+            border-radius: 12px;
+        }
+
+        .highlight h3 {
+            color: var(--dark-blue);
+
+            margin-bottom: 9px;
+
+            font-size: 17px;
+        }
+
+        .highlight p {
+            margin-bottom: 0;
+        }
+
+        /* =========================
+           IMAGE
+        ========================= */
+
+        .lesson-image {
+            margin: 30px 0;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .lesson-image img {
+            width: 100%;
+
+            max-height: 470px;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+        .image-caption {
+            background: #f5f6fa;
+
+            padding: 11px 15px;
+
+            color: var(--gray);
+
+            font-size: 12px;
+
+            text-align: center;
+        }
+
+        /* =========================
+           APPLICATIONS
+        ========================= */
+
+        .application {
+            margin: 25px 0;
+
+            padding: 25px 26px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .application:last-child {
+            border-bottom: none;
+        }
+
+        .application-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+
+            margin-bottom: 12px;
+        }
+
+        .application-icon {
+            width: 46px;
+            height: 46px;
+
+            border-radius: 13px;
+
+            background: var(--light-purple);
+
+            color: var(--purple);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 18px;
+        }
+
+        .application h3 {
+            color: var(--dark-blue);
+            font-size: 18px;
+        }
+
+        .application p {
+            margin-bottom: 12px;
+        }
+
+        /* =========================
+           MODEL BOX
+        ========================= */
+
+        .model-box {
+            margin: 25px 0;
+
+            padding: 27px;
+
+            border-radius: 17px;
+
+            background: #fafbff;
+
+            border: 1px solid var(--border);
+        }
+
+        .model-title {
+            color: var(--dark-blue);
+
+            font-weight: 700;
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            margin-bottom: 15px;
+        }
+
+        .model-title i {
+            color: var(--blue);
+        }
+
+        .model-code {
+            background: #17203d;
+
+            color: #e9edff;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            font-family: Consolas, monospace;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+
+            overflow-x: auto;
+
+            white-space: pre-wrap;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-wrapper {
+            overflow-x: auto;
+
+            margin-top: 25px;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 700px;
+        }
+
+        th {
+            background: var(--dark-blue);
+
+            color: white;
+
+            padding: 15px;
+
+            text-align: left;
+
+            font-size: 13px;
+        }
+
+        td {
+            padding: 15px;
+
+            border-bottom: 1px solid var(--border);
+
+            color: var(--gray);
+
+            font-size: 13px;
+        }
+
+        tr:hover td {
+            background: #fafbff;
+        }
+
+        /* =========================
+           STEPS
+        ========================= */
+
+        .steps {
+            margin-top: 25px;
+        }
+
+        .step {
+            display: flex;
+
+            gap: 18px;
+
+            padding: 20px 0;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .step:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            min-width: 40px;
+            height: 40px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--blue);
+
+            color: white;
+
+            font-weight: 700;
+        }
+
+        .step h3 {
+            color: var(--dark-blue);
+
+            font-size: 16px;
+
+            margin-bottom: 5px;
+        }
+
+        .step p {
+            margin: 0;
+
+            font-size: 14px;
+        }
+
+        /* =========================
+           VIDEO
+        ========================= */
+
+        .video-container {
+            margin-top: 28px;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+
+            background: #10152a;
+        }
+
+        .video-container video {
+            width: 100%;
+
+            display: block;
+
+            max-height: 580px;
+        }
+
+        .video-description {
+            padding: 16px 20px;
+
+            color: #dfe4f4;
+
+            font-size: 13px;
+        }
+
+        /* =========================
+           WARNING
+        ========================= */
+
+        .warning {
+            padding: 25px;
+
+            background: #fff9ed;
+
+            border: 1px solid #f1dfb3;
+
+            border-radius: 15px;
+
+            margin-top: 25px;
+        }
+
+        .warning-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: #765b16;
+
+            font-weight: 700;
+
+            margin-bottom: 9px;
+        }
+
+        .warning p {
+            margin: 0;
+        }
+
+        /* =========================
+           QUIZ
+        ========================= */
+
+        .quiz-question {
+            padding: 24px 0;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .quiz-question:last-child {
+            border-bottom: none;
+        }
+
+        .quiz-question h3 {
+            color: var(--dark-blue);
+
+            font-size: 16px;
+
+            margin-bottom: 15px;
+        }
+
+        .answer {
+            display: block;
+
+            padding: 12px 15px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 10px;
+
+            margin-bottom: 9px;
+
+            cursor: pointer;
+
+            color: var(--gray);
+
+            font-size: 13px;
+
+            transition: .2s;
+        }
+
+        .answer:hover {
+            border-color: var(--blue);
+
+            background: var(--light-blue);
+        }
+
+        .answer input {
+            margin-right: 9px;
+        }
+
+        .quiz-button {
+            border: none;
+
+            padding: 14px 25px;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--blue),
+                    var(--purple)
+                );
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            margin-top: 25px;
+
+            transition: .25s;
+        }
+
+        .quiz-button:hover {
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 25px rgba(49,87,213,.25);
+        }
+
+        /* =========================
+           POPUP
+        ========================= */
+
+        .popup {
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(12,19,45,.72);
+
+            backdrop-filter: blur(5px);
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            z-index: 2000;
+
+            padding: 20px;
+        }
+
+        .popup.active {
+            display: flex;
+        }
+
+        .popup-content {
+            max-width: 470px;
+
+            width: 100%;
+
+            background: white;
+
+            border-radius: 25px;
+
+            padding: 40px;
+
+            text-align: center;
+
+            animation: popup .35s ease;
+        }
+
+        @keyframes popup {
+
+            from {
+                opacity: 0;
+                transform: scale(.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+        }
+
+        .popup-icon {
+            width: 75px;
+            height: 75px;
+
+            margin: 0 auto 18px;
+
+            border-radius: 50%;
+
+            background: var(--light-blue);
+
+            color: var(--blue);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 30px;
+        }
+
+        .popup h2 {
+            color: var(--dark-blue);
+
+            margin-bottom: 10px;
+        }
+
+        .popup p {
+            color: var(--gray);
+
+            font-size: 14px;
+
+            margin-bottom: 22px;
+        }
+
+        .popup button {
+            border: none;
+
+            padding: 12px 24px;
+
+            border-radius: 10px;
+
+            background: var(--dark-blue);
+
+            color: white;
+
+            font-family: inherit;
+
+            font-weight: 600;
+
+            cursor: pointer;
+        }
+
+        /* =========================
+           RETURN
+        ========================= */
+
+        .return-section {
+            text-align: center;
+
+            margin: 15px 0 50px;
+        }
+
+        .return-button {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            text-decoration: none;
+
+            padding: 13px 23px;
+
+            border-radius: 12px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            color: var(--dark-blue);
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            transition: .25s;
+        }
+
+        .return-button:hover {
+            background: var(--dark-blue);
+
+            color: white;
+
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: var(--dark-blue);
+
+            color: rgba(255,255,255,.7);
+
+            text-align: center;
+
+            padding: 28px 20px;
+
+            font-size: 12px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media(max-width:950px) {
+
+            .section {
+                padding: 30px;
+            }
+
+            .hero {
+                min-height: 510px;
+            }
+
+        }
+
+        @media(max-width:700px) {
+
+            header {
+                padding: 0 4%;
+            }
+
+            .profile span {
+                display: none;
+            }
+
+            .hero-content {
+                width: 90%;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            main {
+                width: 92%;
+            }
+
+            .quick-nav {
+                width: 92%;
+                padding: 15px;
+            }
+
+            .section {
+                padding: 24px 20px;
+
+                border-radius: 19px;
+            }
+
+            .section-title h2 {
+                font-size: 21px;
+            }
+
+            .hero-meta div {
+                font-size: 11px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header>
+
+        <div class="logo-area">
+
+            <img src="images/logo.png"
+                 alt="BMJ SERVICE">
+
+            <div class="logo-text">
+                BMJ <span>SERVICE</span>
+            </div>
+
+        </div>
+
+
+        <div class="profile">
+
+            <img id="photoUtilisateur"
+                 src="images/user.png"
+                 alt="Profil">
+
+            <span id="nomUtilisateur">
+                Apprenant
+            </span>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="badge">
+
+                <i class="fa-solid fa-brain"></i>
+
+                CHAPITRE 4 — MODÈLES & APPLICATIONS IA
+
+            </div>
+
+
+            <h1>
+
+                Modèles et applications
+                de <span>l'Intelligence Artificielle</span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                L'intelligence artificielle regroupe de nombreux modèles
+                capables de comprendre le langage, analyser des images,
+                générer du contenu, traiter des données, produire du code
+                ou encore assister les utilisateurs dans leurs tâches.
+
+                Dans ce chapitre, vous allez découvrir les principales
+                familles de modèles d'IA, comprendre leurs rôles et voir
+                comment elles peuvent être utilisées dans des situations
+                concrètes, professionnelles et quotidiennes.
+
+            </p>
+
+
+            <div class="hero-meta">
+
+                <div>
+                    <i class="fa-solid fa-book-open"></i>
+                    Leçon complète
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-layer-group"></i>
+                    Niveau intermédiaire
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-brain"></i>
+                    Modèles IA
+                </div>
+
+                <div>
+                    <i class="fa-solid fa-circle-question"></i>
+                    Quiz de validation
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================================
+         QUICK NAV
+    ====================================================== -->
+
+    <nav class="quick-nav">
+
+        <a href="#modeles">
+            Modèles IA
+        </a>
+
+        <a href="#texte">
+            Texte
+        </a>
+
+        <a href="#images">
+            Images
+        </a>
+
+        <a href="#audio">
+            Audio
+        </a>
+
+        <a href="#code">
+            Programmation
+        </a>
+
+        <a href="#entreprise">
+            Entreprise
+        </a>
+
+        <a href="#choisir">
+            Choisir un modèle
+        </a>
+
+        <a href="#quiz">
+            Quiz
+        </a>
+
+    </nav>
+
+
+
+    <main>
+
+
+        <!-- =================================================
+             SECTION 1
+        ================================================== -->
+
+        <section class="section" id="modeles">
+
+            <div class="section-title">
+
+                <div class="number">
+                    01
+                </div>
+
+                <h2>
+                    Comprendre les modèles d'IA
+                </h2>
+
+            </div>
+
+
+            <p class="lead">
+
+                Un modèle d'intelligence artificielle est un système
+                entraîné sur des données afin d'effectuer certaines
+                tâches : comprendre, prédire, classer, générer ou
+                transformer des informations.
+
+            </p>
+
+
+            <p>
+
+                Lorsque nous utilisons une application d'IA, nous voyons
+                généralement une interface très simple. Pourtant, derrière
+                cette interface se trouve un modèle capable de traiter
+                des informations et de produire un résultat.
+
+                Le modèle peut avoir été spécialisé dans une tâche précise
+                ou conçu pour effectuer plusieurs types d'opérations.
+
+            </p>
+
+
+            <p>
+
+                Les modèles de langage, par exemple, sont conçus pour
+                travailler avec des informations textuelles. Ils peuvent
+                répondre à une question, résumer un document, traduire
+                un texte, expliquer un concept ou générer une première
+                version d'un contenu.
+
+            </p>
+
+
+            <p>
+
+                D'autres modèles sont spécialisés dans la vision par
+                ordinateur. Ils peuvent analyser une photographie,
+                détecter certains éléments dans une image ou interpréter
+                des documents visuels.
+
+            </p>
+
+
+            <p>
+
+                Il existe également des modèles capables de travailler
+                avec la voix, la musique, la vidéo, le code informatique
+                ou plusieurs types de données à la fois.
+
+            </p>
+
+
+            <div class="highlight">
+
+                <h3>
+                    <i class="fa-solid fa-lightbulb"></i>
+                    Une idée importante
+                </h3>
+
+                <p>
+
+                    Il ne faut pas chercher uniquement le « meilleur »
+                    modèle d'IA. Le bon choix dépend surtout de la tâche,
+                    du niveau de précision attendu, du type de données,
+                    du coût, de la vitesse et du contexte d'utilisation.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             IMAGE
+        ================================================== -->
+
+        <section class="section">
+
+            <div class="lesson-image">
+
+                <img
+                    src="images/modeles-applications-ia.jpg"
+                    alt="Modèles et applications de l'intelligence artificielle">
+
+                <div class="image-caption">
+
+                    Différents modèles d'IA peuvent être spécialisés
+                    dans le texte, l'image, l'audio, la vidéo ou le code.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SECTION 2 TEXTE
+        ================================================== -->
+
+        <section class="section" id="texte">
+
+            <div class="section-title">
+
+                <div class="number">
+                    02
+                </div>
+
+                <h2>
+                    Les modèles de langage et le traitement du texte
+                </h2>
+
+            </div>
+
+
+            <p>
+
+                Les modèles de langage sont parmi les systèmes d'IA les
+                plus visibles aujourd'hui. Ils travaillent principalement
+                avec des données textuelles et peuvent produire des réponses
+                à partir des instructions qui leur sont données.
+
+            </p>
+
+
+            <p>
+
+                Leur utilisation ne se limite pas à poser une question.
+                Un utilisateur peut leur donner un contexte, préciser
+                un objectif, indiquer un format attendu et demander
+                plusieurs étapes de traitement.
+
+                C'est ce principe qui permet de créer des prompts plus
+                efficaces.
+
+            </p>
+
+
+            <p>
+
+                Dans une entreprise, un modèle de langage peut être utilisé
+                pour préparer des emails, résumer des réunions, transformer
+                des notes en rapports, expliquer des documents ou générer
+                une première structure de présentation.
+
+            </p>
+
+
+            <div class="application">
+
+                <div class="application-header">
+
+                    <div class="application-icon">
+
+                        <i class="fa-solid fa-file-lines"></i>
+
+                    </div>
+
+                    <h3>
+                        Rédaction et transformation
+                    </h3>
+
+                </div>
+
+
+                <p>
+
+                    Un modèle de langage peut transformer un texte existant
+                    en fonction d'un objectif précis. Il peut par exemple
+                    rendre un message plus professionnel, simplifier un
+                    document, produire un résumé ou proposer plusieurs
+                    formulations.
+
+                </p>
+
+
+                <p>
+
+                    L'utilisateur doit toutefois vérifier le résultat.
+                    L'IA produit une proposition, mais la responsabilité
+                    du contenu final reste humaine.
+
+                </p>
+
+            </div>
+
+
+            <div class="model-box">
+
+                <div class="model-title">
+
+                    <i class="fa-solid fa-terminal"></i>
+
+                    Exemple de prompt professionnel
+
+                </div>
+
+
+                <div class="model-code">Tu es assistant administratif.
+
+Analyse le texte suivant.
+
+Objectifs :
+1. Résumer les informations importantes.
+2. Identifier les tâches à effectuer.
+3. Classer les tâches par priorité.
+4. Présenter le résultat sous forme de tableau.
+
+Texte :
+[INSÉRER LE DOCUMENT OU LES NOTES]
+
+Ne crée aucune information qui n'est pas présente dans le texte.</div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SECTION 3 IMAGES
+        ================================================== -->
+
+        <section class="section" id="images">
+
+            <div class="section-title">
+
+                <div class="number">
+                    03
+                </div>
+
+                <h2>
+                    Les modèles pour les images et la vision
+                </h2>
+
+            </div>
+
+
+            <p>
+
+                L'intelligence artificielle peut également travailler avec
+                des images.
+
+                Certains systèmes peuvent analyser une image existante,
+                tandis que d'autres sont capables de générer une nouvelle
+                image à partir d'une description textuelle.
+
+            </p>
+
+
+            <p>
+
+                Cette technologie est particulièrement intéressante pour
+                la communication, le marketing, la création de concepts,
+                l'éducation et la conception de supports visuels.
+
+            </p>
+
+
+            <p>
+
+                Par exemple, une entreprise peut utiliser l'IA pour
+                réfléchir à plusieurs concepts visuels avant de réaliser
+                une campagne.
+
+                Un formateur peut également créer des illustrations
+                destinées à expliquer un concept complexe.
+
+            </p>
+
+
+            <div class="example">
+
+                <div class="example-title">
+
+                    <i class="fa-solid fa-image"></i>
+
+                    Application concrète
+
+                </div>
+
+
+                <p>
+
+                    Une entreprise lance un nouveau produit.
+
+                    Au lieu de commencer directement par une production
+                    graphique définitive, l'équipe peut utiliser l'IA pour
+                    explorer rapidement plusieurs directions visuelles :
+                    couleurs, compositions, environnements et styles.
+
+                </p>
+
+
+                <p>
+
+                    Les meilleures idées peuvent ensuite être retravaillées
+                    par un graphiste ou une équipe créative.
+
+                </p>
+
+            </div>
+
+
+            <div class="warning">
+
+                <div class="warning-title">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    Attention aux droits et à l'utilisation des images
+
+                </div>
+
+
+                <p>
+
+                    Avant d'utiliser une image générée ou modifiée par
+                    l'IA dans un projet commercial, il est important de
+                    vérifier les conditions d'utilisation du service,
+                    les droits applicables et les éventuelles restrictions
+                    liées aux personnes, marques ou contenus représentés.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SECTION 4 AUDIO
+        ================================================== -->
+
+        <section class="section" id="audio">
+
+            <div class="section-title">
+
+                <div class="number">
+                    04
+                </div>
+
+                <h2>
+                    Les modèles pour la voix et l'audio
+                </h2>
+
+            </div>
+
+
+            <p>
+
+                L'IA peut également comprendre et générer de l'audio.
+                Les systèmes de reconnaissance vocale permettent de
+                transformer une voix en texte.
+
+                D'autres modèles peuvent ensuite analyser ou transformer
+                ce contenu.
+
+            </p>
+
+
+            <p>
+
+                Cette technologie peut être utilisée pour transcrire
+                une réunion, créer des sous-titres, rechercher une
+                information dans une conversation ou préparer des notes
+                à partir d'un enregistrement.
+
+            </p>
+
+
+            <p>
+
+                Les technologies de synthèse vocale peuvent également
+                convertir un texte en parole.
+
+                Elles peuvent être utilisées dans certaines applications
+                éducatives, interfaces vocales ou contenus multimédias,
+                sous réserve du respect des droits et du consentement
+                lorsqu'une voix identifiable est concernée.
+
+            </p>
+
+
+            <div class="highlight">
+
+                <h3>
+
+                    <i class="fa-solid fa-microphone"></i>
+
+                    Exemple
+
+                </h3>
+
+
+                <p>
+
+                    Une réunion de deux heures peut être transcrite,
+                    puis analysée par une IA afin d'identifier les
+                    décisions prises, les questions ouvertes et les
+                    tâches attribuées aux participants.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SECTION 5 CODE
+        ================================================== -->
+
+        <section class="section" id="code">
+
+            <div class="section-title">
+
+                <div class="number">
+                    05
+                </div>
+
+                <h2>
+                    Les modèles d'IA pour la programmation
+                </h2>
+
+            </div>
+
+
+            <p>
+
+                L'intelligence artificielle est également devenue un
+                assistant pour les développeurs.
+
+                Certains modèles peuvent expliquer du code, proposer
+                une fonction, rechercher une erreur logique, générer
+                des tests ou aider à comprendre une technologie.
+
+            </p>
+
+
+            <p>
+
+                Cependant, générer du code ne signifie pas que le code
+                est automatiquement correct.
+
+                Un développeur doit comprendre ce qui a été produit,
+                vérifier la sécurité, tester le fonctionnement et
+                adapter la solution à son projet.
+
+            </p>
+
+
+            <p>
+
+                L'IA est donc particulièrement utile comme outil
+                d'assistance.
+
+                Elle peut accélérer certaines étapes du développement
+                tout en laissant au développeur la responsabilité de
+                l'architecture, de la vérification et des décisions
+                techniques importantes.
+
+            </p>
+
+
+            <div class="model-box">
+
+                <div class="model-title">
+
+                    <i class="fa-solid fa-code"></i>
+
+                    Exemple de demande à une IA
+
+                </div>
+
+
+                <div class="model-code">Explique ce code JavaScript ligne par ligne.
+
+Ensuite :
+- identifie les erreurs potentielles ;
+- explique les risques ;
+- propose une version améliorée ;
+- indique les modifications effectuées.
+
+Ne supprime aucune fonctionnalité existante sans l'expliquer.</div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SECTION 6 ENTREPRISE
+        ================================================== -->
+
+        <section class="section" id="entreprise">
+
+            <div class="section-title">
+
+                <div class="number">
+                    06
+                </div>
+
+                <h2>
+                    Applications de l'IA dans les entreprises
+                </h2>
+
+            </div>
+
+
+            <p>
+
+                Les entreprises peuvent utiliser plusieurs types de
+                modèles simultanément.
+
+                Un système peut par exemple recevoir un document,
+                utiliser un modèle de vision pour comprendre sa structure,
+                utiliser un modèle de langage pour interpréter son contenu,
+                puis transmettre les informations à une automatisation.
+
+            </p>
+
+
+            <p>
+
+                Cette combinaison permet de construire des solutions
+                beaucoup plus puissantes qu'un simple chatbot.
+
+                On peut ainsi créer des assistants internes, des systèmes
+                d'analyse documentaire, des outils de support client ou
+                des processus automatisés.
+
+            </p>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Domaine
+                            </th>
+
+                            <th>
+                                Application
+                            </th>
+
+                            <th>
+                                Modèle utile
+                            </th>
+
+                            <th>
+                                Résultat
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        <tr>
+
+                            <td>
+                                Marketing
+                            </td>
+
+                            <td>
+                                Création de contenu
+                            </td>
+
+                            <td>
+                                Langage / Image
+                            </td>
+
+                            <td>
+                                Campagnes et supports
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Service client
+                            </td>
+
+                            <td>
+                                Analyse des demandes
+                            </td>
+
+                            <td>
+                                Langage
+                            </td>
+
+                            <td>
+                                Réponses et classification
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Administration
+                            </td>
+
+                            <td>
+                                Lecture de documents
+                            </td>
+
+                            <td>
+                                Vision / Langage
+                            </td>
+
+                            <td>
+                                Extraction d'informations
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Développement
+                            </td>
+
+                            <td>
+                                Assistance au code
+                            </td>
+
+                            <td>
+                                Code / Langage
+                            </td>
+
+                            <td>
+                                Productivité
+                            </td>
+
+                        </tr>
+
+
+                        <tr>
+
+                            <td>
+                                Formation
+                            </td>
+
+                            <td>
+                                Assistant pédagogique
+                            </td>
+
+                            <td>
+                                Langage / Audio
+                            </td>
+
+                            <td>
+                                Explications personnalisées
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SECTION 7 CHOISIR
+        ================================================== -->
+
+        <section class="section" id="choisir">
+
+            <div class="section-title">
+
+                <div class="number">
+                    07
+                </div>
+
+                <h2>
+                    Comment choisir le bon modèle ?
+                </h2>
+
+            </div>
+
+
+            <p>
+
+                Choisir un modèle d'IA ne doit pas être une décision
+                basée uniquement sur sa popularité.
+
+                La première question à poser est toujours :
+                <strong>« Quelle tâche dois-je réaliser ? »</strong>
+
+            </p>
+
+
+            <p>
+
+                Si votre objectif est de travailler avec des textes,
+                vous aurez besoin d'un modèle adapté au langage.
+
+                Si vous devez analyser des images, un système possédant
+                des capacités de vision sera plus pertinent.
+
+                Pour un projet vocal, les capacités audio deviennent
+                importantes.
+
+            </p>
+
+
+            <p>
+
+                Il faut également tenir compte de la complexité de la
+                tâche.
+
+                Une opération simple ne nécessite pas forcément le modèle
+                le plus puissant. Dans certains cas, un système plus
+                rapide et moins coûteux peut être largement suffisant.
+
+            </p>
+
+
+            <div class="steps">
+
+                <div class="step">
+
+                    <div class="step-number">
+                        1
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Définir l'objectif
+                        </h3>
+
+                        <p>
+
+                            Déterminez exactement ce que vous voulez
+                            obtenir et comment le résultat sera utilisé.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        2
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Identifier le type de données
+                        </h3>
+
+                        <p>
+
+                            Texte, image, audio, vidéo, code ou combinaison
+                            de plusieurs formats.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        3
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Comparer les résultats
+                        </h3>
+
+                        <p>
+
+                            Testez plusieurs solutions avec les mêmes
+                            exemples afin de comparer leur qualité.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        4
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Vérifier les contraintes
+                        </h3>
+
+                        <p>
+
+                            Prenez en compte le coût, la vitesse, les
+                            limites, la confidentialité et l'intégration
+                            avec vos outils.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="step">
+
+                    <div class="step-number">
+                        5
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Contrôler le résultat
+                        </h3>
+
+                        <p>
+
+                            Même lorsqu'un modèle produit une réponse
+                            convaincante, vérifiez toujours les informations
+                            importantes avant de les utiliser.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SECTION 8
+        ================================================== -->
+
+        <section class="section">
+
+            <div class="section-title">
+
+                <div class="number">
+                    08
+                </div>
+
+                <h2>
+                    L'IA multimodale : combiner plusieurs capacités
+                </h2>
+
+            </div>
+
+
+            <p>
+
+                Une évolution importante de l'intelligence artificielle
+                est la capacité de certains systèmes à travailler avec
+                plusieurs types de données.
+
+                On parle alors de systèmes ou modèles
+                <strong>multimodaux</strong>.
+
+            </p>
+
+
+            <p>
+
+                Un utilisateur peut par exemple fournir une image avec
+                une question textuelle.
+
+                Le système doit alors interpréter l'image, comprendre
+                la question et produire une réponse adaptée.
+
+            </p>
+
+
+            <p>
+
+                Cette approche ouvre la porte à de nombreuses applications :
+                analyse de documents, assistants visuels, support technique,
+                éducation, analyse de graphiques et traitement de contenus
+                multimédias.
+
+            </p>
+
+
+            <div class="highlight">
+
+                <h3>
+
+                    <i class="fa-solid fa-layer-group"></i>
+
+                    Pourquoi la multimodalité est importante ?
+
+                </h3>
+
+
+                <p>
+
+                    Dans le monde réel, les informations ne sont presque
+                    jamais uniquement textuelles.
+
+                    Une entreprise peut travailler simultanément avec
+                    des emails, des photos, des PDF, des tableaux, des
+                    enregistrements audio et des vidéos.
+
+                    Les systèmes capables de combiner plusieurs formats
+                    peuvent donc mieux s'intégrer dans les workflows
+                    modernes.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SECTION 9
+        ================================================== -->
+
+        <section class="section">
+
+            <div class="section-title">
+
+                <div class="number">
+                    09
+                </div>
+
+                <h2>
+                    Utiliser l'IA avec méthode
+                </h2>
+
+            </div>
+
+
+            <p>
+
+                Une bonne utilisation de l'intelligence artificielle
+                nécessite une méthode.
+
+                Il ne suffit pas d'utiliser un modèle puissant. La qualité
+                du résultat dépend également de la qualité de l'instruction,
+                du contexte fourni, des données disponibles et de la manière
+                dont le résultat est vérifié.
+
+            </p>
+
+
+            <p>
+
+                Commencez toujours par définir le résultat attendu.
+
+                Ensuite, fournissez uniquement les informations nécessaires
+                et indiquez clairement les contraintes.
+
+                Enfin, contrôlez la réponse avant de l'intégrer dans
+                votre travail.
+
+            </p>
+
+
+            <p>
+
+                Cette méthode transforme l'IA d'un simple outil de
+                génération en véritable assistant de travail.
+
+            </p>
+
+
+            <div class="warning">
+
+                <div class="warning-title">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    Ne faites pas confiance aveuglément à une réponse
+
+                </div>
+
+
+                <p>
+
+                    Une réponse bien écrite peut néanmoins contenir une
+                    erreur.
+
+                    Pour les informations importantes, vérifiez les faits,
+                    les chiffres, les sources, les calculs et les décisions
+                    avant utilisation.
+
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             QUIZ
+        ================================================== -->
+
+        <section class="section" id="quiz">
+
+            <div class="section-title">
+
+                <div class="number">
+                    10
+                </div>
+
+                <h2>
+                    Quiz de validation
+                </h2>
+
+            </div>
+
+
+            <p>
+
+                Vérifiez maintenant vos connaissances.
+
+                Vous devez obtenir au moins
+                <strong>70 %</strong>
+                pour valider le chapitre.
+
+            </p>
+
+
+            <form id="quizForm">
+
+
+                <!-- QUESTION 1 -->
+
+                <div class="quiz-question">
+
+                    <h3>
+                        1. Qu'est-ce qu'un modèle d'intelligence artificielle ?
+                    </h3>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="a">
+
+                        Un système entraîné sur des données pour
+                        réaliser certaines tâches.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="b">
+
+                        Un simple fichier image.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q1"
+                            value="c">
+
+                        Un câble informatique.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- QUESTION 2 -->
+
+                <div class="quiz-question">
+
+                    <h3>
+                        2. Quel type de modèle est particulièrement adapté
+                        au traitement du langage ?
+                    </h3>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="a">
+
+                        Un modèle spécialisé dans le traitement du texte.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="b">
+
+                        Un modèle uniquement destiné aux câbles réseau.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q2"
+                            value="c">
+
+                        Un modèle qui ne traite aucune donnée.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- QUESTION 3 -->
+
+                <div class="quiz-question">
+
+                    <h3>
+                        3. Que peut faire l'IA dans le domaine de la programmation ?
+                    </h3>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="a">
+
+                        Générer, expliquer ou améliorer du code,
+                        avec vérification humaine.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="b">
+
+                        Garantir que chaque programme est toujours
+                        parfaitement sécurisé.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q3"
+                            value="c">
+
+                        Remplacer obligatoirement tous les développeurs.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- QUESTION 4 -->
+
+                <div class="quiz-question">
+
+                    <h3>
+                        4. Pourquoi faut-il vérifier les réponses produites
+                        par une IA ?
+                    </h3>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="a">
+
+                        Parce qu'un modèle peut produire des informations
+                        incorrectes malgré une réponse convaincante.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="b">
+
+                        Parce que l'IA ne peut jamais produire de texte.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q4"
+                            value="c">
+
+                        Parce que tous les modèles sont identiques.
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- QUESTION 5 -->
+
+                <div class="quiz-question">
+
+                    <h3>
+                        5. Quel est un critère important pour choisir
+                        un modèle d'IA ?
+                    </h3>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="a">
+
+                        La tâche à réaliser et le type de données
+                        à traiter.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="b">
+
+                        Uniquement la couleur du logo du service.
+
+                    </label>
+
+
+                    <label class="answer">
+
+                        <input
+                            type="radio"
+                            name="q5"
+                            value="c">
+
+                        Le nom le plus compliqué.
+
+                    </label>
+
+                </div>
+
+
+
+                <button
+                    type="button"
+                    class="quiz-button"
+                    onclick="verifierQuiz()">
+
+                    <i class="fa-solid fa-check"></i>
+
+                    Valider mes réponses
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =================================================
+             RETOUR
+        ================================================== -->
+
+        <div class="return-section">
+
+            <a
+                href="ia.html"
+                class="return-button">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Retour à la formation IA
+
+            </a>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         POPUP
+    ====================================================== -->
+
+    <div
+        class="popup"
+        id="successPopup">
+
+        <div class="popup-content">
+
+            <div class="popup-icon">
+
+                <i class="fa-solid fa-brain"></i>
+
+            </div>
+
+
+            <h2>
+                Chapitre validé !
+            </h2>
+
+
+            <p>
+
+                Félicitations !
+
+                Vous avez réussi le quiz et validé le
+                <strong>
+                    Chapitre 4 — Modèles et applications de l'IA
+                </strong>.
+
+                Votre progression a été enregistrée.
+
+            </p>
+
+
+            <button onclick="fermerPopup()">
+
+                Continuer
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer>
+
+        <strong>
+            BMJ SERVICE
+        </strong>
+
+        <br>
+
+        Formation • Intelligence Artificielle • Modèles & Applications
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script>
+
+        /* ==========================================
+           UTILISATEUR
+        ========================================== */
+
+        const utilisateur =
+            JSON.parse(
+                localStorage.getItem(
+                    "bmj_current_user"
+                )
+            );
+
+
+        if (!utilisateur) {
+
+            window.location.href =
+                "connexion.html";
+
+        } else {
+
+            const photo =
+                document.getElementById(
+                    "photoUtilisateur"
+                );
+
+            const nom =
+                document.getElementById(
+                    "nomUtilisateur"
+                );
+
+
+            photo.src =
+                utilisateur.photo ||
+                "images/user.png";
+
+
+            nom.textContent =
+                utilisateur.nom ||
+                utilisateur.name ||
+                "Apprenant";
+
+        }
+
+
+
+        /* ==========================================
+           QUIZ
+        ========================================== */
+
+        function verifierQuiz() {
+
+            const bonnesReponses = {
+
+                q1: "a",
+                q2: "a",
+                q3: "a",
+                q4: "a",
+                q5: "a"
+
+            };
+
+
+            let score = 0;
+
+            const total = 5;
+
+
+            for (
+                const question in bonnesReponses
+            ) {
+
+                const reponse =
+                    document.querySelector(
+                        `input[name="${question}"]:checked`
+                    );
+
+
+                if (
+                    reponse &&
+                    reponse.value ===
+                    bonnesReponses[question]
+                ) {
+
+                    score++;
+
+                }
+
+            }
+
+
+            const pourcentage =
+                Math.round(
+                    (score / total) * 100
+                );
+
+
+            if (pourcentage >= 70) {
+
+                validerChapitreIA();
+
+            } else {
+
+                alert(
+                    `Score : ${pourcentage}%\n\n` +
+                    `Il faut obtenir au moins 70% ` +
+                    `pour valider ce chapitre.\n\n` +
+                    `Relisez les différentes sections ` +
+                    `puis réessayez.`
+                );
+
+            }
+
+        }
+
+
+
+        /* ==========================================
+           VALIDATION
+        ========================================== */
+
+        function validerChapitreIA() {
+
+            const utilisateur =
+                JSON.parse(
+                    localStorage.getItem(
+                        "bmj_current_user"
+                    )
+                );
+
+
+            if (!utilisateur) {
+
+                window.location.href =
+                    "connexion.html";
+
+                return;
+
+            }
+
+
+            const identifiant =
+                utilisateur.id_bmj ||
+                utilisateur.id ||
+                utilisateur.email;
+
+
+            if (!identifiant) {
+
+                alert(
+                    "Impossible d'identifier votre compte."
+                );
+
+                return;
+
+            }
+
+
+            const cle =
+                "ia_progression_" +
+                identifiant;
+
+
+            let chapitres = [];
+
+
+            try {
+
+                chapitres =
+                    JSON.parse(
+                        localStorage.getItem(cle)
+                    ) || [];
+
+            } catch (error) {
+
+                chapitres = [];
+
+            }
+
+
+            /*
+             * Chapitre 4
+             * Index : 3
+             */
+
+            if (!chapitres.includes(3)) {
+
+                chapitres.push(3);
+
+            }
+
+
+            chapitres.sort(
+                (a, b) => a - b
+            );
+
+
+            localStorage.setItem(
+                cle,
+                JSON.stringify(chapitres)
+            );
+
+
+            /*
+             * 5 chapitres IA
+             */
+
+            utilisateur.progressionIA =
+                Math.round(
+                    (chapitres.length / 5) * 100
+                );
+
+
+            localStorage.setItem(
+                "bmj_current_user",
+                JSON.stringify(
+                    utilisateur
+                )
+            );
+
+
+            document
+                .getElementById(
+                    "successPopup"
+                )
+                .classList.add(
+                    "active"
+                );
+
+        }
+
+
+
+        /* ==========================================
+           FERMER POPUP
+        ========================================== */
+
+        function fermerPopup() {
+
+            document
+                .getElementById(
+                    "successPopup"
+                )
+                .classList.remove(
+                    "active"
+                );
+
+        }
+
+    </script>
+
+</body>
+
+</html>
