@@ -1,0 +1,3582 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Introduction à l'Éloquence | BMJ FORMATION</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        :root {
+            --blue: #12688e;
+            --dark-blue: #073b59;
+            --blue-light: #eaf6fb;
+            --gold: #d4af37;
+            --gold-light: #fff8df;
+            --green: #149447;
+            --red: #d64545;
+            --orange: #e88b22;
+            --white: #ffffff;
+            --dark: #17232d;
+            --text: #586772;
+            --border: #e2e9ed;
+            --background: #f5f8fa;
+            --shadow: 0 15px 40px rgba(7, 59, 89, .10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: var(--background);
+            color: var(--dark);
+            line-height: 1.75;
+        }
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        header {
+            height: 74px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,.97);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 3px 18px rgba(0,0,0,.06);
+        }
+
+        .header-container {
+            width: min(1200px, 92%);
+            height: 100%;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-area img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--dark-blue);
+        }
+
+        .logo-text span {
+            color: var(--gold);
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-photo {
+            width: 43px;
+            height: 43px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+
+        /* =========================================================
+           HERO
+        ========================================================= */
+
+        .hero {
+            margin-top: 74px;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+
+            background:
+                linear-gradient(110deg,
+                rgba(3, 39, 60, .97),
+                rgba(18, 104, 142, .87)),
+                url("images/eloquence-banner.jpg") center/cover no-repeat;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border: 1px solid rgba(212,175,55,.25);
+            border-radius: 50%;
+            right: -170px;
+            top: -170px;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border: 1px solid rgba(255,255,255,.10);
+            border-radius: 50%;
+            left: -120px;
+            bottom: -130px;
+        }
+
+        .hero-container {
+            width: min(1200px, 92%);
+            margin: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content {
+            max-width: 880px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 17px;
+            border-radius: 30px;
+            color: white;
+            background: rgba(255,255,255,.10);
+            border: 1px solid rgba(255,255,255,.20);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .badge i {
+            color: var(--gold);
+        }
+
+        .hero h1 {
+            color: white;
+            font-size: clamp(35px, 5vw, 60px);
+            line-height: 1.13;
+            margin-bottom: 23px;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            color: var(--gold);
+        }
+
+        .hero p {
+            max-width: 800px;
+            color: rgba(255,255,255,.87);
+            font-size: 17px;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 13px;
+        }
+
+        .btn {
+            border: none;
+            padding: 13px 22px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 9px;
+            transition: .3s;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(212,175,55,.30);
+        }
+
+        .btn-outline {
+            color: white;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,.45);
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--dark-blue);
+        }
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+        .container {
+            width: min(1120px, 92%);
+            margin: auto;
+        }
+
+        section {
+            padding: 85px 0;
+        }
+
+        .section-heading {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 45px;
+        }
+
+        .mini-title {
+            color: var(--gold);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.8px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-heading h2 {
+            color: var(--dark-blue);
+            font-size: 32px;
+            line-height: 1.3;
+            margin-bottom: 12px;
+        }
+
+        .section-heading p {
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        /* =========================================================
+           INFO
+        ========================================================= */
+
+        .course-info {
+            margin-top: -45px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .info-wrapper {
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .info-item {
+            padding: 25px 15px;
+            text-align: center;
+            border-right: 1px solid var(--border);
+        }
+
+        .info-item:last-child {
+            border-right: none;
+        }
+
+        .info-item i {
+            color: var(--blue);
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .info-item strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .info-item span {
+            color: #7b8790;
+            font-size: 12px;
+        }
+
+        /* =========================================================
+           INTRODUCTION
+        ========================================================= */
+
+        .intro {
+            background: white;
+        }
+
+        .intro-layout {
+            display: grid;
+            grid-template-columns: 1.5fr .8fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .intro-text h2 {
+            color: var(--dark-blue);
+            font-size: 33px;
+            line-height: 1.3;
+            margin-bottom: 20px;
+        }
+
+        .intro-text h2 span {
+            color: var(--gold);
+        }
+
+        .intro-text p {
+            color: var(--text);
+            font-size: 15px;
+            margin-bottom: 17px;
+        }
+
+        .highlight {
+            margin-top: 25px;
+            padding: 20px;
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 8px;
+            color: var(--dark-blue);
+            font-size: 14px;
+        }
+
+        .highlight strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .visual-box {
+            min-height: 370px;
+            border-radius: 18px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            background:
+                linear-gradient(145deg,
+                rgba(5,52,78,.96),
+                rgba(18,104,142,.88)),
+                url("images/eloquence.jpg") center/cover;
+        }
+
+        .visual-content {
+            position: relative;
+            z-index: 2;
+            padding: 30px;
+            color: white;
+        }
+
+        .visual-content i {
+            color: var(--gold);
+            font-size: 60px;
+            margin-bottom: 18px;
+        }
+
+        .visual-content h3 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .visual-content p {
+            font-size: 13px;
+            color: rgba(255,255,255,.78);
+        }
+
+        /* =========================================================
+           TEXTE PEDAGOGIQUE
+        ========================================================= */
+
+        .lesson {
+            background: #f5f8fa;
+        }
+
+        .lesson-content {
+            max-width: 920px;
+            margin: auto;
+            background: white;
+            padding: 45px;
+            border-radius: 15px;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 25px rgba(0,0,0,.04);
+        }
+
+        .lesson-content h3 {
+            color: var(--dark-blue);
+            font-size: 21px;
+            margin: 30px 0 12px;
+        }
+
+        .lesson-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .lesson-content p {
+            color: var(--text);
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+
+        .lesson-content ul {
+            margin: 10px 0 20px 25px;
+        }
+
+        .lesson-content li {
+            color: var(--text);
+            margin-bottom: 9px;
+            font-size: 14px;
+        }
+
+        .lesson-content li::marker {
+            color: var(--gold);
+        }
+
+        .quote {
+            margin: 30px 0;
+            padding: 27px;
+            background: var(--gold-light);
+            border: 1px solid #f0dc8a;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .quote i {
+            color: var(--gold);
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .quote p {
+            color: var(--dark-blue);
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* =========================================================
+           OBJECTIFS
+        ========================================================= */
+
+        .objectifs {
+            background: white;
+        }
+
+        .objectives {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .objective {
+            padding: 24px;
+            display: flex;
+            gap: 17px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            background: white;
+            transition: .3s;
+        }
+
+        .objective:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+
+        .objective-icon {
+            flex: 0 0 46px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--blue-light);
+            color: var(--blue);
+        }
+
+        .objective h3 {
+            color: var(--dark-blue);
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .objective p {
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           ATELIER VOCAL
+        ========================================================= */
+
+        .atelier {
+            background:
+                linear-gradient(145deg,#062f49,#0c668a);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .atelier::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border: 1px solid rgba(212,175,55,.15);
+            border-radius: 50%;
+            right: -200px;
+            top: -200px;
+        }
+
+        .atelier .section-heading h2 {
+            color: white;
+        }
+
+        .atelier .section-heading p {
+            color: rgba(255,255,255,.75);
+        }
+
+        .practice-box {
+            position: relative;
+            z-index: 2;
+            max-width: 950px;
+            margin: auto;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            color: var(--dark);
+            box-shadow: 0 20px 60px rgba(0,0,0,.20);
+        }
+
+        .practice-header {
+            padding: 28px 32px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .practice-title {
+            color: var(--dark-blue);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .practice-subtitle {
+            color: var(--text);
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .status {
+            padding: 7px 13px;
+            background: var(--blue-light);
+            color: var(--blue);
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .practice-body {
+            padding: 32px;
+        }
+
+        .challenge {
+            background: var(--gold-light);
+            border: 1px solid #f1df91;
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 28px;
+        }
+
+        .challenge-title {
+            color: var(--dark-blue);
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .challenge p {
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .timer-area {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .timer {
+            font-size: 44px;
+            font-weight: 800;
+            color: var(--dark-blue);
+            letter-spacing: 2px;
+        }
+
+        .timer-label {
+            font-size: 12px;
+            color: #87939b;
+        }
+
+        .microphone-area {
+            text-align: center;
+            padding: 20px 0 30px;
+        }
+
+        .mic-button {
+            width: 105px;
+            height: 105px;
+            border-radius: 50%;
+            border: none;
+            background: var(--blue);
+            color: white;
+            font-size: 38px;
+            cursor: pointer;
+            box-shadow: 0 12px 30px rgba(18,104,142,.28);
+            transition: .3s;
+            position: relative;
+        }
+
+        .mic-button:hover {
+            transform: scale(1.05);
+        }
+
+        .mic-button.recording {
+            background: var(--red);
+            animation: pulse 1.3s infinite;
+        }
+
+        @keyframes pulse {
+
+            0% {
+                box-shadow: 0 0 0 0 rgba(214,69,69,.45);
+            }
+
+            70% {
+                box-shadow: 0 0 0 22px rgba(214,69,69,0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(214,69,69,0);
+            }
+
+        }
+
+        .mic-label {
+            margin-top: 14px;
+            color: var(--dark-blue);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .recording-message {
+            color: var(--red);
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .recording-message.active {
+            display: block;
+        }
+
+        .transcription-area {
+            margin-top: 15px;
+        }
+
+        .transcription-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 9px;
+        }
+
+        .transcription-title strong {
+            color: var(--dark-blue);
+            font-size: 14px;
+        }
+
+        .word-count {
+            color: var(--blue);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        #transcription {
+            width: 100%;
+            min-height: 190px;
+            padding: 18px;
+            resize: vertical;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--dark);
+            background: #fafcfd;
+        }
+
+        #transcription:focus {
+            border-color: var(--blue);
+        }
+
+        .practice-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn-blue {
+            background: var(--blue);
+            color: white;
+        }
+
+        .btn-blue:hover {
+            background: var(--dark-blue);
+            transform: translateY(-2px);
+        }
+
+        .btn-gray {
+            background: #edf1f3;
+            color: var(--dark-blue);
+        }
+
+        /* =========================================================
+           RESULTATS
+        ========================================================= */
+
+        .results {
+            display: none;
+            margin-top: 35px;
+            border-top: 1px solid var(--border);
+            padding-top: 30px;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .score-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .score-circle {
+            width: 130px;
+            height: 130px;
+            margin: auto;
+            border-radius: 50%;
+            border: 8px solid var(--blue-light);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #score {
+            font-size: 34px;
+            color: var(--blue);
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .score-circle span {
+            color: #89959c;
+            font-size: 11px;
+        }
+
+        #evaluationTitle {
+            margin-top: 13px;
+            color: var(--dark-blue);
+            font-size: 19px;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 15px;
+        }
+
+        .analysis-item {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px;
+            background: #fbfcfd;
+        }
+
+        .analysis-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 9px;
+        }
+
+        .analysis-top strong {
+            font-size: 13px;
+            color: var(--dark-blue);
+        }
+
+        .analysis-score {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--blue);
+        }
+
+        .analysis-bar {
+            height: 7px;
+            border-radius: 10px;
+            background: #e8edf0;
+            overflow: hidden;
+        }
+
+        .analysis-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg,var(--blue),var(--gold));
+            transition: width .8s;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            background: var(--blue-light);
+            border-left: 4px solid var(--blue);
+            border-radius: 8px;
+        }
+
+        .feedback strong {
+            color: var(--dark-blue);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .feedback p {
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           CONSEILS
+        ========================================================= */
+
+        .tips {
+            background: white;
+        }
+
+        .tips-content {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .tip-row {
+            padding: 22px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            gap: 18px;
+        }
+
+        .tip-row:last-child {
+            border-bottom: none;
+        }
+
+        .tip-number {
+            width: 40px;
+            height: 40px;
+            flex: 0 0 40px;
+            border-radius: 50%;
+            background: var(--dark-blue);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .tip-row h3 {
+            color: var(--dark-blue);
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .tip-row p {
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           PROGRESSION
+        ========================================================= */
+
+        .progress-section {
+            background: #f5f8fa;
+        }
+
+        .progress-box {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .progress-top strong {
+            color: var(--dark-blue);
+            font-size: 14px;
+        }
+
+        #progressText {
+            color: var(--blue);
+            font-weight: 700;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 11px;
+            border-radius: 20px;
+            background: #e8edf0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            border-radius: 20px;
+            background: linear-gradient(90deg,var(--blue),var(--gold));
+            transition: .5s;
+        }
+
+        /* =========================================================
+           FIN
+        ========================================================= */
+
+        .finish {
+            background: white;
+            text-align: center;
+        }
+
+        .finish p {
+            max-width: 720px;
+            margin: 0 auto 25px;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            background: var(--dark-blue);
+            color: white;
+            padding: 45px 0 25px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 23px;
+            font-weight: 800;
+            margin-bottom: 7px;
+        }
+
+        .footer-logo span {
+            color: var(--gold);
+        }
+
+        footer p {
+            color: rgba(255,255,255,.68);
+            font-size: 13px;
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255,255,255,.12);
+            margin-top: 25px;
+            padding-top: 20px;
+            color: rgba(255,255,255,.45);
+            font-size: 11px;
+        }
+
+        /* =========================================================
+           NOTIFICATION
+        ========================================================= */
+
+        .notification {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 5000;
+            background: var(--dark-blue);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 9px;
+            box-shadow: 0 10px 30px rgba(0,0,0,.22);
+            transform: translateY(120px);
+            opacity: 0;
+            transition: .4s;
+            font-size: 13px;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media(max-width: 900px) {
+
+            .intro-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .info-wrapper {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .info-item:nth-child(2) {
+                border-right: none;
+            }
+
+            .info-item:nth-child(1),
+            .info-item:nth-child(2) {
+                border-bottom: 1px solid var(--border);
+            }
+
+        }
+
+        @media(max-width: 650px) {
+
+            header {
+                height: 66px;
+            }
+
+            .hero {
+                margin-top: 66px;
+            }
+
+            .logo-text,
+            .user-name {
+                display: none;
+            }
+
+            .hero {
+                min-height: 590px;
+            }
+
+            .hero h1 {
+                font-size: 35px;
+            }
+
+            .hero p {
+                font-size: 14px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .info-wrapper {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .info-item {
+                padding: 17px 8px;
+            }
+
+            .objectives {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-content {
+                padding: 25px 20px;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .practice-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .practice-body {
+                padding: 22px 18px;
+            }
+
+            section {
+                padding: 65px 0;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header>
+
+    <div class="header-container">
+
+        <div class="logo-area">
+
+            <img
+                src="images/logo.png"
+                alt="BMJ SERVICE">
+
+            <div class="logo-text">
+                BMJ <span>FORMATION</span>
+            </div>
+
+        </div>
+
+
+        <div class="user-area">
+
+            <span
+                class="user-name"
+                id="userName">
+                Apprenant
+            </span>
+
+            <img
+                class="user-photo"
+                id="userPhoto"
+                src="images/user.png"
+                alt="Utilisateur">
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-container">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                <i class="fa-solid fa-microphone"></i>
+                CHAPITRE 1 — INTRODUCTION
+            </div>
+
+
+            <h1>
+                L'art de parler,
+                <span>convaincre</span>
+                et captiver
+            </h1>
+
+
+            <p>
+                Bienvenue dans votre première étape vers une meilleure
+                maîtrise de la parole. Dans ce chapitre, vous allez découvrir
+                les fondamentaux de l'éloquence, comprendre les mécanismes
+                d'une communication efficace et commencer immédiatement
+                à vous entraîner grâce à votre microphone.
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a
+                    href="#cours"
+                    class="btn btn-primary">
+
+                    <i class="fa-solid fa-book-open"></i>
+                    Commencer le chapitre
+
+                </a>
+
+
+                <a
+                    href="#atelier"
+                    class="btn btn-outline">
+
+                    <i class="fa-solid fa-microphone-lines"></i>
+                    Tester mon éloquence
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     INFORMATIONS
+========================================================= -->
+
+<div class="course-info">
+
+    <div class="container">
+
+        <div class="info-wrapper">
+
+            <div class="info-item">
+
+                <i class="fa-solid fa-layer-group"></i>
+
+                <strong>
+                    Chapitre 1
+                </strong>
+
+                <span>
+                    Introduction
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <i class="fa-regular fa-clock"></i>
+
+                <strong>
+                    25 - 35 min
+                </strong>
+
+                <span>
+                    Durée estimée
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <i class="fa-solid fa-signal"></i>
+
+                <strong>
+                    Débutant
+                </strong>
+
+                <span>
+                    Niveau
+                </span>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <i class="fa-solid fa-microphone-lines"></i>
+
+                <strong>
+                    Atelier vocal
+                </strong>
+
+                <span>
+                    Exercice pratique
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     INTRODUCTION
+========================================================= -->
+
+<section
+    class="intro"
+    id="cours">
+
+    <div class="container">
+
+        <div class="intro-layout">
+
+
+            <div class="intro-text">
+
+                <div class="mini-title">
+                    Bienvenue dans le parcours
+                </div>
+
+
+                <h2>
+                    Votre parole peut devenir
+                    <span>une véritable force</span>
+                </h2>
+
+
+                <p>
+                    Chaque jour, nous communiquons avec des personnes,
+                    présentons des idées, expliquons nos décisions,
+                    défendons nos opinions et cherchons à convaincre.
+                    Pourtant, savoir parler ne signifie pas nécessairement
+                    savoir bien communiquer.
+                </p>
+
+
+                <p>
+                    L'éloquence consiste à transformer une pensée en un
+                    message compréhensible, vivant et convaincant. Elle
+                    permet de donner de la force aux idées et de créer
+                    une véritable connexion avec ceux qui nous écoutent.
+                </p>
+
+
+                <p>
+                    Une personne éloquente ne cherche pas uniquement à
+                    impressionner son public. Elle cherche avant tout
+                    à être comprise. Elle sait adapter son vocabulaire,
+                    contrôler son rythme, utiliser sa voix et choisir
+                    les bons mots en fonction de son interlocuteur.
+                </p>
+
+
+                <p>
+                    Cette compétence est utile dans presque toutes les
+                    situations : présentation scolaire, entretien
+                    d'embauche, réunion professionnelle, discours,
+                    conférence, négociation, débat, pitch entrepreneurial
+                    ou simple conversation.
+                </p>
+
+
+                <div class="highlight">
+
+                    <strong>
+                        <i class="fa-solid fa-lightbulb"></i>
+                        Principe essentiel
+                    </strong>
+
+                    L'éloquence n'est pas un don réservé à quelques
+                    personnes. Elle se développe par la compréhension,
+                    l'observation, l'entraînement et surtout par la pratique.
+
+                </div>
+
+            </div>
+
+
+            <div class="visual-box">
+
+                <div class="visual-content">
+
+                    <i class="fa-solid fa-microphone-lines"></i>
+
+                    <h3>
+                        Votre voix est un instrument
+                    </h3>
+
+                    <p>
+                        Apprenez à utiliser votre voix, votre rythme,
+                        vos mots et votre présence pour faire passer
+                        vos idées avec davantage d'impact.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     LEÇON
+========================================================= -->
+
+<section class="lesson">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="mini-title">
+                Formation
+            </div>
+
+            <h2>
+                Comprendre les bases de l'éloquence
+            </h2>
+
+            <p>
+                Avant de chercher à parler comme un grand orateur,
+                il faut comprendre les mécanismes qui rendent une
+                prise de parole efficace.
+            </p>
+
+        </div>
+
+
+        <div class="lesson-content">
+
+
+            <h3>
+                1. La différence entre parler et communiquer
+            </h3>
+
+            <p>
+                Parler consiste à produire des mots et des phrases.
+                Communiquer va beaucoup plus loin. Lorsque nous
+                communiquons, nous cherchons à transmettre une idée,
+                une information, une émotion ou une intention à une
+                autre personne.
+            </p>
+
+            <p>
+                Il est donc possible de parler beaucoup sans réellement
+                communiquer efficacement. Un discours trop long,
+                mal organisé ou difficile à comprendre peut faire perdre
+                l'attention du public même si son contenu est intéressant.
+            </p>
+
+
+            <h3>
+                2. Les éléments d'une bonne prise de parole
+            </h3>
+
+            <p>
+                Une prise de parole efficace repose sur plusieurs éléments
+                qui fonctionnent ensemble. Le contenu doit être pertinent,
+                mais la manière de le présenter est également déterminante.
+            </p>
+
+            <ul>
+
+                <li>
+                    <strong>Les idées :</strong>
+                    elles doivent être organisées et compréhensibles.
+                </li>
+
+                <li>
+                    <strong>La voix :</strong>
+                    elle doit être suffisamment audible et adaptée
+                    au message.
+                </li>
+
+                <li>
+                    <strong>Le rythme :</strong>
+                    il permet de maintenir l'attention et d'éviter
+                    un discours monotone.
+                </li>
+
+                <li>
+                    <strong>Le regard :</strong>
+                    il crée une relation avec le public.
+                </li>
+
+                <li>
+                    <strong>La posture :</strong>
+                    elle contribue à transmettre une impression
+                    d'assurance.
+                </li>
+
+                <li>
+                    <strong>Les gestes :</strong>
+                    lorsqu'ils sont naturels, ils renforcent le message.
+                </li>
+
+            </ul>
+
+
+            <div class="quote">
+
+                <i class="fa-solid fa-quote-left"></i>
+
+                <p>
+                    Une bonne prise de parole ne consiste pas à parler
+                    le plus longtemps possible. Elle consiste à faire
+                    comprendre quelque chose de manière claire et mémorable.
+                </p>
+
+            </div>
+
+
+            <h3>
+                3. Pourquoi certaines personnes captivent leur public ?
+            </h3>
+
+            <p>
+                Lorsque nous écoutons une personne intéressante, nous
+                remarquons souvent qu'elle ne récite pas simplement
+                des informations. Elle raconte, explique, illustre,
+                pose des questions et utilise des exemples.
+            </p>
+
+            <p>
+                Le cerveau humain apprécie particulièrement les messages
+                qui possèdent une structure claire. Une bonne présentation
+                peut donc commencer par une situation, présenter un
+                problème, développer une idée et terminer par une
+                conclusion forte.
+            </p>
+
+
+            <h3>
+                4. L'importance de la clarté
+            </h3>
+
+            <p>
+                La clarté est l'une des qualités les plus importantes
+                d'un bon orateur. Si votre public doit réfléchir pendant
+                plusieurs secondes pour comprendre votre phrase,
+                votre message risque de perdre son impact.
+            </p>
+
+            <p>
+                Pour être clair, privilégiez les phrases compréhensibles,
+                les exemples concrets et les mots adaptés au niveau
+                de votre public. Une communication simple n'est pas
+                une communication pauvre. Au contraire, rendre une idée
+                complexe facile à comprendre est une véritable compétence.
+            </p>
+
+
+            <h3>
+                5. Le rôle des émotions
+            </h3>
+
+            <p>
+                Une présentation purement informative peut être correcte,
+                mais une présentation qui crée une émotion est souvent
+                davantage mémorisée.
+            </p>
+
+            <p>
+                L'émotion peut venir d'une histoire personnelle, d'un
+                exemple, d'une question, d'une expérience ou simplement
+                de la manière dont vous utilisez votre voix.
+            </p>
+
+
+            <h3>
+                6. La peur de parler en public
+            </h3>
+
+            <p>
+                Le stress avant une prise de parole est normal. Certaines
+                personnes ressentent une accélération du rythme cardiaque,
+                une respiration plus rapide, des tremblements ou la peur
+                d'oublier leurs idées.
+            </p>
+
+            <p>
+                Le but n'est pas de devenir totalement insensible au stress.
+                Le véritable objectif est d'apprendre à le contrôler.
+                Plus vous vous entraînez dans différentes situations,
+                plus votre cerveau apprend que prendre la parole n'est
+                pas une menace.
+            </p>
+
+
+            <h3>
+                7. L'entraînement : la clé de la progression
+            </h3>
+
+            <p>
+                La théorie seule ne suffit pas. Vous pouvez lire des
+                dizaines de livres sur l'éloquence et rester hésitant
+                si vous ne pratiquez jamais.
+            </p>
+
+            <p>
+                C'est pourquoi BMJ FORMATION intègre des exercices
+                pratiques à votre parcours. Vous allez pouvoir parler,
+                observer votre prestation, recevoir des indications
+                et recommencer.
+            </p>
+
+            <p>
+                Votre progression sera donc basée sur un principe simple :
+                <strong>apprendre, pratiquer, analyser, corriger et
+                recommencer.</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     OBJECTIFS
+========================================================= -->
+
+<section class="objectifs">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="mini-title">
+                Vos objectifs
+            </div>
+
+            <h2>
+                Ce que vous allez développer
+            </h2>
+
+            <p>
+                Ce premier chapitre prépare les bases nécessaires
+                avant d'aborder les techniques avancées de prise
+                de parole.
+            </p>
+
+        </div>
+
+
+        <div class="objectives">
+
+
+            <div class="objective">
+
+                <div class="objective-icon">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+
+                <div>
+
+                    <h3>
+                        Comprendre l'éloquence
+                    </h3>
+
+                    <p>
+                        Comprendre les principes fondamentaux d'une
+                        communication orale efficace.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="objective">
+
+                <div class="objective-icon">
+                    <i class="fa-solid fa-comments"></i>
+                </div>
+
+                <div>
+
+                    <h3>
+                        Structurer ses idées
+                    </h3>
+
+                    <p>
+                        Apprendre à organiser une pensée pour la rendre
+                        plus claire et plus facile à suivre.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="objective">
+
+                <div class="objective-icon">
+                    <i class="fa-solid fa-person"></i>
+                </div>
+
+                <div>
+
+                    <h3>
+                        Développer sa présence
+                    </h3>
+
+                    <p>
+                        Comprendre l'importance de la posture, du regard
+                        et de l'attitude face au public.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="objective">
+
+                <div class="objective-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+
+                <div>
+
+                    <h3>
+                        Commencer à s'améliorer
+                    </h3>
+
+                    <p>
+                        Utiliser l'entraînement vocal pour identifier
+                        progressivement ses points forts et ses faiblesses.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ATELIER VOCAL
+========================================================= -->
+
+<section
+    class="atelier"
+    id="atelier">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="mini-title">
+                Atelier pratique
+            </div>
+
+            <h2>
+                🎙️ Testez votre éloquence maintenant
+            </h2>
+
+            <p>
+                Ne vous contentez pas de lire. Prenez votre courage,
+                activez votre microphone et présentez-vous comme si
+                vous étiez devant un véritable public.
+            </p>
+
+        </div>
+
+
+        <div class="practice-box">
+
+
+            <div class="practice-header">
+
+                <div>
+
+                    <div class="practice-title">
+                        Premier défi : Présentez-vous
+                    </div>
+
+                    <div class="practice-subtitle">
+                        Parlez pendant environ 60 à 90 secondes.
+                    </div>
+
+                </div>
+
+                <div
+                    class="status"
+                    id="status">
+                    Prêt à commencer
+                </div>
+
+            </div>
+
+
+            <div class="practice-body">
+
+
+                <div class="challenge">
+
+                    <div class="challenge-title">
+                        🎯 Votre mission
+                    </div>
+
+                    <p>
+                        Imaginez que vous venez d'arriver devant un public
+                        qui ne vous connaît pas. Présentez-vous naturellement.
+                        Dites votre nom, expliquez ce que vous faites,
+                        parlez d'une compétence que vous possédez et
+                        terminez en expliquant un objectif que vous souhaitez
+                        atteindre.
+                    </p>
+
+                    <p style="margin-top:10px;">
+                        <strong>
+                            Conseil :
+                        </strong>
+
+                        ne cherchez pas à réciter un texte. Parlez
+                        naturellement comme si vous étiez réellement
+                        devant plusieurs personnes.
+                    </p>
+
+                </div>
+
+
+                <div class="timer-area">
+
+                    <div
+                        class="timer"
+                        id="timer">
+                        00:00
+                    </div>
+
+                    <div class="timer-label">
+                        Temps de parole
+                    </div>
+
+                </div>
+
+
+                <div class="microphone-area">
+
+                    <button
+                        class="mic-button"
+                        id="micButton"
+                        onclick="demarrerArreter()">
+
+                        <i class="fa-solid fa-microphone"></i>
+
+                    </button>
+
+                    <div
+                        class="mic-label"
+                        id="micLabel">
+                        Cliquez sur le microphone pour commencer
+                    </div>
+
+                    <div
+                        class="recording-message"
+                        id="recordingMessage">
+
+                        ● Écoute en cours... Parlez clairement.
+
+                    </div>
+
+                </div>
+
+
+                <div class="transcription-area">
+
+                    <div class="transcription-title">
+
+                        <strong>
+                            Votre discours transcrit
+                        </strong>
+
+                        <span
+                            class="word-count"
+                            id="wordCount">
+                            0 mot
+                        </span>
+
+                    </div>
+
+
+                    <textarea
+                        id="transcription"
+                        placeholder="Votre discours apparaîtra ici pendant que vous parlez. Vous pouvez également écrire ou corriger le texte manuellement."></textarea>
+
+                </div>
+
+
+                <div class="practice-actions">
+
+                    <button
+                        class="btn btn-blue"
+                        onclick="analyserDiscours()">
+
+                        <i class="fa-solid fa-chart-simple"></i>
+                        Analyser ma prestation
+
+                    </button>
+
+
+                    <button
+                        class="btn btn-gray"
+                        onclick="reinitialiserTest()">
+
+                        <i class="fa-solid fa-rotate"></i>
+                        Recommencer
+
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     RESULTATS
+                ================================================= -->
+
+                <div
+                    class="results"
+                    id="results">
+
+                    <div class="score-area">
+
+                        <div class="score-circle">
+
+                            <strong id="score">
+                                0
+                            </strong>
+
+                            <span>
+                                / 100
+                            </span>
+
+                        </div>
+
+                        <h3 id="evaluationTitle">
+                            Analyse de votre prestation
+                        </h3>
+
+                    </div>
+
+
+                    <div class="analysis-grid">
+
+
+                        <div class="analysis-item">
+
+                            <div class="analysis-top">
+
+                                <strong>
+                                    Clarté
+                                </strong>
+
+                                <span
+                                    class="analysis-score"
+                                    id="clarteScore">
+                                    0%
+                                </span>
+
+                            </div>
+
+                            <div class="analysis-bar">
+
+                                <div
+                                    class="analysis-fill"
+                                    id="clarteBar">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="analysis-item">
+
+                            <div class="analysis-top">
+
+                                <strong>
+                                    Structure
+                                </strong>
+
+                                <span
+                                    class="analysis-score"
+                                    id="structureScore">
+                                    0%
+                                </span>
+
+                            </div>
+
+                            <div class="analysis-bar">
+
+                                <div
+                                    class="analysis-fill"
+                                    id="structureBar">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="analysis-item">
+
+                            <div class="analysis-top">
+
+                                <strong>
+                                    Richesse du vocabulaire
+                                </strong>
+
+                                <span
+                                    class="analysis-score"
+                                    id="vocabulaireScore">
+                                    0%
+                                </span>
+
+                            </div>
+
+                            <div class="analysis-bar">
+
+                                <div
+                                    class="analysis-fill"
+                                    id="vocabulaireBar">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="analysis-item">
+
+                            <div class="analysis-top">
+
+                                <strong>
+                                    Fluidité
+                                </strong>
+
+                                <span
+                                    class="analysis-score"
+                                    id="fluiditeScore">
+                                    0%
+                                </span>
+
+                            </div>
+
+                            <div class="analysis-bar">
+
+                                <div
+                                    class="analysis-fill"
+                                    id="fluiditeBar">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="feedback">
+
+                        <strong>
+                            <i class="fa-solid fa-lightbulb"></i>
+                            Correction et conseils
+                        </strong>
+
+                        <p id="feedbackText">
+                            Votre analyse apparaîtra ici.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     CONSEILS
+========================================================= -->
+
+<section class="tips">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="mini-title">
+                Méthode
+            </div>
+
+            <h2>
+                Les réflexes d'un bon orateur
+            </h2>
+
+            <p>
+                Utilisez ces principes chaque fois que vous devez
+                parler devant une ou plusieurs personnes.
+            </p>
+
+        </div>
+
+
+        <div class="tips-content">
+
+
+            <div class="tip-row">
+
+                <div class="tip-number">
+                    1
+                </div>
+
+                <div>
+
+                    <h3>
+                        Commencez avec une idée claire
+                    </h3>
+
+                    <p>
+                        Avant de parler, demandez-vous ce que vous
+                        voulez réellement faire comprendre à votre public.
+                        Une idée principale bien définie vous évitera
+                        de vous perdre dans votre discours.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="tip-row">
+
+                <div class="tip-number">
+                    2
+                </div>
+
+                <div>
+
+                    <h3>
+                        Respirez avant de commencer
+                    </h3>
+
+                    <p>
+                        Une respiration calme vous permet de réduire
+                        la tension et de commencer votre présentation
+                        avec davantage de contrôle.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="tip-row">
+
+                <div class="tip-number">
+                    3
+                </div>
+
+                <div>
+
+                    <h3>
+                        Ne parlez pas trop vite
+                    </h3>
+
+                    <p>
+                        Lorsque nous sommes stressés, nous avons tendance
+                        à accélérer. Faites des pauses entre vos idées
+                        afin de laisser au public le temps de comprendre.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="tip-row">
+
+                <div class="tip-number">
+                    4
+                </div>
+
+                <div>
+
+                    <h3>
+                        Regardez votre public
+                    </h3>
+
+                    <p>
+                        Le regard crée une relation. Évitez de fixer
+                        constamment vos notes ou le sol. Lorsque cela
+                        est possible, regardez différentes personnes
+                        dans la salle.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="tip-row">
+
+                <div class="tip-number">
+                    5
+                </div>
+
+                <div>
+
+                    <h3>
+                        Acceptez les petites erreurs
+                    </h3>
+
+                    <p>
+                        Une hésitation ou une petite erreur ne signifie
+                        pas que votre présentation est mauvaise.
+                        Continuez simplement votre idée et gardez
+                        votre calme.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PROGRESSION
+========================================================= -->
+
+<section class="progress-section">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="mini-title">
+                Votre parcours
+            </div>
+
+            <h2>
+                Progression du domaine
+            </h2>
+
+            <p>
+                Terminez les différents chapitres pour progresser
+                vers votre certificat.
+            </p>
+
+        </div>
+
+
+        <div class="progress-box">
+
+            <div class="progress-top">
+
+                <strong>
+                    Chapitres terminés
+                </strong>
+
+                <span id="progressText">
+                    0%
+                </span>
+
+            </div>
+
+
+            <div class="progress-bar">
+
+                <div
+                    class="progress-fill"
+                    id="progressFill">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FIN
+========================================================= -->
+
+<section class="finish">
+
+    <div class="container">
+
+        <div class="section-heading">
+
+            <div class="mini-title">
+                Prochaine étape
+            </div>
+
+            <h2>
+                Continuez votre apprentissage
+            </h2>
+
+            <p>
+                Maintenant que vous connaissez les bases de l'éloquence,
+                le prochain chapitre vous aidera à développer votre
+                confiance, votre posture et votre capacité à gérer
+                le stress lorsque vous prenez la parole.
+            </p>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="terminerChapitre()">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            Terminer le chapitre
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-logo">
+            BMJ <span>FORMATION</span>
+        </div>
+
+        <p>
+            Développez vos compétences. Renforcez votre confiance.
+            Construisez votre avenir.
+        </p>
+
+        <div class="copyright">
+            © 2026 BMJ SERVICE — Tous droits réservés.
+        </div>
+
+    </div>
+
+</footer>
+
+
+<div
+    class="notification"
+    id="notification">
+</div>
+
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+    /* =========================================================
+       UTILISATEUR
+    ========================================================= */
+
+    function chargerUtilisateur() {
+
+        const cles = [
+            "bmj_current_user",
+            "currentUser",
+            "bmj_user",
+            "utilisateur",
+            "user",
+            "loggedUser"
+        ];
+
+        for (const cle of cles) {
+
+            const brut = localStorage.getItem(cle);
+
+            if (!brut) continue;
+
+            try {
+
+                let data = JSON.parse(brut);
+
+                if (data && data.user) {
+                    data = data.user;
+                }
+
+                if (data && typeof data === "object") {
+                    return data;
+                }
+
+            } catch (e) {}
+
+        }
+
+        return null;
+    }
+
+
+    const utilisateur = chargerUtilisateur();
+
+
+    if (utilisateur) {
+
+        const nom =
+            utilisateur.nom ||
+            utilisateur.name ||
+            utilisateur.prenom ||
+            utilisateur.username ||
+            utilisateur.email ||
+            "Apprenant";
+
+        document.getElementById("userName").textContent = nom;
+
+
+        const photo =
+            utilisateur.photo ||
+            utilisateur.photo_url ||
+            utilisateur.avatar ||
+            utilisateur.image;
+
+        if (photo) {
+            document.getElementById("userPhoto").src = photo;
+        }
+
+    }
+
+
+    /* =========================================================
+       IDENTIFIANT
+    ========================================================= */
+
+    function obtenirIdentifiant() {
+
+        if (!utilisateur) {
+            return "invite";
+        }
+
+        return (
+            utilisateur.id_bmj ||
+            utilisateur.id ||
+            utilisateur.user_id ||
+            utilisateur.userId ||
+            utilisateur.email ||
+            utilisateur.telephone ||
+            utilisateur.phone ||
+            "utilisateur"
+        );
+
+    }
+
+
+    const identifiant = obterIdentifiantSafe();
+
+
+    function obterIdentifiantSafe() {
+
+        return obtenirIdentifiantOriginal();
+
+    }
+
+
+    function obtenirIdentifiantOriginal() {
+
+        if (!utilisateur) {
+            return "invite";
+        }
+
+        return (
+            utilisateur.id_bmj ||
+            utilisateur.id ||
+            utilisateur.user_id ||
+            utilisateur.userId ||
+            utilisateur.email ||
+            utilisateur.telephone ||
+            utilisateur.phone ||
+            "utilisateur"
+        );
+
+    }
+
+
+    /* =========================================================
+       PROGRESSION
+    ========================================================= */
+
+    const progressKey =
+        "eloquence_progression_" + identifiant;
+
+
+    function chargerProgression() {
+
+        try {
+
+            const data =
+                localStorage.getItem(progressKey);
+
+            if (data) {
+
+                const progression =
+                    JSON.parse(data);
+
+                if (Array.isArray(progression)) {
+                    return progression;
+                }
+
+            }
+
+        } catch (e) {}
+
+        return [];
+
+    }
+
+
+    function afficherProgression() {
+
+        const progression =
+            chargerProgression();
+
+        const termine =
+            progression.filter(Boolean).length;
+
+        const pourcentage =
+            Math.round((termine / 5) * 100);
+
+        document.getElementById("progressText")
+            .textContent = pourcentage + "%";
+
+        document.getElementById("progressFill")
+            .style.width = pourcentage + "%";
+
+    }
+
+
+    afficherProgression();
+
+
+    /* =========================================================
+       RECONNAISSANCE VOCALE
+    ========================================================= */
+
+    let recognition = null;
+
+    let reconnaissanceDisponible = false;
+
+    let enregistrement = false;
+
+    let temps = 0;
+
+    let intervalTimer = null;
+
+    let texteFinal = "";
+
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+
+    if (SpeechRecognition) {
+
+        recognition =
+            new SpeechRecognition();
+
+        reconnaissanceDisponible = true;
+
+        recognition.lang = "fr-FR";
+
+        recognition.continuous = true;
+
+        recognition.interimResults = true;
+
+        recognition.maxAlternatives = 1;
+
+
+        recognition.onresult = function(event) {
+
+            let interim = "";
+
+            for (
+                let i = event.resultIndex;
+                i < event.results.length;
+                i++
+            ) {
+
+                const transcript =
+                    event.results[i][0].transcript;
+
+                if (event.results[i].isFinal) {
+
+                    texteFinal +=
+                        " " + transcript;
+
+                } else {
+
+                    interim += transcript;
+
+                }
+
+            }
+
+
+            const texte =
+                (texteFinal + " " + interim)
+                .trim();
+
+
+            document.getElementById(
+                "transcription"
+            ).value = texte;
+
+
+            compterMots();
+
+        };
+
+
+        recognition.onerror = function(event) {
+
+            console.warn(
+                "Erreur reconnaissance vocale :",
+                event.error
+            );
+
+            if (event.error === "not-allowed") {
+
+                afficherNotification(
+                    "Autorisation du microphone refusée."
+                );
+
+            }
+
+        };
+
+
+        recognition.onend = function() {
+
+            if (enregistrement) {
+
+                try {
+                    recognition.start();
+                } catch(e) {}
+
+            }
+
+        };
+
+    }
+
+
+    /* =========================================================
+       DEMARRER / ARRETER
+    ========================================================= */
+
+    function demarrerArreter() {
+
+        if (!reconnaissanceDisponible) {
+
+            afficherNotification(
+                "Votre navigateur ne prend pas en charge la reconnaissance vocale. Utilisez Chrome ou Edge."
+            );
+
+            return;
+        }
+
+
+        if (!enregistrement) {
+
+            commencerEnregistrement();
+
+        } else {
+
+            arreterEnregistrement();
+
+        }
+
+    }
+
+
+    function commencerEnregistrement() {
+
+        enregistrement = true;
+
+        temps = 0;
+
+        texteFinal =
+            document.getElementById("transcription")
+                .value.trim();
+
+
+        const button =
+            document.getElementById("micButton");
+
+        button.classList.add("recording");
+
+        button.innerHTML =
+            '<i class="fa-solid fa-stop"></i>';
+
+
+        document.getElementById(
+            "micLabel"
+        ).textContent =
+            "Cliquez pour arrêter votre prise de parole";
+
+
+        document.getElementById(
+            "recordingMessage"
+        ).classList.add("active");
+
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "Écoute en cours";
+
+
+        try {
+
+            recognition.start();
+
+        } catch(e) {}
+
+
+        intervalTimer =
+            setInterval(function() {
+
+                temps++;
+
+                afficherTemps();
+
+            },1000);
+
+
+        afficherNotification(
+            "Le test commence. Parlez naturellement."
+        );
+
+    }
+
+
+    function arreterEnregistrement() {
+
+        enregistrement = false;
+
+        clearInterval(intervalTimer);
+
+
+        const button =
+            document.getElementById("micButton");
+
+        button.classList.remove("recording");
+
+        button.innerHTML =
+            '<i class="fa-solid fa-microphone"></i>';
+
+
+        document.getElementById(
+            "micLabel"
+        ).textContent =
+            "Enregistrement terminé";
+
+
+        document.getElementById(
+            "recordingMessage"
+        ).classList.remove("active");
+
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "Prêt pour l'analyse";
+
+
+        if (recognition) {
+
+            try {
+                recognition.stop();
+            } catch(e) {}
+
+        }
+
+
+        compterMots();
+
+        afficherNotification(
+            "Votre prise de parole est terminée."
+        );
+
+    }
+
+
+    /* =========================================================
+       TIMER
+    ========================================================= */
+
+    function afficherTemps() {
+
+        const minutes =
+            Math.floor(temps / 60)
+                .toString()
+                .padStart(2,"0");
+
+        const secondes =
+            (temps % 60)
+                .toString()
+                .padStart(2,"0");
+
+        document.getElementById(
+            "timer"
+        ).textContent =
+            minutes + ":" + secondes;
+
+    }
+
+
+    /* =========================================================
+       COMPTER LES MOTS
+    ========================================================= */
+
+    document.getElementById(
+        "transcription"
+    ).addEventListener(
+        "input",
+        compterMots
+    );
+
+
+    function compterMots() {
+
+        const texte =
+            document.getElementById(
+                "transcription"
+            ).value.trim();
+
+
+        if (!texte) {
+
+            document.getElementById(
+                "wordCount"
+            ).textContent =
+                "0 mot";
+
+            return;
+        }
+
+
+        const mots =
+            texte.split(/\s+/).filter(Boolean);
+
+
+        document.getElementById(
+            "wordCount"
+        ).textContent =
+            mots.length +
+            (mots.length > 1 ? " mots" : " mot");
+
+    }
+
+
+    /* =========================================================
+       ANALYSE
+    ========================================================= */
+
+    function analyserDiscours() {
+
+        if (enregistrement) {
+            arreterEnregistrement();
+        }
+
+
+        const texte =
+            document.getElementById(
+                "transcription"
+            ).value.trim();
+
+
+        if (!texte) {
+
+            afficherNotification(
+                "Parlez ou écrivez votre discours avant de lancer l'analyse."
+            );
+
+            return;
+        }
+
+
+        const mots =
+            texte.split(/\s+/)
+                .filter(Boolean);
+
+
+        const nombreMots =
+            mots.length;
+
+
+        /* -----------------------------------------------------
+           CLARTE
+        ----------------------------------------------------- */
+
+        let clarte = 45;
+
+
+        const phrases =
+            texte.split(/[.!?]+/)
+                .filter(x => x.trim());
+
+
+        if (phrases.length >= 3) {
+            clarte += 12;
+        }
+
+        if (phrases.length >= 5) {
+            clarte += 8;
+        }
+
+
+        if (nombreMots >= 60) {
+            clarte += 10;
+        }
+
+
+        if (nombreMots > 250) {
+            clarte -= 8;
+        }
+
+
+        clarte =
+            limiter(clarte);
+
+
+        /* -----------------------------------------------------
+           STRUCTURE
+        ----------------------------------------------------- */
+
+        let structure = 35;
+
+
+        const motsStructure = [
+            "d'abord",
+            "ensuite",
+            "enfin",
+            "premièrement",
+            "deuxièmement",
+            "cependant",
+            "donc",
+            "parce que",
+            "pour conclure",
+            "en conclusion"
+        ];
+
+
+        let trouveStructure = 0;
+
+
+        motsStructure.forEach(function(mot) {
+
+            if (
+                texte
+                    .toLowerCase()
+                    .includes(mot)
+            ) {
+
+                trouveStructure++;
+
+            }
+
+        });
+
+
+        structure +=
+            trouveStructure * 8;
+
+
+        if (nombreMots >= 80) {
+            structure += 8;
+        }
+
+
+        structure =
+            limiter(structure);
+
+
+        /* -----------------------------------------------------
+           VOCABULAIRE
+        ----------------------------------------------------- */
+
+        const uniques =
+            new Set(
+                mots.map(
+                    mot =>
+                    mot.toLowerCase()
+                        .replace(/[.,!?;:]/g,"")
+                )
+            ).size;
+
+
+        let vocabulaire = 35;
+
+
+        if (nombreMots > 0) {
+
+            const richesse =
+                uniques / nombreMots;
+
+
+            if (richesse > .65) {
+                vocabulaire += 35;
+            } else if (richesse > .50) {
+                vocabulaire += 25;
+            } else if (richesse > .38) {
+                vocabulaire += 15;
+            }
+
+        }
+
+
+        vocabulaire =
+            limiter(vocabulaire);
+
+
+        /* -----------------------------------------------------
+           FLUIDITE
+        ----------------------------------------------------- */
+
+        let fluidite = 75;
+
+
+        const hesitations = [
+            "euh",
+            "heu",
+            "ben",
+            "bah",
+            "genre",
+            "en fait",
+            "voilà voilà"
+        ];
+
+
+        let repetitions = 0;
+
+
+        hesitations.forEach(function(mot) {
+
+            const regex =
+                new RegExp(
+                    "\\b" +
+                    mot.replace(" ","\\s+") +
+                    "\\b",
+                    "gi"
+                );
+
+
+            const result =
+                texte.match(regex);
+
+
+            if (result) {
+                repetitions += result.length;
+            }
+
+        });
+
+
+        fluidite -=
+            repetitions * 4;
+
+
+        if (nombreMots >= 60) {
+            fluidite += 5;
+        }
+
+
+        fluidite =
+            limiter(fluidite);
+
+
+        /* -----------------------------------------------------
+           SCORE FINAL
+        ----------------------------------------------------- */
+
+        const score =
+            Math.round(
+                (
+                    clarte +
+                    structure +
+                    vocabulaire +
+                    fluidite
+                ) / 4
+            );
+
+
+        afficherResultats(
+            score,
+            clarte,
+            structure,
+            vocabulaire,
+            fluidite,
+            repetitions,
+            nombreMots
+        );
+
+    }
+
+
+    function limiter(nombre) {
+
+        return Math.max(
+            10,
+            Math.min(100,nombre)
+        );
+
+    }
+
+
+    /* =========================================================
+       RESULTATS
+    ========================================================= */
+
+    function afficherResultats(
+        score,
+        clarte,
+        structure,
+        vocabulaire,
+        fluidite,
+        repetitions,
+        nombreMots
+    ) {
+
+
+        document.getElementById(
+            "results"
+        ).classList.add("show");
+
+
+        document.getElementById(
+            "score"
+        ).textContent =
+            score;
+
+
+        afficherAnalyse(
+            "clarte",
+            clarte
+        );
+
+
+        afficherAnalyse(
+            "structure",
+            structure
+        );
+
+
+        afficherAnalyse(
+            "vocabulaire",
+            vocabulaire
+        );
+
+
+        afficherAnalyse(
+            "fluidite",
+            fluidite
+        );
+
+
+        let titre = "";
+
+
+        if (score >= 85) {
+
+            titre =
+                "Excellent début ! Votre expression est déjà solide.";
+
+        } else if (score >= 70) {
+
+            titre =
+                "Très bon travail ! Quelques ajustements peuvent encore renforcer votre impact.";
+
+        } else if (score >= 50) {
+
+            titre =
+                "Bonne base. Continuez à pratiquer pour gagner en assurance.";
+
+        } else {
+
+            titre =
+                "Votre progression commence ici. Recommencez après avoir appliqué les conseils.";
+
+        }
+
+
+        document.getElementById(
+            "evaluationTitle"
+        ).textContent =
+            titre;
+
+
+        let conseils = [];
+
+
+        if (nombreMots < 50) {
+
+            conseils.push(
+                "Votre discours est assez court. Développez davantage vos idées avec un exemple concret."
+            );
+
+        }
+
+
+        if (nombreMots > 220) {
+
+            conseils.push(
+                "Votre discours est assez long. Essayez de supprimer les informations secondaires et de conserver l'essentiel."
+            );
+
+        }
+
+
+        if (clarte < 65) {
+
+            conseils.push(
+                "Travaillez la clarté : utilisez des phrases plus courtes et une idée principale par partie."
+            );
+
+        }
+
+
+        if (structure < 65) {
+
+            conseils.push(
+                "Structurez davantage votre discours avec une introduction, un développement et une conclusion."
+            );
+
+        }
+
+
+        if (vocabulaire < 60) {
+
+            conseils.push(
+                "Essayez de varier davantage votre vocabulaire et d'utiliser des mots précis."
+            );
+
+        }
+
+
+        if (repetitions > 0) {
+
+            conseils.push(
+                "Vous utilisez plusieurs mots d'hésitation comme « euh » ou « en fait ». Remplacez-les par de courtes pauses silencieuses."
+            );
+
+        }
+
+
+        if (fluidite >= 80) {
+
+            conseils.push(
+                "Votre fluidité est encourageante. Continuez à parler calmement sans accélérer."
+            );
+
+        }
+
+
+        if (conseils.length === 0) {
+
+            conseils.push(
+                "Très bonne prestation. Continuez à travailler votre voix, votre regard, votre posture et votre capacité à raconter des idées de manière captivante."
+            );
+
+        }
+
+
+        document.getElementById(
+            "feedbackText"
+        ).textContent =
+            conseils.join(" ");
+
+
+        document.getElementById(
+            "results"
+        ).scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
+
+    }
+
+
+    function afficherAnalyse(
+        nom,
+        valeur
+    ) {
+
+        document.getElementById(
+            nom + "Score"
+        ).textContent =
+            valeur + "%";
+
+
+        setTimeout(function() {
+
+            document.getElementById(
+                nom + "Bar"
+            ).style.width =
+                valeur + "%";
+
+        },100);
+
+    }
+
+
+    /* =========================================================
+       REINITIALISER
+    ========================================================= */
+
+    function reinitialiserTest() {
+
+        if (enregistrement) {
+            arreterEnregistrement();
+        }
+
+
+        clearInterval(intervalTimer);
+
+
+        temps = 0;
+
+        texteFinal = "";
+
+
+        document.getElementById(
+            "timer"
+        ).textContent =
+            "00:00";
+
+
+        document.getElementById(
+            "transcription"
+        ).value =
+            "";
+
+
+        document.getElementById(
+            "wordCount"
+        ).textContent =
+            "0 mot";
+
+
+        document.getElementById(
+            "results"
+        ).classList.remove("show");
+
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "Prêt à commencer";
+
+
+        document.getElementById(
+            "micLabel"
+        ).textContent =
+            "Cliquez sur le microphone pour commencer";
+
+
+        document.getElementById(
+            "recordingMessage"
+        ).classList.remove("active");
+
+
+        document.getElementById(
+            "micButton"
+        ).classList.remove("recording");
+
+
+        document.getElementById(
+            "micButton"
+        ).innerHTML =
+            '<i class="fa-solid fa-microphone"></i>';
+
+
+        [
+            "clarte",
+            "structure",
+            "vocabulaire",
+            "fluidite"
+        ].forEach(function(nom) {
+
+            document.getElementById(
+                nom + "Score"
+            ).textContent =
+                "0%";
+
+            document.getElementById(
+                nom + "Bar"
+            ).style.width =
+                "0%";
+
+        });
+
+
+        afficherNotification(
+            "Votre exercice a été réinitialisé."
+        );
+
+    }
+
+
+    /* =========================================================
+       TERMINER LE CHAPITRE
+    ========================================================= */
+
+    function terminerChapitre() {
+
+        const progression =
+            chargerProgression();
+
+
+        progression[0] = true;
+
+
+        localStorage.setItem(
+            progressKey,
+            JSON.stringify(progression)
+        );
+
+
+        afficherProgression();
+
+
+        afficherNotification(
+            "Chapitre 1 terminé ! Passage au chapitre suivant..."
+        );
+
+
+        setTimeout(function() {
+
+            window.location.href =
+                "confiance_prise_parole.html";
+
+        },1500);
+
+    }
+
+
+    /* =========================================================
+       NOTIFICATION
+    ========================================================= */
+
+    function afficherNotification(message) {
+
+        const notification =
+            document.getElementById(
+                "notification"
+            );
+
+
+        notification.textContent =
+            message;
+
+
+        notification.classList.add(
+            "show"
+        );
+
+
+        setTimeout(function() {
+
+            notification.classList.remove(
+                "show"
+            );
+
+        },3500);
+
+    }
+
+
+    /* =========================================================
+       VERIFICATION NAVIGATEUR
+    ========================================================= */
+
+    if (!reconnaissanceDisponible) {
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "Reconnaissance vocale non disponible";
+
+    }
+
+
+</script>
+
+</body>
+
+</html>

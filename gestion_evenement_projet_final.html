@@ -1,0 +1,2843 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestion d'Évènement & Projet Final | BMJ SERVICE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        :root {
+            --primary: #176b87;
+            --primary-dark: #0b4057;
+            --gold: #d4af37;
+            --gold-light: #f8f0d5;
+            --background: #f6f9fa;
+            --white: #ffffff;
+            --text: #1b3039;
+            --gray: #667780;
+            --border: #e1eaed;
+            --success: #238b63;
+            --danger: #bd4a4a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            height: 74px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            background: rgba(255, 255, 255, .97);
+            border-bottom: 1px solid var(--border);
+
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .05);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-area img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .brand {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            letter-spacing: .5px;
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-area img {
+            width: 39px;
+            height: 39px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+
+        .user-name {
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+
+            color: var(--primary-dark);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 600px;
+            margin-top: 74px;
+
+            display: flex;
+            align-items: center;
+
+            position: relative;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    rgba(7, 54, 73, .98),
+                    rgba(23, 107, 135, .88),
+                    rgba(0, 0, 0, .55)
+                ),
+                url("images/gestion-evenement.jpg");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            width: 90%;
+            max-width: 1180px;
+            margin: auto;
+            padding: 75px 0;
+            color: white;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 17px;
+
+            border-radius: 30px;
+
+            color: #ffe99a;
+            background: rgba(212, 175, 55, .16);
+            border: 1px solid rgba(212, 175, 55, .75);
+
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .7px;
+
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            max-width: 900px;
+
+            font-size: clamp(35px, 5vw, 62px);
+            line-height: 1.14;
+            font-weight: 800;
+
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            color: #f3d66b;
+        }
+
+        .hero-description {
+            max-width: 780px;
+
+            color: rgba(255, 255, 255, .9);
+
+            font-size: 17px;
+
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+
+            margin-bottom: 42px;
+        }
+
+        .btn {
+            border: none;
+            cursor: pointer;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            padding: 13px 22px;
+
+            border-radius: 8px;
+
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: .25s;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: #17252b;
+        }
+
+        .btn-primary:hover {
+            background: #e4c34d;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            color: white;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .6);
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary-dark);
+        }
+
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .hero-stat {
+            border-left: 2px solid var(--gold);
+            padding-left: 15px;
+        }
+
+        .hero-stat strong {
+            display: block;
+            color: white;
+            font-size: 23px;
+        }
+
+        .hero-stat span {
+            color: rgba(255, 255, 255, .72);
+            font-size: 12px;
+        }
+
+        /* ================= GENERAL ================= */
+
+        .container {
+            width: 90%;
+            max-width: 1120px;
+            margin: auto;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        .section-heading {
+            margin-bottom: 38px;
+        }
+
+        .section-heading small {
+            display: block;
+
+            color: var(--primary);
+
+            font-size: 12px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+
+            margin-bottom: 8px;
+        }
+
+        .section-heading h2 {
+            color: var(--primary-dark);
+
+            font-size: 32px;
+            line-height: 1.3;
+
+            margin-bottom: 12px;
+        }
+
+        .section-heading p {
+            max-width: 780px;
+            color: var(--gray);
+        }
+
+        /* ================= INTRO ================= */
+
+        .intro {
+            background: white;
+        }
+
+        .intro-layout {
+            display: grid;
+            grid-template-columns: 1.35fr .65fr;
+            gap: 45px;
+            align-items: start;
+        }
+
+        .intro-text p {
+            color: #52656d;
+            margin-bottom: 18px;
+        }
+
+        .highlight {
+            background: linear-gradient(
+                145deg,
+                var(--primary-dark),
+                var(--primary)
+            );
+
+            color: white;
+
+            padding: 30px;
+
+            border-radius: 16px;
+        }
+
+        .highlight i {
+            color: var(--gold);
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .highlight h3 {
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .highlight p {
+            color: rgba(255,255,255,.78);
+            font-size: 14px;
+        }
+
+        /* ================= JOUR EVENEMENT ================= */
+
+        .jour-evenement {
+            background: var(--background);
+        }
+
+        .jour-content {
+            max-width: 950px;
+        }
+
+        .jour-content > p {
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: "";
+
+            position: absolute;
+            left: 21px;
+            top: 0;
+            bottom: 0;
+
+            width: 2px;
+
+            background: #d8e3e7;
+        }
+
+        .timeline-item {
+            position: relative;
+
+            display: flex;
+            gap: 24px;
+
+            margin-bottom: 28px;
+        }
+
+        .timeline-icon {
+            width: 44px;
+            min-width: 44px;
+            height: 44px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--primary);
+            color: white;
+
+            border: 4px solid var(--background);
+
+            z-index: 2;
+        }
+
+        .timeline-text {
+            padding-top: 1px;
+        }
+
+        .timeline-text strong {
+            display: block;
+            color: var(--gold);
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .timeline-text h3 {
+            color: var(--primary-dark);
+            font-size: 17px;
+            margin-bottom: 4px;
+        }
+
+        .timeline-text p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* ================= COORDINATION ================= */
+
+        .coordination {
+            background: white;
+        }
+
+        .coordination-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 22px 40px;
+        }
+
+        .coordination-item {
+            padding: 22px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .coordination-item h3 {
+            color: var(--primary-dark);
+            font-size: 18px;
+            margin-bottom: 7px;
+        }
+
+        .coordination-item h3 i {
+            color: var(--gold);
+            margin-right: 8px;
+        }
+
+        .coordination-item p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* ================= IMPREVUS ================= */
+
+        .imprevus {
+            background: #eef5f7;
+        }
+
+        .imprevus-content {
+            max-width: 950px;
+        }
+
+        .imprevus-content > p {
+            color: var(--gray);
+            margin-bottom: 25px;
+        }
+
+        .imprevus-list {
+            list-style: none;
+        }
+
+        .imprevus-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+
+            padding: 14px 0;
+
+            border-bottom: 1px solid var(--border);
+
+            color: #53666d;
+            font-size: 14px;
+        }
+
+        .imprevus-list i {
+            color: var(--danger);
+            margin-top: 6px;
+        }
+
+        /* ================= EXPERIENCE PARTICIPANT ================= */
+
+        .experience {
+            background: white;
+        }
+
+        .experience-layout {
+            display: grid;
+            grid-template-columns: .8fr 1.2fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .experience-box {
+            padding: 38px;
+
+            border-radius: 17px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #0b4057,
+                    #176b87
+                );
+        }
+
+        .experience-box small {
+            color: #f1d76b;
+
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .experience-box h3 {
+            font-size: 26px;
+            margin: 10px 0 15px;
+        }
+
+        .experience-box p {
+            color: rgba(255,255,255,.78);
+            font-size: 14px;
+        }
+
+        .experience-text h3 {
+            color: var(--primary-dark);
+            font-size: 21px;
+            margin-bottom: 13px;
+        }
+
+        .experience-text p {
+            color: var(--gray);
+            margin-bottom: 17px;
+        }
+
+        .check-list {
+            list-style: none;
+        }
+
+        .check-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+
+            color: #52656d;
+            font-size: 14px;
+
+            margin-bottom: 10px;
+        }
+
+        .check-list i {
+            color: var(--success);
+            margin-top: 6px;
+        }
+
+        /* ================= EVALUATION ================= */
+
+        .evaluation {
+            background: var(--background);
+        }
+
+        .evaluation-text {
+            max-width: 920px;
+        }
+
+        .evaluation-text p {
+            color: var(--gray);
+            margin-bottom: 18px;
+        }
+
+        .evaluation-points {
+            margin-top: 25px;
+
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px 35px;
+        }
+
+        .evaluation-point {
+            padding: 13px 0;
+            border-bottom: 1px solid var(--border);
+
+            color: #53666d;
+            font-size: 14px;
+        }
+
+        .evaluation-point i {
+            color: var(--gold);
+            margin-right: 8px;
+        }
+
+        /* ================= PROJET FINAL ================= */
+
+        .projet {
+            background: white;
+        }
+
+        .projet-intro {
+            max-width: 900px;
+            margin-bottom: 35px;
+        }
+
+        .projet-intro p {
+            color: var(--gray);
+            margin-bottom: 17px;
+        }
+
+        .project-box {
+            background: linear-gradient(
+                135deg,
+                #f9f4df,
+                #fffdf4
+            );
+
+            border: 1px solid #eadba2;
+
+            border-radius: 17px;
+
+            padding: 38px;
+        }
+
+        .project-label {
+            display: inline-block;
+
+            background: var(--gold);
+            color: #17252b;
+
+            padding: 5px 13px;
+
+            border-radius: 20px;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            margin-bottom: 15px;
+        }
+
+        .project-box h3 {
+            color: var(--primary-dark);
+            font-size: 25px;
+            margin-bottom: 13px;
+        }
+
+        .project-box > p {
+            color: #59686d;
+            margin-bottom: 18px;
+        }
+
+        .project-list {
+            list-style: none;
+            counter-reset: projet;
+        }
+
+        .project-list li {
+            counter-increment: projet;
+
+            position: relative;
+
+            padding: 13px 0 13px 48px;
+
+            border-bottom: 1px solid #eadfb8;
+
+            color: #59686d;
+            font-size: 14px;
+        }
+
+        .project-list li::before {
+            content: counter(projet);
+
+            position: absolute;
+            left: 0;
+            top: 9px;
+
+            width: 32px;
+            height: 32px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--primary);
+            color: white;
+
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ================= LIVRABLE ================= */
+
+        .livrable {
+            background: var(--background);
+        }
+
+        .livrable-content {
+            max-width: 900px;
+        }
+
+        .livrable-content > p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        .livrable-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px 35px;
+        }
+
+        .livrable-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+
+            padding: 13px 0;
+
+            border-bottom: 1px solid var(--border);
+
+            color: #52656d;
+            font-size: 14px;
+        }
+
+        .livrable-item i {
+            color: var(--primary);
+            margin-top: 6px;
+        }
+
+        /* ================= CONSEILS ================= */
+
+        .conseils {
+            background: white;
+        }
+
+        .conseils-content {
+            max-width: 900px;
+        }
+
+        .conseils-content p {
+            color: var(--gray);
+            margin-bottom: 18px;
+        }
+
+        .conseil-principal {
+            margin-top: 28px;
+
+            padding: 25px;
+
+            border-left: 4px solid var(--gold);
+
+            background: #faf8ed;
+        }
+
+        .conseil-principal strong {
+            display: block;
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .conseil-principal span {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* ================= PROGRESSION ================= */
+
+        .progress-section {
+            background: #eef5f7;
+        }
+
+        .progress-box {
+            max-width: 850px;
+            margin: auto;
+
+            background: white;
+
+            border: 1px solid var(--border);
+            border-radius: 15px;
+
+            padding: 30px;
+        }
+
+        .progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 13px;
+        }
+
+        .progress-header strong {
+            color: var(--primary-dark);
+        }
+
+        .progress-percent {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .progress-bar {
+            height: 11px;
+            width: 100%;
+
+            background: #e7eef0;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--primary),
+                    var(--gold)
+                );
+
+            border-radius: 20px;
+
+            transition: width .6s ease;
+        }
+
+        .progress-info {
+            margin-top: 13px;
+
+            color: var(--gray);
+
+            font-size: 13px;
+        }
+
+        /* ================= CTA ================= */
+
+        .cta {
+            padding: 80px 0;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #0b4057,
+                    #176b87
+                );
+
+            color: white;
+
+            text-align: center;
+        }
+
+        .cta h2 {
+            font-size: 33px;
+            margin-bottom: 12px;
+        }
+
+        .cta p {
+            max-width: 720px;
+
+            margin: 0 auto 27px;
+
+            color: rgba(255,255,255,.8);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            padding: 28px 15px;
+
+            background: #082e3f;
+
+            color: rgba(255,255,255,.7);
+
+            text-align: center;
+
+            font-size: 12px;
+        }
+
+        footer strong {
+            color: #f0d568;
+        }
+
+        /* ================= POPUP ================= */
+
+        .popup {
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0,0,0,.65);
+
+            display: none;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            z-index: 3000;
+        }
+
+        .popup.active {
+            display: flex;
+        }
+
+        .popup-content {
+            width: 100%;
+            max-width: 500px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            padding: 40px 30px;
+
+            text-align: center;
+
+            box-shadow: 0 20px 60px rgba(0,0,0,.25);
+        }
+
+        .popup-icon {
+            width: 70px;
+            height: 70px;
+
+            margin: 0 auto 18px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--gold-light);
+
+            color: var(--gold);
+
+            font-size: 30px;
+        }
+
+        .popup-content h2 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .popup-content p {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 23px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 850px) {
+
+            .intro-layout,
+            .experience-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .coordination-grid,
+            .evaluation-points,
+            .livrable-list {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 0 4%;
+            }
+
+            .brand {
+                font-size: 16px;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .hero {
+                min-height: 640px;
+            }
+
+            .hero-content {
+                width: 88%;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            .hero-stats {
+                gap: 20px;
+            }
+
+            .hero-stat strong {
+                font-size: 19px;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .section-heading h2 {
+                font-size: 27px;
+            }
+
+            .project-box {
+                padding: 25px;
+            }
+
+            .experience-box {
+                padding: 28px;
+            }
+
+            .cta h2 {
+                font-size: 27px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo-area">
+
+            <img src="images/logo.png" alt="BMJ SERVICE">
+
+            <div class="brand">
+                BMJ SERVICE
+            </div>
+
+        </div>
+
+
+        <div class="user-area">
+
+            <img
+                id="userPhoto"
+                src="images/user.png"
+                alt="Utilisateur">
+
+            <span
+                id="userName"
+                class="user-name">
+                Apprenant
+            </span>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="badge">
+
+                <i class="fa-solid fa-flag-checkered"></i>
+
+                CHAPITRE 5 — GESTION & PROJET FINAL
+
+            </div>
+
+
+            <h1>
+
+                Piloter un évènement
+                <span>jusqu'à sa réussite</span>
+
+            </h1>
+
+
+            <p class="hero-description">
+
+                Découvrez comment gérer un évènement sur le terrain,
+                coordonner les équipes, accueillir les participants,
+                réagir aux imprévus, évaluer les résultats et construire
+                votre propre projet évènementiel de manière professionnelle.
+
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a
+                    href="#cours"
+                    class="btn btn-primary">
+
+                    <i class="fa-solid fa-play"></i>
+
+                    Commencer le chapitre
+
+                </a>
+
+
+                <a
+                    href="#projet"
+                    class="btn btn-outline">
+
+                    <i class="fa-solid fa-file-circle-check"></i>
+
+                    Voir le projet final
+
+                </a>
+
+            </div>
+
+
+            <div class="hero-stats">
+
+                <div class="hero-stat">
+
+                    <strong>05</strong>
+
+                    <span>
+                        Chapitre actuel
+                    </span>
+
+                </div>
+
+
+                <div class="hero-stat">
+
+                    <strong>05</strong>
+
+                    <span>
+                        Chapitres au total
+                    </span>
+
+                </div>
+
+
+                <div class="hero-stat">
+
+                    <strong>100%</strong>
+
+                    <span>
+                        Projet pratique
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= INTRODUCTION ================= -->
+
+    <section
+        class="intro"
+        id="cours">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <small>
+                    Dernière étape
+                </small>
+
+                <h2>
+                    Passer de la planification à l'action
+                </h2>
+
+                <p>
+                    Le jour de l'évènement est le moment où toutes les décisions
+                    prises pendant la préparation doivent fonctionner ensemble.
+                </p>
+
+            </div>
+
+
+            <div class="intro-layout">
+
+
+                <div class="intro-text">
+
+                    <p>
+                        Un évènement réussi ne dépend pas uniquement du programme,
+                        du lieu ou de la communication. Le véritable test commence
+                        lorsque les participants arrivent.
+                    </p>
+
+                    <p>
+                        L'organisateur doit être capable de coordonner plusieurs
+                        personnes en même temps, vérifier les installations,
+                        accueillir le public, respecter les horaires et résoudre
+                        rapidement les problèmes.
+                    </p>
+
+                    <p>
+                        La gestion sur le terrain demande donc de la préparation,
+                        de l'anticipation et surtout une bonne capacité de décision.
+                        Même lorsqu'un imprévu apparaît, l'équipe doit conserver
+                        une attitude professionnelle.
+                    </p>
+
+                    <p>
+                        Dans ce dernier chapitre, vous allez apprendre à transformer
+                        votre préparation en expérience concrète et à construire
+                        un projet final complet.
+                    </p>
+
+                </div>
+
+
+                <div class="highlight">
+
+                    <i class="fa-solid fa-star"></i>
+
+                    <h3>
+                        La règle essentielle
+                    </h3>
+
+                    <p>
+                        Un bon organisateur ne cherche pas seulement à éviter
+                        les problèmes. Il prépare également des solutions
+                        lorsque les problèmes apparaissent.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= JOUR DE L'EVENEMENT ================= -->
+
+    <section class="jour-evenement">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <small>
+                    Gestion sur le terrain
+                </small>
+
+                <h2>
+                    Comment gérer le jour de l'évènement ?
+                </h2>
+
+                <p>
+                    Une journée bien organisée commence avant l'arrivée
+                    du premier participant.
+                </p>
+
+            </div>
+
+
+            <div class="jour-content">
+
+                <p>
+                    Le responsable de l'évènement doit disposer d'un planning
+                    opérationnel indiquant les horaires, les responsables,
+                    les tâches et les points de contrôle.
+                </p>
+
+
+                <div class="timeline">
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-icon">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                        </div>
+
+                        <div class="timeline-text">
+
+                            <strong>
+                                AVANT L'OUVERTURE
+                            </strong>
+
+                            <h3>
+                                Installation et vérification
+                            </h3>
+
+                            <p>
+                                Vérifier la salle, le mobilier, la sonorisation,
+                                l'éclairage, les supports visuels, les badges,
+                                l'accueil et les équipements nécessaires.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+
+                        <div class="timeline-text">
+
+                            <strong>
+                                ACCUEIL
+                            </strong>
+
+                            <h3>
+                                Recevoir les participants
+                            </h3>
+
+                            <p>
+                                Orienter les visiteurs, vérifier les inscriptions,
+                                répondre aux questions et créer une première
+                                impression professionnelle.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-icon">
+                            <i class="fa-solid fa-microphone"></i>
+                        </div>
+
+                        <div class="timeline-text">
+
+                            <strong>
+                                DÉROULEMENT
+                            </strong>
+
+                            <h3>
+                                Respecter le programme
+                            </h3>
+
+                            <p>
+                                Suivre les horaires, coordonner les intervenants,
+                                annoncer les différentes séquences et surveiller
+                                le rythme général de l'évènement.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-icon">
+                            <i class="fa-solid fa-gears"></i>
+                        </div>
+
+                        <div class="timeline-text">
+
+                            <strong>
+                                SURVEILLANCE
+                            </strong>
+
+                            <h3>
+                                Contrôler les détails
+                            </h3>
+
+                            <p>
+                                Vérifier régulièrement les besoins du public,
+                                la propreté, le matériel, la disponibilité des
+                                équipes et les éventuelles difficultés.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-icon">
+                            <i class="fa-solid fa-door-open"></i>
+                        </div>
+
+                        <div class="timeline-text">
+
+                            <strong>
+                                FIN
+                            </strong>
+
+                            <h3>
+                                Clôture et départ
+                            </h3>
+
+                            <p>
+                                Remercier les participants, accompagner leur départ,
+                                récupérer les équipements et effectuer les dernières
+                                vérifications avec l'équipe.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= COORDINATION ================= -->
+
+    <section class="coordination">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <small>
+                    Management de terrain
+                </small>
+
+                <h2>
+                    Coordonner les équipes efficacement
+                </h2>
+
+                <p>
+                    Chaque personne doit connaître son rôle avant le début
+                    de l'évènement.
+                </p>
+
+            </div>
+
+
+            <div class="coordination-grid">
+
+
+                <div class="coordination-item">
+
+                    <h3>
+                        <i class="fa-solid fa-user-tie"></i>
+                        Responsable général
+                    </h3>
+
+                    <p>
+                        Il supervise l'ensemble de l'évènement, prend les décisions
+                        importantes et assure la coordination entre les différents
+                        responsables.
+                    </p>
+
+                </div>
+
+
+                <div class="coordination-item">
+
+                    <h3>
+                        <i class="fa-solid fa-truck"></i>
+                        Responsable logistique
+                    </h3>
+
+                    <p>
+                        Il contrôle les installations, les équipements, le mobilier,
+                        les transports et les besoins matériels.
+                    </p>
+
+                </div>
+
+
+                <div class="coordination-item">
+
+                    <h3>
+                        <i class="fa-solid fa-handshake"></i>
+                        Responsable prestataires
+                    </h3>
+
+                    <p>
+                        Il reste en contact avec les fournisseurs, vérifie leurs
+                        horaires d'arrivée et s'assure que les prestations correspondent
+                        aux accords prévus.
+                    </p>
+
+                </div>
+
+
+                <div class="coordination-item">
+
+                    <h3>
+                        <i class="fa-solid fa-door-open"></i>
+                        Équipe d'accueil
+                    </h3>
+
+                    <p>
+                        Elle accueille les participants, fournit les informations
+                        et facilite l'orientation dans le lieu.
+                    </p>
+
+                </div>
+
+
+                <div class="coordination-item">
+
+                    <h3>
+                        <i class="fa-solid fa-volume-high"></i>
+                        Équipe technique
+                    </h3>
+
+                    <p>
+                        Elle surveille le son, les écrans, les microphones,
+                        les présentations, l'éclairage et les autres équipements.
+                    </p>
+
+                </div>
+
+
+                <div class="coordination-item">
+
+                    <h3>
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Sécurité
+                    </h3>
+
+                    <p>
+                        Elle contribue à maintenir un environnement organisé
+                        et intervient selon les procédures prévues.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= IMPREVUS ================= -->
+
+    <section class="imprevus">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <small>
+                    Gestion des risques
+                </small>
+
+                <h2>
+                    Réagir aux imprévus sans perdre le contrôle
+                </h2>
+
+            </div>
+
+
+            <div class="imprevus-content">
+
+                <p>
+                    Aucun évènement ne se déroule toujours exactement comme prévu.
+                    La préparation doit donc inclure des solutions alternatives.
+                </p>
+
+
+                <ul class="imprevus-list">
+
+                    <li>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        Prévoir un matériel de secours pour les équipements
+                        essentiels.
+                    </li>
+
+
+                    <li>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        Prévoir une personne capable de remplacer un intervenant
+                        indisponible.
+                    </li>
+
+
+                    <li>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        Conserver les coordonnées de tous les prestataires
+                        importants.
+                    </li>
+
+
+                    <li>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        Préparer des solutions en cas de retard du programme.
+                    </li>
+
+
+                    <li>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        Informer rapidement le public lorsqu'une modification
+                        importante est nécessaire.
+                    </li>
+
+
+                    <li>
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        Désigner clairement la personne responsable des décisions
+                        en situation difficile.
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= EXPERIENCE ================= -->
+
+    <section class="experience">
+
+        <div class="container">
+
+            <div class="experience-layout">
+
+
+                <div class="experience-box">
+
+                    <small>
+                        Expérience participant
+                    </small>
+
+                    <h3>
+                        Le public doit se sentir pris en charge.
+                    </h3>
+
+                    <p>
+                        La qualité d'un évènement se mesure aussi à la manière
+                        dont les participants sont accueillis, informés et
+                        accompagnés pendant toute leur expérience.
+                    </p>
+
+                </div>
+
+
+                <div class="experience-text">
+
+                    <h3>
+                        Les détails qui font la différence
+                    </h3>
+
+                    <p>
+                        Un participant peut oublier certains éléments du programme,
+                        mais il se souviendra souvent de la qualité de l'accueil,
+                        de l'organisation et de l'ambiance générale.
+                    </p>
+
+                    <ul class="check-list">
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Accueil chaleureux et professionnel
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Signalétique claire
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Informations facilement accessibles
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Respect des horaires annoncés
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Réponse rapide aux demandes
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            Ambiance adaptée au type d'évènement
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= EVALUATION ================= -->
+
+    <section class="evaluation">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <small>
+                    Après l'évènement
+                </small>
+
+                <h2>
+                    Évaluer la réussite de votre évènement
+                </h2>
+
+                <p>
+                    Terminer l'évènement ne signifie pas terminer le travail.
+                    L'évaluation permet de comprendre ce qui a fonctionné
+                    et ce qui doit être amélioré.
+                </p>
+
+            </div>
+
+
+            <div class="evaluation-text">
+
+                <p>
+                    Une évaluation professionnelle doit prendre en compte
+                    les objectifs fixés avant l'évènement. Si l'objectif était
+                    de réunir 100 participants, il faut comparer le nombre
+                    attendu au nombre réellement présent.
+                </p>
+
+                <p>
+                    Il faut également analyser la satisfaction des participants,
+                    la qualité des prestations, le respect du budget, le respect
+                    du programme et les difficultés rencontrées.
+                </p>
+
+
+                <div class="evaluation-points">
+
+                    <div class="evaluation-point">
+
+                        <i class="fa-solid fa-users"></i>
+
+                        Nombre de participants
+
+                    </div>
+
+
+                    <div class="evaluation-point">
+
+                        <i class="fa-solid fa-face-smile"></i>
+
+                        Niveau de satisfaction
+
+                    </div>
+
+
+                    <div class="evaluation-point">
+
+                        <i class="fa-solid fa-coins"></i>
+
+                        Respect du budget
+
+                    </div>
+
+
+                    <div class="evaluation-point">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        Respect des horaires
+
+                    </div>
+
+
+                    <div class="evaluation-point">
+
+                        <i class="fa-solid fa-handshake"></i>
+
+                        Qualité des prestataires
+
+                    </div>
+
+
+                    <div class="evaluation-point">
+
+                        <i class="fa-solid fa-chart-line"></i>
+
+                        Résultats obtenus
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= PROJET FINAL ================= -->
+
+    <section
+        class="projet"
+        id="projet">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <small>
+                    Projet final
+                </small>
+
+                <h2>
+                    Concevez votre propre évènement
+                </h2>
+
+                <p>
+                    Vous allez maintenant mettre en pratique l'ensemble
+                    des compétences acquises pendant les cinq chapitres.
+                </p>
+
+            </div>
+
+
+            <div class="projet-intro">
+
+                <p>
+                    Imaginez que vous êtes responsable de l'organisation
+                    d'un évènement réel. Il peut s'agir d'une conférence,
+                    d'une cérémonie, d'une formation, d'un salon professionnel,
+                    d'un anniversaire, d'un lancement de produit, d'un festival
+                    ou d'une rencontre associative.
+                </p>
+
+                <p>
+                    Votre mission consiste à construire un projet complet
+                    en utilisant les méthodes étudiées pendant la formation.
+                </p>
+
+            </div>
+
+
+            <div class="project-box">
+
+                <span class="project-label">
+                    Mission finale
+                </span>
+
+
+                <h3>
+                    Créer un plan complet d'organisation évènementielle
+                </h3>
+
+
+                <p>
+                    Votre projet doit montrer que vous êtes capable de passer
+                    de l'idée à la réalisation concrète.
+                </p>
+
+
+                <ol class="project-list">
+
+                    <li>
+                        Choisissez le type d'évènement et donnez-lui un nom.
+                    </li>
+
+                    <li>
+                        Définissez l'objectif principal et les résultats attendus.
+                    </li>
+
+                    <li>
+                        Identifiez votre public cible et estimez le nombre
+                        de participants.
+                    </li>
+
+                    <li>
+                        Choisissez une date, une durée et un lieu adapté.
+                    </li>
+
+                    <li>
+                        Construisez le programme détaillé de l'évènement.
+                    </li>
+
+                    <li>
+                        Préparez un budget prévisionnel avec les principales dépenses.
+                    </li>
+
+                    <li>
+                        Identifiez les prestataires et fournisseurs nécessaires.
+                    </li>
+
+                    <li>
+                        Organisez les responsabilités de l'équipe.
+                    </li>
+
+                    <li>
+                        Préparez votre stratégie de communication et de promotion.
+                    </li>
+
+                    <li>
+                        Préparez les invitations et le système d'inscription.
+                    </li>
+
+                    <li>
+                        Construisez un planning du jour de l'évènement.
+                    </li>
+
+                    <li>
+                        Identifiez les principaux risques et préparez des solutions
+                        alternatives.
+                    </li>
+
+                    <li>
+                        Définissez les méthodes permettant de mesurer la satisfaction
+                        et les résultats.
+                    </li>
+
+                </ol>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= LIVRABLE ================= -->
+
+    <section class="livrable">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <small>
+                    Votre dossier final
+                </small>
+
+                <h2>
+                    Les éléments à préparer
+                </h2>
+
+                <p>
+                    Organisez votre projet dans un document clair et professionnel.
+                </p>
+
+            </div>
+
+
+            <div class="livrable-content">
+
+                <p>
+                    Un bon dossier permet à une autre personne de comprendre
+                    votre évènement et de savoir comment il doit être exécuté.
+                </p>
+
+
+                <div class="livrable-list">
+
+                    <div class="livrable-item">
+
+                        <i class="fa-solid fa-file-lines"></i>
+
+                        Présentation générale de l'évènement
+
+                    </div>
+
+
+                    <div class="livrable-item">
+
+                        <i class="fa-solid fa-bullseye"></i>
+
+                        Objectifs et public cible
+
+                    </div>
+
+
+                    <div class="livrable-item">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                        Calendrier et programme
+
+                    </div>
+
+
+                    <div class="livrable-item">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        Présentation du lieu
+
+                    </div>
+
+
+                    <div class="livrable-item">
+
+                        <i class="fa-solid fa-coins"></i>
+
+                        Budget prévisionnel
+
+                    </div>
+
+
+                    <div class="livrable-item">
+
+                        <i class="fa-solid fa-truck"></i>
+
+                        Plan logistique
+
+                    </div>
+
+
+                    <div class="livrable-item">
+
+                        <i class="fa-solid fa-bullhorn"></i>
+
+                        Plan de communication
+
+                    </div>
+
+
+                    <div class="livrable-item">
+
+                        <i class="fa-solid fa-users-gear"></i>
+
+                        Organisation des équipes
+
+                    </div>
+
+
+                    <div class="livrable-item">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        Plan de gestion des risques
+
+                    </div>
+
+
+                    <div class="livrable-item">
+
+                        <i class="fa-solid fa-chart-column"></i>
+
+                        Méthode d'évaluation
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= CONSEILS ================= -->
+
+    <section class="conseils">
+
+        <div class="container">
+
+            <div class="section-heading">
+
+                <small>
+                    Conseil professionnel
+                </small>
+
+                <h2>
+                    Ce qu'un bon organisateur doit retenir
+                </h2>
+
+            </div>
+
+
+            <div class="conseils-content">
+
+                <p>
+                    L'organisation d'évènements est un métier qui demande
+                    de la créativité, mais également beaucoup de rigueur.
+                </p>
+
+                <p>
+                    Vous devez être capable de penser à l'expérience du public,
+                    de contrôler les détails, de communiquer avec les équipes,
+                    de gérer les prestataires et de prendre des décisions
+                    rapidement lorsque cela est nécessaire.
+                </p>
+
+                <p>
+                    La meilleure façon de progresser est de pratiquer.
+                    Commencez avec de petits évènements, analysez vos résultats
+                    et améliorez progressivement vos méthodes.
+                </p>
+
+
+                <div class="conseil-principal">
+
+                    <strong>
+                        <i class="fa-solid fa-lightbulb"></i>
+                        À retenir
+                    </strong>
+
+                    <span>
+                        Un évènement réussi est le résultat d'une bonne préparation,
+                        d'une communication claire, d'une équipe coordonnée et
+                        d'une capacité à s'adapter aux imprévus.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= PROGRESSION ================= -->
+
+    <section class="progress-section">
+
+        <div class="container">
+
+            <div
+                class="section-heading"
+                style="text-align:center;">
+
+                <small>
+                    Fin de formation
+                </small>
+
+                <h2>
+                    Votre progression
+                </h2>
+
+                <p style="margin:auto;">
+                    Validez ce dernier chapitre pour terminer votre parcours
+                    Organisation d'Évènements.
+                </p>
+
+            </div>
+
+
+            <div class="progress-box">
+
+                <div class="progress-header">
+
+                    <strong>
+                        Organisation d'Évènements
+                    </strong>
+
+                    <span
+                        id="progressPercent"
+                        class="progress-percent">
+                        0%
+                    </span>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    <div
+                        id="progressFill"
+                        class="progress-fill">
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="progressInfo"
+                    class="progress-info">
+
+                    0 / 5 chapitres terminés
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= CTA ================= -->
+
+    <section class="cta">
+
+        <div class="container">
+
+            <h2>
+                Félicitations, vous arrivez au terme du parcours !
+            </h2>
+
+            <p>
+                Vous avez parcouru les fondamentaux de l'organisation,
+                la planification, la logistique, la communication et maintenant
+                la gestion complète d'un évènement.
+            </p>
+
+
+            <button
+                class="btn btn-primary"
+                onclick="validerChapitre()">
+
+                <i class="fa-solid fa-certificate"></i>
+
+                Valider la formation
+
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= POPUP ================= -->
+
+    <div
+        id="successPopup"
+        class="popup">
+
+        <div class="popup-content">
+
+            <div class="popup-icon">
+
+                <i class="fa-solid fa-certificate"></i>
+
+            </div>
+
+
+            <h2>
+                Formation terminée !
+            </h2>
+
+
+            <p>
+                Félicitations <strong id="popupName">Apprenant</strong>.
+                Vous avez terminé les 5 chapitres de la formation
+                Organisation d'Évènements.
+            </p>
+
+
+            <button
+                class="btn btn-primary"
+                onclick="ouvrirCertificat()">
+
+                <i class="fa-solid fa-award"></i>
+
+                Obtenir mon certificat
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+
+            © 2026
+            <strong>BMJ SERVICE</strong>
+            —
+            BMJ FORMATION.
+            Tous droits réservés.
+
+        </p>
+
+    </footer>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+
+            /* =====================================================
+               RECUPERATION UTILISATEUR
+            ===================================================== */
+
+            function chargerUtilisateur() {
+
+                const cles = [
+                    "bmj_current_user",
+                    "currentUser",
+                    "bmj_user",
+                    "utilisateur",
+                    "user",
+                    "loggedUser"
+                ];
+
+
+                for (const cle of cles) {
+
+                    const brut =
+                        localStorage.getItem(cle);
+
+
+                    if (!brut) {
+                        continue;
+                    }
+
+
+                    try {
+
+                        let data =
+                            JSON.parse(brut);
+
+
+                        if (data && data.user) {
+                            data = data.user;
+                        }
+
+
+                        if (
+                            data &&
+                            typeof data === "object"
+                        ) {
+
+                            return data;
+
+                        }
+
+                    } catch (e) {
+
+                        console.warn(
+                            "Utilisateur invalide :",
+                            cle
+                        );
+
+                    }
+
+                }
+
+
+                return null;
+
+            }
+
+
+
+            const utilisateur =
+                chargerUtilisateur();
+
+
+
+            /* =====================================================
+               VERIFICATION CONNEXION
+            ===================================================== */
+
+            if (!utilisateur) {
+
+                window.location.href =
+                    "connexion.html";
+
+                return;
+
+            }
+
+
+
+            /* =====================================================
+               NOM UTILISATEUR
+            ===================================================== */
+
+            const nom =
+
+                utilisateur.nom ||
+
+                utilisateur.name ||
+
+                utilisateur.prenom ||
+
+                utilisateur.username ||
+
+                utilisateur.email ||
+
+                "Apprenant";
+
+
+            document.getElementById(
+                "userName"
+            ).textContent = nom;
+
+
+            document.getElementById(
+                "popupName"
+            ).textContent = nom;
+
+
+
+            /* =====================================================
+               PHOTO
+            ===================================================== */
+
+            const userPhoto =
+                document.getElementById(
+                    "userPhoto"
+                );
+
+
+            const photo =
+
+                utilisateur.photo ||
+
+                utilisateur.image ||
+
+                utilisateur.avatar ||
+
+                "images/user.png";
+
+
+            if (
+                typeof photo === "string" &&
+                (
+                    photo.startsWith("data:image") ||
+                    photo.startsWith("http") ||
+                    photo.startsWith("/") ||
+                    photo.startsWith("images/")
+                )
+            ) {
+
+                userPhoto.src = photo;
+
+            }
+
+
+            userPhoto.onerror =
+                function () {
+
+                    this.src =
+                        "images/user.png";
+
+                };
+
+
+
+            /* =====================================================
+               IDENTIFIANT
+            ===================================================== */
+
+            const identifiant =
+
+                utilisateur.id_bmj ||
+
+                utilisateur.id ||
+
+                utilisateur.user_id ||
+
+                utilisateur.userId ||
+
+                utilisateur.email ||
+
+                utilisateur.telephone ||
+
+                utilisateur.phone ||
+
+                "utilisateur";
+
+
+
+            /* =====================================================
+               PROGRESSION
+            ===================================================== */
+
+            const progressKey =
+                "evenements_progression_" +
+                String(identifiant);
+
+
+            let progression = [];
+
+
+            try {
+
+                progression =
+                    JSON.parse(
+                        localStorage.getItem(
+                            progressKey
+                        )
+                    ) || [];
+
+            } catch (e) {
+
+                progression = [];
+
+            }
+
+
+            if (!Array.isArray(progression)) {
+
+                progression = [];
+
+            }
+
+
+
+            const totalChapitres = 5;
+
+
+
+            /* =====================================================
+               NETTOYAGE PROGRESSION
+            ===================================================== */
+
+            function nettoyerProgression() {
+
+                progression =
+                    [...new Set(
+                        progression
+                            .map(Number)
+                            .filter(
+                                n =>
+                                    Number.isInteger(n) &&
+                                    n >= 0 &&
+                                    n < totalChapitres
+                            )
+                    )]
+                    .sort(
+                        (a, b) => a - b
+                    );
+
+            }
+
+
+
+            nettoyerProgression();
+
+
+
+            /* =====================================================
+               AFFICHAGE PROGRESSION
+            ===================================================== */
+
+            function actualiserProgression() {
+
+                nettoyerProgression();
+
+
+                const nombre =
+                    progression.length;
+
+
+                const pourcentage =
+                    Math.round(
+                        (nombre /
+                            totalChapitres) *
+                        100
+                    );
+
+
+                document.getElementById(
+                    "progressPercent"
+                ).textContent =
+                    pourcentage + "%";
+
+
+                document.getElementById(
+                    "progressFill"
+                ).style.width =
+                    pourcentage + "%";
+
+
+                document.getElementById(
+                    "progressInfo"
+                ).textContent =
+                    nombre +
+                    " / " +
+                    totalChapitres +
+                    " chapitres terminés";
+
+            }
+
+
+
+            actualiserProgression();
+
+
+
+            /* =====================================================
+               VALIDATION CHAPITRE 5
+            ===================================================== */
+
+            window.validerChapitre =
+                function () {
+
+
+                    /*
+                     * Chapitre 5 = index 4.
+                     *
+                     * On conserve les chapitres déjà validés
+                     * et on ajoute uniquement le dernier chapitre.
+                     */
+
+                    if (
+                        !progression.includes(4)
+                    ) {
+
+                        progression.push(4);
+
+                    }
+
+
+                    nettoyerProgression();
+
+
+                    localStorage.setItem(
+                        progressKey,
+                        JSON.stringify(
+                            progression
+                        )
+                    );
+
+
+                    actualiserProgression();
+
+
+
+                    /* =============================================
+                       SI LES 5 CHAPITRES SONT TERMINÉS
+                    ============================================= */
+
+                    if (
+                        progression.length >=
+                        totalChapitres
+                    ) {
+
+
+                        /* ================= CERTIFICATS ================= */
+
+                        let certificats = [];
+
+
+                        try {
+
+                            certificats =
+                                JSON.parse(
+                                    localStorage.getItem(
+                                        "certificats"
+                                    )
+                                ) || [];
+
+                        } catch (e) {
+
+                            certificats = [];
+
+                        }
+
+
+                        if (
+                            !Array.isArray(
+                                certificats
+                            )
+                        ) {
+
+                            certificats = [];
+
+                        }
+
+
+
+                        /* ================= VERIFICATION ================= */
+
+                        const certificatExiste =
+                            certificats.some(
+                                cert =>
+
+                                    cert &&
+                                    (
+                                        cert.domaine ===
+                                        "Organisation d'Évènements"
+
+                                        ||
+
+                                        cert.domaine ===
+                                        "Organisation d'Evenements"
+                                    )
+                            );
+
+
+
+                        /* ================= CREATION ================= */
+
+                        if (!certificatExiste) {
+
+                            certificats.push({
+
+                                domaine:
+                                    "Organisation d'Évènements",
+
+                                date:
+                                    new Date()
+                                        .toLocaleDateString(
+                                            "fr-FR"
+                                        ),
+
+                                utilisateur:
+                                    nom,
+
+                                identifiant:
+                                    String(
+                                        identifiant
+                                    )
+
+                            });
+
+
+                            localStorage.setItem(
+                                "certificats",
+                                JSON.stringify(
+                                    certificats
+                                )
+                            );
+
+                        }
+
+
+
+                        /* ================= POPUP ================= */
+
+                        document
+                            .getElementById(
+                                "successPopup"
+                            )
+                            .classList.add(
+                                "active"
+                            );
+
+                    }
+
+                };
+
+
+
+            /* =====================================================
+               OUVRIR CERTIFICAT
+            ===================================================== */
+
+            window.ouvrirCertificat =
+                function () {
+
+                    window.location.href =
+                        "projet_final_investissement.html";
+
+                };
+
+
+        });
+
+    </script>
+
+</body>
+
+</html>

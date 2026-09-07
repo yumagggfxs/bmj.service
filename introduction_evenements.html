@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Introduction à l’Organisation d’Évènements | BMJ SERVICE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #176b87;
+            --primary-dark: #0b4057;
+            --secondary: #d4af37;
+            --secondary-light: #f7efd2;
+            --light: #f5f9fb;
+            --white: #ffffff;
+            --dark: #172b34;
+            --gray: #667780;
+            --border: #e3ebee;
+            --success: #198754;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f6f9fa;
+            color: var(--dark);
+            line-height: 1.8;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 74px;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-area img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+        }
+
+        .brand {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--primary-dark);
+        }
+
+        .brand span {
+            color: var(--secondary);
+        }
+
+        .user-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-area img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--secondary);
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--primary-dark);
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            margin-top: 74px;
+            min-height: 570px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+
+            background:
+                linear-gradient(120deg,
+                    rgba(7,54,73,.97),
+                    rgba(23,107,135,.88),
+                    rgba(0,0,0,.45)),
+                url("images/evenements-banner.jpg");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            color: white;
+            padding: 80px 0;
+        }
+
+        .chapter-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212,175,55,.18);
+            border: 1px solid rgba(255,255,255,.35);
+            color: #fff;
+            padding: 8px 17px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-size: clamp(35px, 5vw, 65px);
+            line-height: 1.15;
+            max-width: 900px;
+            margin-bottom: 25px;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            color: #f3d46b;
+        }
+
+        .hero-description {
+            max-width: 800px;
+            font-size: 18px;
+            color: rgba(255,255,255,.9);
+            margin-bottom: 32px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .btn {
+            border: none;
+            padding: 13px 23px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            transition: .3s;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: #172b34;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            background: #e3c354;
+        }
+
+        .btn-outline {
+            color: white;
+            border: 1px solid rgba(255,255,255,.6);
+            background: rgba(255,255,255,.08);
+        }
+
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary-dark);
+        }
+
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 35px;
+            margin-top: 45px;
+        }
+
+        .hero-stat strong {
+            display: block;
+            font-size: 27px;
+            color: #f3d46b;
+        }
+
+        .hero-stat span {
+            font-size: 13px;
+            color: rgba(255,255,255,.8);
+        }
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+            width: 90%;
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        section {
+            padding: 75px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title small {
+            display: inline-block;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .section-title h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            line-height: 1.3;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            max-width: 750px;
+            margin: auto;
+            color: var(--gray);
+        }
+
+        /* ================= INTRO ================= */
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1.25fr .75fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .article {
+            background: white;
+            border-radius: 15px;
+            padding: 38px;
+            border: 1px solid var(--border);
+        }
+
+        .article h3 {
+            color: var(--primary-dark);
+            font-size: 24px;
+            margin-bottom: 18px;
+        }
+
+        .article h4 {
+            color: var(--primary);
+            margin-top: 30px;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .article p {
+            color: #52656d;
+            margin-bottom: 15px;
+        }
+
+        .highlight {
+            border-left: 4px solid var(--secondary);
+            background: var(--secondary-light);
+            padding: 20px 22px;
+            margin: 25px 0;
+            border-radius: 0 10px 10px 0;
+            color: #514721;
+        }
+
+        /* ================= DEFINITION ================= */
+
+        .definition {
+            background: linear-gradient(135deg, #0b4057, #176b87);
+            color: white;
+        }
+
+        .definition .section-title h2,
+        .definition .section-title p,
+        .definition .section-title small {
+            color: white;
+        }
+
+        .definition-content {
+            max-width: 950px;
+            margin: auto;
+            font-size: 17px;
+        }
+
+        .definition-content p {
+            margin-bottom: 20px;
+            color: rgba(255,255,255,.9);
+        }
+
+        .quote {
+            margin-top: 30px;
+            padding: 25px;
+            border-left: 4px solid var(--secondary);
+            background: rgba(255,255,255,.08);
+            font-size: 19px;
+            font-weight: 500;
+        }
+
+        /* ================= TYPES ================= */
+
+        .event-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .type {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            transition: .3s;
+        }
+
+        .type:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(0,0,0,.07);
+        }
+
+        .type-icon {
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: #eaf5f8;
+            color: var(--primary);
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .type h3 {
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+        }
+
+        .type p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        .type ul {
+            margin-top: 15px;
+            padding-left: 18px;
+            color: #596c74;
+            font-size: 14px;
+        }
+
+        /* ================= ROLE ================= */
+
+        .role-section {
+            background: #f0f6f8;
+        }
+
+        .role-layout {
+            display: grid;
+            grid-template-columns: .8fr 1.2fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .role-image {
+            min-height: 420px;
+            border-radius: 20px;
+            background:
+                linear-gradient(rgba(11,64,87,.2), rgba(11,64,87,.4)),
+                url("images/organisation-evenement.jpg");
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,.12);
+        }
+
+        .role-list {
+            display: flex;
+            flex-direction: column;
+            gap: 17px;
+        }
+
+        .role-item {
+            display: flex;
+            gap: 17px;
+            background: white;
+            padding: 19px;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+        }
+
+        .role-number {
+            min-width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .role-item h4 {
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+
+        .role-item p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* ================= ETAPES ================= */
+
+        .steps {
+            position: relative;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 75px 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .step-number {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: var(--primary-dark);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step:not(:last-child) .step-number::after {
+            content: "";
+            position: absolute;
+            top: 58px;
+            left: 28px;
+            width: 2px;
+            height: 75px;
+            background: #cbdde3;
+        }
+
+        .step-content h3 {
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .step-content p {
+            color: var(--gray);
+        }
+
+        /* ================= COMPETENCES ================= */
+
+        .skills {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px 50px;
+            max-width: 950px;
+            margin: auto;
+        }
+
+        .skill {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+
+        .skill i {
+            color: var(--secondary);
+            font-size: 19px;
+            margin-top: 5px;
+        }
+
+        .skill h4 {
+            color: var(--primary-dark);
+            margin-bottom: 3px;
+        }
+
+        .skill p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* ================= OBJECTIFS ================= */
+
+        .objectives {
+            background: #f0f6f8;
+        }
+
+        .objective-content {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .objective {
+            padding: 23px 0;
+            border-bottom: 1px solid #d8e3e7;
+            display: grid;
+            grid-template-columns: 55px 1fr;
+            gap: 20px;
+        }
+
+        .objective:last-child {
+            border-bottom: none;
+        }
+
+        .objective-icon {
+            color: var(--primary);
+            font-size: 24px;
+        }
+
+        .objective h3 {
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+
+        .objective p {
+            color: var(--gray);
+        }
+
+        /* ================= EXERCICE ================= */
+
+        .exercise {
+            background: white;
+            border: 2px solid #e6d89f;
+            border-radius: 16px;
+            padding: 35px;
+            max-width: 950px;
+            margin: auto;
+        }
+
+        .exercise-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .exercise-header i {
+            font-size: 27px;
+            color: var(--secondary);
+        }
+
+        .exercise h3 {
+            color: var(--primary-dark);
+        }
+
+        .exercise p {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+
+        .exercise ul {
+            padding-left: 22px;
+            color: #52656d;
+        }
+
+        .exercise li {
+            margin: 7px 0;
+        }
+
+        /* ================= PROGRESS ================= */
+
+        .progress-section {
+            background: var(--primary-dark);
+            color: white;
+        }
+
+        .progress-box {
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 13px;
+            background: rgba(255,255,255,.15);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: var(--secondary);
+            border-radius: 20px;
+            transition: width .5s ease;
+        }
+
+        .progress-note {
+            margin-top: 15px;
+            color: rgba(255,255,255,.7);
+            font-size: 13px;
+        }
+
+        /* ================= CTA ================= */
+
+        .cta {
+            padding: 80px 20px;
+            text-align: center;
+            background:
+                linear-gradient(135deg, #0b4057, #176b87);
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 34px;
+            margin-bottom: 14px;
+        }
+
+        .cta p {
+            max-width: 700px;
+            margin: auto auto 28px;
+            color: rgba(255,255,255,.85);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #082d3d;
+            color: rgba(255,255,255,.7);
+            padding: 30px 5%;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 900px) {
+
+            .intro-grid,
+            .role-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .event-types {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .role-image {
+                min-height: 300px;
+            }
+        }
+
+        @media(max-width: 650px) {
+
+            header {
+                padding: 0 4%;
+            }
+
+            .brand {
+                font-size: 16px;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .hero-content {
+                padding: 60px 0;
+            }
+
+            .hero {
+                min-height: auto;
+            }
+
+            .hero-description {
+                font-size: 15px;
+            }
+
+            .hero-stats {
+                gap: 20px;
+            }
+
+            section {
+                padding: 55px 0;
+            }
+
+            .article {
+                padding: 25px;
+            }
+
+            .event-types {
+                grid-template-columns: 1fr;
+            }
+
+            .skills {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                grid-template-columns: 55px 1fr;
+                gap: 15px;
+            }
+
+            .step-number {
+                width: 48px;
+                height: 48px;
+            }
+
+            .step:not(:last-child) .step-number::after {
+                left: 23px;
+                top: 48px;
+            }
+
+            .cta h2 {
+                font-size: 27px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo-area">
+            <img src="images/logo.png" alt="BMJ SERVICE">
+            <div class="brand">
+                BMJ <span>SERVICE</span>
+            </div>
+        </div>
+
+        <div class="user-area">
+            <span class="user-name" id="nomUtilisateur">Apprenant</span>
+            <img id="photoUtilisateur" src="images/user.png" alt="Utilisateur">
+        </div>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="chapter-badge">
+                <i class="fa-solid fa-calendar-days"></i>
+                CHAPITRE 1 — ORGANISATION D'ÉVÈNEMENTS
+            </div>
+
+            <h1>
+                Introduction à
+                <span>l’Organisation d’Évènements</span>
+            </h1>
+
+            <p class="hero-description">
+                Découvrez les fondamentaux de l’organisation d’évènements,
+                depuis la naissance d’une idée jusqu’à la réalisation concrète
+                d’un évènement professionnel, culturel ou privé.
+            </p>
+
+            <div class="hero-buttons">
+
+                <button class="btn btn-primary" onclick="validerChapitre()">
+                    <i class="fa-solid fa-check"></i>
+                    Valider le chapitre
+                </button>
+
+                <a href="#cours" class="btn btn-outline">
+                    <i class="fa-solid fa-book-open"></i>
+                    Commencer le cours
+                </a>
+
+            </div>
+
+            <div class="hero-stats">
+
+                <div class="hero-stat">
+                    <strong>01</strong>
+                    <span>Chapitre actuel</span>
+                </div>
+
+                <div class="hero-stat">
+                    <strong>5</strong>
+                    <span>Chapitres au total</span>
+                </div>
+
+                <div class="hero-stat">
+                    <strong>100%</strong>
+                    <span>Formation pratique</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= COURS ================= -->
+
+    <main id="cours">
+
+
+        <!-- INTRODUCTION -->
+
+        <section>
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <small>Première étape</small>
+
+                    <h2>Comprendre l’univers de l’évènementiel</h2>
+
+                    <p>
+                        Avant de savoir organiser un évènement, il faut comprendre
+                        sa logique, ses objectifs, ses acteurs et les différentes
+                        étapes qui permettent de transformer une idée en expérience réussie.
+                    </p>
+
+                </div>
+
+
+                <div class="intro-grid">
+
+                    <article class="article">
+
+                        <h3>
+                            Pourquoi apprendre l’organisation d’évènements ?
+                        </h3>
+
+                        <p>
+                            L’organisation d’évènements est un domaine qui combine
+                            créativité, communication, gestion, logistique,
+                            leadership et capacité à prendre des décisions.
+                            Un évènement peut sembler simple pour les participants,
+                            mais sa réussite repose généralement sur plusieurs
+                            semaines ou plusieurs mois de préparation.
+                        </p>
+
+                        <p>
+                            Derrière une conférence, un mariage, un anniversaire,
+                            une cérémonie officielle, un concert, une exposition
+                            ou un lancement de produit se trouvent de nombreuses
+                            décisions : choisir un lieu, établir un budget,
+                            sélectionner des prestataires, communiquer avec les
+                            participants, gérer les imprévus et coordonner les
+                            différentes personnes impliquées.
+                        </p>
+
+                        <div class="highlight">
+
+                            <strong>
+                                À retenir :
+                            </strong>
+
+                            <br>
+
+                            Un bon évènement n’est pas seulement un évènement
+                            qui se déroule correctement. C’est une expérience
+                            pensée à l’avance pour atteindre un objectif précis
+                            et laisser une impression positive aux participants.
+
+                        </div>
+
+                        <h4>
+                            L’évènement comme projet
+                        </h4>
+
+                        <p>
+                            Un évènement doit être considéré comme un véritable
+                            projet. Il possède un objectif, un public cible,
+                            un budget, des ressources, des délais, des responsabilités
+                            et un résultat attendu.
+                        </p>
+
+                        <p>
+                            Cette manière de penser permet à l’organisateur
+                            d’éviter l’improvisation permanente et de construire
+                            une méthode de travail claire.
+                        </p>
+
+                    </article>
+
+
+                    <article class="article">
+
+                        <h3>Ce que vous allez apprendre</h3>
+
+                        <p>
+                            Ce premier chapitre vous permettra de construire
+                            les bases nécessaires avant d'aborder la planification
+                            détaillée d’un évènement.
+                        </p>
+
+                        <h4>
+                            Vous découvrirez notamment :
+                        </h4>
+
+                        <p>
+                            <i class="fa-solid fa-check"></i>
+                            La définition et les caractéristiques d’un évènement.
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-check"></i>
+                            Les principaux types d’évènements.
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-check"></i>
+                            Le rôle d’un organisateur.
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-check"></i>
+                            Les différentes personnes impliquées.
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-check"></i>
+                            Les grandes étapes d’un projet évènementiel.
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-check"></i>
+                            Les compétences nécessaires.
+                        </p>
+
+                        <p>
+                            <i class="fa-solid fa-check"></i>
+                            Les premières règles d’une organisation efficace.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- DEFINITION -->
+
+        <section class="definition">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <small>Fondamentaux</small>
+
+                    <h2>Qu’est-ce qu’un évènement ?</h2>
+
+                </div>
+
+                <div class="definition-content">
+
+                    <p>
+                        Un évènement est une activité organisée autour d’un
+                        objectif précis et destinée à réunir un groupe de personnes
+                        dans un lieu physique ou dans un environnement numérique.
+                    </p>
+
+                    <p>
+                        Il peut avoir pour objectif de célébrer, informer,
+                        former, divertir, promouvoir une marque, présenter
+                        un produit, créer des relations professionnelles,
+                        mobiliser une communauté ou simplement créer un moment
+                        mémorable.
+                    </p>
+
+                    <p>
+                        La particularité d’un évènement est qu’il possède
+                        généralement une durée limitée. Il faut donc réussir
+                        à préparer correctement tout ce qui doit se produire
+                        avant, pendant et après sa réalisation.
+                    </p>
+
+                    <div class="quote">
+
+                        « L’organisateur transforme une idée en une expérience
+                        concrète, structurée et mémorable. »
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- TYPES D'EVENEMENTS -->
+
+        <section>
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <small>Les catégories</small>
+
+                    <h2>Les grands types d’évènements</h2>
+
+                    <p>
+                        Chaque évènement possède ses propres objectifs,
+                        son public et ses contraintes.
+                    </p>
+
+                </div>
+
+
+                <div class="event-types">
+
+                    <div class="type">
+
+                        <div class="type-icon">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+
+                        <h3>Évènements professionnels</h3>
+
+                        <p>
+                            Ils sont organisés dans un contexte d’entreprise,
+                            d’administration ou de développement professionnel.
+                        </p>
+
+                        <ul>
+                            <li>Conférences</li>
+                            <li>Séminaires</li>
+                            <li>Congrès</li>
+                            <li>Réunions</li>
+                            <li>Lancements de produits</li>
+                            <li>Team building</li>
+                        </ul>
+
+                    </div>
+
+
+                    <div class="type">
+
+                        <div class="type-icon">
+                            <i class="fa-solid fa-masks-theater"></i>
+                        </div>
+
+                        <h3>Évènements culturels</h3>
+
+                        <p>
+                            Ils permettent de valoriser la culture,
+                            les talents, les artistes et le patrimoine.
+                        </p>
+
+                        <ul>
+                            <li>Concerts</li>
+                            <li>Festivals</li>
+                            <li>Expositions</li>
+                            <li>Salons culturels</li>
+                            <li>Spectacles</li>
+                            <li>Manifestations artistiques</li>
+                        </ul>
+
+                    </div>
+
+
+                    <div class="type">
+
+                        <div class="type-icon">
+                            <i class="fa-solid fa-champagne-glasses"></i>
+                        </div>
+
+                        <h3>Évènements privés</h3>
+
+                        <p>
+                            Ils sont organisés pour célébrer un moment
+                            important dans la vie d’une personne ou d’une famille.
+                        </p>
+
+                        <ul>
+                            <li>Mariages</li>
+                            <li>Anniversaires</li>
+                            <li>Fiançailles</li>
+                            <li>Cérémonies</li>
+                            <li>Réceptions</li>
+                            <li>Fêtes privées</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ROLE -->
+
+        <section class="role-section">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <small>Professionnel de l’évènementiel</small>
+
+                    <h2>Le rôle de l’organisateur</h2>
+
+                    <p>
+                        L’organisateur est la personne qui coordonne les différentes
+                        ressources nécessaires pour atteindre les objectifs de l’évènement.
+                    </p>
+
+                </div>
+
+
+                <div class="role-layout">
+
+                    <div class="role-image"></div>
+
+
+                    <div class="role-list">
+
+                        <div class="role-item">
+
+                            <div class="role-number">01</div>
+
+                            <div>
+                                <h4>Comprendre le besoin</h4>
+
+                                <p>
+                                    L’organisateur commence par comprendre
+                                    pourquoi l’évènement doit être organisé,
+                                    pour qui et avec quel résultat attendu.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="role-item">
+
+                            <div class="role-number">02</div>
+
+                            <div>
+                                <h4>Construire une vision</h4>
+
+                                <p>
+                                    Il transforme les attentes du client ou
+                                    de l’organisation en concept concret,
+                                    cohérent et réalisable.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="role-item">
+
+                            <div class="role-number">03</div>
+
+                            <div>
+                                <h4>Coordonner les ressources</h4>
+
+                                <p>
+                                    Il travaille avec les fournisseurs,
+                                    équipes techniques, décorateurs,
+                                    artistes, agents de sécurité et autres partenaires.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="role-item">
+
+                            <div class="role-number">04</div>
+
+                            <div>
+                                <h4>Gérer les imprévus</h4>
+
+                                <p>
+                                    Un bon organisateur doit pouvoir réagir
+                                    rapidement lorsqu’un problème apparaît
+                                    sans perdre le contrôle de l’évènement.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="role-item">
+
+                            <div class="role-number">05</div>
+
+                            <div>
+                                <h4>Garantir l’expérience</h4>
+
+                                <p>
+                                    Il veille à ce que les participants vivent
+                                    une expérience agréable, fluide, sécurisée
+                                    et conforme aux objectifs.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ETAPES -->
+
+        <section>
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <small>Méthode de travail</small>
+
+                    <h2>Les grandes étapes d’un évènement</h2>
+
+                    <p>
+                        Même si chaque projet est différent, la majorité des
+                        évènements suivent une logique générale.
+                    </p>
+
+                </div>
+
+
+                <div class="steps">
+
+                    <div class="step">
+
+                        <div class="step-number">1</div>
+
+                        <div class="step-content">
+
+                            <h3>Le brief</h3>
+
+                            <p>
+                                Le brief permet de définir le contexte du projet :
+                                objectif, public cible, date souhaitée, lieu,
+                                budget disponible, nombre de participants
+                                et attentes principales.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">2</div>
+
+                        <div class="step-content">
+
+                            <h3>La conception</h3>
+
+                            <p>
+                                L’idée générale est transformée en concept.
+                                On définit le thème, l’ambiance, le format,
+                                le déroulement et l’identité de l’évènement.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">3</div>
+
+                        <div class="step-content">
+
+                            <h3>La planification</h3>
+
+                            <p>
+                                Toutes les tâches sont organisées dans le temps.
+                                Les responsabilités sont attribuées et un calendrier
+                                de préparation est établi.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">4</div>
+
+                        <div class="step-content">
+
+                            <h3>La gestion du budget</h3>
+
+                            <p>
+                                L’organisateur estime les dépenses, compare
+                                les offres des fournisseurs, prévoit une marge
+                                pour les imprévus et contrôle les coûts.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">5</div>
+
+                        <div class="step-content">
+
+                            <h3>La logistique</h3>
+
+                            <p>
+                                Le lieu, le matériel, le transport, l’installation,
+                                la décoration, l’accueil et les besoins techniques
+                                sont préparés.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">6</div>
+
+                        <div class="step-content">
+
+                            <h3>La communication</h3>
+
+                            <p>
+                                Les participants doivent être informés et motivés.
+                                Invitations, réseaux sociaux, affiches, messages,
+                                inscriptions et rappels peuvent être utilisés.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="step">
+
+                        <div class="step-number">7</div>
+
+                        <div class="step-content">
+
+                            <h3>La réalisation et l’évaluation</h3>
+
+                            <p>
+                                Le jour J, l’équipe coordonne les opérations.
+                                Après l’évènement, les résultats sont analysés
+                                afin d’identifier les réussites et les améliorations.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- COMPETENCES -->
+
+        <section class="objectives">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <small>Développement professionnel</small>
+
+                    <h2>Les compétences essentielles</h2>
+
+                    <p>
+                        Organiser des évènements demande plusieurs compétences
+                        complémentaires.
+                    </p>
+
+                </div>
+
+
+                <div class="skills">
+
+                    <div class="skill">
+
+                        <i class="fa-solid fa-lightbulb"></i>
+
+                        <div>
+
+                            <h4>Créativité</h4>
+
+                            <p>
+                                Imaginer des concepts originaux et créer
+                                une expérience adaptée au public.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill">
+
+                        <i class="fa-solid fa-list-check"></i>
+
+                        <div>
+
+                            <h4>Organisation</h4>
+
+                            <p>
+                                Structurer les tâches, les délais et
+                                les responsabilités.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill">
+
+                        <i class="fa-solid fa-comments"></i>
+
+                        <div>
+
+                            <h4>Communication</h4>
+
+                            <p>
+                                Communiquer efficacement avec les clients,
+                                fournisseurs, équipes et participants.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill">
+
+                        <i class="fa-solid fa-people-group"></i>
+
+                        <div>
+
+                            <h4>Leadership</h4>
+
+                            <p>
+                                Mobiliser une équipe et prendre des décisions
+                                lorsque cela est nécessaire.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill">
+
+                        <i class="fa-solid fa-coins"></i>
+
+                        <div>
+
+                            <h4>Gestion financière</h4>
+
+                            <p>
+                                Préparer un budget et contrôler les dépenses.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="skill">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                        <div>
+
+                            <h4>Gestion des risques</h4>
+
+                            <p>
+                                Anticiper les problèmes et préparer
+                                des solutions alternatives.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- OBJECTIFS -->
+
+        <section>
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <small>À la fin du chapitre</small>
+
+                    <h2>Ce que vous devez maîtriser</h2>
+
+                </div>
+
+
+                <div class="objective-content">
+
+                    <div class="objective">
+
+                        <div class="objective-icon">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+
+                        <div>
+
+                            <h3>Identifier les différents évènements</h3>
+
+                            <p>
+                                Vous devez être capable de distinguer les évènements
+                                professionnels, culturels et privés et de comprendre
+                                leurs caractéristiques.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="objective">
+
+                        <div class="objective-icon">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+
+                        <div>
+
+                            <h3>Comprendre le rôle de l’organisateur</h3>
+
+                            <p>
+                                Vous devez comprendre que l’organisateur est
+                                un coordinateur qui relie les différents acteurs
+                                autour d’un même objectif.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="objective">
+
+                        <div class="objective-icon">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+
+                        <div>
+
+                            <h3>Comprendre le cycle d’un évènement</h3>
+
+                            <p>
+                                Vous devez connaître les principales phases :
+                                conception, préparation, organisation, réalisation
+                                et évaluation.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="objective">
+
+                        <div class="objective-icon">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+
+                        <div>
+
+                            <h3>Adopter une méthode professionnelle</h3>
+
+                            <p>
+                                Vous devez commencer à raisonner avec des objectifs,
+                                des délais, des budgets, des responsabilités
+                                et des solutions de secours.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- EXERCICE -->
+
+        <section class="objectives">
+
+            <div class="container">
+
+                <div class="section-title">
+
+                    <small>Application pratique</small>
+
+                    <h2>Votre première mission</h2>
+
+                    <p>
+                        Mettez immédiatement en pratique les notions étudiées
+                        dans ce chapitre.
+                    </p>
+
+                </div>
+
+
+                <div class="exercise">
+
+                    <div class="exercise-header">
+
+                        <i class="fa-solid fa-pen-to-square"></i>
+
+                        <h3>
+                            Imaginez votre propre évènement
+                        </h3>
+
+                    </div>
+
+                    <p>
+                        Imaginez que vous êtes responsable de l’organisation
+                        d’un évènement dans votre ville. Choisissez librement
+                        le type d’évènement que vous souhaitez organiser.
+                    </p>
+
+                    <p>
+                        Répondez ensuite aux questions suivantes :
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Quel est le nom de votre évènement ?
+                        </li>
+
+                        <li>
+                            Quel est son objectif principal ?
+                        </li>
+
+                        <li>
+                            Quel type d’évènement avez-vous choisi ?
+                        </li>
+
+                        <li>
+                            Qui est votre public cible ?
+                        </li>
+
+                        <li>
+                            Combien de personnes souhaitez-vous accueillir ?
+                        </li>
+
+                        <li>
+                            Où l’évènement pourrait-il avoir lieu ?
+                        </li>
+
+                        <li>
+                            Quelles personnes ou entreprises devraient
+                            participer à son organisation ?
+                        </li>
+
+                        <li>
+                            Quels problèmes pourriez-vous rencontrer ?
+                        </li>
+
+                        <li>
+                            Quelle solution pourriez-vous prévoir pour
+                            chaque problème ?
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROGRESSION -->
+
+        <section class="progress-section">
+
+            <div class="container">
+
+                <div class="progress-box">
+
+                    <div class="progress-top">
+
+                        <span>Votre progression</span>
+
+                        <span id="progressValue">0%</span>
+
+                    </div>
+
+                    <div class="progress-container">
+
+                        <div class="progress-bar" id="progressBar"></div>
+
+                    </div>
+
+                    <p class="progress-note" id="chapitresText">
+                        0 / 5 chapitres terminés
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CTA -->
+
+        <section class="cta">
+
+            <div class="container">
+
+                <h2>
+                    Prêt à passer à la planification ?
+                </h2>
+
+                <p>
+                    Maintenant que vous connaissez les bases de l’évènementiel,
+                    vous allez apprendre à transformer une idée en véritable
+                    projet : définir les objectifs, construire le concept,
+                    établir le budget et préparer le planning.
+                </p>
+
+                <button class="btn btn-primary" onclick="validerChapitre()">
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                    Valider et continuer
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 <strong>BMJ SERVICE</strong> — Organisation d’Évènements
+        </p>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            /* ============================================
+               RECUPERATION UTILISATEUR
+            ============================================ */
+
+            function chargerUtilisateur() {
+
+                const cles = [
+                    "bmj_current_user",
+                    "currentUser",
+                    "bmj_user",
+                    "utilisateur",
+                    "user",
+                    "loggedUser"
+                ];
+
+                for (const cle of cles) {
+
+                    const brut = localStorage.getItem(cle);
+
+                    if (!brut) continue;
+
+                    try {
+
+                        let data = JSON.parse(brut);
+
+                        if (data && data.user) {
+                            data = data.user;
+                        }
+
+                        if (data && typeof data === "object") {
+                            return data;
+                        }
+
+                    } catch (erreur) {
+                        console.log("Erreur utilisateur :", erreur);
+                    }
+                }
+
+                return null;
+            }
+
+
+            const utilisateur = chargerUtilisateur();
+
+
+            /* ============================================
+               VERIFICATION CONNEXION
+            ============================================ */
+
+            if (!utilisateur) {
+
+                window.location.href = "connexion.html";
+
+                return;
+            }
+
+
+            /* ============================================
+               NOM UTILISATEUR
+            ============================================ */
+
+            const nom =
+                utilisateur.nom ||
+                utilisateur.name ||
+                utilisateur.prenom ||
+                utilisateur.username ||
+                utilisateur.email ||
+                "Apprenant";
+
+
+            document.getElementById("nomUtilisateur").textContent = nom;
+
+
+            /* ============================================
+               PHOTO UTILISATEUR
+            ============================================ */
+
+            const photo =
+                utilisateur.photo ||
+                utilisateur.avatar ||
+                "images/user.png";
+
+
+            document.getElementById("photoUtilisateur").src = photo;
+
+
+            document.getElementById("photoUtilisateur").onerror =
+                function () {
+
+                    this.src = "images/user.png";
+
+                };
+
+
+            /* ============================================
+               IDENTIFIANT
+            ============================================ */
+
+            const identifiant =
+                utilisateur.id_bmj ||
+                utilisateur.id ||
+                utilisateur.user_id ||
+                utilisateur.userId ||
+                utilisateur.email ||
+                utilisateur.telephone ||
+                utilisateur.phone ||
+                "utilisateur";
+
+
+            /* ============================================
+               PROGRESSION
+            ============================================ */
+
+            const cleProgression =
+                "evenements_progression_" + identifiant;
+
+
+            let progression =
+                JSON.parse(
+                    localStorage.getItem(cleProgression)
+                ) || [];
+
+
+            const totalChapitres = 5;
+
+
+            function actualiserProgression() {
+
+                const termines = progression.length;
+
+                const pourcentage =
+                    Math.round(
+                        (termines / totalChapitres) * 100
+                    );
+
+
+                document.getElementById("progressBar")
+                    .style.width = pourcentage + "%";
+
+
+                document.getElementById("progressValue")
+                    .textContent = pourcentage + "%";
+
+
+                document.getElementById("chapitresText")
+                    .textContent =
+                    termines +
+                    " / " +
+                    totalChapitres +
+                    " chapitres terminés";
+
+
+                utilisateur.progressionEvenements =
+                    pourcentage;
+
+
+                localStorage.setItem(
+                    "bmj_current_user",
+                    JSON.stringify(utilisateur)
+                );
+
+            }
+
+
+            /* ============================================
+               VALIDATION CHAPITRE
+            ============================================ */
+
+            window.validerChapitre = function () {
+
+                if (!progression.includes(0)) {
+
+                    progression.push(0);
+
+                }
+
+
+                progression.sort(function (a, b) {
+
+                    return a - b;
+
+                });
+
+
+                localStorage.setItem(
+                    cleProgression,
+                    JSON.stringify(progression)
+                );
+
+
+                actualiserProgression();
+
+
+                /*
+                 * Passage au chapitre suivant
+                 */
+
+                setTimeout(function () {
+
+                    window.location.href =
+                        "conception_planification_evenement.html";
+
+                }, 300);
+
+            };
+
+
+            actualiserProgression();
+
+        });
+
+    </script>
+
+</body>
+
+</html>

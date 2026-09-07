@@ -1,0 +1,3473 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projet Final d'Éloquence | BMJ FORMATION</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        :root {
+            --blue: #12688e;
+            --dark-blue: #073b59;
+            --blue-light: #eaf6fb;
+            --gold: #d4af37;
+            --gold-light: #f7edc5;
+            --white: #ffffff;
+            --text: #243746;
+            --muted: #6d7d88;
+            --border: #dce7ed;
+            --success: #16824c;
+            --danger: #c94a4a;
+            --shadow: 0 12px 35px rgba(7, 59, 89, .10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f6f9fb;
+            color: var(--text);
+            line-height: 1.75;
+        }
+
+        button,
+        textarea,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================================================
+           HEADER
+        ========================================================== */
+
+        header {
+            height: 74px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            background: rgba(255,255,255,.97);
+            border-bottom: 1px solid var(--border);
+
+            box-shadow: 0 3px 15px rgba(0,0,0,.05);
+        }
+
+        .logo-zone {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-zone img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+        }
+
+        .brand {
+            color: var(--dark-blue);
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: .5px;
+        }
+
+        .brand span {
+            color: var(--gold);
+        }
+
+        .user-zone {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            color: var(--dark-blue);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-photo {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+            background: #eee;
+        }
+
+        /* =========================================================
+           HERO
+        ========================================================== */
+
+        .hero {
+            margin-top: 74px;
+            min-height: 510px;
+
+            display: flex;
+            align-items: center;
+
+            position: relative;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    110deg,
+                    rgba(7,59,89,.97),
+                    rgba(18,104,142,.88)
+                ),
+                url("images/projet-final-eloquence.jpg")
+                center/cover no-repeat;
+        }
+
+        .hero::before {
+            content: "";
+
+            position: absolute;
+
+            width: 430px;
+            height: 430px;
+
+            border: 75px solid rgba(212,175,55,.10);
+
+            border-radius: 50%;
+
+            right: -130px;
+            top: -110px;
+        }
+
+        .hero-content {
+            width: min(1150px, 90%);
+            margin: auto;
+
+            position: relative;
+            z-index: 2;
+
+            color: white;
+        }
+
+        .final-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 9px 18px;
+
+            background: rgba(255,255,255,.12);
+
+            border: 1px solid rgba(255,255,255,.30);
+
+            border-radius: 30px;
+
+            color: white;
+
+            font-size: 13px;
+            font-weight: 700;
+
+            margin-bottom: 23px;
+        }
+
+        .final-label i {
+            color: var(--gold);
+        }
+
+        .hero h1 {
+            max-width: 900px;
+
+            font-size: clamp(36px, 5vw, 62px);
+
+            line-height: 1.12;
+
+            font-weight: 800;
+
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: var(--gold);
+        }
+
+        .hero p {
+            max-width: 820px;
+
+            color: rgba(255,255,255,.88);
+
+            font-size: 18px;
+        }
+
+        /* =========================================================
+           COURSE BAR
+        ========================================================== */
+
+        .course-bar {
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .course-bar-inner {
+            width: min(1150px, 90%);
+            min-height: 90px;
+
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 25px;
+        }
+
+        .course-stat {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: var(--blue-light);
+            color: var(--blue);
+        }
+
+        .course-stat small {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 10px;
+        }
+
+        .course-stat strong {
+            color: var(--dark-blue);
+
+            font-size: 14px;
+        }
+
+        .progress-wrapper {
+            width: 280px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-bottom: 7px;
+        }
+
+        .progress {
+            height: 8px;
+
+            background: #e7eef2;
+
+            border-radius: 20px;
+
+            overflow: hidden;
+        }
+
+        .progress span {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--blue),
+                    var(--gold)
+                );
+        }
+
+        /* =========================================================
+           MAIN
+        ========================================================== */
+
+        main {
+            width: min(1050px, 90%);
+
+            margin: 65px auto;
+        }
+
+        .section {
+            margin-bottom: 72px;
+        }
+
+        .section-heading {
+            margin-bottom: 28px;
+        }
+
+        .section-heading .number {
+            color: var(--gold);
+
+            font-size: 13px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-heading h2 {
+            color: var(--dark-blue);
+
+            font-size: clamp(27px, 4vw, 39px);
+
+            line-height: 1.25;
+
+            margin-top: 5px;
+        }
+
+        .section-heading p {
+            max-width: 820px;
+
+            color: var(--muted);
+
+            margin-top: 9px;
+        }
+
+        /* =========================================================
+           INTRO
+        ========================================================== */
+
+        .intro {
+            padding: 42px;
+
+            background: white;
+
+            border-left: 5px solid var(--gold);
+
+            border-radius: 0 17px 17px 0;
+
+            box-shadow: var(--shadow);
+        }
+
+        .intro p {
+            margin-bottom: 18px;
+        }
+
+        .intro p:last-child {
+            margin-bottom: 0;
+        }
+
+        .intro strong {
+            color: var(--dark-blue);
+        }
+
+        /* =========================================================
+           PROJECT MISSION
+        ========================================================== */
+
+        .mission {
+            padding: 42px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--dark-blue),
+                    var(--blue)
+                );
+
+            border-radius: 22px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .mission h3 {
+            color: var(--gold);
+
+            font-size: 27px;
+
+            margin-bottom: 15px;
+        }
+
+        .mission p {
+            color: rgba(255,255,255,.85);
+
+            margin-bottom: 17px;
+        }
+
+        .mission ul {
+            list-style: none;
+
+            margin-top: 20px;
+        }
+
+        .mission li {
+            display: flex;
+
+            gap: 12px;
+
+            margin-bottom: 11px;
+
+            color: rgba(255,255,255,.9);
+        }
+
+        .mission li i {
+            color: var(--gold);
+
+            margin-top: 6px;
+        }
+
+        /* =========================================================
+           STRUCTURE
+        ========================================================== */
+
+        .structure {
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 22px;
+        }
+
+        .structure-item {
+            padding: 30px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 16px;
+
+            transition: .25s;
+        }
+
+        .structure-item:hover {
+            transform: translateY(-3px);
+
+            box-shadow: var(--shadow);
+        }
+
+        .structure-number {
+            color: var(--gold);
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+        }
+
+        .structure-item h3 {
+            color: var(--dark-blue);
+
+            font-size: 20px;
+
+            margin: 6px 0 8px;
+        }
+
+        .structure-item p {
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+        /* =========================================================
+           SPEECH BUILDER
+        ========================================================== */
+
+        .builder {
+            padding: 40px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .field {
+            margin-bottom: 25px;
+        }
+
+        .field:last-child {
+            margin-bottom: 0;
+        }
+
+        .field label {
+            display: block;
+
+            color: var(--dark-blue);
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+        }
+
+        .field small {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-bottom: 8px;
+        }
+
+        .field input,
+        .field textarea,
+        .field select {
+            width: 100%;
+
+            border: 1px solid var(--border);
+
+            background: #fbfdfe;
+
+            color: var(--text);
+
+            border-radius: 10px;
+
+            outline: none;
+
+            padding: 14px 15px;
+
+            font-size: 14px;
+
+            transition: .25s;
+        }
+
+        .field input:focus,
+        .field textarea:focus,
+        .field select:focus {
+            border-color: var(--blue);
+
+            background: white;
+
+            box-shadow: 0 0 0 3px rgba(18,104,142,.08);
+        }
+
+        .field textarea {
+            min-height: 135px;
+
+            resize: vertical;
+        }
+
+        .counter {
+            text-align: right;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-top: 4px;
+        }
+
+        /* =========================================================
+           PLAN
+        ========================================================== */
+
+        .plan {
+            margin-top: 28px;
+
+            padding: 25px;
+
+            border-radius: 14px;
+
+            background: var(--blue-light);
+
+            border: 1px solid #d5ebf3;
+        }
+
+        .plan h3 {
+            color: var(--dark-blue);
+
+            font-size: 19px;
+
+            margin-bottom: 12px;
+        }
+
+        .plan p {
+            color: #526873;
+
+            font-size: 14px;
+
+            margin-bottom: 9px;
+        }
+
+        .plan strong {
+            color: var(--blue);
+        }
+
+        /* =========================================================
+           MICROPHONE
+        ========================================================== */
+
+        .voice-practice {
+            padding: 42px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #062f49,
+                    #12688e
+                );
+
+            border-radius: 22px;
+
+            box-shadow: var(--shadow);
+
+            text-align: center;
+        }
+
+        .voice-practice h3 {
+            font-size: 27px;
+
+            margin-bottom: 10px;
+        }
+
+        .voice-practice > p {
+            max-width: 720px;
+
+            margin: 0 auto 25px;
+
+            color: rgba(255,255,255,.82);
+        }
+
+        .mic-button {
+            width: 105px;
+            height: 105px;
+
+            border-radius: 50%;
+
+            border: 4px solid rgba(255,255,255,.22);
+
+            background: var(--gold);
+
+            color: var(--dark-blue);
+
+            font-size: 39px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: 20px auto;
+
+            transition: .3s;
+
+            box-shadow:
+                0 0 0 0 rgba(212,175,55,.35);
+        }
+
+        .mic-button:hover {
+            transform: scale(1.05);
+        }
+
+        .mic-button.recording {
+            animation: microphonePulse 1.3s infinite;
+
+            background: #efc93c;
+        }
+
+        @keyframes microphonePulse {
+
+            0% {
+                box-shadow:
+                    0 0 0 0 rgba(212,175,55,.45);
+            }
+
+            70% {
+                box-shadow:
+                    0 0 0 25px rgba(212,175,55,0);
+            }
+
+            100% {
+                box-shadow:
+                    0 0 0 0 rgba(212,175,55,0);
+            }
+
+        }
+
+        .voice-status {
+            color: var(--gold);
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 17px;
+        }
+
+        .voice-timer {
+            font-size: 31px;
+
+            font-weight: 800;
+
+            margin-bottom: 20px;
+        }
+
+        .transcript {
+            min-height: 145px;
+
+            padding: 20px;
+
+            border-radius: 13px;
+
+            background: rgba(255,255,255,.08);
+
+            border: 1px solid rgba(255,255,255,.13);
+
+            text-align: left;
+
+            color: rgba(255,255,255,.88);
+
+            margin-top: 20px;
+        }
+
+        .transcript-title {
+            color: var(--gold);
+
+            font-size: 12px;
+
+            text-transform: uppercase;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 8px;
+        }
+
+        /* =========================================================
+           ANALYSIS
+        ========================================================== */
+
+        .analysis {
+            display: none;
+
+            margin-top: 25px;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            background: rgba(255,255,255,.08);
+
+            border: 1px solid rgba(255,255,255,.15);
+
+            text-align: left;
+        }
+
+        .analysis h4 {
+            color: var(--gold);
+
+            margin-bottom: 18px;
+        }
+
+        .analysis-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 13px;
+
+            margin-bottom: 20px;
+        }
+
+        .analysis-stat {
+            padding: 16px;
+
+            background: rgba(255,255,255,.07);
+
+            border-radius: 10px;
+
+            text-align: center;
+        }
+
+        .analysis-stat strong {
+            display: block;
+
+            color: white;
+
+            font-size: 22px;
+        }
+
+        .analysis-stat span {
+            color: rgba(255,255,255,.65);
+
+            font-size: 11px;
+        }
+
+        .feedback {
+            padding: 17px;
+
+            margin-top: 12px;
+
+            border-radius: 9px;
+
+            background: rgba(255,255,255,.06);
+        }
+
+        .feedback strong {
+            color: var(--gold);
+        }
+
+        /* =========================================================
+           CHECKLIST
+        ========================================================== */
+
+        .checklist {
+            background: white;
+
+            padding: 38px;
+
+            border-radius: 20px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .check-item {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 14px;
+
+            padding: 16px 0;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .check-item:last-child {
+            border-bottom: none;
+        }
+
+        .check-item input {
+            width: 19px;
+            height: 19px;
+
+            margin-top: 5px;
+
+            accent-color: var(--blue);
+
+            cursor: pointer;
+        }
+
+        .check-item label {
+            cursor: pointer;
+
+            color: var(--text);
+        }
+
+        .check-item label strong {
+            display: block;
+
+            color: var(--dark-blue);
+        }
+
+        .check-item label span {
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           SCORE
+        ========================================================== */
+
+        .score-box {
+            margin-top: 25px;
+
+            padding: 22px;
+
+            border-radius: 13px;
+
+            background: var(--blue-light);
+
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 39px;
+
+            font-weight: 800;
+
+            color: var(--blue);
+        }
+
+        .score-box p {
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           FINAL VALIDATION
+        ========================================================== */
+
+        .final-validation {
+            padding: 55px 30px;
+
+            text-align: center;
+
+            background: white;
+
+            border-radius: 22px;
+
+            box-shadow: var(--shadow);
+
+            border-top: 4px solid var(--gold);
+        }
+
+        .final-icon {
+            width: 92px;
+            height: 92px;
+
+            margin: 0 auto 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color: var(--gold);
+
+            background: var(--gold-light);
+
+            font-size: 39px;
+        }
+
+        .final-validation h2 {
+            color: var(--dark-blue);
+
+            font-size: 31px;
+
+            margin-bottom: 11px;
+        }
+
+        .final-validation p {
+            max-width: 730px;
+
+            margin: auto auto 28px;
+
+            color: var(--muted);
+        }
+
+        .certificate-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 15px 28px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--blue),
+                    var(--dark-blue)
+                );
+
+            font-weight: 700;
+
+            font-size: 15px;
+
+            transition: .3s;
+        }
+
+        .certificate-btn:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 10px 25px rgba(18,104,142,.23);
+        }
+
+        /* =========================================================
+           MESSAGE
+        ========================================================== */
+
+        .message {
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 16px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+        }
+
+        /* =========================================================
+           FOOTER
+        ========================================================== */
+
+        footer {
+            margin-top: 80px;
+
+            padding: 38px 20px;
+
+            text-align: center;
+
+            background: var(--dark-blue);
+
+            color: white;
+        }
+
+        footer strong {
+            color: var(--gold);
+
+            font-size: 17px;
+        }
+
+        footer p {
+            color: rgba(255,255,255,.68);
+
+            font-size: 13px;
+
+            margin-top: 6px;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================== */
+
+        @media(max-width: 800px) {
+
+            header {
+                padding: 0 4%;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .course-bar-inner {
+                flex-wrap: wrap;
+
+                padding: 20px 0;
+            }
+
+            .progress-wrapper {
+                width: 100%;
+            }
+
+            .structure {
+                grid-template-columns: 1fr;
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .intro,
+            .mission,
+            .builder,
+            .voice-practice,
+            .checklist {
+                padding: 28px;
+            }
+
+        }
+
+        @media(max-width: 500px) {
+
+            .brand {
+                font-size: 17px;
+            }
+
+            .hero {
+                min-height: 540px;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            main {
+                width: 92%;
+            }
+
+            .voice-timer {
+                font-size: 27px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
+    <header>
+
+        <div class="logo-zone">
+
+            <img
+                src="images/logo.png"
+                alt="BMJ FORMATION"
+            >
+
+            <div class="brand">
+                BMJ <span>FORMATION</span>
+            </div>
+
+        </div>
+
+
+        <div class="user-zone">
+
+            <span
+                id="userName"
+                class="user-name"
+            >
+                Apprenant
+            </span>
+
+            <img
+                id="userPhoto"
+                class="user-photo"
+                src="images/user.png"
+                alt="Utilisateur"
+            >
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="final-label">
+
+                <i class="fa-solid fa-trophy"></i>
+
+                CHAPITRE 5 — PROJET FINAL
+
+            </div>
+
+
+            <h1>
+
+                Votre Projet Final
+                <span>d'Éloquence</span>
+
+            </h1>
+
+
+            <p>
+
+                Mettez en pratique tout ce que vous avez appris :
+                préparez votre discours, organisez vos idées,
+                utilisez votre voix, maîtrisez votre posture et
+                présentez un message capable de retenir l'attention
+                de votre public.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         COURSE BAR
+    ========================================================== -->
+
+    <div class="course-bar">
+
+        <div class="course-bar-inner">
+
+
+            <div class="course-stat">
+
+                <div class="stat-icon">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+
+                <div>
+
+                    <small>CHAPITRE</small>
+
+                    <strong>05 / 05</strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="course-stat">
+
+                <div class="stat-icon">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+
+                <div>
+
+                    <small>TYPE</small>
+
+                    <strong>Projet final</strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-wrapper">
+
+                <div class="progress-top">
+
+                    <span>
+                        Parcours terminé
+                    </span>
+
+                    <strong>
+                        100%
+                    </strong>
+
+                </div>
+
+                <div class="progress">
+
+                    <span></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <main>
+
+
+        <!-- =====================================================
+             INTRODUCTION
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Étape finale
+                </div>
+
+                <h2>
+                    Transformez vos connaissances en performance
+                </h2>
+
+                <p>
+                    Ce projet est l'occasion de démontrer votre progression
+                    depuis le début de la formation.
+                </p>
+
+            </div>
+
+
+            <div class="intro">
+
+                <p>
+                    Vous avez étudié les fondamentaux de l'éloquence,
+                    travaillé votre confiance, appris à gérer le stress,
+                    découvert les principes de la voix et de la diction,
+                    puis appris à structurer un discours et à convaincre.
+                </p>
+
+                <p>
+                    Maintenant, il est temps de rassembler toutes ces
+                    compétences dans une seule présentation.
+                </p>
+
+                <p>
+                    Votre objectif n'est pas de produire un discours
+                    parfait. Votre objectif est de montrer que vous savez
+                    <strong>organiser une idée, la développer clairement,
+                    vous adresser à un public et défendre votre message
+                    avec assurance.</strong>
+                </p>
+
+                <p>
+                    Prenez votre temps. Préparez votre discours, répétez-le
+                    plusieurs fois et utilisez les exercices précédents
+                    pour améliorer progressivement votre prestation.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             MISSION
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="mission">
+
+                <h3>
+                    <i class="fa-solid fa-bullseye"></i>
+                    Votre mission
+                </h3>
+
+                <p>
+                    Préparez une présentation orale d'environ 2 à 3 minutes
+                    sur un sujet qui vous intéresse ou qui correspond à
+                    votre projet professionnel.
+                </p>
+
+                <p>
+                    Votre discours doit permettre à votre auditoire de
+                    comprendre votre idée principale et de retenir au moins
+                    un message important.
+                </p>
+
+
+                <ul>
+
+                    <li>
+                        <i class="fa-solid fa-check"></i>
+
+                        <span>
+                            Commencer par une introduction captivante.
+                        </span>
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-check"></i>
+
+                        <span>
+                            Présenter clairement votre idée principale.
+                        </span>
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-check"></i>
+
+                        <span>
+                            Développer au moins deux arguments ou idées.
+                        </span>
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-check"></i>
+
+                        <span>
+                            Ajouter un exemple concret.
+                        </span>
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-check"></i>
+
+                        <span>
+                            Utiliser une voix claire et des pauses.
+                        </span>
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-check"></i>
+
+                        <span>
+                            Maintenir une posture naturelle et assurée.
+                        </span>
+                    </li>
+
+                    <li>
+                        <i class="fa-solid fa-check"></i>
+
+                        <span>
+                            Terminer par une conclusion mémorable.
+                        </span>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             STRUCTURE
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Méthode
+                </div>
+
+                <h2>
+                    Les 5 étapes de votre discours
+                </h2>
+
+                <p>
+                    Utilisez cette structure pour organiser votre présentation
+                    avant de commencer à parler.
+                </p>
+
+            </div>
+
+
+            <div class="structure">
+
+
+                <div class="structure-item">
+
+                    <div class="structure-number">
+                        ÉTAPE 01
+                    </div>
+
+                    <h3>
+                        Accrocher
+                    </h3>
+
+                    <p>
+                        Commencez avec une question, une situation,
+                        une expérience personnelle, une statistique
+                        ou une phrase forte.
+                    </p>
+
+                </div>
+
+
+                <div class="structure-item">
+
+                    <div class="structure-number">
+                        ÉTAPE 02
+                    </div>
+
+                    <h3>
+                        Présenter
+                    </h3>
+
+                    <p>
+                        Expliquez clairement votre sujet et annoncez
+                        l'idée principale que vous souhaitez défendre.
+                    </p>
+
+                </div>
+
+
+                <div class="structure-item">
+
+                    <div class="structure-number">
+                        ÉTAPE 03
+                    </div>
+
+                    <h3>
+                        Développer
+                    </h3>
+
+                    <p>
+                        Présentez vos arguments et accompagnez-les
+                        d'exemples afin de rendre votre discours concret.
+                    </p>
+
+                </div>
+
+
+                <div class="structure-item">
+
+                    <div class="structure-number">
+                        ÉTAPE 04
+                    </div>
+
+                    <h3>
+                        Convaincre
+                    </h3>
+
+                    <p>
+                        Montrez pourquoi votre idée est importante et
+                        répondez mentalement aux principales objections.
+                    </p>
+
+                </div>
+
+
+                <div class="structure-item">
+
+                    <div class="structure-number">
+                        ÉTAPE 05
+                    </div>
+
+                    <h3>
+                        Conclure
+                    </h3>
+
+                    <p>
+                        Résumez votre message et terminez par une phrase
+                        forte qui donne envie au public de retenir votre idée.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CONSTRUCTION DU DISCOURS
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Atelier
+                </div>
+
+                <h2>
+                    Construisez votre discours
+                </h2>
+
+                <p>
+                    Utilisez cet espace pour préparer les différentes
+                    parties de votre présentation.
+                </p>
+
+            </div>
+
+
+            <div class="builder">
+
+
+                <div class="field">
+
+                    <label for="sujet">
+                        Sujet de votre discours
+                    </label>
+
+                    <small>
+                        Choisissez un sujet que vous connaissez ou que
+                        vous souhaitez défendre.
+                    </small>
+
+                    <input
+                        id="sujet"
+                        type="text"
+                        placeholder="Exemple : Pourquoi la confiance en soi est importante..."
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="introduction">
+                        Votre introduction
+                    </label>
+
+                    <small>
+                        Comment allez-vous attirer l'attention du public ?
+                    </small>
+
+                    <textarea
+                        id="introduction"
+                        maxlength="700"
+                        placeholder="Commencez par une question, une histoire, une situation..."
+                    ></textarea>
+
+                    <div class="counter">
+                        <span id="introCount">0</span> / 700
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="arguments">
+                        Vos arguments principaux
+                    </label>
+
+                    <small>
+                        Présentez les idées qui soutiennent votre message.
+                    </small>
+
+                    <textarea
+                        id="arguments"
+                        maxlength="1200"
+                        placeholder="Argument 1 : ...&#10;&#10;Argument 2 : ..."
+                    ></textarea>
+
+                    <div class="counter">
+                        <span id="argumentsCount">0</span> / 1200
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="exemple">
+                        Votre exemple
+                    </label>
+
+                    <small>
+                        Ajoutez une expérience, une situation ou un exemple
+                        concret.
+                    </small>
+
+                    <textarea
+                        id="exemple"
+                        maxlength="800"
+                        placeholder="Par exemple..."
+                    ></textarea>
+
+                    <div class="counter">
+                        <span id="exampleCount">0</span> / 800
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="conclusion">
+                        Votre conclusion
+                    </label>
+
+                    <small>
+                        Quelle idée voulez-vous laisser au public ?
+                    </small>
+
+                    <textarea
+                        id="conclusion"
+                        maxlength="700"
+                        placeholder="Pour conclure, je voudrais que vous reteniez..."
+                    ></textarea>
+
+                    <div class="counter">
+                        <span id="conclusionCount">0</span> / 700
+                    </div>
+
+                </div>
+
+
+                <div class="plan">
+
+                    <h3>
+                        <i class="fa-solid fa-lightbulb"></i>
+                        Conseil de préparation
+                    </h3>
+
+                    <p>
+                        <strong>Ne mémorisez pas chaque mot.</strong>
+                        Retenez plutôt les idées principales et les
+                        transitions entre elles.
+                    </p>
+
+                    <p>
+                        Répétez votre discours plusieurs fois. À chaque
+                        répétition, cherchez à améliorer un seul élément :
+                        la voix, le regard, la posture, les pauses ou
+                        la clarté.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             MICROPHONE
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Entraînement oral
+                </div>
+
+                <h2>
+                    Présentez votre discours à voix haute
+                </h2>
+
+                <p>
+                    Utilisez le microphone pour vous entraîner. Le navigateur
+                    transcrira votre intervention et analysera certains
+                    éléments de votre expression.
+                </p>
+
+            </div>
+
+
+            <div class="voice-practice">
+
+                <h3>
+                    <i class="fa-solid fa-microphone-lines"></i>
+                    Votre répétition finale
+                </h3>
+
+                <p>
+                    Installez-vous dans un endroit calme. Respirez,
+                    regardez devant vous et commencez naturellement.
+                </p>
+
+
+                <div
+                    id="voiceStatus"
+                    class="voice-status"
+                >
+                    Prêt à vous écouter
+                </div>
+
+
+                <button
+                    id="micButton"
+                    class="mic-button"
+                    onclick="gererMicrophone()"
+                    title="Démarrer le microphone"
+                >
+
+                    <i class="fa-solid fa-microphone"></i>
+
+                </button>
+
+
+                <div
+                    id="voiceTimer"
+                    class="voice-timer"
+                >
+                    00:00
+                </div>
+
+
+                <div class="transcript">
+
+                    <div class="transcript-title">
+                        Votre transcription
+                    </div>
+
+                    <div id="transcriptText">
+                        Votre discours apparaîtra ici lorsque vous
+                        commencerez à parler...
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="analysis"
+                    class="analysis"
+                >
+
+                    <h4>
+                        <i class="fa-solid fa-chart-simple"></i>
+                        Analyse de votre intervention
+                    </h4>
+
+
+                    <div class="analysis-grid">
+
+                        <div class="analysis-stat">
+
+                            <strong id="wordCount">
+                                0
+                            </strong>
+
+                            <span>
+                                Mots
+                            </span>
+
+                        </div>
+
+
+                        <div class="analysis-stat">
+
+                            <strong id="speechSpeed">
+                                0
+                            </strong>
+
+                            <span>
+                                Mots / minute
+                            </span>
+
+                        </div>
+
+
+                        <div class="analysis-stat">
+
+                            <strong id="fillerCount">
+                                0
+                            </strong>
+
+                            <span>
+                                Mots parasites
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="analysisFeedback"
+                        class="feedback"
+                    ></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CHECKLIST
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Auto-évaluation
+                </div>
+
+                <h2>
+                    Êtes-vous prêt à présenter ?
+                </h2>
+
+                <p>
+                    Cochez les éléments que vous maîtrisez avant de valider
+                    votre projet final.
+                </p>
+
+            </div>
+
+
+            <div class="checklist">
+
+
+                <div class="check-item">
+
+                    <input
+                        type="checkbox"
+                        id="check1"
+                        onchange="calculerScore()"
+                    >
+
+                    <label for="check1">
+
+                        <strong>
+                            Je connais mon sujet.
+                        </strong>
+
+                        <span>
+                            Je peux expliquer mon idée principale sans lire
+                            constamment mes notes.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="check-item">
+
+                    <input
+                        type="checkbox"
+                        id="check2"
+                        onchange="calculerScore()"
+                    >
+
+                    <label for="check2">
+
+                        <strong>
+                            Mon introduction attire l'attention.
+                        </strong>
+
+                        <span>
+                            Je sais comment commencer ma présentation.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="check-item">
+
+                    <input
+                        type="checkbox"
+                        id="check3"
+                        onchange="calculerScore()"
+                    >
+
+                    <label for="check3">
+
+                        <strong>
+                            Mes idées sont organisées.
+                        </strong>
+
+                        <span>
+                            Mon discours possède une structure logique.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="check-item">
+
+                    <input
+                        type="checkbox"
+                        id="check4"
+                        onchange="calculerScore()"
+                    >
+
+                    <label for="check4">
+
+                        <strong>
+                            J'utilise des exemples.
+                        </strong>
+
+                        <span>
+                            Je peux illustrer mes arguments avec des
+                            situations concrètes.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="check-item">
+
+                    <input
+                        type="checkbox"
+                        id="check5"
+                        onchange="calculerScore()"
+                    >
+
+                    <label for="check5">
+
+                        <strong>
+                            Je maîtrise ma voix.
+                        </strong>
+
+                        <span>
+                            Je peux ralentir, faire des pauses et varier
+                            mon intonation.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="check-item">
+
+                    <input
+                        type="checkbox"
+                        id="check6"
+                        onchange="calculerScore()"
+                    >
+
+                    <label for="check6">
+
+                        <strong>
+                            Ma posture est naturelle.
+                        </strong>
+
+                        <span>
+                            Je peux regarder mon public et utiliser mes
+                            gestes sans excès.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="check-item">
+
+                    <input
+                        type="checkbox"
+                        id="check7"
+                        onchange="calculerScore()"
+                    >
+
+                    <label for="check7">
+
+                        <strong>
+                            Je sais conclure.
+                        </strong>
+
+                        <span>
+                            Je possède une dernière phrase forte pour
+                            terminer mon discours.
+                        </span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="score-box">
+
+                    <div
+                        id="scoreNumber"
+                        class="score-number"
+                    >
+                        0%
+                    </div>
+
+                    <p id="scoreText">
+                        Commencez votre auto-évaluation.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             VALIDATION
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="final-validation">
+
+                <div class="final-icon">
+
+                    <i class="fa-solid fa-award"></i>
+
+                </div>
+
+
+                <h2>
+                    Félicitations, vous êtes arrivé au bout du parcours !
+                </h2>
+
+
+                <p>
+                    Après avoir étudié l'éloquence, la confiance en soi,
+                    la gestion du stress, la voix, la diction, le langage
+                    corporel et les techniques d'expression en public,
+                    vous êtes maintenant prêt à mettre vos compétences
+                    en pratique.
+                </p>
+
+
+                <p>
+                    Validez votre projet final pour enregistrer votre
+                    progression et accéder à votre certificat de formation.
+                </p>
+
+
+                <button
+                    id="certificateButton"
+                    class="certificate-btn"
+                    onclick="validerProjet()"
+                >
+
+                    <i class="fa-solid fa-certificate"></i>
+
+                    Valider mon projet et obtenir mon certificat
+
+                </button>
+
+
+                <div
+                    id="validationMessage"
+                    class="message"
+                ></div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+
+    <footer>
+
+        <strong>
+            BMJ FORMATION
+        </strong>
+
+        <p>
+            Développez vos compétences, renforcez votre confiance
+            et préparez votre avenir professionnel.
+        </p>
+
+        <p>
+            © 2026 BMJ SERVICE — Tous droits réservés.
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        /* ============================================================
+           UTILISATEUR
+        ============================================================ */
+
+        function chargerUtilisateur() {
+
+            const cles = [
+                "bmj_current_user",
+                "currentUser",
+                "bmj_user",
+                "utilisateur",
+                "user",
+                "loggedUser"
+            ];
+
+
+            for (const cle of cles) {
+
+                const brut =
+                    localStorage.getItem(cle);
+
+                if (!brut) continue;
+
+
+                try {
+
+                    let data =
+                        JSON.parse(brut);
+
+
+                    if (data && data.user) {
+                        data = data.user;
+                    }
+
+
+                    if (
+                        data &&
+                        typeof data === "object"
+                    ) {
+
+                        return data;
+
+                    }
+
+                } catch (e) {
+
+                    console.warn(
+                        "Erreur utilisateur :",
+                        cle
+                    );
+
+                }
+
+            }
+
+
+            return null;
+
+        }
+
+
+        const utilisateur =
+            chargerUtilisateur();
+
+
+        /* ============================================================
+           AFFICHAGE UTILISATEUR
+        ============================================================ */
+
+        function afficherUtilisateur() {
+
+            const nomElement =
+                document.getElementById("userName");
+
+            const photoElement =
+                document.getElementById("userPhoto");
+
+
+            if (!utilisateur) {
+
+                nomElement.textContent =
+                    "Apprenant";
+
+                photoElement.src =
+                    "images/user.png";
+
+                return;
+
+            }
+
+
+            const nom =
+                utilisateur.nom ||
+                utilisateur.name ||
+                utilisateur.prenom ||
+                utilisateur.username ||
+                utilisateur.email ||
+                "Apprenant";
+
+
+            nomElement.textContent =
+                nom;
+
+
+            const photo =
+                utilisateur.photo ||
+                utilisateur.image ||
+                utilisateur.avatar ||
+                utilisateur.photo_url ||
+                utilisateur.profile_photo;
+
+
+            if (photo) {
+
+                photoElement.src =
+                    photo;
+
+                photoElement.onerror =
+                    function () {
+
+                        this.src =
+                            "images/user.png";
+
+                    };
+
+            }
+
+        }
+
+
+        afficherUtilisateur();
+
+
+        /* ============================================================
+           IDENTIFIANT
+        ============================================================ */
+
+        const identifiant =
+            utilisateur?.id_bmj ||
+            utilisateur?.id ||
+            utilisateur?.user_id ||
+            utilisateur?.userId ||
+            utilisateur?.email ||
+            utilisateur?.telephone ||
+            utilisateur?.phone ||
+            "utilisateur";
+
+
+        /* ============================================================
+           PROGRESSION
+        ============================================================ */
+
+        const progressionKey =
+            "eloquence_progression_" +
+            identifiant;
+
+
+        let progression = [];
+
+
+        try {
+
+            progression =
+                JSON.parse(
+                    localStorage.getItem(
+                        progressionKey
+                    )
+                ) || [];
+
+        } catch (e) {
+
+            progression = [];
+
+        }
+
+
+        if (!Array.isArray(progression)) {
+            progression = [];
+        }
+
+
+        /* ============================================================
+           CHARGEMENT DU PROJET
+        ============================================================ */
+
+        const projetKey =
+            "eloquence_projet_final_" +
+            identifiant;
+
+
+        function chargerProjet() {
+
+            try {
+
+                const sauvegarde =
+                    JSON.parse(
+                        localStorage.getItem(
+                            projetKey
+                        )
+                    );
+
+
+                if (!sauvegarde) return;
+
+
+                document.getElementById("sujet").value =
+                    sauvegarde.sujet || "";
+
+                document.getElementById("introduction").value =
+                    sauvegarde.introduction || "";
+
+                document.getElementById("arguments").value =
+                    sauvegarde.arguments || "";
+
+                document.getElementById("exemple").value =
+                    sauvegarde.exemple || "";
+
+                document.getElementById("conclusion").value =
+                    sauvegarde.conclusion || "";
+
+
+                actualiserCompteurs();
+
+            } catch (e) {
+
+                console.warn(
+                    "Impossible de restaurer le projet."
+                );
+
+            }
+
+        }
+
+
+        chargerProjet();
+
+
+        /* ============================================================
+           SAUVEGARDE AUTOMATIQUE
+        ============================================================ */
+
+        function sauvegarderProjet() {
+
+            const projet = {
+
+                sujet:
+                    document.getElementById("sujet").value,
+
+                introduction:
+                    document.getElementById("introduction").value,
+
+                arguments:
+                    document.getElementById("arguments").value,
+
+                exemple:
+                    document.getElementById("exemple").value,
+
+                conclusion:
+                    document.getElementById("conclusion").value,
+
+                date:
+                    new Date().toISOString()
+
+            };
+
+
+            localStorage.setItem(
+                projetKey,
+                JSON.stringify(projet)
+            );
+
+        }
+
+
+        document
+            .querySelectorAll(
+                "#sujet, #introduction, #arguments, #exemple, #conclusion"
+            )
+            .forEach(element => {
+
+                element.addEventListener(
+                    "input",
+                    () => {
+
+                        actualiserCompteurs();
+
+                        sauvegarderProjet();
+
+                    }
+                );
+
+            });
+
+
+        /* ============================================================
+           COMPTEURS
+        ============================================================ */
+
+        function actualiserCompteurs() {
+
+            document.getElementById(
+                "introCount"
+            ).textContent =
+                document.getElementById(
+                    "introduction"
+                ).value.length;
+
+
+            document.getElementById(
+                "argumentsCount"
+            ).textContent =
+                document.getElementById(
+                    "arguments"
+                ).value.length;
+
+
+            document.getElementById(
+                "exampleCount"
+            ).textContent =
+                document.getElementById(
+                    "exemple"
+                ).value.length;
+
+
+            document.getElementById(
+                "conclusionCount"
+            ).textContent =
+                document.getElementById(
+                    "conclusion"
+                ).value.length;
+
+        }
+
+
+        /* ============================================================
+           SPEECH RECOGNITION
+        ============================================================ */
+
+        const SpeechRecognition =
+            window.SpeechRecognition ||
+            window.webkitSpeechRecognition;
+
+
+        let recognition = null;
+
+        let listening = false;
+
+        let finalTranscript = "";
+
+        let startTime = null;
+
+        let voiceTimerInterval = null;
+
+
+        const micButton =
+            document.getElementById(
+                "micButton"
+            );
+
+
+        const voiceStatus =
+            document.getElementById(
+                "voiceStatus"
+            );
+
+
+        const transcriptText =
+            document.getElementById(
+                "transcriptText"
+            );
+
+
+        if (SpeechRecognition) {
+
+            recognition =
+                new SpeechRecognition();
+
+
+            recognition.lang =
+                "fr-FR";
+
+
+            recognition.continuous =
+                true;
+
+
+            recognition.interimResults =
+                true;
+
+
+            recognition.onresult =
+                function(event) {
+
+                    let interim =
+                        "";
+
+
+                    for (
+                        let i = event.resultIndex;
+                        i < event.results.length;
+                        i++
+                    ) {
+
+                        const text =
+                            event.results[i][0]
+                                .transcript;
+
+
+                        if (
+                            event.results[i]
+                                .isFinal
+                        ) {
+
+                            finalTranscript +=
+                                text + " ";
+
+                        } else {
+
+                            interim +=
+                                text;
+
+                        }
+
+                    }
+
+
+                    transcriptText.textContent =
+                        (
+                            finalTranscript +
+                            interim
+                        ).trim() ||
+                        "Écoute en cours...";
+
+                };
+
+
+            recognition.onerror =
+                function(event) {
+
+                    console.warn(
+                        "SpeechRecognition :",
+                        event.error
+                    );
+
+
+                    if (
+                        event.error ===
+                        "not-allowed"
+                    ) {
+
+                        voiceStatus.textContent =
+                            "Autorisation du microphone refusée.";
+
+                    } else {
+
+                        voiceStatus.textContent =
+                            "Une erreur est survenue. Réessayez.";
+
+                    }
+
+                };
+
+
+            recognition.onend =
+                function() {
+
+                    if (listening) {
+
+                        try {
+
+                            recognition.start();
+
+                        } catch (e) {}
+
+                    }
+
+                };
+
+        } else {
+
+            voiceStatus.textContent =
+                "La reconnaissance vocale n'est pas disponible dans ce navigateur.";
+
+            micButton.disabled =
+                true;
+
+            micButton.style.opacity =
+                ".5";
+
+        }
+
+
+        /* ============================================================
+           MICROPHONE
+        ============================================================ */
+
+        function gererMicrophone() {
+
+            if (!recognition) {
+
+                alert(
+                    "Votre navigateur ne prend pas en charge la reconnaissance vocale. Utilisez une version récente de Chrome ou Edge."
+                );
+
+                return;
+
+            }
+
+
+            if (!listening) {
+
+                demarrerEcoute();
+
+            } else {
+
+                arreterEcoute();
+
+            }
+
+        }
+
+
+        function demarrerEcoute() {
+
+            finalTranscript =
+                "";
+
+
+            transcriptText.textContent =
+                "Écoute en cours...";
+
+
+            listening =
+                true;
+
+
+            startTime =
+                Date.now();
+
+
+            micButton.classList.add(
+                "recording"
+            );
+
+
+            micButton.innerHTML =
+                '<i class="fa-solid fa-stop"></i>';
+
+
+            voiceStatus.textContent =
+                "Je vous écoute... Parlez naturellement";
+
+
+            document.getElementById(
+                "analysis"
+            ).style.display =
+                "none";
+
+
+            demarrerTimer();
+
+
+            try {
+
+                recognition.start();
+
+            } catch (e) {
+
+                console.warn(e);
+
+            }
+
+        }
+
+
+        function arreterEcoute() {
+
+            listening =
+                false;
+
+
+            try {
+
+                recognition.stop();
+
+            } catch (e) {}
+
+
+            clearInterval(
+                voiceTimerInterval
+            );
+
+
+            micButton.classList.remove(
+                "recording"
+            );
+
+
+            micButton.innerHTML =
+                '<i class="fa-solid fa-microphone"></i>';
+
+
+            voiceStatus.textContent =
+                "Analyse de votre intervention...";
+
+
+            analyserDiscours();
+
+        }
+
+
+        /* ============================================================
+           TIMER VOCAL
+        ============================================================ */
+
+        function demarrerTimer() {
+
+            clearInterval(
+                voiceTimerInterval
+            );
+
+
+            voiceTimerInterval =
+                setInterval(() => {
+
+                    if (!startTime) return;
+
+
+                    const secondes =
+                        Math.floor(
+                            (
+                                Date.now() -
+                                startTime
+                            ) / 1000
+                        );
+
+
+                    afficherTemps(
+                        secondes
+                    );
+
+                }, 1000);
+
+        }
+
+
+        function afficherTemps(secondes) {
+
+            const minutes =
+                Math.floor(
+                    secondes / 60
+                );
+
+
+            const sec =
+                secondes % 60;
+
+
+            document.getElementById(
+                "voiceTimer"
+            ).textContent =
+
+                String(minutes).padStart(2, "0") +
+                ":" +
+
+                String(sec).padStart(2, "0");
+
+        }
+
+
+        /* ============================================================
+           ANALYSE
+        ============================================================ */
+
+        function analyserDiscours() {
+
+            const texte =
+                finalTranscript
+                    .trim()
+                    .replace(/\s+/g, " ");
+
+
+            const duree =
+                Math.max(
+                    1,
+                    Math.floor(
+                        (
+                            Date.now() -
+                            startTime
+                        ) / 1000
+                    )
+                );
+
+
+            const mots =
+                texte ?
+                texte.split(/\s+/) :
+                [];
+
+
+            const nombreMots =
+                mots.length;
+
+
+            const minutes =
+                Math.max(
+                    duree / 60,
+                    1 / 60
+                );
+
+
+            const vitesse =
+                Math.round(
+                    nombreMots /
+                    minutes
+                );
+
+
+            const parasites = [
+                "euh",
+                "heu",
+                "bah",
+                "voilà",
+                "donc",
+                "en fait",
+                "du coup",
+                "genre",
+                "tu vois",
+                "vous voyez"
+            ];
+
+
+            let nombreParasites =
+                0;
+
+
+            const texteAnalyse =
+                texte.toLowerCase();
+
+
+            parasites.forEach(
+                mot => {
+
+                    const expression =
+                        new RegExp(
+                            "\\b" +
+                            mot
+                                .replace(
+                                    /\s+/g,
+                                    "\\s+"
+                                ) +
+                            "\\b",
+                            "gi"
+                        );
+
+
+                    const correspondances =
+                        texteAnalyse.match(
+                            expression
+                        );
+
+
+                    if (correspondances) {
+
+                        nombreParasites +=
+                            correspondances.length;
+
+                    }
+
+                }
+            );
+
+
+            document.getElementById(
+                "wordCount"
+            ).textContent =
+                nombreMots;
+
+
+            document.getElementById(
+                "speechSpeed"
+            ).textContent =
+                vitesse;
+
+
+            document.getElementById(
+                "fillerCount"
+            ).textContent =
+                nombreParasites;
+
+
+            const feedback =
+                document.getElementById(
+                    "analysisFeedback"
+                );
+
+
+            let message = "";
+
+
+            if (nombreMots < 25) {
+
+                message += `
+                    <strong>Développez davantage :</strong>
+                    votre intervention est encore courte.
+                    Essayez d'expliquer votre idée avec un exemple.
+                    <br><br>
+                `;
+
+            } else if (nombreMots >= 25) {
+
+                message += `
+                    <strong>Bon volume :</strong>
+                    vous avez suffisamment de matière pour analyser
+                    votre structure et votre clarté.
+                    <br><br>
+                `;
+
+            }
+
+
+            if (vitesse > 180) {
+
+                message += `
+                    <strong>Ralentissez :</strong>
+                    votre rythme semble élevé. Faites davantage de pauses
+                    entre vos idées.
+                    <br><br>
+                `;
+
+            } else if (
+                vitesse >= 100 &&
+                vitesse <= 180
+            ) {
+
+                message += `
+                    <strong>Rythme intéressant :</strong>
+                    votre vitesse de parole se situe dans une zone
+                    généralement confortable pour une présentation.
+                    <br><br>
+                `;
+
+            } else if (
+                vitesse > 0 &&
+                vitesse < 100
+            ) {
+
+                message += `
+                    <strong>Donnez davantage de rythme :</strong>
+                    veillez toutefois à conserver des pauses naturelles.
+                    <br><br>
+                `;
+
+            }
+
+
+            if (nombreParasites > 3) {
+
+                message += `
+                    <strong>Attention aux mots parasites :</strong>
+                    essayez de remplacer les « euh », « donc », « en fait »
+                    ou autres répétitions par de courtes pauses.
+                    <br><br>
+                `;
+
+            } else {
+
+                message += `
+                    <strong>Bonne maîtrise :</strong>
+                    peu de mots parasites ont été détectés dans votre
+                    transcription.
+                    <br><br>
+                `;
+
+            }
+
+
+            if (
+                /bonjour|bonsoir|mesdames|messieurs|aujourd'hui/i
+                    .test(texte)
+            ) {
+
+                message += `
+                    <strong>Introduction :</strong>
+                    votre transcription contient un élément pouvant
+                    fonctionner comme ouverture.
+                    <br><br>
+                `;
+
+            } else {
+
+                message += `
+                    <strong>Introduction :</strong>
+                    pensez à commencer par une question, une situation
+                    ou une phrase qui attire l'attention.
+                    <br><br>
+                `;
+
+            }
+
+
+            if (
+                /merci|pour conclure|en conclusion|retenez|je vous invite/i
+                    .test(texte)
+            ) {
+
+                message += `
+                    <strong>Conclusion :</strong>
+                    votre discours semble contenir une formule de clôture.
+                `;
+
+            } else {
+
+                message += `
+                    <strong>Conclusion :</strong>
+                    terminez par une idée forte que votre public pourra
+                    facilement retenir.
+                `;
+
+            }
+
+
+            feedback.innerHTML =
+                message;
+
+
+            document.getElementById(
+                "analysis"
+            ).style.display =
+                "block";
+
+
+            voiceStatus.textContent =
+                "Analyse terminée";
+
+
+            /* Sauvegarde */
+
+            localStorage.setItem(
+                "eloquence_derniere_analyse_" +
+                identifiant,
+                JSON.stringify({
+
+                    transcript: texte,
+
+                    duration: duree,
+
+                    words: nombreMots,
+
+                    speed: vitesse,
+
+                    fillers: nombreParasites,
+
+                    date:
+                        new Date().toISOString()
+
+                })
+            );
+
+        }
+
+
+        /* ============================================================
+           AUTO-ÉVALUATION
+        ============================================================ */
+
+        function calculerScore() {
+
+            const total =
+                7;
+
+
+            let coches =
+                0;
+
+
+            for (
+                let i = 1;
+                i <= total;
+                i++
+            ) {
+
+                if (
+                    document.getElementById(
+                        "check" + i
+                    ).checked
+                ) {
+
+                    coches++;
+
+                }
+
+            }
+
+
+            const score =
+                Math.round(
+                    (
+                        coches /
+                        total
+                    ) * 100
+                );
+
+
+            document.getElementById(
+                "scoreNumber"
+            ).textContent =
+                score + "%";
+
+
+            const texte =
+                document.getElementById(
+                    "scoreText"
+                );
+
+
+            if (score === 100) {
+
+                texte.textContent =
+                    "Excellent ! Vous avez vérifié tous les éléments essentiels de votre présentation.";
+
+            } else if (score >= 70) {
+
+                texte.textContent =
+                    "Très bon niveau. Il vous reste quelques éléments à renforcer.";
+
+            } else if (score >= 40) {
+
+                texte.textContent =
+                    "Votre préparation avance. Continuez à travailler les points non cochés.";
+
+            } else {
+
+                texte.textContent =
+                    "Prenez le temps de préparer votre discours avant de le présenter.";
+
+            }
+
+
+            localStorage.setItem(
+                "eloquence_auto_evaluation_" +
+                identifiant,
+                JSON.stringify({
+
+                    score: score,
+
+                    date:
+                        new Date().toISOString()
+
+                })
+            );
+
+        }
+
+
+        /* ============================================================
+           VALIDATION DU PROJET
+        ============================================================ */
+
+        function validerProjet() {
+
+            const sujet =
+                document.getElementById(
+                    "sujet"
+                ).value.trim();
+
+
+            const introduction =
+                document.getElementById(
+                    "introduction"
+                ).value.trim();
+
+
+            const argumentsTexte =
+                document.getElementById(
+                    "arguments"
+                ).value.trim();
+
+
+            const exemple =
+                document.getElementById(
+                    "exemple"
+                ).value.trim();
+
+
+            const conclusion =
+                document.getElementById(
+                    "conclusion"
+                ).value.trim();
+
+
+            const message =
+                document.getElementById(
+                    "validationMessage"
+                );
+
+
+            if (
+                !sujet ||
+                !introduction ||
+                !argumentsTexte ||
+                !exemple ||
+                !conclusion
+            ) {
+
+                message.style.display =
+                    "block";
+
+
+                message.style.background =
+                    "#fff0f0";
+
+
+                message.style.color =
+                    "#9e3333";
+
+
+                message.innerHTML = `
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <strong>Projet incomplet.</strong>
+                    Veuillez remplir le sujet, l'introduction,
+                    les arguments, l'exemple et la conclusion.
+                `;
+
+
+                return;
+
+            }
+
+
+            /*
+                Le projet est enregistré comme terminé.
+            */
+
+            progression[0] =
+                progression[0] || false;
+
+            progression[1] =
+                progression[1] || false;
+
+            progression[2] =
+                progression[2] || false;
+
+            progression[3] =
+                progression[3] || false;
+
+            progression[4] =
+                true;
+
+
+            localStorage.setItem(
+                progressionKey,
+                JSON.stringify(
+                    progression
+                )
+            );
+
+
+            /* Projet final */
+
+            localStorage.setItem(
+                "eloquence_projet_final_valide_" +
+                identifiant,
+                JSON.stringify({
+
+                    valide: true,
+
+                    sujet: sujet,
+
+                    introduction:
+                        introduction,
+
+                    arguments:
+                        argumentsTexte,
+
+                    exemple:
+                        exemple,
+
+                    conclusion:
+                        conclusion,
+
+                    date:
+                        new Date().toISOString()
+
+                })
+            );
+
+
+            /*
+                Variable utilisée pour le certificat.
+            */
+
+            localStorage.setItem(
+                "certificatEloquence",
+                "true"
+            );
+
+
+            localStorage.setItem(
+                "certificat_eloquence_" +
+                identifiant,
+                JSON.stringify({
+
+                    formation:
+                        "L'Art d'Éloquence et Prise de Parole en Public",
+
+                    apprenant:
+                        utilisateur?.nom ||
+                        utilisateur?.name ||
+                        utilisateur?.email ||
+                        "Apprenant",
+
+                    valide:
+                        true,
+
+                    date:
+                        new Date().toISOString()
+
+                })
+            );
+
+
+            const bouton =
+                document.getElementById(
+                    "certificateButton"
+                );
+
+
+            bouton.disabled =
+                true;
+
+
+            bouton.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Préparation du certificat...
+            `;
+
+
+            message.style.display =
+                "block";
+
+
+            message.style.background =
+                "#eaf8f1";
+
+
+            message.style.color =
+                "#17633e";
+
+
+            message.innerHTML = `
+                <i class="fa-solid fa-circle-check"></i>
+                <strong>Projet validé avec succès !</strong>
+                Votre parcours d'éloquence est maintenant terminé.
+            `;
+
+
+            setTimeout(() => {
+
+                /*
+                    Si votre page certificat possède un autre nom,
+                    remplacez simplement le nom ci-dessous.
+                */
+
+                window.location.href =
+                    "projet_final_investissement.html";
+
+            }, 1200);
+
+        }
+
+
+        /* ============================================================
+           INITIALISATION
+        ============================================================ */
+
+        actualiserCompteurs();
+
+        calculerScore();
+
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,2948 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Techniques d'Expression en Public | BMJ FORMATION</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+
+        :root {
+            --blue: #12688e;
+            --dark-blue: #073b59;
+            --blue-light: #eaf6fb;
+            --gold: #d4af37;
+            --gold-light: #f7edc5;
+            --white: #ffffff;
+            --text: #243746;
+            --muted: #6d7d88;
+            --border: #dce7ed;
+            --success: #16824c;
+            --danger: #c94a4a;
+            --shadow: 0 12px 35px rgba(7, 59, 89, .10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: #f6f9fb;
+            color: var(--text);
+            line-height: 1.75;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            height: 74px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            background: rgba(255,255,255,.97);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 3px 15px rgba(0,0,0,.05);
+        }
+
+        .logo-zone {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-zone img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+        }
+
+        .brand {
+            color: var(--dark-blue);
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: .5px;
+        }
+
+        .brand span {
+            color: var(--gold);
+        }
+
+        .user-zone {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            font-size: 14px;
+            color: var(--dark-blue);
+            font-weight: 600;
+        }
+
+        .user-photo {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+            background: #eee;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            margin-top: 74px;
+            min-height: 475px;
+
+            position: relative;
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    110deg,
+                    rgba(7,59,89,.96),
+                    rgba(18,104,142,.87)
+                ),
+                url("images/expression-public.jpg")
+                center/cover no-repeat;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+
+            width: 430px;
+            height: 430px;
+
+            border-radius: 50%;
+            border: 75px solid rgba(212,175,55,.10);
+
+            right: -130px;
+            top: -110px;
+        }
+
+        .hero-content {
+            width: min(1150px, 90%);
+            margin: auto;
+
+            position: relative;
+            z-index: 2;
+
+            color: white;
+        }
+
+        .chapter-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+
+            padding: 8px 17px;
+
+            border-radius: 30px;
+
+            background: rgba(255,255,255,.12);
+            border: 1px solid rgba(255,255,255,.30);
+
+            font-size: 13px;
+            font-weight: 600;
+
+            margin-bottom: 22px;
+        }
+
+        .chapter-label i {
+            color: var(--gold);
+        }
+
+        .hero h1 {
+            max-width: 900px;
+
+            font-size: clamp(35px, 5vw, 60px);
+            line-height: 1.14;
+
+            font-weight: 800;
+
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: var(--gold);
+        }
+
+        .hero p {
+            max-width: 820px;
+
+            font-size: 18px;
+
+            color: rgba(255,255,255,.87);
+        }
+
+        /* ================= COURSE BAR ================= */
+
+        .course-bar {
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .course-bar-inner {
+            width: min(1150px, 90%);
+            min-height: 90px;
+
+            margin: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 25px;
+        }
+
+        .course-stat {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-icon {
+            width: 45px;
+            height: 45px;
+
+            border-radius: 12px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--blue-light);
+            color: var(--blue);
+        }
+
+        .course-stat small {
+            display: block;
+
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .course-stat strong {
+            font-size: 14px;
+            color: var(--dark-blue);
+        }
+
+        .progress-wrapper {
+            width: 280px;
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: 7px;
+
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .progress {
+            height: 8px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background: #e7eef2;
+        }
+
+        .progress span {
+            display: block;
+
+            width: 80%;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background: linear-gradient(
+                90deg,
+                var(--blue),
+                var(--gold)
+            );
+        }
+
+        /* ================= MAIN ================= */
+
+        main {
+            width: min(1050px, 90%);
+            margin: 65px auto;
+        }
+
+        .section {
+            margin-bottom: 72px;
+        }
+
+        .section-heading {
+            margin-bottom: 28px;
+        }
+
+        .section-heading .number {
+            color: var(--gold);
+
+            font-size: 13px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-heading h2 {
+            color: var(--dark-blue);
+
+            font-size: clamp(27px, 4vw, 39px);
+
+            line-height: 1.25;
+
+            margin-top: 5px;
+        }
+
+        .section-heading p {
+            max-width: 820px;
+
+            color: var(--muted);
+
+            margin-top: 9px;
+        }
+
+        /* ================= TEXT CONTENT ================= */
+
+        .text-content {
+            background: white;
+
+            padding: 40px;
+
+            border-left: 5px solid var(--gold);
+
+            border-radius: 0 16px 16px 0;
+
+            box-shadow: var(--shadow);
+        }
+
+        .text-content p {
+            margin-bottom: 18px;
+        }
+
+        .text-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .text-content strong {
+            color: var(--dark-blue);
+        }
+
+        /* ================= STRUCTURE ================= */
+
+        .structure {
+            position: relative;
+
+            padding-left: 35px;
+        }
+
+        .structure::before {
+            content: "";
+
+            position: absolute;
+
+            left: 7px;
+            top: 10px;
+            bottom: 10px;
+
+            width: 2px;
+
+            background: var(--gold);
+        }
+
+        .structure-item {
+            position: relative;
+
+            margin-bottom: 30px;
+        }
+
+        .structure-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .structure-item::before {
+            content: "";
+
+            position: absolute;
+
+            left: -34px;
+            top: 7px;
+
+            width: 16px;
+            height: 16px;
+
+            border-radius: 50%;
+
+            background: var(--gold);
+
+            box-shadow:
+                0 0 0 5px var(--gold-light);
+        }
+
+        .structure-item h3 {
+            color: var(--dark-blue);
+
+            font-size: 21px;
+
+            margin-bottom: 6px;
+        }
+
+        .structure-item p {
+            color: #62747f;
+        }
+
+        /* ================= OPENING ================= */
+
+        .opening {
+            display: grid;
+
+            grid-template-columns: 1.05fr .95fr;
+
+            gap: 35px;
+
+            align-items: stretch;
+        }
+
+        .opening-text {
+            padding: 38px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .opening-text h3 {
+            color: var(--dark-blue);
+
+            font-size: 25px;
+
+            margin-bottom: 15px;
+        }
+
+        .opening-text p {
+            margin-bottom: 17px;
+        }
+
+        .opening-example {
+            padding: 38px;
+
+            border-radius: 18px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    var(--dark-blue),
+                    var(--blue)
+                );
+
+            box-shadow: var(--shadow);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .opening-example small {
+            color: var(--gold);
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1.5px;
+
+            margin-bottom: 13px;
+        }
+
+        .opening-example blockquote {
+            font-size: 22px;
+
+            line-height: 1.6;
+
+            font-weight: 600;
+        }
+
+        /* ================= ARGUMENTATION ================= */
+
+        .argumentation {
+            padding: 40px;
+
+            background: var(--blue-light);
+
+            border-radius: 20px;
+        }
+
+        .argumentation h3 {
+            color: var(--dark-blue);
+
+            font-size: 26px;
+
+            margin-bottom: 15px;
+        }
+
+        .argumentation p {
+            margin-bottom: 20px;
+        }
+
+        .argument-formula {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .argument-part {
+            padding: 12px 17px;
+
+            border-radius: 8px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            font-weight: 700;
+
+            color: var(--dark-blue);
+        }
+
+        .argument-arrow {
+            color: var(--gold);
+
+            font-size: 18px;
+        }
+
+        /* ================= PERSUASION ================= */
+
+        .persuasion-list {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 22px;
+        }
+
+        .persuasion-item {
+            padding: 27px;
+
+            background: white;
+
+            border-bottom: 3px solid var(--gold);
+
+            box-shadow: 0 7px 25px rgba(7,59,89,.07);
+        }
+
+        .persuasion-item h3 {
+            color: var(--dark-blue);
+
+            font-size: 19px;
+
+            margin-bottom: 8px;
+        }
+
+        .persuasion-item p {
+            color: var(--muted);
+
+            font-size: 14px;
+        }
+
+        .persuasion-item i {
+            color: var(--gold);
+
+            margin-right: 7px;
+        }
+
+        /* ================= STORYTELLING ================= */
+
+        .story {
+            padding: 42px;
+
+            background: white;
+
+            border-radius: 20px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .story h3 {
+            color: var(--dark-blue);
+
+            font-size: 26px;
+
+            margin-bottom: 14px;
+        }
+
+        .story p {
+            margin-bottom: 17px;
+        }
+
+        .story-sequence {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-top: 25px;
+        }
+
+        .story-step {
+            flex: 1;
+
+            min-width: 180px;
+
+            padding: 20px;
+
+            border-left: 4px solid var(--gold);
+
+            background: #f8fbfc;
+        }
+
+        .story-step strong {
+            display: block;
+
+            color: var(--dark-blue);
+
+            margin-bottom: 4px;
+        }
+
+        .story-step span {
+            font-size: 13px;
+
+            color: var(--muted);
+        }
+
+        /* ================= PRACTICAL EXERCISE ================= */
+
+        .practice {
+            padding: 42px;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--dark-blue),
+                    var(--blue)
+                );
+
+            border-radius: 22px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .practice-header {
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+        }
+
+        .practice-header i {
+            width: 53px;
+            height: 53px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            color: var(--gold);
+
+            background: rgba(255,255,255,.10);
+
+            font-size: 22px;
+        }
+
+        .practice-header h3 {
+            font-size: 25px;
+        }
+
+        .practice p {
+            color: rgba(255,255,255,.84);
+
+            margin-bottom: 20px;
+        }
+
+        .speech-topic {
+            padding: 25px;
+
+            border-radius: 13px;
+
+            background: rgba(255,255,255,.08);
+
+            border: 1px solid rgba(255,255,255,.14);
+
+            margin: 20px 0;
+        }
+
+        .speech-topic small {
+            display: block;
+
+            color: var(--gold);
+
+            text-transform: uppercase;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            margin-bottom: 7px;
+        }
+
+        .speech-topic strong {
+            font-size: 21px;
+        }
+
+        .timer {
+            text-align: center;
+
+            font-size: 43px;
+
+            font-weight: 800;
+
+            color: var(--gold);
+
+            margin: 20px 0;
+        }
+
+        .practice-buttons {
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 13px 22px;
+
+            border-radius: 9px;
+
+            font-weight: 700;
+
+            transition: .25s;
+        }
+
+        .btn-gold {
+            color: var(--dark-blue);
+
+            background: var(--gold);
+        }
+
+        .btn-white {
+            color: var(--dark-blue);
+
+            background: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        #practiceResult {
+            display: none;
+
+            margin-top: 25px;
+
+            padding: 20px;
+
+            border-radius: 12px;
+
+            background: rgba(255,255,255,.10);
+
+            border: 1px solid rgba(255,255,255,.16);
+        }
+
+        /* ================= DELIVERY ================= */
+
+        .delivery {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 30px;
+        }
+
+        .delivery-content {
+            padding: 35px;
+
+            background: white;
+
+            border-radius: 18px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .delivery-content h3 {
+            color: var(--dark-blue);
+
+            margin-bottom: 15px;
+
+            font-size: 23px;
+        }
+
+        .delivery-content p {
+            margin-bottom: 15px;
+        }
+
+        .delivery-list {
+            list-style: none;
+
+            margin-top: 18px;
+        }
+
+        .delivery-list li {
+            margin-bottom: 13px;
+
+            display: flex;
+
+            gap: 10px;
+        }
+
+        .delivery-list i {
+            color: var(--gold);
+
+            margin-top: 5px;
+        }
+
+        /* ================= QUIZ ================= */
+
+        .quiz {
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 20px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .quiz-question {
+            color: var(--dark-blue);
+
+            font-size: 21px;
+
+            font-weight: 700;
+
+            margin-bottom: 22px;
+        }
+
+        .answers {
+            display: grid;
+
+            gap: 11px;
+        }
+
+        .answer {
+            width: 100%;
+
+            text-align: left;
+
+            padding: 16px 18px;
+
+            border-radius: 10px;
+
+            background: #fafcfd;
+
+            border: 1px solid var(--border);
+
+            color: var(--text);
+
+            transition: .25s;
+        }
+
+        .answer:hover {
+            background: var(--blue-light);
+
+            border-color: var(--blue);
+        }
+
+        .answer.correct {
+            background: #eaf8f1;
+
+            border-color: var(--success);
+
+            color: #16623d;
+        }
+
+        .answer.wrong {
+            background: #fff0f0;
+
+            border-color: var(--danger);
+
+            color: #9e3333;
+        }
+
+        .quiz-result {
+            display: none;
+
+            margin-top: 20px;
+
+            padding: 18px;
+
+            border-radius: 10px;
+        }
+
+        /* ================= COMPLETION ================= */
+
+        .completion {
+            text-align: center;
+
+            padding: 55px 30px;
+
+            background: white;
+
+            border-radius: 22px;
+
+            box-shadow: var(--shadow);
+        }
+
+        .completion-icon {
+            width: 85px;
+            height: 85px;
+
+            margin: 0 auto 22px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--gold);
+
+            background: var(--gold-light);
+
+            font-size: 35px;
+        }
+
+        .completion h2 {
+            color: var(--dark-blue);
+
+            font-size: 30px;
+
+            margin-bottom: 10px;
+        }
+
+        .completion p {
+            max-width: 720px;
+
+            margin: auto auto 28px;
+
+            color: var(--muted);
+        }
+
+        .complete-btn {
+            border: none;
+
+            padding: 15px 28px;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    var(--blue),
+                    var(--dark-blue)
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            transition: .3s;
+        }
+
+        .complete-btn:hover {
+            transform: translateY(-3px);
+
+            box-shadow: 0 10px 24px rgba(18,104,142,.22);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            margin-top: 80px;
+
+            padding: 38px 20px;
+
+            text-align: center;
+
+            color: white;
+
+            background: var(--dark-blue);
+        }
+
+        footer strong {
+            color: var(--gold);
+
+            font-size: 17px;
+        }
+
+        footer p {
+            color: rgba(255,255,255,.68);
+
+            font-size: 13px;
+
+            margin-top: 6px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media(max-width: 800px) {
+
+            header {
+                padding: 0 4%;
+            }
+
+            .user-name {
+                display: none;
+            }
+
+            .course-bar-inner {
+                flex-wrap: wrap;
+
+                padding: 20px 0;
+            }
+
+            .progress-wrapper {
+                width: 100%;
+            }
+
+            .opening,
+            .delivery {
+                grid-template-columns: 1fr;
+            }
+
+            .persuasion-list {
+                grid-template-columns: 1fr;
+            }
+
+            .text-content,
+            .opening-text,
+            .opening-example,
+            .argumentation,
+            .story,
+            .practice,
+            .delivery-content,
+            .quiz {
+                padding: 27px;
+            }
+
+        }
+
+        @media(max-width: 500px) {
+
+            .brand {
+                font-size: 17px;
+            }
+
+            .hero {
+                min-height: 520px;
+            }
+
+            .hero h1 {
+                font-size: 34px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            main {
+                width: 92%;
+            }
+
+            .structure {
+                padding-left: 27px;
+            }
+
+            .structure-item::before {
+                left: -27px;
+            }
+
+            .timer {
+                font-size: 35px;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
+    <header>
+
+        <div class="logo-zone">
+
+            <img
+                src="images/logo.png"
+                alt="BMJ FORMATION"
+            >
+
+            <div class="brand">
+                BMJ <span>FORMATION</span>
+            </div>
+
+        </div>
+
+
+        <div class="user-zone">
+
+            <span
+                class="user-name"
+                id="userName"
+            >
+                Apprenant
+            </span>
+
+            <img
+                id="userPhoto"
+                class="user-photo"
+                src="images/user.png"
+                alt="Utilisateur"
+            >
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         HERO
+    ========================================================== -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="chapter-label">
+
+                <i class="fa-solid fa-person-chalkboard"></i>
+
+                CHAPITRE 4 — ÉLOQUENCE
+
+            </div>
+
+
+            <h1>
+
+                Techniques
+                d'Expression
+                <span>en Public</span>
+
+            </h1>
+
+
+            <p>
+
+                Apprenez à construire un discours captivant,
+                organiser vos idées, argumenter avec précision,
+                convaincre votre auditoire et présenter vos
+                messages avec assurance.
+
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         COURSE BAR
+    ========================================================== -->
+
+    <div class="course-bar">
+
+        <div class="course-bar-inner">
+
+
+            <div class="course-stat">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-book-open"></i>
+
+                </div>
+
+                <div>
+
+                    <small>CHAPITRE</small>
+
+                    <strong>04 / 05</strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="course-stat">
+
+                <div class="stat-icon">
+
+                    <i class="fa-regular fa-clock"></i>
+
+                </div>
+
+                <div>
+
+                    <small>DURÉE ESTIMÉE</small>
+
+                    <strong>35 - 45 minutes</strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="progress-wrapper">
+
+                <div class="progress-top">
+
+                    <span>
+                        Progression du parcours
+                    </span>
+
+                    <strong>
+                        80%
+                    </strong>
+
+                </div>
+
+                <div class="progress">
+
+                    <span></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <main>
+
+
+        <!-- =====================================================
+             INTRODUCTION
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Partie 01
+                </div>
+
+                <h2>
+                    Parler en public est une compétence
+                </h2>
+
+                <p>
+                    Une présentation réussie ne dépend pas uniquement
+                    du talent naturel. Elle repose surtout sur une méthode
+                    que chacun peut apprendre et améliorer.
+                </p>
+
+            </div>
+
+
+            <div class="text-content">
+
+                <p>
+                    Prendre la parole devant plusieurs personnes peut sembler
+                    difficile. Certaines personnes craignent d'oublier leurs
+                    idées, d'autres ont peur d'être jugées ou de ne pas
+                    réussir à captiver leur auditoire.
+                </p>
+
+                <p>
+                    Pourtant, une bonne prise de parole n'est pas une question
+                    de perfection. Elle consiste principalement à savoir
+                    <strong>quoi dire, dans quel ordre le dire et comment le
+                    transmettre</strong>.
+                </p>
+
+                <p>
+                    Un excellent orateur ne cherche pas à impressionner son
+                    public à chaque phrase. Il cherche plutôt à être compris.
+                    Il sait simplifier ses idées, utiliser des exemples,
+                    raconter une histoire, poser des questions et créer une
+                    relation avec son auditoire.
+                </p>
+
+                <p>
+                    Dans ce chapitre, vous allez découvrir une méthode
+                    concrète pour préparer et présenter un discours.
+                    Vous apprendrez notamment à construire une introduction
+                    efficace, développer vos arguments, utiliser des exemples,
+                    convaincre et terminer avec une conclusion mémorable.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             STRUCTURE
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Partie 02
+                </div>
+
+                <h2>
+                    Construire un discours efficace
+                </h2>
+
+                <p>
+                    Avant de parler, il faut savoir où l'on veut emmener
+                    son public.
+                </p>
+
+            </div>
+
+
+            <div class="structure">
+
+
+                <div class="structure-item">
+
+                    <h3>
+                        1. L'introduction
+                    </h3>
+
+                    <p>
+                        L'introduction doit attirer l'attention et permettre
+                        au public de comprendre rapidement le sujet.
+                        Vous pouvez commencer par une question, une histoire,
+                        une statistique, une expérience personnelle ou une
+                        affirmation forte.
+                    </p>
+
+                </div>
+
+
+                <div class="structure-item">
+
+                    <h3>
+                        2. Le développement
+                    </h3>
+
+                    <p>
+                        Le développement présente les idées principales.
+                        Évitez d'accumuler trop d'informations. Sélectionnez
+                        quelques idées fortes et expliquez-les avec des
+                        exemples simples.
+                    </p>
+
+                </div>
+
+
+                <div class="structure-item">
+
+                    <h3>
+                        3. Les exemples
+                    </h3>
+
+                    <p>
+                        Un exemple permet de transformer une idée abstraite
+                        en quelque chose de concret. Une personne comprend
+                        souvent mieux une notion lorsqu'elle peut la relier
+                        à une situation réelle.
+                    </p>
+
+                </div>
+
+
+                <div class="structure-item">
+
+                    <h3>
+                        4. La conclusion
+                    </h3>
+
+                    <p>
+                        La conclusion rappelle l'idée essentielle et peut
+                        inviter le public à réfléchir ou à agir. Évitez de
+                        terminer brutalement par « voilà, c'est tout ».
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             INTRODUCTION CAPTIVANTE
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Partie 03
+                </div>
+
+                <h2>
+                    Réussir les premières secondes
+                </h2>
+
+                <p>
+                    Les premiers instants déterminent souvent le niveau
+                    d'attention que votre public accordera à la suite.
+                </p>
+
+            </div>
+
+
+            <div class="opening">
+
+
+                <div class="opening-text">
+
+                    <h3>
+                        Ne commencez pas immédiatement par une longue
+                        explication.
+                    </h3>
+
+                    <p>
+                        Lorsque vous prenez la parole, donnez au public une
+                        raison de vous écouter. Une question pertinente peut
+                        créer immédiatement de la curiosité.
+                    </p>
+
+                    <p>
+                        Vous pouvez également utiliser une courte histoire,
+                        présenter un problème auquel votre public est
+                        confronté ou annoncer une idée surprenante.
+                    </p>
+
+                    <p>
+                        Votre introduction doit ensuite annoncer clairement
+                        le sujet afin que l'auditoire sache où vous allez.
+                    </p>
+
+                </div>
+
+
+                <div class="opening-example">
+
+                    <small>
+                        Exemple
+                    </small>
+
+                    <blockquote>
+                        « Combien d'opportunités avons-nous déjà perdues
+                        simplement parce que nous n'avons pas osé prendre
+                        la parole ? »
+                    </blockquote>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ARGUMENTATION
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Partie 04
+                </div>
+
+                <h2>
+                    Apprendre à argumenter
+                </h2>
+
+                <p>
+                    Une argumentation solide permet de défendre une idée
+                    sans agressivité et sans perdre la confiance du public.
+                </p>
+
+            </div>
+
+
+            <div class="argumentation">
+
+                <h3>
+                    La méthode : idée → explication → preuve → conséquence
+                </h3>
+
+                <p>
+                    Lorsque vous présentez une idée importante, ne vous
+                    contentez pas de l'affirmer. Expliquez-la, démontrez-la
+                    et montrez pourquoi elle est importante.
+                </p>
+
+
+                <div class="argument-formula">
+
+                    <div class="argument-part">
+                        Votre idée
+                    </div>
+
+                    <div class="argument-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+
+                    <div class="argument-part">
+                        Explication
+                    </div>
+
+                    <div class="argument-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+
+                    <div class="argument-part">
+                        Exemple / preuve
+                    </div>
+
+                    <div class="argument-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+
+                    <div class="argument-part">
+                        Conclusion
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PERSUASION
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Partie 05
+                </div>
+
+                <h2>
+                    Convaincre sans imposer
+                </h2>
+
+                <p>
+                    La persuasion ne consiste pas à parler plus fort que
+                    les autres. Elle consiste à construire un message qui
+                    donne envie de vous suivre.
+                </p>
+
+            </div>
+
+
+            <div class="persuasion-list">
+
+
+                <div class="persuasion-item">
+
+                    <h3>
+                        <i class="fa-solid fa-ear-listen"></i>
+                        Comprendre son public
+                    </h3>
+
+                    <p>
+                        Avant de convaincre, cherchez à comprendre les
+                        attentes, les préoccupations et les besoins de
+                        votre auditoire.
+                    </p>
+
+                </div>
+
+
+                <div class="persuasion-item">
+
+                    <h3>
+                        <i class="fa-solid fa-lightbulb"></i>
+                        Présenter une idée claire
+                    </h3>
+
+                    <p>
+                        Une idée simple et bien expliquée a souvent plus
+                        d'impact qu'un discours rempli de termes compliqués.
+                    </p>
+
+                </div>
+
+
+                <div class="persuasion-item">
+
+                    <h3>
+                        <i class="fa-solid fa-chart-line"></i>
+                        Montrer les bénéfices
+                    </h3>
+
+                    <p>
+                        Expliquez ce que votre proposition peut apporter
+                        concrètement au public ou à la situation.
+                    </p>
+
+                </div>
+
+
+                <div class="persuasion-item">
+
+                    <h3>
+                        <i class="fa-solid fa-handshake"></i>
+                        Respecter les objections
+                    </h3>
+
+                    <p>
+                        Une objection n'est pas nécessairement une attaque.
+                        Écoutez-la, reconnaissez le point de vue exprimé,
+                        puis répondez avec calme.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             STORYTELLING
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Partie 06
+                </div>
+
+                <h2>
+                    L'art de raconter une histoire
+                </h2>
+
+                <p>
+                    Une histoire bien construite peut rendre un discours
+                    plus humain, plus mémorable et plus émotionnel.
+                </p>
+
+            </div>
+
+
+            <div class="story">
+
+                <h3>
+                    Pourquoi le storytelling fonctionne
+                </h3>
+
+                <p>
+                    Les chiffres et les informations permettent de démontrer
+                    une idée. Une histoire permet au public de la ressentir.
+                    C'est pourquoi les orateurs utilisent souvent des
+                    expériences personnelles, des témoignages ou des
+                    situations concrètes.
+                </p>
+
+                <p>
+                    Une bonne histoire n'a pas besoin d'être longue.
+                    Elle doit simplement posséder une situation, un problème,
+                    une évolution et une idée à retenir.
+                </p>
+
+
+                <div class="story-sequence">
+
+
+                    <div class="story-step">
+
+                        <strong>
+                            Situation
+                        </strong>
+
+                        <span>
+                            Présentez le contexte.
+                        </span>
+
+                    </div>
+
+
+                    <div class="story-step">
+
+                        <strong>
+                            Problème
+                        </strong>
+
+                        <span>
+                            Montrez la difficulté.
+                        </span>
+
+                    </div>
+
+
+                    <div class="story-step">
+
+                        <strong>
+                            Transformation
+                        </strong>
+
+                        <span>
+                            Expliquez ce qui a changé.
+                        </span>
+
+                    </div>
+
+
+                    <div class="story-step">
+
+                        <strong>
+                            Leçon
+                        </strong>
+
+                        <span>
+                            Donnez l'idée à retenir.
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             EXERCICE
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Exercice pratique
+                </div>
+
+                <h2>
+                    Votre mini-présentation
+                </h2>
+
+                <p>
+                    Vous allez maintenant préparer une prise de parole
+                    courte en utilisant la structure étudiée.
+                </p>
+
+            </div>
+
+
+            <div class="practice">
+
+                <div class="practice-header">
+
+                    <i class="fa-solid fa-stopwatch"></i>
+
+                    <h3>
+                        Défi : parler pendant 60 secondes
+                    </h3>
+
+                </div>
+
+
+                <p>
+                    Choisissez le sujet proposé ci-dessous. Commencez par
+                    une phrase qui attire l'attention, développez une idée
+                    avec un exemple et terminez par une conclusion claire.
+                </p>
+
+
+                <div class="speech-topic">
+
+                    <small>
+                        Sujet du jour
+                    </small>
+
+                    <strong id="topic">
+                        Pourquoi la confiance en soi est-elle importante
+                        dans la vie professionnelle ?
+                    </strong>
+
+                </div>
+
+
+                <div class="timer" id="timer">
+                    01:00
+                </div>
+
+
+                <div class="practice-buttons">
+
+                    <button
+                        class="btn btn-gold"
+                        id="startTimer"
+                        onclick="demarrerDefi()"
+                    >
+                        <i class="fa-solid fa-play"></i>
+                        Commencer
+                    </button>
+
+
+                    <button
+                        class="btn btn-white"
+                        onclick="nouveauSujet()"
+                    >
+                        <i class="fa-solid fa-shuffle"></i>
+                        Nouveau sujet
+                    </button>
+
+
+                    <button
+                        class="btn btn-white"
+                        onclick="terminerDefi()"
+                    >
+                        <i class="fa-solid fa-stop"></i>
+                        Terminer
+                    </button>
+
+                </div>
+
+
+                <div id="practiceResult"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             PRESENTATION
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Partie 07
+                </div>
+
+                <h2>
+                    Maîtriser la présentation
+                </h2>
+
+                <p>
+                    Une bonne préparation permet de parler avec plus de
+                    naturel et de réduire considérablement les hésitations.
+                </p>
+
+            </div>
+
+
+            <div class="delivery">
+
+
+                <div class="delivery-content">
+
+                    <h3>
+                        Préparez vos idées, pas chaque mot
+                    </h3>
+
+                    <p>
+                        Apprendre un discours mot pour mot peut sembler
+                        rassurant, mais cela peut également créer du stress
+                        si vous oubliez une phrase.
+                    </p>
+
+                    <p>
+                        Préférez une structure composée de quelques idées
+                        principales. Vous pourrez ensuite les expliquer
+                        naturellement.
+                    </p>
+
+
+                    <ul class="delivery-list">
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            <span>
+                                Préparez votre introduction.
+                            </span>
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            <span>
+                                Retenez les idées principales.
+                            </span>
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            <span>
+                                Préparez vos exemples.
+                            </span>
+                        </li>
+
+                        <li>
+                            <i class="fa-solid fa-check"></i>
+                            <span>
+                                Connaissez votre conclusion.
+                            </span>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+                <div class="delivery-content">
+
+                    <h3>
+                        Que faire si vous oubliez une idée ?
+                    </h3>
+
+                    <p>
+                        Ne paniquez pas. Une courte pause est beaucoup moins
+                        gênante qu'un orateur qui montre immédiatement son
+                        stress.
+                    </p>
+
+                    <p>
+                        Respirez, reformulez la dernière idée ou utilisez une
+                        phrase de transition pour retrouver votre fil.
+                    </p>
+
+                    <p>
+                        Le public ne connaît généralement pas votre texte
+                        original. Il ne sait donc pas forcément que vous avez
+                        oublié quelque chose.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             REGLES
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    À retenir
+                </div>
+
+                <h2>
+                    Les 7 règles d'un bon orateur
+                </h2>
+
+            </div>
+
+
+            <div class="text-content">
+
+                <p>
+                    <strong>01.</strong>
+                    Sachez exactement ce que vous voulez faire comprendre.
+                </p>
+
+                <p>
+                    <strong>02.</strong>
+                    Commencez avec une introduction qui attire l'attention.
+                </p>
+
+                <p>
+                    <strong>03.</strong>
+                    Organisez vos idées dans un ordre logique.
+                </p>
+
+                <p>
+                    <strong>04.</strong>
+                    Utilisez des exemples pour rendre vos idées concrètes.
+                </p>
+
+                <p>
+                    <strong>05.</strong>
+                    Adaptez votre vocabulaire à votre public.
+                </p>
+
+                <p>
+                    <strong>06.</strong>
+                    Utilisez votre voix, vos pauses et votre langage
+                    corporel pour donner du relief au message.
+                </p>
+
+                <p>
+                    <strong>07.</strong>
+                    Terminez avec une idée forte que votre public pourra
+                    facilement retenir.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             QUIZ
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="section-heading">
+
+                <div class="number">
+                    Vérification
+                </div>
+
+                <h2>
+                    Testez vos connaissances
+                </h2>
+
+                <p>
+                    Vérifiez si vous avez compris les principales techniques
+                    étudiées dans ce chapitre.
+                </p>
+
+            </div>
+
+
+            <div class="quiz">
+
+                <div class="quiz-question">
+
+                    Quelle méthode est la plus efficace pour construire
+                    un argument convaincant ?
+
+                </div>
+
+
+                <div class="answers">
+
+                    <button
+                        class="answer"
+                        onclick="repondre(this, false)"
+                    >
+                        Donner beaucoup d'informations sans expliquer
+                        leur relation avec le sujet.
+                    </button>
+
+
+                    <button
+                        class="answer"
+                        onclick="repondre(this, true)"
+                    >
+                        Présenter une idée, l'expliquer, donner un exemple
+                        ou une preuve, puis montrer sa conséquence.
+                    </button>
+
+
+                    <button
+                        class="answer"
+                        onclick="repondre(this, false)"
+                    >
+                        Parler plus fort afin de convaincre le public.
+                    </button>
+
+
+                    <button
+                        class="answer"
+                        onclick="repondre(this, false)"
+                    >
+                        Apprendre chaque phrase mot pour mot.
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="quizResult"
+                    class="quiz-result"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             COMPLETION
+        ====================================================== -->
+
+        <section class="section">
+
+            <div class="completion">
+
+                <div class="completion-icon">
+
+                    <i class="fa-solid fa-trophy"></i>
+
+                </div>
+
+
+                <h2>
+                    Dernière étape : votre projet final
+                </h2>
+
+
+                <p>
+                    Vous savez maintenant structurer un discours, construire
+                    des arguments, raconter une histoire et adapter votre
+                    message à votre public. Validez ce chapitre pour accéder
+                    au projet final d'éloquence.
+                </p>
+
+
+                <button
+                    class="complete-btn"
+                    onclick="terminerChapitre()"
+                >
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    Terminer le chapitre
+
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+
+    <footer>
+
+        <strong>
+            BMJ FORMATION
+        </strong>
+
+        <p>
+            Développez vos compétences, renforcez votre confiance
+            et préparez votre avenir professionnel.
+        </p>
+
+        <p>
+            © 2026 BMJ SERVICE — Tous droits réservés.
+        </p>
+
+    </footer>
+
+
+    <script>
+
+        /* ============================================================
+           UTILISATEUR
+        ============================================================ */
+
+        function chargerUtilisateur() {
+
+            const cles = [
+                "bmj_current_user",
+                "currentUser",
+                "bmj_user",
+                "utilisateur",
+                "user",
+                "loggedUser"
+            ];
+
+
+            for (const cle of cles) {
+
+                const brut =
+                    localStorage.getItem(cle);
+
+                if (!brut) continue;
+
+
+                try {
+
+                    let data =
+                        JSON.parse(brut);
+
+
+                    if (data && data.user) {
+                        data = data.user;
+                    }
+
+
+                    if (
+                        data &&
+                        typeof data === "object"
+                    ) {
+
+                        return data;
+
+                    }
+
+                } catch (e) {
+
+                    console.warn(
+                        "Erreur lecture utilisateur :",
+                        cle
+                    );
+
+                }
+
+            }
+
+
+            return null;
+
+        }
+
+
+        const utilisateur =
+            chargerUtilisateur();
+
+
+        /* ============================================================
+           AFFICHAGE UTILISATEUR
+        ============================================================ */
+
+        function afficherUtilisateur() {
+
+            const nomElement =
+                document.getElementById("userName");
+
+            const photoElement =
+                document.getElementById("userPhoto");
+
+
+            if (!utilisateur) {
+
+                nomElement.textContent =
+                    "Apprenant";
+
+                photoElement.src =
+                    "images/user.png";
+
+                return;
+
+            }
+
+
+            const nom =
+                utilisateur.nom ||
+                utilisateur.name ||
+                utilisateur.prenom ||
+                utilisateur.username ||
+                utilisateur.email ||
+                "Apprenant";
+
+
+            nomElement.textContent =
+                nom;
+
+
+            const photo =
+                utilisateur.photo ||
+                utilisateur.image ||
+                utilisateur.avatar ||
+                utilisateur.photo_url ||
+                utilisateur.profile_photo;
+
+
+            if (photo) {
+
+                photoElement.src =
+                    photo;
+
+                photoElement.onerror =
+                    function () {
+
+                        this.src =
+                            "images/user.png";
+
+                    };
+
+            }
+
+        }
+
+
+        afficherUtilisateur();
+
+
+        /* ============================================================
+           IDENTIFIANT
+        ============================================================ */
+
+        const identifiant =
+            utilisateur?.id_bmj ||
+            utilisateur?.id ||
+            utilisateur?.user_id ||
+            utilisateur?.userId ||
+            utilisateur?.email ||
+            utilisateur?.telephone ||
+            utilisateur?.phone ||
+            "utilisateur";
+
+
+        /* ============================================================
+           PROGRESSION
+        ============================================================ */
+
+        const progressionKey =
+            "eloquence_progression_" +
+            identifiant;
+
+
+        let progression = [];
+
+
+        try {
+
+            progression =
+                JSON.parse(
+                    localStorage.getItem(
+                        progressionKey
+                    )
+                ) || [];
+
+        } catch (e) {
+
+            progression = [];
+
+        }
+
+
+        if (!Array.isArray(progression)) {
+            progression = [];
+        }
+
+
+        /* ============================================================
+           SUJETS
+        ============================================================ */
+
+        const sujets = [
+
+            "Pourquoi la confiance en soi est-elle importante dans la vie professionnelle ?",
+
+            "Pourquoi faut-il apprendre à écouter avant de vouloir convaincre ?",
+
+            "Les jeunes devraient-ils davantage apprendre à parler en public ?",
+
+            "Pourquoi une bonne communication peut-elle changer une carrière ?",
+
+            "Faut-il toujours dire ce que l'on pense ?",
+
+            "Comment une personne peut-elle développer son leadership ?",
+
+            "Pourquoi savoir présenter une idée est-il important pour un entrepreneur ?",
+
+            "Peut-on réussir professionnellement sans savoir communiquer ?"
+
+        ];
+
+
+        let sujetActuel = 0;
+
+
+        function nouveauSujet() {
+
+            let nouveau =
+                Math.floor(
+                    Math.random() *
+                    sujets.length
+                );
+
+
+            while (
+                nouveau === sujetActuel &&
+                sujets.length > 1
+            ) {
+
+                nouveau =
+                    Math.floor(
+                        Math.random() *
+                        sujets.length
+                    );
+
+            }
+
+
+            sujetActuel =
+                nouveau;
+
+
+            document.getElementById(
+                "topic"
+            ).textContent =
+                sujets[sujetActuel];
+
+
+            resetTimer();
+
+        }
+
+
+        /* ============================================================
+           TIMER
+        ============================================================ */
+
+        let tempsRestant = 60;
+
+        let timerInterval = null;
+
+        let timerEnCours = false;
+
+
+        function afficherTimer() {
+
+            const minutes =
+                Math.floor(
+                    tempsRestant / 60
+                );
+
+            const secondes =
+                tempsRestant % 60;
+
+
+            document.getElementById(
+                "timer"
+            ).textContent =
+
+                String(minutes).padStart(2, "0") +
+                ":" +
+                String(secondes).padStart(2, "0");
+
+        }
+
+
+        function demarrerDefi() {
+
+            if (timerEnCours) return;
+
+
+            timerEnCours = true;
+
+
+            const bouton =
+                document.getElementById(
+                    "startTimer"
+                );
+
+
+            bouton.innerHTML = `
+                <i class="fa-solid fa-hourglass-half"></i>
+                Défi en cours...
+            `;
+
+
+            tempsRestant = 60;
+
+            afficherTimer();
+
+
+            timerInterval =
+                setInterval(() => {
+
+                    tempsRestant--;
+
+                    afficherTimer();
+
+
+                    if (tempsRestant <= 0) {
+
+                        clearInterval(
+                            timerInterval
+                        );
+
+                        timerEnCours =
+                            false;
+
+
+                        afficherResultatDefi();
+
+                    }
+
+                }, 1000);
+
+        }
+
+
+        function terminerDefi() {
+
+            if (!timerEnCours) {
+
+                afficherResultatDefi();
+
+                return;
+
+            }
+
+
+            clearInterval(
+                timerInterval
+            );
+
+
+            timerEnCours =
+                false;
+
+
+            afficherResultatDefi();
+
+        }
+
+
+        function afficherResultatDefi() {
+
+            const result =
+                document.getElementById(
+                    "practiceResult"
+                );
+
+
+            const duree =
+                60 - tempsRestant;
+
+
+            result.style.display =
+                "block";
+
+
+            if (duree >= 45) {
+
+                result.innerHTML = `
+                    <strong>
+                        <i class="fa-solid fa-star"></i>
+                        Très bon travail !
+                    </strong>
+                    <br><br>
+                    Vous avez consacré suffisamment de temps à votre
+                    présentation. Analysez maintenant votre structure :
+                    introduction, développement et conclusion.
+                `;
+
+            } else if (duree >= 20) {
+
+                result.innerHTML = `
+                    <strong>
+                        <i class="fa-solid fa-thumbs-up"></i>
+                        Bon début !
+                    </strong>
+                    <br><br>
+                    Essayez progressivement de tenir plus longtemps.
+                    Votre objectif est de développer vos idées sans
+                    perdre la clarté de votre message.
+                `;
+
+            } else {
+
+                result.innerHTML = `
+                    <strong>
+                        <i class="fa-solid fa-person-running"></i>
+                        Continuez à vous entraîner.
+                    </strong>
+                    <br><br>
+                    La prise de parole devient plus naturelle avec la
+                    répétition. Recommencez l'exercice et essayez de
+                    construire une introduction, une idée principale
+                    et une conclusion.
+                `;
+
+            }
+
+
+            document.getElementById(
+                "startTimer"
+            ).innerHTML = `
+                <i class="fa-solid fa-rotate"></i>
+                Recommencer
+            `;
+
+
+            document.getElementById(
+                "startTimer"
+            ).onclick = function () {
+
+                resetTimer();
+
+                demarrerDefi();
+
+            };
+
+        }
+
+
+        function resetTimer() {
+
+            clearInterval(
+                timerInterval
+            );
+
+
+            timerEnCours =
+                false;
+
+
+            tempsRestant =
+                60;
+
+
+            afficherTimer();
+
+
+            document.getElementById(
+                "startTimer"
+            ).innerHTML = `
+                <i class="fa-solid fa-play"></i>
+                Commencer
+            `;
+
+
+            document.getElementById(
+                "startTimer"
+            ).onclick =
+                demarrerDefi;
+
+
+            document.getElementById(
+                "practiceResult"
+            ).style.display =
+                "none";
+
+        }
+
+
+        afficherTimer();
+
+
+        /* ============================================================
+           QUIZ
+        ============================================================ */
+
+        let quizValide =
+            false;
+
+
+        function repondre(
+            element,
+            correct
+        ) {
+
+            const boutons =
+                document.querySelectorAll(
+                    ".answer"
+                );
+
+
+            boutons.forEach(
+                btn => {
+
+                    btn.disabled =
+                        true;
+
+                }
+            );
+
+
+            const result =
+                document.getElementById(
+                    "quizResult"
+                );
+
+
+            result.style.display =
+                "block";
+
+
+            if (correct) {
+
+                element.classList.add(
+                    "correct"
+                );
+
+
+                result.style.background =
+                    "#eaf8f1";
+
+
+                result.style.color =
+                    "#17633e";
+
+
+                result.innerHTML = `
+                    <strong>
+                        <i class="fa-solid fa-circle-check"></i>
+                        Excellente réponse !
+                    </strong>
+                    <br>
+                    Un argument efficace présente une idée claire,
+                    l'explique et la renforce avec une preuve ou un
+                    exemple avant d'en montrer la conséquence.
+                `;
+
+
+                quizValide =
+                    true;
+
+            } else {
+
+                element.classList.add(
+                    "wrong"
+                );
+
+
+                result.style.background =
+                    "#fff0f0";
+
+
+                result.style.color =
+                    "#9e3333";
+
+
+                result.innerHTML = `
+                    <strong>
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        Ce n'est pas la meilleure réponse.
+                    </strong>
+                    <br>
+                    Essayez de retenir la méthode :
+                    idée → explication → preuve ou exemple → conséquence.
+                `;
+
+            }
+
+        }
+
+
+        /* ============================================================
+           TERMINER CHAPITRE
+        ============================================================ */
+
+        function terminerChapitre() {
+
+            /*
+                On conserve les chapitres déjà terminés.
+            */
+
+            progression[0] =
+                progression[0] || false;
+
+            progression[1] =
+                progression[1] || false;
+
+            progression[2] =
+                progression[2] || false;
+
+
+            /* Chapitre 4 terminé */
+
+            progression[3] =
+                true;
+
+
+            localStorage.setItem(
+                progressionKey,
+                JSON.stringify(
+                    progression
+                )
+            );
+
+
+            localStorage.setItem(
+                "eloquence_chapitre_4_termine_" +
+                identifiant,
+                JSON.stringify({
+
+                    chapitre: 4,
+
+                    titre:
+                        "Techniques d'Expression en Public",
+
+                    quiz:
+                        quizValide,
+
+                    date:
+                        new Date().toISOString()
+
+                })
+            );
+
+
+            const bouton =
+                document.querySelector(
+                    ".complete-btn"
+                );
+
+
+            bouton.disabled =
+                true;
+
+
+            bouton.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Passage au projet final...
+            `;
+
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "projet_final_eloquence.html";
+
+            }, 900);
+
+        }
+
+
+        /* ============================================================
+           ANIMATION DES SECTIONS
+        ============================================================ */
+
+        const sections =
+            document.querySelectorAll(
+                ".section"
+            );
+
+
+        const observer =
+            new IntersectionObserver(
+                entries => {
+
+                    entries.forEach(
+                        entry => {
+
+                            if (
+                                entry.isIntersecting
+                            ) {
+
+                                entry.target.style.opacity =
+                                    "1";
+
+                                entry.target.style.transform =
+                                    "translateY(0)";
+
+                            }
+
+                        }
+                    );
+
+                },
+                {
+                    threshold: .08
+                }
+            );
+
+
+        sections.forEach(
+            section => {
+
+                section.style.opacity =
+                    "0";
+
+                section.style.transform =
+                    "translateY(20px)";
+
+                section.style.transition =
+                    "opacity .6s ease, transform .6s ease";
+
+
+                observer.observe(
+                    section
+                );
+
+            }
+        );
+
+
+    </script>
+
+</body>
+
+</html>
