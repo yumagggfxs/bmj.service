@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projet Final - Langues | BMJ SERVICE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #173f9e;
+            --secondary: #06b6d4;
+            --light-blue: #eff6ff;
+            --lighter-blue: #f8fbff;
+            --white: #ffffff;
+            --dark: #172033;
+            --text: #526071;
+            --border: #dce7f5;
+            --success: #16a34a;
+            --warning: #f59e0b;
+            --shadow: 0 15px 45px rgba(37, 99, 235, 0.10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background: var(--lighter-blue);
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 74px;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+            z-index: 1000;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 44px;
+            height: 44px;
+            object-fit: contain;
+        }
+
+        .logo strong {
+            color: var(--primary-dark);
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .user-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .user-box img {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            background: var(--light-blue);
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            margin-top: 74px;
+            min-height: 530px;
+            padding: 80px 7%;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at 85% 20%, rgba(6, 182, 212, .22), transparent 30%),
+                radial-gradient(circle at 10% 90%, rgba(37, 99, 235, .18), transparent 35%),
+                linear-gradient(135deg, #eef6ff, #ffffff);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border: 35px solid rgba(37, 99, 235, .05);
+            border-radius: 50%;
+            right: -100px;
+            top: -80px;
+        }
+
+        .hero-content {
+            max-width: 850px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--white);
+            color: var(--primary);
+            border: 1px solid #cfe0ff;
+            padding: 8px 17px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .5px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 25px rgba(37, 99, 235, .08);
+        }
+
+        .hero h1 {
+            color: var(--dark);
+            font-size: clamp(36px, 5vw, 65px);
+            line-height: 1.15;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero p {
+            max-width: 760px;
+            font-size: 17px;
+            color: #5b687a;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            border: none;
+            border-radius: 12px;
+            padding: 13px 22px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .btn-primary {
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 10px 25px rgba(37, 99, 235, .22);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, .28);
+        }
+
+        .btn-light {
+            color: var(--primary-dark);
+            background: white;
+            border: 1px solid var(--border);
+        }
+
+        .btn-light:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ================= STATS ================= */
+
+        .stats {
+            max-width: 1100px;
+            margin: -45px auto 0;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stats-inner {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 25px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .stat {
+            text-align: center;
+            padding: 12px;
+        }
+
+        .stat i {
+            color: var(--primary);
+            font-size: 23px;
+            margin-bottom: 6px;
+        }
+
+        .stat strong {
+            display: block;
+            color: var(--dark);
+            font-size: 20px;
+        }
+
+        .stat span {
+            font-size: 12px;
+            color: #7b8796;
+        }
+
+        /* ================= MAIN ================= */
+
+        main {
+            max-width: 1120px;
+            margin: auto;
+            padding: 90px 22px;
+        }
+
+        section {
+            margin-bottom: 75px;
+        }
+
+        .section-title {
+            margin-bottom: 30px;
+        }
+
+        .section-title small {
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .section-title h2 {
+            color: var(--dark);
+            font-size: clamp(27px, 4vw, 39px);
+            line-height: 1.3;
+            margin-top: 5px;
+        }
+
+        .section-title p {
+            margin-top: 10px;
+            max-width: 760px;
+        }
+
+        .content-box {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 8px 30px rgba(30, 70, 120, .05);
+        }
+
+        .content-box p {
+            margin-bottom: 17px;
+        }
+
+        .content-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight {
+            border-left: 4px solid var(--primary);
+            background: var(--light-blue);
+            padding: 20px 24px;
+            border-radius: 0 13px 13px 0;
+            margin: 25px 0;
+        }
+
+        .highlight strong {
+            color: var(--primary-dark);
+        }
+
+        /* ================= PROJECT ================= */
+
+        .project {
+            background: linear-gradient(135deg, #102a63, #2563eb);
+            color: white;
+            border-radius: 28px;
+            padding: 45px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(23, 63, 158, .20);
+        }
+
+        .project::after {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border: 40px solid rgba(255,255,255,.07);
+            border-radius: 50%;
+            right: -100px;
+            bottom: -110px;
+        }
+
+        .project h3 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .project p {
+            color: rgba(255,255,255,.87);
+            margin-bottom: 18px;
+        }
+
+        .project-label {
+            display: inline-block;
+            padding: 7px 14px;
+            background: rgba(255,255,255,.12);
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        /* ================= MISSIONS ================= */
+
+        .mission {
+            display: grid;
+            grid-template-columns: 75px 1fr;
+            gap: 22px;
+            padding: 28px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .mission:last-child {
+            border-bottom: none;
+        }
+
+        .mission-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 17px;
+            background: var(--light-blue);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .mission h3 {
+            color: var(--dark);
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .mission p {
+            margin-bottom: 8px;
+        }
+
+        .mission ul {
+            padding-left: 20px;
+        }
+
+        .mission li {
+            margin: 5px 0;
+        }
+
+        /* ================= SKILLS ================= */
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .skill {
+            padding: 9px 15px;
+            border-radius: 30px;
+            background: #f2f7ff;
+            color: var(--primary-dark);
+            border: 1px solid #d7e6ff;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* ================= EVALUATION ================= */
+
+        .evaluation {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+        }
+
+        .evaluation-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .evaluation-header i {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            background: var(--light-blue);
+            color: var(--primary);
+            font-size: 21px;
+        }
+
+        .evaluation-header h3 {
+            color: var(--dark);
+        }
+
+        .criteria {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .criterion {
+            padding: 18px;
+            background: #f8fbff;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+        }
+
+        .criterion strong {
+            display: block;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .criterion span {
+            font-size: 13px;
+        }
+
+        /* ================= QUIZ ================= */
+
+        .quiz {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            padding: 35px;
+            box-shadow: var(--shadow);
+        }
+
+        .question {
+            padding: 23px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question:last-child {
+            border-bottom: none;
+        }
+
+        .question h4 {
+            color: var(--dark);
+            margin-bottom: 14px;
+            font-size: 16px;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .answer {
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            padding: 11px 15px;
+            cursor: pointer;
+            transition: .2s;
+            background: #fff;
+            font-size: 14px;
+        }
+
+        .answer:hover {
+            border-color: var(--primary);
+            background: var(--light-blue);
+        }
+
+        .answer.correct {
+            border-color: var(--success);
+            background: #ecfdf3;
+        }
+
+        .answer.wrong {
+            border-color: #dc2626;
+            background: #fef2f2;
+        }
+
+        .quiz-result {
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 13px;
+            display: none;
+            font-weight: 600;
+        }
+
+        .quiz-result.show {
+            display: block;
+        }
+
+        /* ================= SELF CHECK ================= */
+
+        .self-check {
+            background: linear-gradient(135deg, #f0f9ff, #ffffff);
+            border: 1px solid #cfe6f7;
+            border-radius: 22px;
+            padding: 35px;
+        }
+
+        .check-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .check-item i {
+            color: var(--success);
+            margin-top: 5px;
+        }
+
+        /* ================= PROGRESS ================= */
+
+        .progress-section {
+            background: white;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+            padding: 38px;
+            box-shadow: var(--shadow);
+        }
+
+        .progress-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .progress-top strong {
+            color: var(--dark);
+        }
+
+        .progress-value {
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 13px;
+            background: #e8eef7;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width .6s ease;
+        }
+
+        /* ================= FINAL CTA ================= */
+
+        .final-cta {
+            text-align: center;
+            padding: 65px 25px;
+            background: linear-gradient(135deg, #102a63, #173f9e);
+            border-radius: 28px;
+            color: white;
+            box-shadow: 0 20px 55px rgba(23, 63, 158, .20);
+        }
+
+        .final-cta i {
+            font-size: 48px;
+            margin-bottom: 18px;
+        }
+
+        .final-cta h2 {
+            font-size: clamp(28px, 4vw, 42px);
+            margin-bottom: 12px;
+        }
+
+        .final-cta p {
+            max-width: 700px;
+            margin: 0 auto 25px;
+            color: rgba(255,255,255,.85);
+        }
+
+        .btn-certificate {
+            background: white;
+            color: var(--primary-dark);
+            padding: 15px 28px;
+            border-radius: 13px;
+            border: none;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 14px;
+            transition: .25s;
+        }
+
+        .btn-certificate:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0,0,0,.18);
+        }
+
+        /* ================= NAVIGATION ================= */
+
+        .chapter-nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-top: 45px;
+        }
+
+        .nav-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 13px 19px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 12px;
+            color: var(--primary-dark);
+            font-size: 13px;
+            font-weight: 700;
+            transition: .25s;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #0d1b38;
+            color: rgba(255,255,255,.7);
+            padding: 40px 7%;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        footer strong {
+            color: white;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 800px) {
+            header {
+                padding: 0 4%;
+            }
+
+            .logo strong {
+                font-size: 17px;
+            }
+
+            .hero {
+                padding: 65px 5%;
+            }
+
+            .stats-inner {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            main {
+                padding: 70px 17px;
+            }
+
+            .content-box,
+            .project,
+            .evaluation,
+            .quiz,
+            .self-check,
+            .progress-section {
+                padding: 25px;
+            }
+
+            .criteria {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .user-box span {
+                display: none;
+            }
+
+            .hero {
+                min-height: 500px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero p {
+                font-size: 15px;
+            }
+
+            .stats-inner {
+                grid-template-columns: 1fr 1fr;
+                padding: 15px;
+            }
+
+            .mission {
+                grid-template-columns: 55px 1fr;
+                gap: 13px;
+            }
+
+            .mission-number {
+                width: 48px;
+                height: 48px;
+                border-radius: 13px;
+                font-size: 17px;
+            }
+
+            .chapter-nav {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <a href="formations.html" class="logo">
+            <img src="images/logo.png" alt="BMJ SERVICE">
+            <strong>BMJ SERVICE</strong>
+        </a>
+
+        <div class="user-box">
+            <span id="nomUtilisateur">Apprenant</span>
+            <img id="photoUtilisateur" src="images/user.png" alt="Utilisateur">
+        </div>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="badge">
+                <i class="fa-solid fa-graduation-cap"></i>
+                FORMATION LANGUES • CHAPITRE 5
+            </div>
+
+            <h1>
+                Projet Final <span>Langues</span>
+            </h1>
+
+            <p>
+                Mettez en pratique les compétences acquises durant toute votre
+                formation : vocabulaire, grammaire, expression orale,
+                compréhension, prononciation et communication.
+            </p>
+
+            <div class="hero-actions">
+
+                <a href="communication_langues.html" class="btn btn-light">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Revoir le chapitre précédent
+                </a>
+
+                <a href="#projet" class="btn btn-primary">
+                    Commencer le projet
+                    <i class="fa-solid fa-arrow-down"></i>
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STATS ================= -->
+
+    <div class="stats">
+
+        <div class="stats-inner">
+
+            <div class="stat">
+                <i class="fa-solid fa-language"></i>
+                <strong>5</strong>
+                <span>Chapitres étudiés</span>
+            </div>
+
+            <div class="stat">
+                <i class="fa-solid fa-comments"></i>
+                <strong>Oral</strong>
+                <span>Expression</span>
+            </div>
+
+            <div class="stat">
+                <i class="fa-solid fa-pen"></i>
+                <strong>Écrit</strong>
+                <span>Production</span>
+            </div>
+
+            <div class="stat">
+                <i class="fa-solid fa-trophy"></i>
+                <strong>Final</strong>
+                <span>Évaluation</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <main>
+
+        <!-- ================= INTRODUCTION ================= -->
+
+        <section>
+
+            <div class="section-title">
+
+                <small>Votre dernière étape</small>
+
+                <h2>
+                    Transformez vos connaissances en compétences
+                </h2>
+
+            </div>
+
+            <div class="content-box">
+
+                <p>
+                    Vous êtes arrivé à la dernière étape de votre formation
+                    en langues. Ce projet final a pour objectif de vérifier
+                    votre capacité à utiliser concrètement les compétences
+                    développées au cours des différents chapitres.
+                </p>
+
+                <p>
+                    Apprendre une langue ne consiste pas uniquement à mémoriser
+                    des mots ou des règles grammaticales. La véritable maîtrise
+                    apparaît lorsque vous êtes capable de comprendre une
+                    personne, de construire une réponse, de défendre une idée,
+                    de poser une question et de vous adapter à une situation
+                    réelle.
+                </p>
+
+                <p>
+                    Le projet final vous demande donc de mobiliser plusieurs
+                    compétences simultanément. Vous devrez préparer une
+                    situation de communication, produire un contenu écrit et
+                    démontrer votre capacité à vous exprimer de manière claire.
+                </p>
+
+                <div class="highlight">
+
+                    <strong>
+                        <i class="fa-solid fa-lightbulb"></i>
+                        Conseil :
+                    </strong>
+
+                    Ne cherchez pas à utiliser des phrases compliquées.
+                    Une communication simple, correcte et naturelle est
+                    souvent plus efficace qu'un vocabulaire très complexe
+                    utilisé de manière incorrecte.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PROJET ================= -->
+
+        <section id="projet">
+
+            <div class="section-title">
+
+                <small>Mission finale</small>
+
+                <h2>
+                    Votre projet pratique
+                </h2>
+
+                <p>
+                    Réalisez les différentes missions ci-dessous comme si vous
+                    étiez placé dans une situation réelle de communication.
+                </p>
+
+            </div>
+
+            <div class="project">
+
+                <span class="project-label">
+                    PROJET FINAL • COMMUNICATION
+                </span>
+
+                <h3>
+                    Organiser une rencontre avec une personne étrangère
+                </h3>
+
+                <p>
+                    Imaginez que vous devez accueillir une personne qui parle
+                    une autre langue. Vous devez être capable de vous présenter,
+                    d'établir une conversation, de lui poser des questions,
+                    de lui expliquer une activité et de terminer l'échange
+                    correctement.
+                </p>
+
+                <p>
+                    Vous pouvez choisir une situation professionnelle,
+                    touristique, scolaire, commerciale ou quotidienne.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= MISSIONS ================= -->
+
+        <section>
+
+            <div class="section-title">
+
+                <small>Travail à réaliser</small>
+
+                <h2>
+                    Les cinq missions du projet
+                </h2>
+
+            </div>
+
+            <div class="content-box">
+
+                <div class="mission">
+
+                    <div class="mission-number">01</div>
+
+                    <div>
+
+                        <h3>
+                            Préparer votre présentation
+                        </h3>
+
+                        <p>
+                            Préparez une courte présentation personnelle dans
+                            la langue que vous étudiez.
+                        </p>
+
+                        <ul>
+                            <li>Votre nom et votre présentation.</li>
+                            <li>Votre activité ou vos études.</li>
+                            <li>Vos centres d'intérêt.</li>
+                            <li>Votre objectif dans l'apprentissage de la langue.</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mission">
+
+                    <div class="mission-number">02</div>
+
+                    <div>
+
+                        <h3>
+                            Construire un dialogue
+                        </h3>
+
+                        <p>
+                            Imaginez une conversation entre vous et une personne
+                            étrangère.
+                        </p>
+
+                        <ul>
+                            <li>Commencez la conversation.</li>
+                            <li>Posez au moins cinq questions.</li>
+                            <li>Répondez de manière naturelle.</li>
+                            <li>Utilisez des expressions de politesse.</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mission">
+
+                    <div class="mission-number">03</div>
+
+                    <div>
+
+                        <h3>
+                            Produire un texte écrit
+                        </h3>
+
+                        <p>
+                            Rédigez un court texte de présentation ou un message
+                            destiné à une personne parlant la langue étudiée.
+                        </p>
+
+                        <ul>
+                            <li>Utilisez des phrases correctement structurées.</li>
+                            <li>Employez un vocabulaire adapté.</li>
+                            <li>Faites attention aux temps et aux accords.</li>
+                            <li>Relisez votre texte avant de le terminer.</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mission">
+
+                    <div class="mission-number">04</div>
+
+                    <div>
+
+                        <h3>
+                            Réaliser une expression orale
+                        </h3>
+
+                        <p>
+                            Préparez une présentation orale de quelques minutes.
+                            Parlez de votre activité, d'un sujet qui vous
+                            intéresse ou de votre projet professionnel.
+                        </p>
+
+                        <ul>
+                            <li>Parlez clairement.</li>
+                            <li>Travaillez votre prononciation.</li>
+                            <li>Utilisez des phrases courtes et compréhensibles.</li>
+                            <li>Essayez de ne pas lire entièrement votre texte.</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <div class="mission">
+
+                    <div class="mission-number">05</div>
+
+                    <div>
+
+                        <h3>
+                            Simuler une situation réelle
+                        </h3>
+
+                        <p>
+                            Terminez le projet par une simulation de communication.
+                            Choisissez une situation et imaginez que vous êtes
+                            réellement confronté à celle-ci.
+                        </p>
+
+                        <ul>
+                            <li>Voyage et réservation.</li>
+                            <li>Entretien professionnel.</li>
+                            <li>Accueil d'un client.</li>
+                            <li>Conversation avec un étudiant étranger.</li>
+                            <li>Présentation d'un produit ou d'un service.</li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= COMPETENCES ================= -->
+
+        <section>
+
+            <div class="section-title">
+
+                <small>Compétences mobilisées</small>
+
+                <h2>
+                    Ce que vous devez démontrer
+                </h2>
+
+            </div>
+
+            <div class="content-box">
+
+                <p>
+                    Votre projet final doit montrer que vous êtes capable
+                    d'utiliser la langue dans une situation pratique. Les
+                    compétences suivantes sont particulièrement importantes :
+                </p>
+
+                <div class="skills">
+
+                    <span class="skill">
+                        <i class="fa-solid fa-book"></i>
+                        Vocabulaire
+                    </span>
+
+                    <span class="skill">
+                        <i class="fa-solid fa-spell-check"></i>
+                        Grammaire
+                    </span>
+
+                    <span class="skill">
+                        <i class="fa-solid fa-volume-high"></i>
+                        Prononciation
+                    </span>
+
+                    <span class="skill">
+                        <i class="fa-solid fa-microphone"></i>
+                        Expression orale
+                    </span>
+
+                    <span class="skill">
+                        <i class="fa-solid fa-ear-listen"></i>
+                        Compréhension
+                    </span>
+
+                    <span class="skill">
+                        <i class="fa-solid fa-comments"></i>
+                        Conversation
+                    </span>
+
+                    <span class="skill">
+                        <i class="fa-solid fa-pen"></i>
+                        Expression écrite
+                    </span>
+
+                    <span class="skill">
+                        <i class="fa-solid fa-handshake"></i>
+                        Interaction
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= EVALUATION ================= -->
+
+        <section>
+
+            <div class="section-title">
+
+                <small>Évaluation</small>
+
+                <h2>
+                    Comment évaluer votre projet ?
+                </h2>
+
+                <p>
+                    Utilisez ces critères pour mesurer la qualité de votre
+                    travail avant de terminer la formation.
+                </p>
+
+            </div>
+
+            <div class="evaluation">
+
+                <div class="evaluation-header">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <div>
+                        <h3>Grille d'auto-évaluation</h3>
+                        <span>Analysez votre niveau avec honnêteté.</span>
+                    </div>
+
+                </div>
+
+                <div class="criteria">
+
+                    <div class="criterion">
+                        <strong>Clarté</strong>
+                        <span>Votre message est-il facile à comprendre ?</span>
+                    </div>
+
+                    <div class="criterion">
+                        <strong>Vocabulaire</strong>
+                        <span>Utilisez-vous des mots adaptés à la situation ?</span>
+                    </div>
+
+                    <div class="criterion">
+                        <strong>Grammaire</strong>
+                        <span>Vos phrases respectent-elles les principales règles ?</span>
+                    </div>
+
+                    <div class="criterion">
+                        <strong>Prononciation</strong>
+                        <span>Votre expression orale est-elle compréhensible ?</span>
+                    </div>
+
+                    <div class="criterion">
+                        <strong>Fluidité</strong>
+                        <span>Arrivez-vous à maintenir une conversation ?</span>
+                    </div>
+
+                    <div class="criterion">
+                        <strong>Interaction</strong>
+                        <span>Savez-vous écouter, répondre et poser des questions ?</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= QUIZ ================= -->
+
+        <section>
+
+            <div class="section-title">
+
+                <small>Dernière vérification</small>
+
+                <h2>
+                    Quiz final
+                </h2>
+
+                <p>
+                    Testez rapidement votre compréhension des principales
+                    notions étudiées pendant la formation.
+                </p>
+
+            </div>
+
+            <div class="quiz">
+
+                <div class="question">
+
+                    <h4>
+                        1. Quelle est la meilleure attitude lors d'une conversation ?
+                    </h4>
+
+                    <div class="answers">
+
+                        <div class="answer" data-correct="false">
+                            Parler sans laisser l'autre personne répondre.
+                        </div>
+
+                        <div class="answer" data-correct="true">
+                            Écouter, comprendre et répondre de manière adaptée.
+                        </div>
+
+                        <div class="answer" data-correct="false">
+                            Utiliser uniquement des mots très compliqués.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h4>
+                        2. Pourquoi faut-il adapter son vocabulaire au contexte ?
+                    </h4>
+
+                    <div class="answers">
+
+                        <div class="answer" data-correct="true">
+                            Pour rendre la communication plus naturelle et efficace.
+                        </div>
+
+                        <div class="answer" data-correct="false">
+                            Pour utiliser le maximum de mots possibles.
+                        </div>
+
+                        <div class="answer" data-correct="false">
+                            Pour éviter toute conversation.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h4>
+                        3. Que faire lorsqu'on ne comprend pas une phrase ?
+                    </h4>
+
+                    <div class="answers">
+
+                        <div class="answer" data-correct="false">
+                            Faire semblant d'avoir compris.
+                        </div>
+
+                        <div class="answer" data-correct="true">
+                            Demander poliment une répétition ou une reformulation.
+                        </div>
+
+                        <div class="answer" data-correct="false">
+                            Arrêter immédiatement la conversation.
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="question">
+
+                    <h4>
+                        4. Quel est l'objectif principal de l'apprentissage d'une langue ?
+                    </h4>
+
+                    <div class="answers">
+
+                        <div class="answer" data-correct="false">
+                            Mémoriser uniquement des listes de mots.
+                        </div>
+
+                        <div class="answer" data-correct="false">
+                            Apprendre uniquement les règles grammaticales.
+                        </div>
+
+                        <div class="answer" data-correct="true">
+                            Être capable de comprendre et de communiquer efficacement.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div id="quizResult" class="quiz-result"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= AUTO CHECK ================= -->
+
+        <section>
+
+            <div class="section-title">
+
+                <small>Avant de terminer</small>
+
+                <h2>
+                    Êtes-vous prêt ?
+                </h2>
+
+            </div>
+
+            <div class="self-check">
+
+                <p>
+                    Avant de valider votre formation, vérifiez que vous êtes
+                    capable de réaliser les actions suivantes :
+                </p>
+
+                <div class="check-list">
+
+                    <div class="check-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>
+                            Me présenter simplement dans la langue étudiée.
+                        </span>
+                    </div>
+
+                    <div class="check-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>
+                            Comprendre les informations principales d'une conversation.
+                        </span>
+                    </div>
+
+                    <div class="check-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>
+                            Poser des questions et répondre de manière adaptée.
+                        </span>
+                    </div>
+
+                    <div class="check-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>
+                            Rédiger un message ou un texte simple et compréhensible.
+                        </span>
+                    </div>
+
+                    <div class="check-item">
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span>
+                            Participer à une conversation dans une situation réelle.
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PROGRESS ================= -->
+
+        <section>
+
+            <div class="section-title">
+
+                <small>Votre progression</small>
+
+                <h2>
+                    Formation Langues terminée
+                </h2>
+
+            </div>
+
+            <div class="progress-section">
+
+                <div class="progress-top">
+
+                    <strong>
+                        Progression du parcours
+                    </strong>
+
+                    <span class="progress-value" id="progressText">
+                        0 / 5 chapitres
+                    </span>
+
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <p style="margin-top:15px;">
+                    Après validation de ce projet final, votre parcours
+                    Langues sera marqué comme terminé.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= FINAL CTA ================= -->
+
+        <section>
+
+            <div class="final-cta">
+
+                <i class="fa-solid fa-award"></i>
+
+                <h2>
+                    Félicitations !
+                </h2>
+
+                <p>
+                    Vous avez parcouru les principales bases de l'apprentissage
+                    linguistique. Validez maintenant votre projet final pour
+                    enregistrer votre progression et accéder à votre certificat.
+                </p>
+
+                <button class="btn-certificate" id="certificateBtn">
+
+                    <i class="fa-solid fa-certificate"></i>
+                    Obtenir mon certificat
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= NAVIGATION ================= -->
+
+        <div class="chapter-nav">
+
+            <a href="communication_langues.html" class="nav-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                Chapitre précédent
+            </a>
+
+            <a href="dashboard.html" class="nav-btn">
+                Retour aux formations
+                <i class="fa-solid fa-house"></i>
+            </a>
+
+        </div>
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+            © 2026 <strong>BMJ SERVICE</strong> —
+            BMJ FORMATION
+        </p>
+
+        <p>
+            Développez vos compétences. Construisez votre avenir.
+        </p>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        /* =========================================================
+           UTILISATEUR
+        ========================================================= */
+
+        const utilisateur = JSON.parse(
+            localStorage.getItem("bmj_current_user") || "null"
+        );
+
+        if (!utilisateur) {
+            window.location.href = "connexion.html";
+        }
+
+        const nomUtilisateur =
+            document.getElementById("nomUtilisateur");
+
+        const photoUtilisateur =
+            document.getElementById("photoUtilisateur");
+
+        if (utilisateur) {
+
+            nomUtilisateur.textContent =
+                utilisateur.nom ||
+                utilisateur.name ||
+                utilisateur.prenom ||
+                "Apprenant";
+
+            if (utilisateur.photo) {
+                photoUtilisateur.src = utilisateur.photo;
+            }
+
+        }
+
+
+        /* =========================================================
+           IDENTIFIANT UTILISATEUR
+        ========================================================= */
+
+        function getUserKey() {
+
+            if (!utilisateur) {
+                return "default";
+            }
+
+            return (
+                utilisateur.id_bmj ||
+                utilisateur.id ||
+                utilisateur.email ||
+                "default"
+            );
+
+        }
+
+
+        /* =========================================================
+           PROGRESSION
+        ========================================================= */
+
+        const progressKey =
+            "langues_progression_" + getUserKey();
+
+        function getProgress() {
+
+            try {
+
+                const data =
+                    JSON.parse(
+                        localStorage.getItem(progressKey) || "[]"
+                    );
+
+                return Array.isArray(data) ? data : [];
+
+            } catch (error) {
+
+                return [];
+
+            }
+
+        }
+
+
+        function updateProgress() {
+
+            const progress = getProgress();
+
+            const uniqueProgress = [
+                ...new Set(
+                    progress
+                        .map(Number)
+                        .filter(n => Number.isInteger(n))
+                )
+            ];
+
+            const completed =
+                uniqueProgress.length;
+
+            const percentage =
+                Math.min(
+                    100,
+                    Math.round((completed / 5) * 100)
+                );
+
+            document.getElementById("progressText").textContent =
+                completed + " / 5 chapitres";
+
+            document.getElementById("progressFill").style.width =
+                percentage + "%";
+
+        }
+
+
+        /* =========================================================
+           QUIZ
+        ========================================================= */
+
+        const answers =
+            document.querySelectorAll(".answer");
+
+        let score = 0;
+
+        const answeredQuestions =
+            new Set();
+
+        answers.forEach(answer => {
+
+            answer.addEventListener("click", function () {
+
+                const question =
+                    this.closest(".question");
+
+                const questionIndex =
+                    [...document.querySelectorAll(".question")]
+                        .indexOf(question);
+
+                if (answeredQuestions.has(questionIndex)) {
+                    return;
+                }
+
+                answeredQuestions.add(questionIndex);
+
+                const correct =
+                    this.dataset.correct === "true";
+
+                if (correct) {
+
+                    this.classList.add("correct");
+                    score++;
+
+                } else {
+
+                    this.classList.add("wrong");
+
+                    const correctAnswer =
+                        question.querySelector(
+                            '.answer[data-correct="true"]'
+                        );
+
+                    if (correctAnswer) {
+                        correctAnswer.classList.add("correct");
+                    }
+
+                }
+
+                if (answeredQuestions.size === 4) {
+
+                    const result =
+                        document.getElementById("quizResult");
+
+                    result.classList.add("show");
+
+                    if (score === 4) {
+
+                        result.textContent =
+                            "Excellent ! Vous avez obtenu 4/4. Vous maîtrisez les notions essentielles.";
+
+                        result.style.background = "#ecfdf3";
+                        result.style.color = "#166534";
+
+                    } else if (score >= 2) {
+
+                        result.textContent =
+                            "Bon travail ! Vous avez obtenu " +
+                            score +
+                            "/4. Relisez les chapitres si vous souhaitez renforcer vos connaissances.";
+
+                        result.style.background = "#fff7ed";
+                        result.style.color = "#9a3412";
+
+                    } else {
+
+                        result.textContent =
+                            "Vous avez obtenu " +
+                            score +
+                            "/4. Nous vous conseillons de revoir les principaux chapitres de la formation.";
+
+                        result.style.background = "#fef2f2";
+                        result.style.color = "#991b1b";
+
+                    }
+
+                }
+
+            });
+
+        });
+
+
+        /* =========================================================
+           CERTIFICAT
+        ========================================================= */
+
+        const certificateBtn =
+            document.getElementById("certificateBtn");
+
+        certificateBtn.addEventListener("click", function () {
+
+            let progress = getProgress();
+
+            /* Le chapitre final porte l'index 4 */
+
+            if (!progress.includes(4)) {
+                progress.push(4);
+            }
+
+            localStorage.setItem(
+                progressKey,
+                JSON.stringify(progress)
+            );
+
+            /* Compatibilité avec d'anciens systèmes */
+
+            localStorage.setItem(
+                "progressionLangues",
+                JSON.stringify(progress)
+            );
+
+            updateProgress();
+
+            certificateBtn.innerHTML =
+                '<i class="fa-solid fa-check"></i> Formation validée';
+
+            certificateBtn.style.background = "#dcfce7";
+            certificateBtn.style.color = "#166534";
+
+            setTimeout(function () {
+
+                window.location.href =
+                    "projet_final_investissement.html";
+
+            }, 700);
+
+        });
+
+
+        /* =========================================================
+           INITIALISATION
+        ========================================================= */
+
+        updateProgress();
+
+    </script>
+
+</body>
+
+</html>
