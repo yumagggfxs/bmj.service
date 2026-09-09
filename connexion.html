@@ -1271,473 +1271,579 @@
          JAVASCRIPT CONNEXION
     ========================================================= -->
 <script>
-/*==================================================
-        BMJ SERVICE
-        CONNEXION UTILISATEUR LOCALE
-        VERSION : 16.0.0
-
-        MODE :
-        100 % NAVIGATEUR
-
-        STOCKAGE :
-        localStorage
-
-        SESSION :
-        bmj_session
-
-        IMPORTANT :
-        - Aucun fetch()
-        - Aucun serveur
-        - Aucun backend nécessaire
-        - Aucun appel Render
-        - Connexion uniquement après clic
-        - Compte recherché dans localStorage
-==================================================*/
-
-
-/*==================================================
-        1. CONFIGURATION
-==================================================*/
+/* ============================================================
+   BMJ SERVICE — CONNEXION LOCALE
+   VERSION 17.0.0
+   ------------------------------------------------------------
+   IMPORTANT :
+   - AUCUNE donnée existante n'est supprimée
+   - Les anciennes données LocalStorage sont conservées
+   - Migration automatique des anciens comptes
+   - Aucun appel au serveur
+============================================================ */
 
 const DASHBOARD_URL = "dashboard.html";
 
 const USERS_STORAGE_KEY = "bmj_users";
-
 const SESSION_KEY = "bmj_session";
 
+/* Anciennes clés utilisées par les anciennes versions */
+const ANCIENNES_CLES_UTILISATEURS = [
+    "bmj_users",
+    "bmj_utilisateurs",
+    "bmj_accounts",
+    "bmj_accounts_data",
+    "bmj_registered_users",
+    "users",
+    "utilisateurs"
+];
 
-/*==================================================
-        2. ELEMENTS
-==================================================*/
-
-const loginForm =
-    document.getElementById("loginForm");
-
-const identifiant =
-    document.getElementById("identifiant");
-
-const password =
-    document.getElementById("password");
-
-const remember =
-    document.getElementById("remember");
-
-const btnConnexion =
-    document.getElementById("btnConnexion");
-
-const message =
-    document.getElementById("message");
-
-const passwordToggle =
-    document.getElementById("passwordToggle");
-
-const passwordIcon =
-    document.getElementById("passwordIcon");
+const ANCIENNES_CLES_COMPTE_UNIQUE = [
+    "bmj_current_user",
+    "bmj_user",
+    "currentUser",
+    "user"
+];
 
 
-/*==================================================
-        3. MESSAGE
-==================================================*/
+/* ============================================================
+   ÉLÉMENTS HTML
+============================================================ */
 
-function afficherMessage(
-    texte,
-    type = "error"
-) {
+const loginForm = document.getElementById("loginForm");
+const identifiantInput = document.getElementById("identifiant");
+const passwordInput = document.getElementById("password");
+const rememberInput = document.getElementById("remember");
 
-    if (!message) {
-        return;
-    }
+const btnConnexion = document.getElementById("btnConnexion");
+const buttonText = document.getElementById("buttonText");
+const message = document.getElementById("message");
 
-    message.className = type;
+const passwordToggle = document.getElementById("passwordToggle");
+const passwordIcon = document.getElementById("passwordIcon");
+
+
+/* ============================================================
+   MESSAGES
+============================================================ */
+
+function afficherMessage(texte, type = "error") {
+
+    if (!message) return;
 
     message.textContent = texte;
-
+    message.className = "message " + type;
     message.style.display = "block";
-
 }
 
-
-/*==================================================
-        4. CACHER MESSAGE
-==================================================*/
 
 function cacherMessage() {
 
-    if (!message) {
-        return;
-    }
-
-    message.textContent = "";
-
-    message.className = "";
+    if (!message) return;
 
     message.style.display = "none";
-
+    message.textContent = "";
 }
 
 
-/*==================================================
-        5. RECUPERER LES UTILISATEURS LOCAUX
-==================================================*/
+/* ============================================================
+   CONVERSION BOOLEAN
+============================================================ */
+
+function convertirBoolean(valeur) {
+
+    if (
+        valeur === true ||
+        valeur === 1 ||
+        valeur === "1" ||
+        valeur === "true" ||
+        valeur === "TRUE" ||
+        valeur === "yes"
+    ) {
+        return true;
+    }
+
+    return false;
+}
+
+
+/* ============================================================
+   NORMALISATION UTILISATEUR
+============================================================ */
+
+function normaliserUtilisateur(user) {
+
+    if (!user || typeof user !== "object") {
+        return null;
+    }
+
+    const maintenant = Date.now();
+
+    let premium = convertirBoolean(
+        user.premium ??
+        user.isPremium ??
+        user.premium_active ??
+        user.premiumActif
+    );
+
+    let premiumUntil =
+        user.premium_until ||
+        user.premiumUntil ||
+        user.date_fin_premium ||
+        user.expiration_premium ||
+        null;
+
+
+    /* Vérification de l'expiration Premium */
+
+    if (premium && premiumUntil) {
+
+        const datePremium = new Date(premiumUntil).getTime();
+
+        if (!isNaN(datePremium) && datePremium < maintenant) {
+            premium = false;
+        }
+    }
+
+
+    /* Progression */
+
+    let progression =
+        user.progression ??
+        user.progress ??
+        user.progression_cours ??
+        0;
+
+    progression = Number(progression);
+
+    if (isNaN(progression)) {
+        progression = 0;
+    }
+
+    progression = Math.max(0, Math.min(100, progression));
+
+
+    return {
+
+        /* Identité */
+
+        id:
+            user.id ??
+            user.user_id ??
+            user.userId ??
+            Date.now(),
+
+        id_bmj:
+            user.id_bmj ??
+            user.idBMJ ??
+            user.bmj_id ??
+            user.bmjId ??
+            user.identifiant_bmj ??
+            "",
+
+        nom:
+            user.nom ??
+            user.name ??
+            user.fullName ??
+            user.username ??
+            "",
+
+        prenom:
+            user.prenom ??
+            user.firstName ??
+            "",
+
+        email:
+            user.email ??
+            user.mail ??
+            "",
+
+        telephone:
+            user.telephone ??
+            user.phone ??
+            user.numero ??
+            "",
+
+        username:
+            user.username ??
+            user.pseudo ??
+            user.login ??
+            "",
+
+
+        /* Connexion */
+
+        password:
+            user.password ??
+            user.mot_de_passe ??
+            user.motDePasse ??
+            "",
+
+
+        /* Formation */
+
+        domaine:
+            user.domaine ??
+            user.domain ??
+            "",
+
+        formation:
+            user.formation ??
+            "",
+
+        progression: progression,
+
+        coursTermines:
+            user.coursTermines ??
+            user.coursesCompleted ??
+            user.cours_termines ??
+            [],
+
+
+        /* Premium */
+
+        premium: premium,
+
+        premium_until: premiumUntil,
+
+        premiumUntil: premiumUntil,
+
+
+        /* Photo */
+
+        photo:
+            user.photo ??
+            user.avatar ??
+            user.image ??
+            "",
+
+
+        /* Statut */
+
+        blocked:
+            convertirBoolean(
+                user.blocked ??
+                user.bloque ??
+                user.isBlocked
+            ),
+
+        actif:
+            user.actif !== false &&
+            user.active !== false,
+
+
+        /* Dates */
+
+        created_at:
+            user.created_at ??
+            user.createdAt ??
+            user.date_creation ??
+            new Date().toISOString(),
+
+        updated_at:
+            user.updated_at ??
+            user.updatedAt ??
+            new Date().toISOString()
+    };
+}
+
+
+/* ============================================================
+   COMPARAISON DES COMPTES
+============================================================ */
+
+function memeUtilisateur(user1, user2) {
+
+    if (!user1 || !user2) return false;
+
+    const valeurs1 = [
+        user1.id,
+        user1.id_bmj,
+        user1.email,
+        user1.telephone,
+        user1.username
+    ]
+        .filter(Boolean)
+        .map(v => String(v).trim().toLowerCase());
+
+
+    const valeurs2 = [
+        user2.id,
+        user2.id_bmj,
+        user2.email,
+        user2.telephone,
+        user2.username
+    ]
+        .filter(Boolean)
+        .map(v => String(v).trim().toLowerCase());
+
+
+    return valeurs1.some(v => valeurs2.includes(v));
+}
+
+
+/* ============================================================
+   LECTURE SÉCURISÉE DU LOCALSTORAGE
+============================================================ */
+
+function lireJSON(cle) {
+
+    try {
+
+        const valeur = localStorage.getItem(cle);
+
+        if (!valeur) {
+            return null;
+        }
+
+        return JSON.parse(valeur);
+
+    } catch (erreur) {
+
+        console.warn(
+            "BMJ : impossible de lire la clé",
+            cle,
+            erreur
+        );
+
+        return null;
+    }
+}
+
+
+/* ============================================================
+   RÉCUPÉRER TOUS LES ANCIENS COMPTES
+============================================================ */
+
+function recupererAnciensComptes() {
+
+    const comptes = [];
+
+
+    /* --------------------------------------------------------
+       1. ANCIENNES LISTES D'UTILISATEURS
+    -------------------------------------------------------- */
+
+    ANCIENNES_CLES_UTILISATEURS.forEach(cle => {
+
+        const donnees = lireJSON(cle);
+
+        if (!donnees) return;
+
+
+        /* Si c'est un tableau */
+
+        if (Array.isArray(donnees)) {
+
+            donnees.forEach(user => {
+
+                const utilisateur = normaliserUtilisateur(user);
+
+                if (!utilisateur) return;
+
+
+                const existe = comptes.some(
+                    ancien => memeUtilisateur(ancien, utilisateur)
+                );
+
+
+                if (!existe) {
+                    comptes.push(utilisateur);
+                }
+
+            });
+
+            return;
+        }
+
+
+        /* Si un seul utilisateur est enregistré */
+
+        if (
+            typeof donnees === "object" &&
+            donnees !== null
+        ) {
+
+            const utilisateur = normaliserUtilisateur(donnees);
+
+            if (!utilisateur) return;
+
+
+            const existe = comptes.some(
+                ancien => memeUtilisateur(ancien, utilisateur)
+            );
+
+
+            if (!existe) {
+                comptes.push(utilisateur);
+            }
+        }
+
+    });
+
+
+    /* --------------------------------------------------------
+       2. ANCIEN COMPTE CONNECTÉ
+    -------------------------------------------------------- */
+
+    ANCIENNES_CLES_COMPTE_UNIQUE.forEach(cle => {
+
+        const donnees = lireJSON(cle);
+
+        if (!donnees) return;
+
+        const utilisateur = normaliserUtilisateur(donnees);
+
+        if (!utilisateur) return;
+
+
+        const existe = comptes.some(
+            ancien => memeUtilisateur(ancien, utilisateur)
+        );
+
+
+        if (!existe) {
+            comptes.push(utilisateur);
+        }
+
+    });
+
+
+    return comptes;
+}
+
+
+/* ============================================================
+   MIGRATION DES COMPTES
+   ------------------------------------------------------------
+   IMPORTANT :
+   ON AJOUTE SEULEMENT.
+   ON NE SUPPRIME RIEN.
+============================================================ */
+
+function migrerAnciensComptes() {
+
+    let utilisateursActuels = lireJSON(USERS_STORAGE_KEY);
+
+
+    if (!Array.isArray(utilisateursActuels)) {
+        utilisateursActuels = [];
+    }
+
+
+    const anciensComptes = recupererAnciensComptes();
+
+    let modifications = false;
+
+
+    anciensComptes.forEach(ancienCompte => {
+
+        const existe = utilisateursActuels.some(
+            compte => memeUtilisateur(compte, ancienCompte)
+        );
+
+
+        if (!existe) {
+
+            utilisateursActuels.push(ancienCompte);
+
+            modifications = true;
+
+            console.log(
+                "BMJ : ancien compte récupéré :",
+                ancienCompte.email || ancienCompte.username || ancienCompte.id_bmj
+            );
+        }
+
+    });
+
+
+    /* --------------------------------------------------------
+       ON ÉCRIT UNIQUEMENT SI NÉCESSAIRE
+    -------------------------------------------------------- */
+
+    if (modifications) {
+
+        try {
+
+            localStorage.setItem(
+                USERS_STORAGE_KEY,
+                JSON.stringify(utilisateursActuels)
+            );
+
+            console.log(
+                "BMJ : migration terminée.",
+                utilisateursActuels.length,
+                "compte(s) disponible(s)."
+            );
+
+        } catch (erreur) {
+
+            console.error(
+                "BMJ : erreur pendant la migration",
+                erreur
+            );
+        }
+    }
+
+
+    return utilisateursActuels;
+}
+
+
+/* ============================================================
+   RÉCUPÉRER LES UTILISATEURS
+============================================================ */
 
 function recupererUtilisateurs() {
 
-    try {
-
-        const data =
-            localStorage.getItem(
-                USERS_STORAGE_KEY
-            );
-
-
-        if (!data) {
-            return [];
-        }
-
-
-        const utilisateurs =
-            JSON.parse(data);
-
-
-        if (!Array.isArray(utilisateurs)) {
-            return [];
-        }
-
-
-        return utilisateurs;
-
-    } catch (error) {
-
-        console.error(
-            "Erreur lecture utilisateurs :",
-            error
-        );
-
-        return [];
-
-    }
-
-}
-
-
-/*==================================================
-        6. SAUVEGARDER LES UTILISATEURS
-==================================================*/
-
-function sauvegarderUtilisateurs(
-    utilisateurs
-) {
-
-    try {
-
-        localStorage.setItem(
-            USERS_STORAGE_KEY,
-            JSON.stringify(utilisateurs)
-        );
-
-        return true;
-
-    } catch (error) {
-
-        console.error(
-            "Erreur sauvegarde utilisateurs :",
-            error
-        );
-
-        return false;
-
-    }
-
-}
-
-
-/*==================================================
-        7. CONVERTIR BOOLEAN
-==================================================*/
-
-function convertirBoolean(value) {
-
-    return (
-        value === true ||
-        value === 1 ||
-        value === "1" ||
-        value === "true" ||
-        value === "TRUE" ||
-        value === "yes" ||
-        value === "oui"
-    );
-
-}
-
-
-/*==================================================
-        8. NORMALISER UTILISATEUR
-==================================================*/
-
-function normaliserUtilisateur(
-    utilisateur
-) {
-
-    if (
-        !utilisateur ||
-        typeof utilisateur !== "object"
-    ) {
-
-        return null;
-
-    }
-
-
-    const user = {
-        ...utilisateur
-    };
-
-
-    /*==================================================
-            ID
-    ==================================================*/
-
-    user.id =
-        utilisateur.id ??
-        utilisateur.user_id ??
-        utilisateur.userId ??
-        utilisateur.id_utilisateur ??
-        null;
-
-
-    /*==================================================
-            ID BMJ
-    ==================================================*/
-
-    user.id_bmj =
-        utilisateur.id_bmj ??
-        utilisateur.idBMJ ??
-        utilisateur.bmj_id ??
-        utilisateur.bmjId ??
-        "";
-
-
-    /*==================================================
-            NOM
-    ==================================================*/
-
-    user.nom =
-        utilisateur.nom ??
-        utilisateur.name ??
-        utilisateur.username ??
-        "";
-
-
-    /*==================================================
-            EMAIL
-    ==================================================*/
-
-    user.email =
-        utilisateur.email ??
-        "";
-
-
-    /*==================================================
-            TELEPHONE
-    ==================================================*/
-
-    user.telephone =
-        utilisateur.telephone ??
-        utilisateur.phone ??
-        "";
-
-
-    /*==================================================
-            DOMAINE
-    ==================================================*/
-
-    user.domaine =
-        utilisateur.domaine ??
-        utilisateur.domain ??
-        "";
-
-
-    /*==================================================
-            PHOTO
-    ==================================================*/
-
-    user.photo =
-        utilisateur.photo ??
-        utilisateur.avatar ??
-        utilisateur.image ??
-        "images/user.png";
-
-
-    /*==================================================
-            PREMIUM
-    ==================================================*/
-
-    user.premium =
-        convertirBoolean(
-            utilisateur.premium
-        );
-
-
-    user.is_premium =
-        convertirBoolean(
-            utilisateur.is_premium
-        );
-
-
-    user.premium_until =
-        utilisateur.premium_until ??
-        null;
-
-
     /*
-        Vérification de la date Premium
+       On lance toujours la migration AVANT la connexion.
+       Cela permet de récupérer les anciens comptes.
     */
 
-    if (user.premium_until) {
-
-        const datePremium =
-            new Date(
-                user.premium_until
-            );
-
-
-        if (
-            !Number.isNaN(
-                datePremium.getTime()
-            )
-        ) {
-
-            if (
-                datePremium > new Date()
-            ) {
-
-                user.premium = true;
-
-                user.is_premium = true;
-
-            } else {
-
-                user.premium = false;
-
-                user.is_premium = false;
-
-            }
-
-        }
-
-    }
-
-
-    user.isPremium =
-        user.premium ||
-        user.is_premium;
-
-
-    user.premium =
-        user.isPremium;
-
-
-    user.is_premium =
-        user.isPremium;
-
-
-    /*==================================================
-            PROGRESSION
-    ==================================================*/
-
-    user.progression =
-        Number(
-            utilisateur.progression ??
-            utilisateur.progress ??
-            0
-        );
-
-
-    user.progressions =
-        utilisateur.progressions ??
-        {};
-
-
-    return user;
-
+    return migrerAnciensComptes();
 }
 
 
-/*==================================================
-        9. CREER SESSION LOCALE
-==================================================*/
+/* ============================================================
+   CRÉATION DE SESSION LOCALE
+============================================================ */
 
-function creerSessionBMJ(
-    utilisateur
-) {
+function creerSessionBMJ(utilisateur, remember = false) {
 
-    const user =
-        normaliserUtilisateur(
-            utilisateur
-        );
+    const utilisateurNormalise =
+        normaliserUtilisateur(utilisateur);
 
 
-    if (!user) {
-
+    if (!utilisateurNormalise) {
         return false;
-
     }
 
 
     const session = {
 
-        authenticated: true,
+        user: utilisateurNormalise,
 
-        connected: true,
+        userId: utilisateurNormalise.id,
 
-        user: user,
+        id_bmj: utilisateurNormalise.id_bmj,
 
-        id: user.id,
+        email: utilisateurNormalise.email,
 
-        id_bmj:
-            user.id_bmj,
+        createdAt: Date.now(),
 
-        nom:
-            user.nom,
+        local: true,
 
-        email:
-            user.email,
-
-        telephone:
-            user.telephone,
-
-        domaine:
-            user.domaine,
-
-        photo:
-            user.photo,
-
-        premium:
-            user.premium,
-
-        is_premium:
-            user.is_premium,
-
-        premium_until:
-            user.premium_until,
-
-        progression:
-            user.progression,
-
-        progressions:
-            user.progressions,
-
-        login_at:
-            new Date().toISOString(),
-
-        local: true
-
+        remember: remember
     };
 
 
     try {
 
-        /* SESSION PRINCIPALE */
+        /*
+         * Session principale
+         */
 
         localStorage.setItem(
             SESSION_KEY,
@@ -1745,180 +1851,151 @@ function creerSessionBMJ(
         );
 
 
-        /* COMPATIBILITE */
+        /*
+         * On conserve les anciennes clés
+         * pour assurer la compatibilité avec
+         * les autres pages BMJ SERVICE.
+         */
 
         localStorage.setItem(
             "bmj_current_user",
-            JSON.stringify(user)
+            JSON.stringify(utilisateurNormalise)
         );
-
 
         localStorage.setItem(
             "bmj_user",
-            JSON.stringify(user)
+            JSON.stringify(utilisateurNormalise)
         );
-
 
         localStorage.setItem(
             "currentUser",
-            JSON.stringify(user)
+            JSON.stringify(utilisateurNormalise)
         );
-
 
         localStorage.setItem(
             "user",
-            JSON.stringify(user)
+            JSON.stringify(utilisateurNormalise)
         );
 
 
-        /* ID */
+        /*
+         * Identifiants
+         */
 
-        if (
-            user.id !== null &&
-            user.id !== undefined
-        ) {
+        if (utilisateurNormalise.id != null) {
 
             localStorage.setItem(
                 "bmj_user_id",
-                String(user.id)
+                String(utilisateurNormalise.id)
             );
+        }
 
+
+        if (utilisateurNormalise.id_bmj) {
+
+            localStorage.setItem(
+                "bmj_id",
+                String(utilisateurNormalise.id_bmj)
+            );
         }
 
 
         return true;
 
-    } catch (error) {
+    } catch (erreur) {
 
         console.error(
-            "Erreur création session locale :",
-            error
+            "BMJ : impossible de créer la session locale",
+            erreur
         );
 
         return false;
-
     }
-
 }
 
 
-/*==================================================
-        10. CHARGEMENT
-==================================================*/
+/* ============================================================
+   CHARGEMENT
+============================================================ */
 
 function activerChargement() {
 
-    if (!btnConnexion) {
-        return;
+    if (btnConnexion) {
+
+        btnConnexion.disabled = true;
+
+        btnConnexion.classList.add("loading");
     }
 
 
-    btnConnexion.disabled = true;
+    if (buttonText) {
 
-
-    btnConnexion.innerHTML = `
-
-        <span class="spinner"></span>
-
-        Connexion...
-
-    `;
-
+        buttonText.textContent =
+            "Connexion...";
+    }
 }
 
-
-/*==================================================
-        11. FIN CHARGEMENT
-==================================================*/
 
 function desactiverChargement() {
 
-    if (!btnConnexion) {
-        return;
+    if (btnConnexion) {
+
+        btnConnexion.disabled = false;
+
+        btnConnexion.classList.remove("loading");
     }
 
 
-    btnConnexion.disabled = false;
+    if (buttonText) {
 
-
-    btnConnexion.innerHTML = `
-
-        <i class="fa-solid fa-right-to-bracket"></i>
-
-        <span>Se connecter</span>
-
-    `;
-
+        buttonText.textContent =
+            "Se connecter";
+    }
 }
 
 
-/*==================================================
-        12. AFFICHER / MASQUER MOT DE PASSE
-==================================================*/
+/* ============================================================
+   TOGGLE MOT DE PASSE
+============================================================ */
 
 if (passwordToggle) {
 
     passwordToggle.addEventListener(
         "click",
-        function(event) {
+        function () {
 
-            event.preventDefault();
-
-
-            if (!password) {
-                return;
-            }
+            if (!passwordInput) return;
 
 
-            if (
-                password.type === "password"
-            ) {
+            if (passwordInput.type === "password") {
 
-                password.type = "text";
-
+                passwordInput.type = "text";
 
                 if (passwordIcon) {
 
                     passwordIcon.className =
                         "fa-solid fa-eye-slash";
-
                 }
-
-
-                passwordToggle.setAttribute(
-                    "aria-label",
-                    "Masquer le mot de passe"
-                );
 
             } else {
 
-                password.type = "password";
-
+                passwordInput.type = "password";
 
                 if (passwordIcon) {
 
                     passwordIcon.className =
                         "fa-solid fa-eye";
-
                 }
-
-
-                passwordToggle.setAttribute(
-                    "aria-label",
-                    "Afficher le mot de passe"
-                );
-
             }
 
         }
     );
-
 }
 
 
-/*==================================================
-        13. CONNEXION LOCALE
-==================================================*/
+/* ============================================================
+   CONNEXION
+============================================================ */
 
 let connexionEnCours = false;
 
@@ -1927,7 +2004,7 @@ if (loginForm) {
 
     loginForm.addEventListener(
         "submit",
-        function(event) {
+        function (event) {
 
             event.preventDefault();
 
@@ -1937,382 +2014,330 @@ if (loginForm) {
             }
 
 
-            connexionEnCours = true;
-
-
             cacherMessage();
 
 
-            /*==================================================
-                    IDENTIFIANT
-            ==================================================*/
-
-            const login =
-                identifiant
-                    ? identifiant.value.trim()
-                    : "";
+            const identifiant =
+                String(
+                    identifiantInput?.value || ""
+                )
+                    .trim()
+                    .toLowerCase();
 
 
-            /*==================================================
-                    MOT DE PASSE
-            ==================================================*/
-
-            const motDePasse =
-                password
-                    ? password.value
-                    : "";
-
-
-            /*==================================================
-                    VALIDATION
-            ==================================================*/
-
-            if (!login) {
-
-                afficherMessage(
-                    "Veuillez saisir votre adresse e-mail ou votre identifiant BMJ.",
-                    "error"
+            const password =
+                String(
+                    passwordInput?.value || ""
                 );
 
 
-                if (identifiant) {
-                    identifiant.focus();
-                }
+            const remember =
+                rememberInput
+                    ? rememberInput.checked
+                    : false;
 
 
-                connexionEnCours = false;
+            /* ------------------------------------------------
+               VALIDATION
+            ------------------------------------------------ */
 
-                return;
-
-            }
-
-
-            if (!motDePasse) {
+            if (!identifiant) {
 
                 afficherMessage(
-                    "Veuillez saisir votre mot de passe.",
+                    "Veuillez entrer votre email, téléphone ou identifiant BMJ.",
                     "error"
                 );
 
-
-                if (password) {
-                    password.focus();
-                }
-
-
-                connexionEnCours = false;
+                identifiantInput?.focus();
 
                 return;
-
             }
 
+
+            if (!password) {
+
+                afficherMessage(
+                    "Veuillez entrer votre mot de passe.",
+                    "error"
+                );
+
+                passwordInput?.focus();
+
+                return;
+            }
+
+
+            connexionEnCours = true;
 
             activerChargement();
 
 
-            /*
-                Petite temporisation pour
-                garder une interface agréable.
-            */
+            try {
 
-            setTimeout(
-                function() {
+                /*
+                 * IMPORTANT :
+                 * AUCUN fetch()
+                 * AUCUN serveur
+                 * AUCUNE API
+                 */
 
-                    try {
-
-                        /*==================================================
-                                RECUPERER LES COMPTES
-                        ==================================================*/
-
-                        const utilisateurs =
-                            recupererUtilisateurs();
+                const utilisateurs =
+                    recupererUtilisateurs();
 
 
-                        if (
-                            utilisateurs.length === 0
-                        ) {
-
-                            throw new Error(
-                                "Aucun compte BMJ n'est enregistré sur ce navigateur. Veuillez d'abord créer un compte."
-                            );
-
-                        }
+                console.log(
+                    "BMJ : comptes locaux disponibles :",
+                    utilisateurs.length
+                );
 
 
-                        /*==================================================
-                                RECHERCHE COMPTE
-                        ==================================================*/
+                /* ------------------------------------------------
+                   RECHERCHE DU COMPTE
+                ------------------------------------------------ */
 
-                        const loginNormalise =
-                            login.toLowerCase();
+                const utilisateur =
+                    utilisateurs.find(user => {
 
-
-                        const utilisateur =
-                            utilisateurs.find(
-                                function(user) {
-
-                                    if (!user) {
-                                        return false;
-                                    }
-
-
-                                    const email =
-                                        String(
-                                            user.email ?? ""
-                                        )
-                                        .trim()
-                                        .toLowerCase();
-
-
-                                    const username =
-                                        String(
-                                            user.username ??
-                                            ""
-                                        )
-                                        .trim()
-                                        .toLowerCase();
-
-
-                                    const idBMJ =
-                                        String(
-                                            user.id_bmj ??
-                                            user.idBMJ ??
-                                            ""
-                                        )
-                                        .trim()
-                                        .toLowerCase();
-
-
-                                    const telephone =
-                                        String(
-                                            user.telephone ??
-                                            user.phone ??
-                                            ""
-                                        )
-                                        .trim()
-                                        .toLowerCase();
-
-
-                                    return (
-                                        email === loginNormalise ||
-                                        username === loginNormalise ||
-                                        idBMJ === loginNormalise ||
-                                        telephone === loginNormalise
-                                    );
-
-                                }
-                            );
-
-
-                        /*==================================================
-                                COMPTE INTROUVABLE
-                        ==================================================*/
-
-                        if (!utilisateur) {
-
-                            throw new Error(
-                                "Aucun compte BMJ ne correspond à cet identifiant."
-                            );
-
-                        }
-
-
-                        /*==================================================
-                                MOT DE PASSE
-                        ==================================================*/
-
-                        const motDePasseStocke =
+                        const email =
                             String(
-                                utilisateur.password ??
-                                utilisateur.mot_de_passe ??
-                                utilisateur.motDePasse ??
+                                user.email || ""
+                            )
+                                .trim()
+                                .toLowerCase();
+
+
+                        const username =
+                            String(
+                                user.username || ""
+                            )
+                                .trim()
+                                .toLowerCase();
+
+
+                        const idBMJ =
+                            String(
+                                user.id_bmj || ""
+                            )
+                                .trim()
+                                .toLowerCase();
+
+
+                        const telephone =
+                            String(
+                                user.telephone || ""
+                            )
+                                .replace(/\s+/g, "")
+                                .toLowerCase();
+
+
+                        const identifiantNettoye =
+                            identifiant.replace(
+                                /\s+/g,
                                 ""
                             );
 
 
-                        if (!motDePasseStocke) {
-
-                            throw new Error(
-                                "Ce compte ne possède pas de mot de passe local. Veuillez créer à nouveau votre compte."
-                            );
-
-                        }
-
-
-                        if (
-                            motDePasseStocke !==
-                            motDePasse
-                        ) {
-
-                            throw new Error(
-                                "Mot de passe incorrect."
-                            );
-
-                        }
-
-
-                        /*==================================================
-                                NORMALISATION
-                        ==================================================*/
-
-                        const user =
-                            normaliserUtilisateur(
-                                utilisateur
-                            );
-
-
-                        if (!user) {
-
-                            throw new Error(
-                                "Les informations du compte sont invalides."
-                            );
-
-                        }
-
-
-                        /*==================================================
-                                SESSION
-                        ==================================================*/
-
-                        const sessionOK =
-                            creerSessionBMJ(
-                                user
-                            );
-
-
-                        if (!sessionOK) {
-
-                            throw new Error(
-                                "Impossible de créer la session locale."
-                            );
-
-                        }
-
-
-                        /*==================================================
-                                SUCCES
-                        ==================================================*/
-
-                        afficherMessage(
-                            "Connexion réussie. Redirection...",
-                            "success"
+                        return (
+                            email === identifiant ||
+                            username === identifiant ||
+                            idBMJ === identifiant ||
+                            telephone === identifiantNettoye
                         );
 
-
-                        setTimeout(
-                            function() {
-
-                                window.location.replace(
-                                    DASHBOARD_URL
-                                );
-
-                            },
-                            500
-                        );
+                    });
 
 
-                    } catch (error) {
+                /* ------------------------------------------------
+                   COMPTE INTROUVABLE
+                ------------------------------------------------ */
 
-                        console.error(
-                            "Erreur connexion locale :",
-                            error
-                        );
+                if (!utilisateur) {
+
+                    afficherMessage(
+                        "Compte introuvable sur ce navigateur. Vérifiez l'identifiant utilisé lors de votre inscription.",
+                        "error"
+                    );
+
+                    connexionEnCours = false;
+
+                    desactiverChargement();
+
+                    return;
+                }
 
 
-                        afficherMessage(
-                            error.message ||
-                            "Impossible de vous connecter.",
-                            "error"
-                        );
+                /* ------------------------------------------------
+                   COMPTE BLOQUÉ
+                ------------------------------------------------ */
+
+                if (utilisateur.blocked) {
+
+                    afficherMessage(
+                        "Ce compte est actuellement bloqué.",
+                        "error"
+                    );
+
+                    connexionEnCours = false;
+
+                    desactiverChargement();
+
+                    return;
+                }
 
 
-                        desactiverChargement();
+                /* ------------------------------------------------
+                   VÉRIFICATION MOT DE PASSE
+                ------------------------------------------------ */
+
+                const motDePasseEnregistre =
+                    String(
+                        utilisateur.password || ""
+                    );
 
 
-                        connexionEnCours = false;
+                if (
+                    motDePasseEnregistre !==
+                    password
+                ) {
 
-                    }
+                    afficherMessage(
+                        "Mot de passe incorrect.",
+                        "error"
+                    );
 
-                },
-                250
+                    connexionEnCours = false;
+
+                    desactiverChargement();
+
+                    return;
+                }
+
+
+                /* ------------------------------------------------
+                   CONNEXION RÉUSSIE
+                ------------------------------------------------ */
+
+                const sessionCreee =
+                    creerSessionBMJ(
+                        utilisateur,
+                        remember
+                    );
+
+
+                if (!sessionCreee) {
+
+                    afficherMessage(
+                        "Impossible de créer la session locale.",
+                        "error"
+                    );
+
+                    connexionEnCours = false;
+
+                    desactiverChargement();
+
+                    return;
+                }
+
+
+                afficherMessage(
+                    "Connexion réussie. Bienvenue " +
+                    (
+                        utilisateur.prenom ||
+                        utilisateur.nom ||
+                        ""
+                    ) +
+                    " !",
+                    "success"
+                );
+
+
+                /*
+                 * Petite pause pour afficher
+                 * le message de succès.
+                 */
+
+                setTimeout(
+                    function () {
+
+                        window.location.href =
+                            DASHBOARD_URL;
+
+                    },
+                    600
+                );
+
+
+            } catch (erreur) {
+
+                console.error(
+                    "BMJ : erreur connexion locale",
+                    erreur
+                );
+
+
+                afficherMessage(
+                    "Une erreur est survenue lors de la connexion locale.",
+                    "error"
+                );
+
+
+                connexionEnCours = false;
+
+                desactiverChargement();
+            }
+
+        }
+    );
+}
+
+
+/* ============================================================
+   MIGRATION AU CHARGEMENT DE LA PAGE
+   ------------------------------------------------------------
+   Cela permet de récupérer les anciens comptes AVANT
+   même que l'utilisateur essaie de se connecter.
+============================================================ */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        try {
+
+            const comptes =
+                recupererUtilisateurs();
+
+
+            console.log(
+                "========================================"
             );
 
+            console.log(
+                "BMJ SERVICE — STOCKAGE LOCAL"
+            );
+
+            console.log(
+                "Comptes disponibles :",
+                comptes.length
+            );
+
+            console.log(
+                "Aucune ancienne donnée supprimée."
+            );
+
+            console.log(
+                "========================================"
+            );
+
+        } catch (erreur) {
+
+            console.error(
+                "BMJ : erreur migration locale",
+                erreur
+            );
         }
-    );
 
-}
-
-
-/*==================================================
-        14. AUCUNE CONNEXION AUTOMATIQUE
-==================================================*/
-
-/*
-
-    IMPORTANT :
-
-    Aucun code ici ne fait :
-
-        verifierSessionExistante();
-
-    Aucun code ne fait :
-
-        if (bmj_session)
-            dashboard.html
-
-    La page de connexion reste donc
-    toujours affichée lorsqu'on arrive dessus.
-
-*/
-
-
-/*==================================================
-        15. AUTOCOMPLETE
-==================================================*/
-
-if (loginForm) {
-
-    loginForm.setAttribute(
-        "autocomplete",
-        "on"
-    );
-
-}
-
-
-/*==================================================
-        16. CONTROLE DU BOUTON
-==================================================*/
-
-if (btnConnexion) {
-
-    btnConnexion.addEventListener(
-        "click",
-        function() {
-
-            /*
-                Aucun appel serveur.
-
-                Le bouton déclenche uniquement
-                le submit du formulaire.
-            */
-
-        }
-    );
-
-}
-
-
-/*==================================================
-        17. FIN
-==================================================*/
-
-console.log(
-    "BMJ SERVICE — Connexion locale v16.0.0 chargée."
-);
-
-console.log(
-    "Mode : localStorage / navigateur uniquement."
+    }
 );
 </script>
 
