@@ -1271,25 +1271,27 @@
          JAVASCRIPT CONNEXION
     ========================================================= -->
 <script>
-    /*==================================================
+/*==================================================
         BMJ SERVICE
-        CONNEXION UTILISATEUR
-        VERSION : 15.0.0
+        CONNEXION UTILISATEUR LOCALE
+        VERSION : 16.0.0
+
+        MODE :
+        100 % NAVIGATEUR
+
+        STOCKAGE :
+        localStorage
 
         SESSION :
         bmj_session
 
-        API :
-        https://back-end-h602.onrender.com
-
-        CORRECTIONS :
-        - Aucune connexion automatique
-        - Aucun remplissage automatique
-        - Aucun redirect automatique vers dashboard
-        - Connexion uniquement après clic sur "Se connecter"
-        - Nettoyage des anciennes sessions incohérentes
-        - Gestion correcte du token
-        - Compatible avec plusieurs formats du backend
+        IMPORTANT :
+        - Aucun fetch()
+        - Aucun serveur
+        - Aucun backend nécessaire
+        - Aucun appel Render
+        - Connexion uniquement après clic
+        - Compte recherché dans localStorage
 ==================================================*/
 
 
@@ -1297,11 +1299,11 @@
         1. CONFIGURATION
 ==================================================*/
 
-const BMJ_API_URL =
-    "https://back-end-h602.onrender.com";
+const DASHBOARD_URL = "dashboard.html";
 
-const DASHBOARD_URL =
-    "dashboard.html";
+const USERS_STORAGE_KEY = "bmj_users";
+
+const SESSION_KEY = "bmj_session";
 
 
 /*==================================================
@@ -1322,9 +1324,6 @@ const remember =
 
 const btnConnexion =
     document.getElementById("btnConnexion");
-
-const buttonText =
-    document.getElementById("buttonText");
 
 const message =
     document.getElementById("message");
@@ -1351,17 +1350,15 @@ function afficherMessage(
 
     message.className = type;
 
-    message.textContent =
-        texte;
+    message.textContent = texte;
 
-    message.style.display =
-        "block";
+    message.style.display = "block";
 
 }
 
 
 /*==================================================
-        4. MASQUER MESSAGE
+        4. CACHER MESSAGE
 ==================================================*/
 
 function cacherMessage() {
@@ -1374,14 +1371,88 @@ function cacherMessage() {
 
     message.className = "";
 
-    message.style.display =
-        "none";
+    message.style.display = "none";
 
 }
 
 
 /*==================================================
-        5. CONVERTIR BOOLEAN
+        5. RECUPERER LES UTILISATEURS LOCAUX
+==================================================*/
+
+function recupererUtilisateurs() {
+
+    try {
+
+        const data =
+            localStorage.getItem(
+                USERS_STORAGE_KEY
+            );
+
+
+        if (!data) {
+            return [];
+        }
+
+
+        const utilisateurs =
+            JSON.parse(data);
+
+
+        if (!Array.isArray(utilisateurs)) {
+            return [];
+        }
+
+
+        return utilisateurs;
+
+    } catch (error) {
+
+        console.error(
+            "Erreur lecture utilisateurs :",
+            error
+        );
+
+        return [];
+
+    }
+
+}
+
+
+/*==================================================
+        6. SAUVEGARDER LES UTILISATEURS
+==================================================*/
+
+function sauvegarderUtilisateurs(
+    utilisateurs
+) {
+
+    try {
+
+        localStorage.setItem(
+            USERS_STORAGE_KEY,
+            JSON.stringify(utilisateurs)
+        );
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Erreur sauvegarde utilisateurs :",
+            error
+        );
+
+        return false;
+
+    }
+
+}
+
+
+/*==================================================
+        7. CONVERTIR BOOLEAN
 ==================================================*/
 
 function convertirBoolean(value) {
@@ -1400,7 +1471,7 @@ function convertirBoolean(value) {
 
 
 /*==================================================
-        6. NORMALISER UTILISATEUR
+        8. NORMALISER UTILISATEUR
 ==================================================*/
 
 function normaliserUtilisateur(
@@ -1422,7 +1493,9 @@ function normaliserUtilisateur(
     };
 
 
-    /* ID */
+    /*==================================================
+            ID
+    ==================================================*/
 
     user.id =
         utilisateur.id ??
@@ -1432,7 +1505,9 @@ function normaliserUtilisateur(
         null;
 
 
-    /* ID BMJ */
+    /*==================================================
+            ID BMJ
+    ==================================================*/
 
     user.id_bmj =
         utilisateur.id_bmj ??
@@ -1442,7 +1517,9 @@ function normaliserUtilisateur(
         "";
 
 
-    /* NOM */
+    /*==================================================
+            NOM
+    ==================================================*/
 
     user.nom =
         utilisateur.nom ??
@@ -1451,14 +1528,18 @@ function normaliserUtilisateur(
         "";
 
 
-    /* EMAIL */
+    /*==================================================
+            EMAIL
+    ==================================================*/
 
     user.email =
         utilisateur.email ??
         "";
 
 
-    /* TELEPHONE */
+    /*==================================================
+            TELEPHONE
+    ==================================================*/
 
     user.telephone =
         utilisateur.telephone ??
@@ -1466,7 +1547,9 @@ function normaliserUtilisateur(
         "";
 
 
-    /* DOMAINE */
+    /*==================================================
+            DOMAINE
+    ==================================================*/
 
     user.domaine =
         utilisateur.domaine ??
@@ -1474,7 +1557,9 @@ function normaliserUtilisateur(
         "";
 
 
-    /* PHOTO */
+    /*==================================================
+            PHOTO
+    ==================================================*/
 
     user.photo =
         utilisateur.photo ??
@@ -1505,13 +1590,10 @@ function normaliserUtilisateur(
 
 
     /*
-        Si premium_until existe,
-        on vérifie la date.
+        Vérification de la date Premium
     */
 
-    if (
-        user.premium_until
-    ) {
+    if (user.premium_until) {
 
         const datePremium =
             new Date(
@@ -1533,16 +1615,18 @@ function normaliserUtilisateur(
 
                 user.is_premium = true;
 
+            } else {
+
+                user.premium = false;
+
+                user.is_premium = false;
+
             }
 
         }
 
     }
 
-
-    /*
-        Valeur finale premium
-    */
 
     user.isPremium =
         user.premium ||
@@ -1574,23 +1658,13 @@ function normaliserUtilisateur(
         {};
 
 
-    /*==================================================
-            TOKEN
-    ==================================================*/
-
-    user.token =
-        utilisateur.token ??
-        utilisateur.access_token ??
-        null;
-
-
     return user;
 
 }
 
 
 /*==================================================
-        7. CREER SESSION BMJ
+        9. CREER SESSION LOCALE
 ==================================================*/
 
 function creerSessionBMJ(
@@ -1653,30 +1727,25 @@ function creerSessionBMJ(
         progressions:
             user.progressions,
 
-        token:
-            user.token,
-
         login_at:
-            new Date().toISOString()
+            new Date().toISOString(),
+
+        local: true
 
     };
 
 
     try {
 
-        /*
-            SESSION PRINCIPALE
-        */
+        /* SESSION PRINCIPALE */
 
         localStorage.setItem(
-            "bmj_session",
+            SESSION_KEY,
             JSON.stringify(session)
         );
 
 
-        /*
-            COMPATIBILITE
-        */
+        /* COMPATIBILITE */
 
         localStorage.setItem(
             "bmj_current_user",
@@ -1702,9 +1771,7 @@ function creerSessionBMJ(
         );
 
 
-        /*
-            ID
-        */
+        /* ID */
 
         if (
             user.id !== null &&
@@ -1719,34 +1786,12 @@ function creerSessionBMJ(
         }
 
 
-        /*
-            TOKEN
-        */
-
-        if (
-            user.token
-        ) {
-
-            localStorage.setItem(
-                "bmj_token",
-                user.token
-            );
-
-
-            localStorage.setItem(
-                "token",
-                user.token
-            );
-
-        }
-
-
         return true;
 
     } catch (error) {
 
         console.error(
-            "Erreur création session :",
+            "Erreur création session locale :",
             error
         );
 
@@ -1758,7 +1803,7 @@ function creerSessionBMJ(
 
 
 /*==================================================
-        8. CHARGEMENT
+        10. CHARGEMENT
 ==================================================*/
 
 function activerChargement() {
@@ -1768,8 +1813,7 @@ function activerChargement() {
     }
 
 
-    btnConnexion.disabled =
-        true;
+    btnConnexion.disabled = true;
 
 
     btnConnexion.innerHTML = `
@@ -1784,7 +1828,7 @@ function activerChargement() {
 
 
 /*==================================================
-        9. FIN CHARGEMENT
+        11. FIN CHARGEMENT
 ==================================================*/
 
 function desactiverChargement() {
@@ -1794,17 +1838,14 @@ function desactiverChargement() {
     }
 
 
-    btnConnexion.disabled =
-        false;
+    btnConnexion.disabled = false;
 
 
     btnConnexion.innerHTML = `
 
         <i class="fa-solid fa-right-to-bracket"></i>
 
-        <span id="buttonText">
-            Se connecter
-        </span>
+        <span>Se connecter</span>
 
     `;
 
@@ -1812,7 +1853,7 @@ function desactiverChargement() {
 
 
 /*==================================================
-        10. MOT DE PASSE
+        12. AFFICHER / MASQUER MOT DE PASSE
 ==================================================*/
 
 if (passwordToggle) {
@@ -1830,12 +1871,10 @@ if (passwordToggle) {
 
 
             if (
-                password.type ===
-                "password"
+                password.type === "password"
             ) {
 
-                password.type =
-                    "text";
+                password.type = "text";
 
 
                 if (passwordIcon) {
@@ -1853,8 +1892,7 @@ if (passwordToggle) {
 
             } else {
 
-                password.type =
-                    "password";
+                password.type = "password";
 
 
                 if (passwordIcon) {
@@ -1879,32 +1917,35 @@ if (passwordToggle) {
 
 
 /*==================================================
-        11. CONNEXION MANUELLE
+        13. CONNEXION LOCALE
 ==================================================*/
+
+let connexionEnCours = false;
+
 
 if (loginForm) {
 
     loginForm.addEventListener(
         "submit",
-        async function(event) {
+        function(event) {
 
             event.preventDefault();
 
 
-            /*
-                IMPORTANT :
+            if (connexionEnCours) {
+                return;
+            }
 
-                La connexion ne peut être déclenchée
-                que par la soumission du formulaire.
-            */
+
+            connexionEnCours = true;
 
 
             cacherMessage();
 
 
-            /*
-                IDENTIFIANT
-            */
+            /*==================================================
+                    IDENTIFIANT
+            ==================================================*/
 
             const login =
                 identifiant
@@ -1912,9 +1953,9 @@ if (loginForm) {
                     : "";
 
 
-            /*
-                MOT DE PASSE
-            */
+            /*==================================================
+                    MOT DE PASSE
+            ==================================================*/
 
             const motDePasse =
                 password
@@ -1922,9 +1963,9 @@ if (loginForm) {
                     : "";
 
 
-            /*
-                VALIDATION IDENTIFIANT
-            */
+            /*==================================================
+                    VALIDATION
+            ==================================================*/
 
             if (!login) {
 
@@ -1939,14 +1980,12 @@ if (loginForm) {
                 }
 
 
+                connexionEnCours = false;
+
                 return;
 
             }
 
-
-            /*
-                VALIDATION MOT DE PASSE
-            */
 
             if (!motDePasse) {
 
@@ -1961,363 +2000,242 @@ if (loginForm) {
                 }
 
 
+                connexionEnCours = false;
+
                 return;
 
             }
 
 
-            /*
-                CHARGEMENT
-            */
-
             activerChargement();
 
 
-            try {
+            /*
+                Petite temporisation pour
+                garder une interface agréable.
+            */
 
-                console.log(
-                    "Tentative de connexion vers le serveur..."
-                );
+            setTimeout(
+                function() {
+
+                    try {
+
+                        /*==================================================
+                                RECUPERER LES COMPTES
+                        ==================================================*/
+
+                        const utilisateurs =
+                            recupererUtilisateurs();
 
 
-                /*==================================================
-                        REQUETE API
-                ==================================================*/
+                        if (
+                            utilisateurs.length === 0
+                        ) {
 
-                const response =
-                    await fetch(
-                        BMJ_API_URL +
-                        "/api/login",
-                        {
-
-                            method:
-                                "POST",
-
-                            headers: {
-
-                                "Content-Type":
-                                    "application/json",
-
-                                "Accept":
-                                    "application/json"
-
-                            },
-
-                            body:
-                                JSON.stringify({
-
-                                    email:
-                                        login,
-
-                                    identifiant:
-                                        login,
-
-                                    username:
-                                        login,
-
-                                    password:
-                                        motDePasse
-
-                                })
+                            throw new Error(
+                                "Aucun compte BMJ n'est enregistré sur ce navigateur. Veuillez d'abord créer un compte."
+                            );
 
                         }
-                    );
 
 
-                /*
-                    LECTURE REPONSE
-                */
+                        /*==================================================
+                                RECHERCHE COMPTE
+                        ==================================================*/
 
-                let result = null;
-
-
-                try {
-
-                    result =
-                        await response.json();
-
-                } catch (jsonError) {
-
-                    console.warn(
-                        "Réponse serveur non JSON.",
-                        jsonError
-                    );
-
-                }
+                        const loginNormalise =
+                            login.toLowerCase();
 
 
-                /*
-                    ERREUR HTTP
-                */
+                        const utilisateur =
+                            utilisateurs.find(
+                                function(user) {
 
-                if (!response.ok) {
-
-                    throw new Error(
-
-                        result?.message ||
-
-                        result?.error ||
-
-                        `Erreur serveur HTTP ${response.status}.`
-
-                    );
-
-                }
+                                    if (!user) {
+                                        return false;
+                                    }
 
 
-                /*
-                    SERVEUR REFUSE
-                */
-
-                if (
-                    !result ||
-                    result.success !== true
-                ) {
-
-                    throw new Error(
-
-                        result?.message ||
-
-                        result?.error ||
-
-                        "Identifiants incorrects."
-
-                    );
-
-                }
+                                    const email =
+                                        String(
+                                            user.email ?? ""
+                                        )
+                                        .trim()
+                                        .toLowerCase();
 
 
-                /*==================================================
-                        RECUPERER UTILISATEUR
-                ==================================================*/
-
-                let utilisateur =
-
-                    result.data ||
-
-                    result.user ||
-
-                    result.utilisateur;
+                                    const username =
+                                        String(
+                                            user.username ??
+                                            ""
+                                        )
+                                        .trim()
+                                        .toLowerCase();
 
 
-                /*
-                    Formats possibles :
+                                    const idBMJ =
+                                        String(
+                                            user.id_bmj ??
+                                            user.idBMJ ??
+                                            ""
+                                        )
+                                        .trim()
+                                        .toLowerCase();
 
-                    data.user
-                    data.utilisateur
-                */
 
-                if (
-                    utilisateur &&
-                    typeof utilisateur ===
-                    "object"
-                ) {
+                                    const telephone =
+                                        String(
+                                            user.telephone ??
+                                            user.phone ??
+                                            ""
+                                        )
+                                        .trim()
+                                        .toLowerCase();
 
-                    if (
-                        utilisateur.user
-                    ) {
 
-                        utilisateur =
-                            utilisateur.user;
+                                    return (
+                                        email === loginNormalise ||
+                                        username === loginNormalise ||
+                                        idBMJ === loginNormalise ||
+                                        telephone === loginNormalise
+                                    );
 
-                    } else if (
-                        utilisateur.utilisateur
-                    ) {
+                                }
+                            );
 
-                        utilisateur =
-                            utilisateur.utilisateur;
+
+                        /*==================================================
+                                COMPTE INTROUVABLE
+                        ==================================================*/
+
+                        if (!utilisateur) {
+
+                            throw new Error(
+                                "Aucun compte BMJ ne correspond à cet identifiant."
+                            );
+
+                        }
+
+
+                        /*==================================================
+                                MOT DE PASSE
+                        ==================================================*/
+
+                        const motDePasseStocke =
+                            String(
+                                utilisateur.password ??
+                                utilisateur.mot_de_passe ??
+                                utilisateur.motDePasse ??
+                                ""
+                            );
+
+
+                        if (!motDePasseStocke) {
+
+                            throw new Error(
+                                "Ce compte ne possède pas de mot de passe local. Veuillez créer à nouveau votre compte."
+                            );
+
+                        }
+
+
+                        if (
+                            motDePasseStocke !==
+                            motDePasse
+                        ) {
+
+                            throw new Error(
+                                "Mot de passe incorrect."
+                            );
+
+                        }
+
+
+                        /*==================================================
+                                NORMALISATION
+                        ==================================================*/
+
+                        const user =
+                            normaliserUtilisateur(
+                                utilisateur
+                            );
+
+
+                        if (!user) {
+
+                            throw new Error(
+                                "Les informations du compte sont invalides."
+                            );
+
+                        }
+
+
+                        /*==================================================
+                                SESSION
+                        ==================================================*/
+
+                        const sessionOK =
+                            creerSessionBMJ(
+                                user
+                            );
+
+
+                        if (!sessionOK) {
+
+                            throw new Error(
+                                "Impossible de créer la session locale."
+                            );
+
+                        }
+
+
+                        /*==================================================
+                                SUCCES
+                        ==================================================*/
+
+                        afficherMessage(
+                            "Connexion réussie. Redirection...",
+                            "success"
+                        );
+
+
+                        setTimeout(
+                            function() {
+
+                                window.location.replace(
+                                    DASHBOARD_URL
+                                );
+
+                            },
+                            500
+                        );
+
+
+                    } catch (error) {
+
+                        console.error(
+                            "Erreur connexion locale :",
+                            error
+                        );
+
+
+                        afficherMessage(
+                            error.message ||
+                            "Impossible de vous connecter.",
+                            "error"
+                        );
+
+
+                        desactiverChargement();
+
+
+                        connexionEnCours = false;
 
                     }
 
-                }
-
-
-                /*
-                    Vérification
-                */
-
-                if (
-                    !utilisateur ||
-                    typeof utilisateur !==
-                    "object"
-                ) {
-
-                    throw new Error(
-                        "Le serveur n'a pas retourné les informations de l'utilisateur."
-                    );
-
-                }
-
-
-                /*==================================================
-                        NORMALISATION
-                ==================================================*/
-
-                utilisateur =
-                    normaliserUtilisateur(
-                        utilisateur
-                    );
-
-
-                if (!utilisateur) {
-
-                    throw new Error(
-                        "Utilisateur reçu invalide."
-                    );
-
-                }
-
-
-                /*
-                    Le serveur doit au minimum
-                    retourner un ID ou un email.
-                */
-
-                if (
-                    !utilisateur.id &&
-                    !utilisateur.email
-                ) {
-
-                    throw new Error(
-                        "Le compte reçu par le serveur est incomplet."
-                    );
-
-                }
-
-
-                /*==================================================
-                        TOKEN
-                ==================================================*/
-
-                if (
-                    result.token
-                ) {
-
-                    utilisateur.token =
-                        result.token;
-
-                }
-
-
-                if (
-                    result.access_token
-                ) {
-
-                    utilisateur.token =
-                        result.access_token;
-
-                }
-
-
-                if (
-                    result.data &&
-                    result.data.token
-                ) {
-
-                    utilisateur.token =
-                        result.data.token;
-
-                }
-
-
-                /*==================================================
-                        CREATION SESSION
-                ==================================================*/
-
-                const sessionOK =
-                    creerSessionBMJ(
-                        utilisateur
-                    );
-
-
-                if (!sessionOK) {
-
-                    throw new Error(
-                        "Impossible de créer la session utilisateur."
-                    );
-
-                }
-
-
-                /*
-                    SUCCES
-                */
-
-                afficherMessage(
-                    "Connexion réussie. Redirection...",
-                    "success"
-                );
-
-
-                /*
-                    Petit délai uniquement
-                    après une connexion réussie.
-                */
-
-                setTimeout(
-                    function() {
-
-                        window.location.replace(
-                            DASHBOARD_URL
-                        );
-
-                    },
-                    500
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "Erreur connexion :",
-                    error
-                );
-
-
-                /*
-                    Message propre
-                */
-
-                let texteErreur =
-                    "Impossible de contacter le serveur.";
-
-
-                if (
-                    error &&
-                    error.message
-                ) {
-
-                    texteErreur =
-                        error.message;
-
-                }
-
-
-                /*
-                    Si navigateur bloque fetch
-                */
-
-                if (
-                    error &&
-                    error.name ===
-                    "TypeError"
-                ) {
-
-                    texteErreur =
-                        "Impossible de contacter le serveur. Vérifiez votre connexion Internet ou la disponibilité du serveur.";
-
-                }
-
-
-                afficherMessage(
-                    texteErreur,
-                    "error"
-                );
-
-
-                desactiverChargement();
-
-            }
+                },
+                250
+            );
 
         }
     );
@@ -2326,59 +2244,33 @@ if (loginForm) {
 
 
 /*==================================================
-        12. IMPORTANT :
-        AUCUNE CONNEXION AUTOMATIQUE
+        14. AUCUNE CONNEXION AUTOMATIQUE
 ==================================================*/
 
 /*
 
-    ANCIEN CODE SUPPRIME :
+    IMPORTANT :
 
-    verifierSessionExistante();
+    Aucun code ici ne fait :
 
-    Il ne faut PAS faire :
+        verifierSessionExistante();
+
+    Aucun code ne fait :
 
         if (bmj_session)
             dashboard.html
 
-    car cela provoquait :
-
-        connexion.html
-             ↓
-        ancienne session trouvée
-             ↓
-        dashboard.html
-
-    Maintenant :
-
-        connexion.html
-             ↓
-        l'utilisateur saisit ses données
-             ↓
-        clique "Se connecter"
-             ↓
-        POST /api/login
-             ↓
-        serveur vérifie
-             ↓
-        création bmj_session
-             ↓
-        dashboard.html
+    La page de connexion reste donc
+    toujours affichée lorsqu'on arrive dessus.
 
 */
 
 
 /*==================================================
-        13. NETTOYAGE DES FORMULAIRES
+        15. AUTOCOMPLETE
 ==================================================*/
 
 if (loginForm) {
-
-    /*
-        Empêche le navigateur de
-        réutiliser automatiquement
-        une ancienne soumission.
-    */
 
     loginForm.setAttribute(
         "autocomplete",
@@ -2389,54 +2281,7 @@ if (loginForm) {
 
 
 /*==================================================
-        14. EMPÊCHER LE SUBMIT MULTIPLE
-==================================================*/
-
-let connexionEnCours = false;
-
-
-if (loginForm) {
-
-    loginForm.addEventListener(
-        "submit",
-        function(event) {
-
-            if (connexionEnCours) {
-
-                event.preventDefault();
-
-                return;
-
-            }
-
-
-            connexionEnCours = true;
-
-
-            /*
-                Réactivation après quelques secondes
-                uniquement si une erreur survient.
-            */
-
-            setTimeout(
-                function() {
-
-                    connexionEnCours =
-                        false;
-
-                },
-                10000
-            );
-
-        },
-        true
-    );
-
-}
-
-
-/*==================================================
-        15. CONTROLE DU BOUTON
+        16. CONTROLE DU BOUTON
 ==================================================*/
 
 if (btnConnexion) {
@@ -2446,10 +2291,10 @@ if (btnConnexion) {
         function() {
 
             /*
-                Aucun appel API ici.
+                Aucun appel serveur.
 
-                Le bouton laisse simplement
-                le formulaire déclencher submit.
+                Le bouton déclenche uniquement
+                le submit du formulaire.
             */
 
         }
@@ -2459,11 +2304,15 @@ if (btnConnexion) {
 
 
 /*==================================================
-        16. FIN
+        17. FIN
 ==================================================*/
 
 console.log(
-    "BMJ SERVICE — Connexion utilisateur v15.0.0 chargée."
+    "BMJ SERVICE — Connexion locale v16.0.0 chargée."
+);
+
+console.log(
+    "Mode : localStorage / navigateur uniquement."
 );
 </script>
 
