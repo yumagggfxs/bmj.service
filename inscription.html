@@ -757,830 +757,79 @@
             </div>
      
 <script>
+/* ============================================================
+   BMJ SERVICE — INSCRIPTION COMPLÈTE
+   Connexion directe avec le serveur Render
+   Redirection automatique vers dashboard.html
+   ============================================================ */
+
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* ============================================================
-       BMJ SERVICE — LISTE COMPLETE DES PAYS
-    ============================================================ */
+    "use strict";
 
-    const paysSelect = document.getElementById("pays");
-    const indicatifInput = document.getElementById("indicatif");
-    const villeSelect = document.getElementById("ville");
-    const drapeauPays = document.getElementById("drapeauPays");
+    /* =========================================================
+       CONFIGURATION SERVEUR
+    ========================================================= */
 
-    if (!paysSelect) {
-        console.error("Champ #pays introuvable.");
+    const API_BASE = "https://back-end-8i4t.onrender.com";
+
+    const INSCRIPTION_URL =
+        API_BASE + "/api/inscription";
+
+
+    /* =========================================================
+       RÉCUPÉRATION DES ÉLÉMENTS HTML
+    ========================================================= */
+
+    let formInscription =
+        document.getElementById("formInscription");
+
+    let paysElement =
+        document.getElementById("pays");
+
+    const indicatifElement =
+        document.getElementById("indicatif");
+
+    const drapeauPays =
+        document.getElementById("drapeauPays");
+
+    const villeElement =
+        document.getElementById("ville");
+
+    const photoElement =
+        document.getElementById("photo");
+
+    const previewPhoto =
+        document.getElementById("previewPhoto");
+
+
+    /* =========================================================
+       VÉRIFICATION DU FORMULAIRE
+    ========================================================= */
+
+    if (!formInscription) {
+
+        console.error(
+            "BMJ SERVICE : #formInscription est introuvable."
+        );
+
         return;
     }
 
-    /* ============================================================
-       LISTE COMPLETE DES PAYS
-    ============================================================ */
 
-    const paysData = {
+    /* =========================================================
+       PAYS
+       Les noms complets sont utilisés comme valeur envoyée
+       au serveur.
+    ========================================================= */
 
-        "Afghanistan": {
-            iso: "af",
-            indicatif: "+93",
-            villes: ["Kaboul", "Kandahar", "Herat"]
-        },
+    const countries = [
 
-        "Afrique du Sud": {
-            iso: "za",
-            indicatif: "+27",
-            villes: ["Johannesburg", "Cape Town", "Durban", "Pretoria"]
-        },
-
-        "Albanie": {
-            iso: "al",
-            indicatif: "+355",
-            villes: ["Tirana", "Durrës", "Vlorë"]
-        },
-
-        "Algérie": {
-            iso: "dz",
-            indicatif: "+213",
-            villes: ["Alger", "Oran", "Constantine"]
-        },
-
-        "Allemagne": {
-            iso: "de",
-            indicatif: "+49",
-            villes: ["Berlin", "Munich", "Hambourg", "Francfort"]
-        },
-
-        "Andorre": {
-            iso: "ad",
-            indicatif: "+376",
-            villes: ["Andorre-la-Vieille"]
-        },
-
-        "Angola": {
-            iso: "ao",
-            indicatif: "+244",
-            villes: ["Luanda", "Huambo", "Lobito"]
-        },
-
-        "Antigua-et-Barbuda": {
-            iso: "ag",
-            indicatif: "+1",
-            villes: ["Saint John's"]
-        },
-
-        "Arabie saoudite": {
-            iso: "sa",
-            indicatif: "+966",
-            villes: ["Riyad", "Djeddah", "La Mecque"]
-        },
-
-        "Argentine": {
-            iso: "ar",
-            indicatif: "+54",
-            villes: ["Buenos Aires", "Córdoba", "Rosario"]
-        },
-
-        "Arménie": {
-            iso: "am",
-            indicatif: "+374",
-            villes: ["Erevan", "Gyumri"]
-        },
-
-        "Australie": {
-            iso: "au",
-            indicatif: "+61",
-            villes: ["Sydney", "Melbourne", "Brisbane"]
-        },
-
-        "Autriche": {
-            iso: "at",
-            indicatif: "+43",
-            villes: ["Vienne", "Graz", "Linz"]
-        },
-
-        "Azerbaïdjan": {
-            iso: "az",
-            indicatif: "+994",
-            villes: ["Bakou", "Ganja"]
-        },
-
-        "Bahamas": {
-            iso: "bs",
-            indicatif: "+1",
-            villes: ["Nassau", "Freeport"]
-        },
-
-        "Bahreïn": {
-            iso: "bh",
-            indicatif: "+973",
-            villes: ["Manama", "Riffa"]
-        },
-
-        "Bangladesh": {
-            iso: "bd",
-            indicatif: "+880",
-            villes: ["Dacca", "Chittagong", "Khulna"]
-        },
-
-        "Barbade": {
-            iso: "bb",
-            indicatif: "+1",
-            villes: ["Bridgetown"]
-        },
-
-        "Belgique": {
-            iso: "be",
-            indicatif: "+32",
-            villes: ["Bruxelles", "Anvers", "Liège", "Gand"]
-        },
-
-        "Belize": {
-            iso: "bz",
-            indicatif: "+501",
-            villes: ["Belmopan", "Belize City"]
-        },
-
-        "Bénin": {
-            iso: "bj",
-            indicatif: "+229",
-            villes: ["Cotonou", "Porto-Novo", "Parakou"]
-        },
-
-        "Bhoutan": {
-            iso: "bt",
-            indicatif: "+975",
-            villes: ["Thimphou", "Phuntsholing"]
-        },
-
-        "Biélorussie": {
-            iso: "by",
-            indicatif: "+375",
-            villes: ["Minsk", "Gomel"]
-        },
-
-        "Birmanie": {
-            iso: "mm",
-            indicatif: "+95",
-            villes: ["Naypyidaw", "Yangon", "Mandalay"]
-        },
-
-        "Bolivie": {
-            iso: "bo",
-            indicatif: "+591",
-            villes: ["La Paz", "Santa Cruz", "Cochabamba"]
-        },
-
-        "Bosnie-Herzégovine": {
-            iso: "ba",
-            indicatif: "+387",
-            villes: ["Sarajevo", "Banja Luka"]
-        },
-
-        "Botswana": {
-            iso: "bw",
-            indicatif: "+267",
-            villes: ["Gaborone", "Francistown"]
-        },
-
-        "Brésil": {
-            iso: "br",
-            indicatif: "+55",
-            villes: ["Brasília", "São Paulo", "Rio de Janeiro"]
-        },
-
-        "Brunei": {
-            iso: "bn",
-            indicatif: "+673",
-            villes: ["Bandar Seri Begawan"]
-        },
-
-        "Bulgarie": {
-            iso: "bg",
-            indicatif: "+359",
-            villes: ["Sofia", "Plovdiv", "Varna"]
-        },
-
-        "Burkina Faso": {
-            iso: "bf",
-            indicatif: "+226",
-            villes: ["Ouagadougou", "Bobo-Dioulasso", "Koudougou"]
-        },
-
-        "Burundi": {
-            iso: "bi",
-            indicatif: "+257",
-            villes: ["Bujumbura", "Gitega"]
-        },
-
-        "Cambodge": {
-            iso: "kh",
-            indicatif: "+855",
-            villes: ["Phnom Penh", "Siem Reap"]
-        },
-
-        "Cameroun": {
-            iso: "cm",
-            indicatif: "+237",
-            villes: ["Yaoundé", "Douala", "Bafoussam", "Garoua"]
-        },
-
-        "Canada": {
-            iso: "ca",
-            indicatif: "+1",
-            villes: ["Ottawa", "Toronto", "Montréal", "Vancouver"]
-        },
-
-        "Cap-Vert": {
-            iso: "cv",
-            indicatif: "+238",
-            villes: ["Praia", "Mindelo"]
-        },
-
-        "Chili": {
-            iso: "cl",
-            indicatif: "+56",
-            villes: ["Santiago", "Valparaíso", "Concepción"]
-        },
-
-        "Chine": {
-            iso: "cn",
-            indicatif: "+86",
-            villes: ["Pékin", "Shanghai", "Guangzhou", "Shenzhen"]
-        },
-
-        "Chypre": {
-            iso: "cy",
-            indicatif: "+357",
-            villes: ["Nicosie", "Limassol", "Larnaca"]
-        },
-
-        "Colombie": {
-            iso: "co",
-            indicatif: "+57",
-            villes: ["Bogota", "Medellín", "Cali"]
-        },
-
-        "Comores": {
-            iso: "km",
-            indicatif: "+269",
-            villes: ["Moroni", "Mutsamudu"]
-        },
-
-        "Congo-Brazzaville": {
-            iso: "cg",
-            indicatif: "+242",
-            villes: ["Brazzaville", "Pointe-Noire", "Dolisie"]
-        },
-
-        "Costa Rica": {
-            iso: "cr",
-            indicatif: "+506",
-            villes: ["San José", "Alajuela", "Cartago"]
-        },
-
-        "Côte d'Ivoire": {
-            iso: "ci",
-            indicatif: "+225",
-            villes: ["Abidjan", "Bouaké", "Yamoussoukro", "Korhogo"]
-        },
-
-        "Croatie": {
-            iso: "hr",
-            indicatif: "+385",
-            villes: ["Zagreb", "Split", "Rijeka"]
-        },
-
-        "Cuba": {
-            iso: "cu",
-            indicatif: "+53",
-            villes: ["La Havane", "Santiago de Cuba"]
-        },
-
-        "Danemark": {
-            iso: "dk",
-            indicatif: "+45",
-            villes: ["Copenhague", "Aarhus", "Odense"]
-        },
-
-        "Djibouti": {
-            iso: "dj",
-            indicatif: "+253",
-            villes: ["Djibouti"]
-        },
-
-        "Dominique": {
-            iso: "dm",
-            indicatif: "+1",
-            villes: ["Roseau"]
-        },
-
-        "Égypte": {
-            iso: "eg",
-            indicatif: "+20",
-            villes: ["Le Caire", "Alexandrie", "Gizeh"]
-        },
-
-        "Émirats arabes unis": {
-            iso: "ae",
-            indicatif: "+971",
-            villes: ["Abou Dhabi", "Dubaï", "Sharjah"]
-        },
-
-        "Équateur": {
-            iso: "ec",
-            indicatif: "+593",
-            villes: ["Quito", "Guayaquil", "Cuenca"]
-        },
-
-        "Espagne": {
-            iso: "es",
-            indicatif: "+34",
-            villes: ["Madrid", "Barcelone", "Valence", "Séville"]
-        },
-
-        "Estonie": {
-            iso: "ee",
-            indicatif: "+372",
-            villes: ["Tallinn", "Tartu"]
-        },
-
-        "Eswatini": {
-            iso: "sz",
-            indicatif: "+268",
-            villes: ["Mbabane", "Manzini"]
-        },
-
-        "États-Unis": {
-            iso: "us",
-            indicatif: "+1",
-            villes: ["Washington", "New York", "Los Angeles", "Chicago"]
-        },
-
-        "Éthiopie": {
-            iso: "et",
-            indicatif: "+251",
-            villes: ["Addis-Abeba", "Dire Dawa"]
-        },
-
-        "Fidji": {
-            iso: "fj",
-            indicatif: "+679",
-            villes: ["Suva", "Nadi"]
-        },
-
-        "Finlande": {
-            iso: "fi",
-            indicatif: "+358",
-            villes: ["Helsinki", "Espoo", "Tampere"]
-        },
-
-        "France": {
-            iso: "fr",
-            indicatif: "+33",
-            villes: ["Paris", "Lyon", "Marseille", "Toulouse"]
-        },
-
-        "Gabon": {
-            iso: "ga",
-            indicatif: "+241",
-            villes: ["Libreville", "Port-Gentil", "Franceville"]
-        },
-
-        "Gambie": {
-            iso: "gm",
-            indicatif: "+220",
-            villes: ["Banjul", "Serekunda"]
-        },
-
-        "Géorgie": {
-            iso: "ge",
-            indicatif: "+995",
-            villes: ["Tbilissi", "Batoumi"]
-        },
-
-        "Ghana": {
-            iso: "gh",
-            indicatif: "+233",
-            villes: ["Accra", "Kumasi", "Tamale"]
-        },
-
-        "Grèce": {
-            iso: "gr",
-            indicatif: "+30",
-            villes: ["Athènes", "Thessalonique", "Patras"]
-        },
-
-        "Grenade": {
-            iso: "gd",
-            indicatif: "+1",
-            villes: ["Saint-Georges"]
-        },
-
-        "Guatemala": {
-            iso: "gt",
-            indicatif: "+502",
-            villes: ["Guatemala", "Quetzaltenango"]
-        },
-
-        "Guinée": {
-            iso: "gn",
-            indicatif: "+224",
-            villes: ["Conakry", "Kankan", "Nzérékoré"]
-        },
-
-        "Guinée-Bissau": {
-            iso: "gw",
-            indicatif: "+245",
-            villes: ["Bissau"]
-        },
-
-        "Guinée équatoriale": {
-            iso: "gq",
-            indicatif: "+240",
-            villes: ["Malabo", "Bata"]
-        },
-
-        "Guyana": {
-            iso: "gy",
-            indicatif: "+592",
-            villes: ["Georgetown", "Linden"]
-        },
-
-        "Haïti": {
-            iso: "ht",
-            indicatif: "+509",
-            villes: ["Port-au-Prince", "Cap-Haïtien"]
-        },
-
-        "Honduras": {
-            iso: "hn",
-            indicatif: "+504",
-            villes: ["Tegucigalpa", "San Pedro Sula"]
-        },
-
-        "Hongrie": {
-            iso: "hu",
-            indicatif: "+36",
-            villes: ["Budapest", "Debrecen"]
-        },
-
-        "Inde": {
-            iso: "in",
-            indicatif: "+91",
-            villes: ["New Delhi", "Mumbai", "Bangalore", "Chennai"]
-        },
-
-        "Indonésie": {
-            iso: "id",
-            indicatif: "+62",
-            villes: ["Jakarta", "Surabaya", "Bandung"]
-        },
-
-        "Irak": {
-            iso: "iq",
-            indicatif: "+964",
-            villes: ["Bagdad", "Bassora", "Mossoul"]
-        },
-
-        "Iran": {
-            iso: "ir",
-            indicatif: "+98",
-            villes: ["Téhéran", "Ispahan", "Chiraz"]
-        },
-
-        "Irlande": {
-            iso: "ie",
-            indicatif: "+353",
-            villes: ["Dublin", "Cork", "Galway"]
-        },
-
-        "Islande": {
-            iso: "is",
-            indicatif: "+354",
-            villes: ["Reykjavik", "Kópavogur"]
-        },
-
-        "Israël": {
-            iso: "il",
-            indicatif: "+972",
-            villes: ["Jérusalem", "Tel Aviv", "Haïfa"]
-        },
-
-        "Italie": {
-            iso: "it",
-            indicatif: "+39",
-            villes: ["Rome", "Milan", "Naples", "Turin"]
-        },
-
-        "Jamaïque": {
-            iso: "jm",
-            indicatif: "+1",
-            villes: ["Kingston", "Montego Bay"]
-        },
-
-        "Japon": {
-            iso: "jp",
-            indicatif: "+81",
-            villes: ["Tokyo", "Osaka", "Kyoto", "Yokohama"]
-        },
-
-        "Jordanie": {
-            iso: "jo",
-            indicatif: "+962",
-            villes: ["Amman", "Zarqa", "Irbid"]
-        },
-
-        "Kazakhstan": {
-            iso: "kz",
-            indicatif: "+7",
-            villes: ["Astana", "Almaty", "Shymkent"]
-        },
-
-        "Kenya": {
-            iso: "ke",
-            indicatif: "+254",
-            villes: ["Nairobi", "Mombasa", "Kisumu"]
-        },
-
-        "Kirghizistan": {
-            iso: "kg",
-            indicatif: "+996",
-            villes: ["Bichkek", "Och"]
-        },
-
-        "Koweït": {
-            iso: "kw",
-            indicatif: "+965",
-            villes: ["Koweït", "Hawalli"]
-        },
-
-        "Laos": {
-            iso: "la",
-            indicatif: "+856",
-            villes: ["Vientiane", "Luang Prabang"]
-        },
-
-        "Lettonie": {
-            iso: "lv",
-            indicatif: "+371",
-            villes: ["Riga", "Daugavpils"]
-        },
-
-        "Liban": {
-            iso: "lb",
-            indicatif: "+961",
-            villes: ["Beyrouth", "Tripoli", "Sidon"]
-        },
-
-        "Lesotho": {
-            iso: "ls",
-            indicatif: "+266",
-            villes: ["Maseru", "Teyateyaneng"]
-        },
-
-        "Liberia": {
-            iso: "lr",
-            indicatif: "+231",
-            villes: ["Monrovia", "Gbarnga"]
-        },
-
-        "Libye": {
-            iso: "ly",
-            indicatif: "+218",
-            villes: ["Tripoli", "Benghazi", "Misrata"]
-        },
-
-        "Liechtenstein": {
-            iso: "li",
-            indicatif: "+423",
-            villes: ["Vaduz", "Schaan"]
-        },
-
-        "Lituanie": {
-            iso: "lt",
-            indicatif: "+370",
-            villes: ["Vilnius", "Kaunas", "Klaipėda"]
-        },
-
-        "Luxembourg": {
-            iso: "lu",
-            indicatif: "+352",
-            villes: ["Luxembourg", "Esch-sur-Alzette"]
-        },
-
-        "Madagascar": {
-            iso: "mg",
-            indicatif: "+261",
-            villes: ["Antananarivo", "Toamasina", "Antsirabe"]
-        },
-
-        "Malaisie": {
-            iso: "my",
-            indicatif: "+60",
-            villes: ["Kuala Lumpur", "George Town", "Johor Bahru"]
-        },
-
-        "Malawi": {
-            iso: "mw",
-            indicatif: "+265",
-            villes: ["Lilongwe", "Blantyre", "Mzuzu"]
-        },
-
-        "Mali": {
-            iso: "ml",
-            indicatif: "+223",
-            villes: ["Bamako", "Sikasso", "Mopti"]
-        },
-
-        "Malte": {
-            iso: "mt",
-            indicatif: "+356",
-            villes: ["La Valette", "Birkirkara"]
-        },
-
-        "Maroc": {
-            iso: "ma",
-            indicatif: "+212",
-            villes: ["Rabat", "Casablanca", "Marrakech", "Fès"]
-        },
-
-        "Maurice": {
-            iso: "mu",
-            indicatif: "+230",
-            villes: ["Port-Louis", "Beau Bassin", "Curepipe"]
-        },
-
-        "Mauritanie": {
-            iso: "mr",
-            indicatif: "+222",
-            villes: ["Nouakchott", "Nouadhibou"]
-        },
-
-        "Mexique": {
-            iso: "mx",
-            indicatif: "+52",
-            villes: ["Mexico", "Guadalajara", "Monterrey"]
-        },
-
-        "Moldavie": {
-            iso: "md",
-            indicatif: "+373",
-            villes: ["Chișinău", "Bălți"]
-        },
-
-        "Monaco": {
-            iso: "mc",
-            indicatif: "+377",
-            villes: ["Monaco"]
-        },
-
-        "Mongolie": {
-            iso: "mn",
-            indicatif: "+976",
-            villes: ["Oulan-Bator", "Erdenet"]
-        },
-
-        "Monténégro": {
-            iso: "me",
-            indicatif: "+382",
-            villes: ["Podgorica", "Budva"]
-        },
-
-        "Mozambique": {
-            iso: "mz",
-            indicatif: "+258",
-            villes: ["Maputo", "Matola", "Beira"]
-        },
-
-        "Namibie": {
-            iso: "na",
-            indicatif: "+264",
-            villes: ["Windhoek", "Walvis Bay"]
-        },
-
-        "Népal": {
-            iso: "np",
-            indicatif: "+977",
-            villes: ["Katmandou", "Pokhara"]
-        },
-
-        "Nicaragua": {
-            iso: "ni",
-            indicatif: "+505",
-            villes: ["Managua", "León", "Granada"]
-        },
-
-        "Niger": {
-            iso: "ne",
-            indicatif: "+227",
-            villes: ["Niamey", "Zinder", "Maradi"]
-        },
-
-        "Nigéria": {
-            iso: "ng",
-            indicatif: "+234",
-            villes: ["Abuja", "Lagos", "Kano", "Ibadan"]
-        },
-
-        "Norvège": {
-            iso: "no",
-            indicatif: "+47",
-            villes: ["Oslo", "Bergen", "Trondheim"]
-        },
-
-        "Nouvelle-Zélande": {
-            iso: "nz",
-            indicatif: "+64",
-            villes: ["Wellington", "Auckland", "Christchurch"]
-        },
-
-        "Oman": {
-            iso: "om",
-            indicatif: "+968",
-            villes: ["Mascate", "Salalah"]
-        },
-
-        "Ouganda": {
-            iso: "ug",
-            indicatif: "+256",
-            villes: ["Kampala", "Entebbe", "Jinja"]
-        },
-
-        "Ouzbékistan": {
-            iso: "uz",
-            indicatif: "+998",
-            villes: ["Tachkent", "Samarcande", "Boukhara"]
-        },
-
-        "Pakistan": {
-            iso: "pk",
-            indicatif: "+92",
-            villes: ["Islamabad", "Karachi", "Lahore"]
-        },
-
-        "Panama": {
-            iso: "pa",
-            indicatif: "+507",
-            villes: ["Panama", "Colón"]
-        },
-
-        "Papouasie-Nouvelle-Guinée": {
-            iso: "pg",
-            indicatif: "+675",
-            villes: ["Port Moresby", "Lae"]
-        },
-
-        "Paraguay": {
-            iso: "py",
-            indicatif: "+595",
-            villes: ["Asuncion", "Ciudad del Este"]
-        },
-
-        "Pays-Bas": {
-            iso: "nl",
-            indicatif: "+31",
-            villes: ["Amsterdam", "Rotterdam", "La Haye"]
-        },
-
-        "Pérou": {
-            iso: "pe",
-            indicatif: "+51",
-            villes: ["Lima", "Arequipa", "Cusco"]
-        },
-
-        "Philippines": {
-            iso: "ph",
-            indicatif: "+63",
-            villes: ["Manille", "Cebu", "Davao"]
-        },
-
-        "Pologne": {
-            iso: "pl",
-            indicatif: "+48",
-            villes: ["Varsovie", "Cracovie", "Gdańsk"]
-        },
-
-        "Portugal": {
-            iso: "pt",
-            indicatif: "+351",
-            villes: ["Lisbonne", "Porto", "Braga"]
-        },
-
-        "Qatar": {
-            iso: "qa",
-            indicatif: "+974",
-            villes: ["Doha", "Al Rayyan"]
-        },
-
-        "République Centrafricaine": {
-            iso: "cf",
-            indicatif: "+236",
-            villes: ["Bangui", "Bimbo"]
-        },
-
-        "République Démocratique du Congo": {
+        {
+            name: "République Démocratique du Congo",
             iso: "cd",
-            indicatif: "+243",
-            villes: [
+            phone: "+243",
+            cities: [
                 "Kinshasa",
                 "Lubumbashi",
                 "Goma",
@@ -1589,417 +838,695 @@ document.addEventListener("DOMContentLoaded", function () {
                 "Kisangani",
                 "Likasi",
                 "Mbuji-Mayi",
-                "Kananga"
+                "Kananga",
+                "Matadi"
             ]
         },
 
-        "République Dominicaine": {
-            iso: "do",
-            indicatif: "+1",
-            villes: ["Saint-Domingue", "Santiago"]
+        {
+            name: "Congo-Brazzaville",
+            iso: "cg",
+            phone: "+242",
+            cities: [
+                "Brazzaville",
+                "Pointe-Noire",
+                "Dolisie",
+                "Nkayi",
+                "Ouesso"
+            ]
         },
 
-        "République tchèque": {
-            iso: "cz",
-            indicatif: "+420",
-            villes: ["Prague", "Brno", "Ostrava"]
-        },
-
-        "Roumanie": {
-            iso: "ro",
-            indicatif: "+40",
-            villes: ["Bucarest", "Cluj-Napoca", "Timișoara"]
-        },
-
-        "Royaume-Uni": {
-            iso: "gb",
-            indicatif: "+44",
-            villes: ["Londres", "Manchester", "Birmingham", "Liverpool"]
-        },
-
-        "Russie": {
-            iso: "ru",
-            indicatif: "+7",
-            villes: ["Moscou", "Saint-Pétersbourg", "Novossibirsk"]
-        },
-
-        "Rwanda": {
-            iso: "rw",
-            indicatif: "+250",
-            villes: ["Kigali", "Butare", "Gisenyi"]
-        },
-
-        "Saint-Kitts-et-Nevis": {
-            iso: "kn",
-            indicatif: "+1",
-            villes: ["Basseterre"]
-        },
-
-        "Sainte-Lucie": {
-            iso: "lc",
-            indicatif: "+1",
-            villes: ["Castries"]
-        },
-
-        "Saint-Marin": {
-            iso: "sm",
-            indicatif: "+378",
-            villes: ["Saint-Marin"]
-        },
-
-        "Saint-Vincent-et-les-Grenadines": {
-            iso: "vc",
-            indicatif: "+1",
-            villes: ["Kingstown"]
-        },
-
-        "Salvador": {
-            iso: "sv",
-            indicatif: "+503",
-            villes: ["San Salvador", "Santa Ana"]
-        },
-
-        "Samoa": {
-            iso: "ws",
-            indicatif: "+685",
-            villes: ["Apia"]
-        },
-
-        "São Tomé-et-Príncipe": {
-            iso: "st",
-            indicatif: "+239",
-            villes: ["São Tomé"]
-        },
-
-        "Sénégal": {
-            iso: "sn",
-            indicatif: "+221",
-            villes: ["Dakar", "Thiès", "Saint-Louis", "Touba"]
-        },
-
-        "Serbie": {
-            iso: "rs",
-            indicatif: "+381",
-            villes: ["Belgrade", "Novi Sad", "Niš"]
-        },
-
-        "Seychelles": {
-            iso: "sc",
-            indicatif: "+248",
-            villes: ["Victoria", "Anse Royale"]
-        },
-
-        "Sierra Leone": {
-            iso: "sl",
-            indicatif: "+232",
-            villes: ["Freetown", "Bo"]
-        },
-
-        "Singapour": {
-            iso: "sg",
-            indicatif: "+65",
-            villes: ["Singapour"]
-        },
-
-        "Slovaquie": {
-            iso: "sk",
-            indicatif: "+421",
-            villes: ["Bratislava", "Košice"]
-        },
-
-        "Slovénie": {
-            iso: "si",
-            indicatif: "+386",
-            villes: ["Ljubljana", "Maribor"]
-        },
-
-        "Somalie": {
-            iso: "so",
-            indicatif: "+252",
-            villes: ["Mogadiscio", "Hargeisa"]
-        },
-
-        "Soudan": {
-            iso: "sd",
-            indicatif: "+249",
-            villes: ["Khartoum", "Omdurman"]
-        },
-
-        "Soudan du Sud": {
-            iso: "ss",
-            indicatif: "+211",
-            villes: ["Djouba", "Wau"]
-        },
-
-        "Sri Lanka": {
-            iso: "lk",
-            indicatif: "+94",
-            villes: ["Sri Jayawardenepura Kotte", "Colombo", "Kandy"]
-        },
-
-        "Suède": {
-            iso: "se",
-            indicatif: "+46",
-            villes: ["Stockholm", "Göteborg", "Malmö"]
-        },
-
-        "Suisse": {
-            iso: "ch",
-            indicatif: "+41",
-            villes: ["Berne", "Zurich", "Genève", "Lausanne"]
-        },
-
-        "Suriname": {
-            iso: "sr",
-            indicatif: "+597",
-            villes: ["Paramaribo", "Lelydorp"]
-        },
-
-        "Tadjikistan": {
-            iso: "tj",
-            indicatif: "+992",
-            villes: ["Douchanbé", "Khujand"]
-        },
-
-        "Taïwan": {
-            iso: "tw",
-            indicatif: "+886",
-            villes: ["Taipei", "Kaohsiung", "Taichung"]
-        },
-
-        "Tanzanie": {
-            iso: "tz",
-            indicatif: "+255",
-            villes: ["Dodoma", "Dar es Salaam", "Arusha", "Mwanza"]
-        },
-
-        "Tchad": {
-            iso: "td",
-            indicatif: "+235",
-            villes: ["N'Djamena", "Moundou"]
-        },
-
-        "Thaïlande": {
-            iso: "th",
-            indicatif: "+66",
-            villes: ["Bangkok", "Chiang Mai", "Pattaya"]
-        },
-
-        "Timor oriental": {
-            iso: "tl",
-            indicatif: "+670",
-            villes: ["Dili", "Baucau"]
-        },
-
-        "Togo": {
-            iso: "tg",
-            indicatif: "+228",
-            villes: ["Lomé", "Sokodé", "Kara"]
-        },
-
-        "Trinité-et-Tobago": {
-            iso: "tt",
-            indicatif: "+1",
-            villes: ["Port-d'Espagne", "San Fernando"]
-        },
-
-        "Tunisie": {
-            iso: "tn",
-            indicatif: "+216",
-            villes: ["Tunis", "Sfax", "Sousse"]
-        },
-
-        "Turquie": {
-            iso: "tr",
-            indicatif: "+90",
-            villes: ["Ankara", "Istanbul", "Izmir"]
-        },
-
-        "Ukraine": {
-            iso: "ua",
-            indicatif: "+380",
-            villes: ["Kyiv", "Lviv", "Odessa"]
-        },
-
-        "Uruguay": {
-            iso: "uy",
-            indicatif: "+598",
-            villes: ["Montevideo", "Salto"]
-        },
-
-        "Vanuatu": {
-            iso: "vu",
-            indicatif: "+678",
-            villes: ["Port-Vila", "Luganville"]
-        },
-
-        "Vatican": {
-            iso: "va",
-            indicatif: "+39",
-            villes: ["Cité du Vatican"]
-        },
-
-        "Venezuela": {
-            iso: "ve",
-            indicatif: "+58",
-            villes: ["Caracas", "Maracaibo", "Valencia"]
-        },
-
-        "Vietnam": {
-            iso: "vn",
-            indicatif: "+84",
-            villes: ["Hanoï", "Hô Chi Minh-Ville", "Da Nang"]
-        },
-
-        "Yémen": {
-            iso: "ye",
-            indicatif: "+967",
-            villes: ["Sanaa", "Aden", "Taëz"]
-        },
-
-        "Zambie": {
+        {
+            name: "Zambie",
             iso: "zm",
-            indicatif: "+260",
-            villes: ["Lusaka", "Kitwe", "Ndola", "Livingstone"]
+            phone: "+260",
+            cities: [
+                "Lusaka",
+                "Kitwe",
+                "Ndola",
+                "Livingstone",
+                "Kabwe"
+            ]
         },
 
-        "Zimbabwe": {
-            iso: "zw",
-            indicatif: "+263",
-            villes: ["Harare", "Bulawayo", "Mutare"]
+        {
+            name: "Tanzanie",
+            iso: "tz",
+            phone: "+255",
+            cities: [
+                "Dar es Salaam",
+                "Dodoma",
+                "Arusha",
+                "Mwanza",
+                "Mbeya"
+            ]
+        },
+
+        {
+            name: "France",
+            iso: "fr",
+            phone: "+33",
+            cities: [
+                "Paris",
+                "Marseille",
+                "Lyon",
+                "Toulouse",
+                "Nice",
+                "Nantes"
+            ]
+        },
+
+        {
+            name: "Côte d'Ivoire",
+            iso: "ci",
+            phone: "+225",
+            cities: [
+                "Abidjan",
+                "Bouaké",
+                "Yamoussoukro",
+                "Daloa",
+                "San-Pédro"
+            ]
+        },
+
+        {
+            name: "Cameroun",
+            iso: "cm",
+            phone: "+237",
+            cities: [
+                "Yaoundé",
+                "Douala",
+                "Bafoussam",
+                "Garoua",
+                "Bamenda"
+            ]
+        },
+
+        {
+            name: "Sénégal",
+            iso: "sn",
+            phone: "+221",
+            cities: [
+                "Dakar",
+                "Thiès",
+                "Touba",
+                "Saint-Louis",
+                "Kaolack"
+            ]
+        },
+
+        {
+            name: "Gabon",
+            iso: "ga",
+            phone: "+241",
+            cities: [
+                "Libreville",
+                "Port-Gentil",
+                "Franceville",
+                "Oyem",
+                "Moanda"
+            ]
+        },
+
+        {
+            name: "Togo",
+            iso: "tg",
+            phone: "+228",
+            cities: [
+                "Lomé",
+                "Sokodé",
+                "Kara",
+                "Atakpamé",
+                "Dapaong"
+            ]
+        },
+
+        {
+            name: "Bénin",
+            iso: "bj",
+            phone: "+229",
+            cities: [
+                "Cotonou",
+                "Porto-Novo",
+                "Parakou",
+                "Abomey",
+                "Ouidah"
+            ]
+        },
+
+        {
+            name: "Mali",
+            iso: "ml",
+            phone: "+223",
+            cities: [
+                "Bamako",
+                "Sikasso",
+                "Mopti",
+                "Ségou",
+                "Kayes"
+            ]
+        },
+
+        {
+            name: "Burkina Faso",
+            iso: "bf",
+            phone: "+226",
+            cities: [
+                "Ouagadougou",
+                "Bobo-Dioulasso",
+                "Koudougou",
+                "Banfora",
+                "Ouahigouya"
+            ]
+        },
+
+        {
+            name: "Rwanda",
+            iso: "rw",
+            phone: "+250",
+            cities: [
+                "Kigali",
+                "Butare",
+                "Gisenyi",
+                "Ruhengeri",
+                "Byumba"
+            ]
+        },
+
+        {
+            name: "Burundi",
+            iso: "bi",
+            phone: "+257",
+            cities: [
+                "Bujumbura",
+                "Gitega",
+                "Ngozi",
+                "Muyinga",
+                "Rutana"
+            ]
+        },
+
+        {
+            name: "Belgique",
+            iso: "be",
+            phone: "+32",
+            cities: [
+                "Bruxelles",
+                "Anvers",
+                "Gand",
+                "Liège",
+                "Charleroi"
+            ]
+        },
+
+        {
+            name: "Canada",
+            iso: "ca",
+            phone: "+1",
+            cities: [
+                "Montréal",
+                "Toronto",
+                "Ottawa",
+                "Vancouver",
+                "Québec"
+            ]
+        },
+
+        {
+            name: "Algérie",
+            iso: "dz",
+            phone: "+213",
+            cities: [
+                "Alger",
+                "Oran",
+                "Constantine",
+                "Annaba",
+                "Blida"
+            ]
+        },
+
+        {
+            name: "Maroc",
+            iso: "ma",
+            phone: "+212",
+            cities: [
+                "Casablanca",
+                "Rabat",
+                "Marrakech",
+                "Fès",
+                "Tanger"
+            ]
+        },
+
+        {
+            name: "Tunisie",
+            iso: "tn",
+            phone: "+216",
+            cities: [
+                "Tunis",
+                "Sfax",
+                "Sousse",
+                "Bizerte",
+                "Gabès"
+            ]
+        },
+
+        {
+            name: "Afrique du Sud",
+            iso: "za",
+            phone: "+27",
+            cities: [
+                "Johannesburg",
+                "Cape Town",
+                "Durban",
+                "Pretoria",
+                "Port Elizabeth"
+            ]
+        },
+
+        {
+            name: "Nigéria",
+            iso: "ng",
+            phone: "+234",
+            cities: [
+                "Lagos",
+                "Abuja",
+                "Kano",
+                "Ibadan",
+                "Port Harcourt"
+            ]
+        },
+
+        {
+            name: "Kenya",
+            iso: "ke",
+            phone: "+254",
+            cities: [
+                "Nairobi",
+                "Mombasa",
+                "Kisumu",
+                "Nakuru",
+                "Eldoret"
+            ]
+        },
+
+        {
+            name: "Angola",
+            iso: "ao",
+            phone: "+244",
+            cities: [
+                "Luanda",
+                "Huambo",
+                "Lobito",
+                "Benguela",
+                "Lubango"
+            ]
+        },
+
+        {
+            name: "Allemagne",
+            iso: "de",
+            phone: "+49",
+            cities: [
+                "Berlin",
+                "Hambourg",
+                "Munich",
+                "Francfort",
+                "Cologne"
+            ]
+        },
+
+        {
+            name: "Espagne",
+            iso: "es",
+            phone: "+34",
+            cities: [
+                "Madrid",
+                "Barcelone",
+                "Valence",
+                "Séville",
+                "Bilbao"
+            ]
+        },
+
+        {
+            name: "Italie",
+            iso: "it",
+            phone: "+39",
+            cities: [
+                "Rome",
+                "Milan",
+                "Naples",
+                "Turin",
+                "Florence"
+            ]
+        },
+
+        {
+            name: "Royaume-Uni",
+            iso: "gb",
+            phone: "+44",
+            cities: [
+                "Londres",
+                "Manchester",
+                "Birmingham",
+                "Liverpool",
+                "Glasgow"
+            ]
+        },
+
+        {
+            name: "États-Unis",
+            iso: "us",
+            phone: "+1",
+            cities: [
+                "New York",
+                "Los Angeles",
+                "Chicago",
+                "Houston",
+                "Miami"
+            ]
+        },
+
+        {
+            name: "Chine",
+            iso: "cn",
+            phone: "+86",
+            cities: [
+                "Pékin",
+                "Shanghai",
+                "Guangzhou",
+                "Shenzhen",
+                "Chengdu"
+            ]
+        },
+
+        {
+            name: "Inde",
+            iso: "in",
+            phone: "+91",
+            cities: [
+                "New Delhi",
+                "Mumbai",
+                "Bangalore",
+                "Hyderabad",
+                "Chennai"
+            ]
+        },
+
+        {
+            name: "Brésil",
+            iso: "br",
+            phone: "+55",
+            cities: [
+                "Brasília",
+                "São Paulo",
+                "Rio de Janeiro",
+                "Salvador",
+                "Fortaleza"
+            ]
         }
-    };
 
-    /* ============================================================
-       REMPLIR LE SELECT PAYS
-    ============================================================ */
+    ];
 
-    function remplirPays() {
+
+    /* =========================================================
+       TRANSFORMER #pays EN SELECT SI NÉCESSAIRE
+       Cela corrige le problème lorsque le HTML possède un
+       input au lieu d'un véritable select.
+    ========================================================= */
+
+    if (paysElement) {
+
+        if (
+            paysElement.tagName.toLowerCase() !== "select"
+        ) {
+
+            const ancienPays =
+                paysElement;
+
+            const nouveauPays =
+                document.createElement("select");
+
+            /*
+             * Conservation des attributs importants
+             */
+
+            Array.from(
+                ancienPays.attributes
+            ).forEach(attribute => {
+
+                if (
+                    attribute.name !== "type"
+                ) {
+
+                    try {
+
+                        nouveauPays.setAttribute(
+                            attribute.name,
+                            attribute.value
+                        );
+
+                    } catch (error) {}
+                }
+            });
+
+            nouveauPays.id = "pays";
+
+            if (!nouveauPays.name) {
+                nouveauPays.name = "pays";
+            }
+
+            nouveauPays.className =
+                ancienPays.className;
+
+            nouveauPays.innerHTML =
+                ancienPays.innerHTML;
+
+            ancienPays.replaceWith(
+                nouveauPays
+            );
+
+            paysElement =
+                nouveauPays;
+        }
+
+    } else {
 
         /*
-           On vide complètement le select pour éviter
-           les anciennes options qui peuvent bloquer
-           la sélection.
-        */
+         * Si #pays n'existe pas, on ne peut pas savoir où
+         * l'insérer correctement.
+         */
 
-        paysSelect.innerHTML = "";
+        console.error(
+            "BMJ SERVICE : #pays est introuvable dans le HTML."
+        );
+    }
 
-        const optionInitiale =
+
+    /* =========================================================
+       REMPLIR LA LISTE DES PAYS
+    ========================================================= */
+
+    function populateCountries() {
+
+        if (!paysElement) {
+            return;
+        }
+
+        paysElement.innerHTML = "";
+
+        const placeholder =
             document.createElement("option");
 
-        optionInitiale.value = "";
+        placeholder.value = "";
 
-        optionInitiale.textContent =
+        placeholder.textContent =
             "Sélectionnez votre pays";
 
-        optionInitiale.disabled = true;
+        placeholder.disabled = true;
 
-        optionInitiale.selected = true;
+        placeholder.selected = true;
 
-        paysSelect.appendChild(
-            optionInitiale
+        paysElement.appendChild(
+            placeholder
         );
 
-        /*
-           Tri alphabétique
-        */
+        countries.forEach(country => {
 
-        const paysTries =
-            Object.keys(paysData)
-                .sort(
-                    (a, b) =>
-                        a.localeCompare(
-                            b,
-                            "fr"
-                        )
+            const option =
+                document.createElement("option");
+
+            /*
+             * IMPORTANT :
+             * La valeur est le NOM COMPLET du pays.
+             * Le serveur recevra donc :
+             *
+             * République Démocratique du Congo
+             *
+             * et non simplement "cd".
+             */
+
+            option.value =
+                country.name;
+
+            option.textContent =
+                country.name;
+
+            option.dataset.iso =
+                country.iso;
+
+            option.dataset.phone =
+                country.phone;
+
+            paysElement.appendChild(
+                option
+            );
+        });
+    }
+
+
+    populateCountries();
+
+
+    /* =========================================================
+       TROUVER UN PAYS
+    ========================================================= */
+
+    function getSelectedCountry() {
+
+        if (!paysElement) {
+            return null;
+        }
+
+        const value =
+            String(
+                paysElement.value || ""
+            ).trim();
+
+        return countries.find(
+            country =>
+                country.name === value
+        ) || null;
+    }
+
+
+    /* =========================================================
+       METTRE À JOUR L'INDICATIF
+    ========================================================= */
+
+    function updateIndicatif(country) {
+
+        if (
+            !indicatifElement ||
+            !country
+        ) {
+            return;
+        }
+
+        const tag =
+            indicatifElement.tagName.toLowerCase();
+
+
+        /*
+         * Si indicatif est un SELECT
+         */
+
+        if (tag === "select") {
+
+            let option =
+                Array.from(
+                    indicatifElement.options
+                ).find(
+                    item =>
+                        item.value ===
+                        country.phone
                 );
 
-        paysTries.forEach(
-            pays => {
+            if (!option) {
 
-                const option =
+                option =
                     document.createElement(
                         "option"
                     );
 
                 option.value =
-                    pays;
+                    country.phone;
 
                 option.textContent =
-                    pays;
+                    country.phone;
 
-                paysSelect.appendChild(
+                indicatifElement.appendChild(
                     option
                 );
             }
-        );
 
-        console.log(
-            "BMJ SERVICE :",
-            paysTries.length,
-            "pays chargés."
-        );
-    }
-
-    /* ============================================================
-       MISE A JOUR PAYS
-    ============================================================ */
-
-    function mettreAJourPays() {
-
-        const pays =
-            paysSelect.value;
-
-        const info =
-            paysData[pays];
-
-        if (!info) {
-
-            if (indicatifInput) {
-
-                indicatifInput.value =
-                    "";
-            }
-
-            if (villeSelect) {
-
-                villeSelect.innerHTML = `
-                    <option value="">
-                        Sélectionnez d'abord votre pays
-                    </option>
-                `;
-            }
-
-            if (drapeauPays) {
-
-                drapeauPays.style.display =
-                    "none";
-            }
+            indicatifElement.value =
+                country.phone;
 
             return;
         }
 
-        /* --------------------------------------------------------
-           INDICATIF
-        -------------------------------------------------------- */
 
-        if (indicatifInput) {
+        /*
+         * Si indicatif est un INPUT
+         */
 
-            indicatifInput.value =
-                info.indicatif;
+        if (
+            tag === "input" ||
+            tag === "textarea"
+        ) {
+
+            indicatifElement.value =
+                country.phone;
+
+            return;
         }
 
-        /* --------------------------------------------------------
-           DRAPEAU
-        -------------------------------------------------------- */
 
-        if (drapeauPays) {
+        /*
+         * Si c'est un SPAN / DIV
+         */
+
+        indicatifElement.textContent =
+            country.phone;
+    }
+
+
+    /* =========================================================
+       METTRE À JOUR LE DRAPEAU
+    ========================================================= */
+
+    function updateFlag(country) {
+
+        if (
+            !drapeauPays ||
+            !country
+        ) {
+            return;
+        }
+
+        const flagURL =
+            "https://flagcdn.com/w160/" +
+            country.iso +
+            ".png";
+
+
+        /*
+         * IMAGE
+         */
+
+        if (
+            drapeauPays.tagName.toLowerCase()
+            === "img"
+        ) {
 
             drapeauPays.src =
-                `https://flagcdn.com/w160/${info.iso}.png`;
+                flagURL;
 
             drapeauPays.alt =
-                `Drapeau ${pays}`;
+                "Drapeau " +
+                country.name;
 
             drapeauPays.style.display =
                 "block";
@@ -2010,79 +1537,1912 @@ document.addEventListener("DOMContentLoaded", function () {
                     this.style.display =
                         "none";
                 };
+
+            return;
         }
 
-        /* --------------------------------------------------------
-           VILLES
-        -------------------------------------------------------- */
 
-        if (villeSelect) {
+        /*
+         * AUTRE ÉLÉMENT
+         */
 
-            villeSelect.innerHTML = "";
+        drapeauPays.style.backgroundImage =
+            `url("${flagURL}")`;
 
-            const optionVille =
+        drapeauPays.style.backgroundSize =
+            "cover";
+
+        drapeauPays.style.backgroundPosition =
+            "center";
+
+        drapeauPays.style.backgroundRepeat =
+            "no-repeat";
+    }
+
+
+    /* =========================================================
+       REMPLIR LES VILLES
+    ========================================================= */
+
+    function updateCities(country) {
+
+        if (!villeElement) {
+            return;
+        }
+
+        const tag =
+            villeElement.tagName.toLowerCase();
+
+
+        /*
+         * SI VILLE EST UN SELECT
+         */
+
+        if (tag === "select") {
+
+            villeElement.innerHTML =
+                "";
+
+            const placeholder =
                 document.createElement(
                     "option"
                 );
 
-            optionVille.value = "";
+            placeholder.value =
+                "";
 
-            optionVille.textContent =
-                "Sélectionnez votre ville";
+            placeholder.textContent =
+                country
+                    ? "Sélectionnez votre ville"
+                    : "Sélectionnez d'abord votre pays";
 
-            optionVille.disabled = true;
+            placeholder.disabled =
+                true;
 
-            optionVille.selected = true;
+            placeholder.selected =
+                true;
 
-            villeSelect.appendChild(
-                optionVille
+            villeElement.appendChild(
+                placeholder
             );
 
-            info.villes.forEach(
-                ville => {
 
-                    const option =
-                        document.createElement(
-                            "option"
+            if (country) {
+
+                country.cities.forEach(
+                    city => {
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+                        option.value =
+                            city;
+
+                        option.textContent =
+                            city;
+
+                        villeElement.appendChild(
+                            option
                         );
+                    }
+                );
+            }
 
-                    option.value =
-                        ville;
-
-                    option.textContent =
-                        ville;
-
-                    villeSelect.appendChild(
-                        option
-                    );
-                }
-            );
+            return;
         }
 
-        console.log(
-            "Pays sélectionné :",
-            pays,
-            "| Indicatif :",
-            info.indicatif
+
+        /*
+         * SI VILLE EST UN INPUT
+         * On crée un datalist.
+         */
+
+        if (tag === "input") {
+
+            const datalistId =
+                "bmjVillesDatalist";
+
+            let datalist =
+                document.getElementById(
+                    datalistId
+                );
+
+            if (!datalist) {
+
+                datalist =
+                    document.createElement(
+                        "datalist"
+                    );
+
+                datalist.id =
+                    datalistId;
+
+                document.body.appendChild(
+                    datalist
+                );
+            }
+
+            datalist.innerHTML =
+                "";
+
+            if (country) {
+
+                country.cities.forEach(
+                    city => {
+
+                        const option =
+                            document.createElement(
+                                "option"
+                            );
+
+                        option.value =
+                            city;
+
+                        datalist.appendChild(
+                            option
+                        );
+                    }
+                );
+            }
+
+            villeElement.setAttribute(
+                "list",
+                datalistId
+            );
+        }
+    }
+
+
+    /* =========================================================
+       CHANGEMENT DE PAYS
+    ========================================================= */
+
+    if (paysElement) {
+
+        paysElement.addEventListener(
+            "change",
+            function () {
+
+                const country =
+                    getSelectedCountry();
+
+                if (!country) {
+                    return;
+                }
+
+                updateIndicatif(
+                    country
+                );
+
+                updateFlag(
+                    country
+                );
+
+                updateCities(
+                    country
+                );
+
+                /*
+                 * Nettoyage éventuel
+                 */
+
+                if (villeElement) {
+
+                    if (
+                        villeElement.tagName
+                            .toLowerCase() ===
+                        "input"
+                    ) {
+
+                        villeElement.value =
+                            "";
+
+                    }
+                }
+
+            }
         );
     }
 
-    /* ============================================================
-       EVENEMENT
-    ============================================================ */
 
-    paysSelect.addEventListener(
-        "change",
-        mettreAJourPays
+    /* =========================================================
+       INITIALISATION VILLE
+    ========================================================= */
+
+    updateCities(null);
+
+
+    /* =========================================================
+       PHOTO — APERÇU
+    ========================================================= */
+
+    let photoData =
+        null;
+
+    if (photoElement) {
+
+        photoElement.addEventListener(
+            "change",
+            function () {
+
+                const file =
+                    this.files &&
+                    this.files[0];
+
+                if (!file) {
+
+                    photoData = null;
+
+                    if (previewPhoto) {
+
+                        previewPhoto.src =
+                            "";
+
+                        previewPhoto.style.display =
+                            "none";
+                    }
+
+                    return;
+                }
+
+
+                /*
+                 * Vérification type
+                 */
+
+                if (
+                    !file.type.startsWith(
+                        "image/"
+                    )
+                ) {
+
+                    showToast(
+                        "Veuillez sélectionner une image valide.",
+                        "error"
+                    );
+
+                    this.value = "";
+
+                    photoData = null;
+
+                    return;
+                }
+
+
+                /*
+                 * Taille maximale : 2 MB
+                 */
+
+                if (
+                    file.size >
+                    2 * 1024 * 1024
+                ) {
+
+                    showToast(
+                        "La photo ne doit pas dépasser 2 Mo.",
+                        "error"
+                    );
+
+                    this.value = "";
+
+                    photoData = null;
+
+                    return;
+                }
+
+
+                const reader =
+                    new FileReader();
+
+                reader.onload =
+                    function (event) {
+
+                        photoData =
+                            event.target.result;
+
+                        if (previewPhoto) {
+
+                            previewPhoto.src =
+                                photoData;
+
+                            previewPhoto.style.display =
+                                "block";
+                        }
+                    };
+
+                reader.onerror =
+                    function () {
+
+                        photoData = null;
+
+                        showToast(
+                            "Impossible de lire la photo.",
+                            "error"
+                        );
+                    };
+
+                reader.readAsDataURL(
+                    file
+                );
+            }
+        );
+    }
+
+
+    /* =========================================================
+       TOAST PROFESSIONNEL
+    ========================================================= */
+
+    function createToastContainer() {
+
+        let container =
+            document.getElementById(
+                "bmjToastContainer"
+            );
+
+        if (container) {
+            return container;
+        }
+
+        container =
+            document.createElement("div");
+
+        container.id =
+            "bmjToastContainer";
+
+        container.style.position =
+            "fixed";
+
+        container.style.top =
+            "20px";
+
+        container.style.right =
+            "20px";
+
+        container.style.zIndex =
+            "999999";
+
+        container.style.display =
+            "flex";
+
+        container.style.flexDirection =
+            "column";
+
+        container.style.gap =
+            "12px";
+
+        container.style.width =
+            "min(390px, calc(100vw - 30px))";
+
+        document.body.appendChild(
+            container
+        );
+
+        return container;
+    }
+
+
+    function showToast(
+        message,
+        type = "info"
+    ) {
+
+        const container =
+            createToastContainer();
+
+        const toast =
+            document.createElement("div");
+
+        toast.style.background =
+            "#ffffff";
+
+        toast.style.borderRadius =
+            "14px";
+
+        toast.style.padding =
+            "15px 18px";
+
+        toast.style.boxShadow =
+            "0 15px 40px rgba(0,0,0,.18)";
+
+        toast.style.border =
+            "1px solid #e5e7eb";
+
+        toast.style.display =
+            "flex";
+
+        toast.style.alignItems =
+            "center";
+
+        toast.style.gap =
+            "12px";
+
+        toast.style.fontFamily =
+            "Arial, sans-serif";
+
+        toast.style.fontSize =
+            "14px";
+
+        toast.style.fontWeight =
+            "600";
+
+        toast.style.color =
+            "#1f2937";
+
+        toast.style.transform =
+            "translateX(30px)";
+
+        toast.style.opacity =
+            "0";
+
+        toast.style.transition =
+            "all .3s ease";
+
+
+        let icon =
+            "fa-circle-info";
+
+        if (type === "success") {
+            icon =
+                "fa-circle-check";
+        }
+
+        if (type === "error") {
+            icon =
+                "fa-circle-exclamation";
+        }
+
+
+        const iconElement =
+            document.createElement("i");
+
+        iconElement.className =
+            "fa-solid " + icon;
+
+        iconElement.style.fontSize =
+            "20px";
+
+
+        if (type === "success") {
+            iconElement.style.color =
+                "#16803c";
+        } else if (type === "error") {
+            iconElement.style.color =
+                "#dc2626";
+        } else {
+            iconElement.style.color =
+                "#145a86";
+        }
+
+
+        const text =
+            document.createElement("span");
+
+        text.textContent =
+            message;
+
+
+        toast.appendChild(
+            iconElement
+        );
+
+        toast.appendChild(
+            text
+        );
+
+        container.appendChild(
+            toast
+        );
+
+
+        requestAnimationFrame(
+            function () {
+
+                toast.style.opacity =
+                    "1";
+
+                toast.style.transform =
+                    "translateX(0)";
+            }
+        );
+
+
+        setTimeout(
+            function () {
+
+                toast.style.opacity =
+                    "0";
+
+                toast.style.transform =
+                    "translateX(30px)";
+
+                setTimeout(
+                    function () {
+
+                        toast.remove();
+
+                    },
+                    300
+                );
+
+            },
+            4500
+        );
+    }
+
+
+    /* =========================================================
+       MODALE DE CONFIRMATION
+    ========================================================= */
+
+    function createConfirmationModal() {
+
+        let modal =
+            document.getElementById(
+                "bmjConfirmModal"
+            );
+
+        if (modal) {
+            return modal;
+        }
+
+        modal =
+            document.createElement("div");
+
+        modal.id =
+            "bmjConfirmModal";
+
+        modal.style.position =
+            "fixed";
+
+        modal.style.inset =
+            "0";
+
+        modal.style.background =
+            "rgba(15,23,42,.72)";
+
+        modal.style.backdropFilter =
+            "blur(8px)";
+
+        modal.style.webkitBackdropFilter =
+            "blur(8px)";
+
+        modal.style.display =
+            "none";
+
+        modal.style.alignItems =
+            "center";
+
+        modal.style.justifyContent =
+            "center";
+
+        modal.style.padding =
+            "20px";
+
+        modal.style.zIndex =
+            "999998";
+
+
+        modal.innerHTML = `
+
+            <div
+                id="bmjConfirmBox"
+                style="
+                    width:min(500px,100%);
+                    background:#ffffff;
+                    border-radius:22px;
+                    padding:30px;
+                    box-shadow:0 30px 80px rgba(0,0,0,.28);
+                    font-family:Arial,sans-serif;
+                    text-align:center;
+                "
+            >
+
+                <div
+                    style="
+                        width:70px;
+                        height:70px;
+                        margin:0 auto 18px;
+                        border-radius:50%;
+                        background:rgba(20,90,134,.10);
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                    "
+                >
+
+                    <i
+                        class="fa-solid fa-user-plus"
+                        style="
+                            font-size:28px;
+                            color:#145a86;
+                        "
+                    ></i>
+
+                </div>
+
+                <h2
+                    style="
+                        margin:0 0 10px;
+                        color:#172033;
+                        font-size:23px;
+                    "
+                >
+                    Confirmer votre inscription
+                </h2>
+
+                <p
+                    id="bmjConfirmText"
+                    style="
+                        margin:0 0 25px;
+                        color:#64748b;
+                        line-height:1.6;
+                        font-size:14px;
+                    "
+                >
+                    Vérifiez vos informations avant de créer votre compte.
+                </p>
+
+                <div
+                    style="
+                        display:flex;
+                        gap:12px;
+                        justify-content:center;
+                    "
+                >
+
+                    <button
+                        type="button"
+                        id="bmjCancelConfirm"
+                        style="
+                            border:1px solid #dbe2ea;
+                            background:#ffffff;
+                            color:#334155;
+                            padding:12px 20px;
+                            border-radius:11px;
+                            cursor:pointer;
+                            font-weight:700;
+                        "
+                    >
+                        Annuler
+                    </button>
+
+                    <button
+                        type="button"
+                        id="bmjConfirmRegistration"
+                        style="
+                            border:0;
+                            background:#145a86;
+                            color:#ffffff;
+                            padding:12px 22px;
+                            border-radius:11px;
+                            cursor:pointer;
+                            font-weight:700;
+                        "
+                    >
+                        <i class="fa-solid fa-check"></i>
+                        Créer mon compte
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+
+        document.body.appendChild(
+            modal
+        );
+
+        return modal;
+    }
+
+
+    /* =========================================================
+       FERMER LA MODALE
+    ========================================================= */
+
+    let pendingRegistration =
+        null;
+
+
+    function closeConfirmation() {
+
+        const modal =
+            document.getElementById(
+                "bmjConfirmModal"
+            );
+
+        if (modal) {
+
+            modal.style.display =
+                "none";
+        }
+
+        pendingRegistration =
+            null;
+    }
+
+
+    /* =========================================================
+       VALIDATION DES DONNÉES
+    ========================================================= */
+
+    function getValue(id) {
+
+        const element =
+            document.getElementById(id);
+
+        if (!element) {
+            return "";
+        }
+
+        return String(
+            element.value || ""
+        ).trim();
+    }
+
+
+    function validateRegistration() {
+
+        const nom =
+            getValue("nom") ||
+            getValue("name");
+
+        const email =
+            getValue("email");
+
+        const telephone =
+            getValue("telephone") ||
+            getValue("phone");
+
+        const domaine =
+            getValue("domaine");
+
+        const pays =
+            getValue("pays");
+
+        const ville =
+            getValue("ville");
+
+        const niveau =
+            getValue("niveau");
+
+        const password =
+            getValue("password") ||
+            getValue("mot_de_passe");
+
+        const confirmPassword =
+            getValue("confirmPassword") ||
+            getValue("confirmationPassword") ||
+            getValue("confirm_password") ||
+            getValue("mot_de_passe_confirmation");
+
+
+        if (nom.length < 2) {
+
+            showToast(
+                "Veuillez saisir votre nom complet.",
+                "error"
+            );
+
+            return null;
+        }
+
+
+        if (!email) {
+
+            showToast(
+                "Veuillez saisir votre adresse email.",
+                "error"
+            );
+
+            return null;
+        }
+
+
+        const emailRegex =
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(email)) {
+
+            showToast(
+                "Veuillez saisir une adresse email valide.",
+                "error"
+            );
+
+            return null;
+        }
+
+
+        if (!password) {
+
+            showToast(
+                "Veuillez saisir un mot de passe.",
+                "error"
+            );
+
+            return null;
+        }
+
+
+        if (password.length < 6) {
+
+            showToast(
+                "Le mot de passe doit contenir au moins 6 caractères.",
+                "error"
+            );
+
+            return null;
+        }
+
+
+        /*
+         * Vérification confirmation seulement si
+         * le champ existe dans la page.
+         */
+
+        const confirmationElement =
+            document.getElementById(
+                "confirmPassword"
+            ) ||
+            document.getElementById(
+                "confirmationPassword"
+            ) ||
+            document.getElementById(
+                "confirm_password"
+            ) ||
+            document.getElementById(
+                "mot_de_passe_confirmation"
+            );
+
+        if (
+            confirmationElement &&
+            password !== confirmPassword
+        ) {
+
+            showToast(
+                "Les deux mots de passe ne correspondent pas.",
+                "error"
+            );
+
+            return null;
+        }
+
+
+        if (!pays) {
+
+            showToast(
+                "Veuillez sélectionner votre pays.",
+                "error"
+            );
+
+            if (paysElement) {
+                paysElement.focus();
+            }
+
+            return null;
+        }
+
+
+        if (!ville) {
+
+            showToast(
+                "Veuillez sélectionner ou saisir votre ville.",
+                "error"
+            );
+
+            if (villeElement) {
+                villeElement.focus();
+            }
+
+            return null;
+        }
+
+
+        if (!domaine) {
+
+            showToast(
+                "Veuillez sélectionner votre domaine.",
+                "error"
+            );
+
+            return null;
+        }
+
+
+        if (!niveau) {
+
+            showToast(
+                "Veuillez sélectionner votre niveau.",
+                "error"
+            );
+
+            return null;
+        }
+
+
+        if (
+            telephone &&
+            telephone.replace(
+                /\D/g,
+                ""
+            ).length < 6
+        ) {
+
+            showToast(
+                "Veuillez saisir un numéro de téléphone valide.",
+                "error"
+            );
+
+            return null;
+        }
+
+
+        const country =
+            getSelectedCountry();
+
+        let finalTelephone =
+            telephone;
+
+        if (
+            country &&
+            telephone
+        ) {
+
+            const cleanedPhone =
+                telephone
+                    .replace(
+                        country.phone,
+                        ""
+                    )
+                    .trim();
+
+            finalTelephone =
+                country.phone +
+                " " +
+                cleanedPhone;
+        }
+
+
+        return {
+
+            nom,
+
+            email,
+
+            telephone:
+                finalTelephone,
+
+            domaine,
+
+            pays,
+
+            ville,
+
+            niveau,
+
+            password,
+
+            photo:
+                photoData || null
+        };
+    }
+
+
+    /* =========================================================
+       ENVOI AU SERVEUR
+    ========================================================= */
+
+    async function sendRegistration(
+        data
+    ) {
+
+        const controller =
+            new AbortController();
+
+        const timeout =
+            setTimeout(
+                function () {
+
+                    controller.abort();
+
+                },
+                30000
+            );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    INSCRIPTION_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+
+                            "Accept":
+                                "application/json"
+                        },
+
+                        body:
+                            JSON.stringify(
+                                data
+                            ),
+
+                        signal:
+                            controller.signal
+                    }
+                );
+
+
+            const rawText =
+                await response.text();
+
+            let result = {};
+
+            try {
+
+                result =
+                    rawText
+                        ? JSON.parse(
+                            rawText
+                        )
+                        : {};
+
+            } catch (jsonError) {
+
+                result = {
+                    success: false,
+                    message:
+                        rawText ||
+                        "Réponse invalide du serveur."
+                };
+            }
+
+
+            return {
+                response,
+                result
+            };
+
+        } finally {
+
+            clearTimeout(
+                timeout
+            );
+        }
+    }
+
+
+    /* =========================================================
+       NETTOYER L'UTILISATEUR AVANT LOCALSTORAGE
+    ========================================================= */
+
+    function sanitizeUser(user) {
+
+        const cleanUser =
+            {
+                ...(user || {})
+            };
+
+
+        /*
+         * Ne jamais conserver le mot de passe.
+         */
+
+        delete cleanUser.password;
+
+        delete cleanUser.mot_de_passe;
+
+        delete cleanUser.password_hash;
+
+
+        /*
+         * Compatibilité Premium
+         */
+
+        cleanUser.premium =
+            cleanUser.premium === true;
+
+        cleanUser.is_premium =
+            cleanUser.is_premium === true;
+
+
+        /*
+         * Compatibilité blocage
+         */
+
+        cleanUser.blocked =
+            cleanUser.blocked === true;
+
+        cleanUser.is_blocked =
+            cleanUser.is_blocked === true;
+
+
+        return cleanUser;
+    }
+
+
+    /* =========================================================
+       SAUVEGARDER L'UTILISATEUR
+    ========================================================= */
+
+    function saveCurrentUser(
+        user
+    ) {
+
+        const cleanUser =
+            sanitizeUser(
+                user
+            );
+
+
+        /*
+         * Session utilisateur principale
+         */
+
+        localStorage.setItem(
+            "bmj_current_user",
+            JSON.stringify(
+                cleanUser
+            )
+        );
+
+
+        /*
+         * Liste locale de compatibilité
+         */
+
+        let users = [];
+
+        try {
+
+            const stored =
+                localStorage.getItem(
+                    "bmj_users_list"
+                );
+
+            users =
+                stored
+                    ? JSON.parse(stored)
+                    : [];
+
+            if (!Array.isArray(users)) {
+                users = [];
+            }
+
+        } catch (error) {
+
+            users = [];
+        }
+
+
+        /*
+         * Remplacer l'ancien compte si présent.
+         */
+
+        const index =
+            users.findIndex(
+                item =>
+                    String(
+                        item.email || ""
+                    ).toLowerCase() ===
+                    String(
+                        cleanUser.email || ""
+                    ).toLowerCase()
+            );
+
+
+        if (index >= 0) {
+
+            users[index] =
+                {
+                    ...users[index],
+                    ...cleanUser
+                };
+
+        } else {
+
+            users.unshift(
+                cleanUser
+            );
+        }
+
+
+        /*
+         * Éviter un localStorage trop volumineux
+         */
+
+        if (users.length > 200) {
+
+            users =
+                users.slice(
+                    0,
+                    200
+                );
+        }
+
+
+        try {
+
+            localStorage.setItem(
+                "bmj_users_list",
+                JSON.stringify(
+                    users
+                )
+            );
+
+        } catch (error) {
+
+            console.warn(
+                "Impossible de sauvegarder bmj_users_list:",
+                error.message
+            );
+        }
+
+
+        return cleanUser;
+    }
+
+
+    /* =========================================================
+       BOUTON DE CHARGEMENT
+    ========================================================= */
+
+    function setButtonLoading(
+        loading
+    ) {
+
+        const submitButton =
+            formInscription.querySelector(
+                'button[type="submit"], input[type="submit"]'
+            );
+
+        if (!submitButton) {
+            return;
+        }
+
+
+        if (loading) {
+
+            submitButton.dataset.originalText =
+                submitButton.innerHTML ||
+                submitButton.value;
+
+            if (
+                submitButton.tagName
+                    .toLowerCase() ===
+                "input"
+            ) {
+
+                submitButton.value =
+                    "Création du compte...";
+
+            } else {
+
+                submitButton.innerHTML =
+                    `
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                    Création du compte...
+                    `;
+            }
+
+            submitButton.disabled =
+                true;
+
+        } else {
+
+            const original =
+                submitButton.dataset.originalText;
+
+            if (
+                submitButton.tagName
+                    .toLowerCase() ===
+                "input"
+            ) {
+
+                submitButton.value =
+                    original ||
+                    "Créer mon compte";
+
+            } else {
+
+                submitButton.innerHTML =
+                    original ||
+                    `
+                    <i class="fa-solid fa-user-plus"></i>
+                    Créer mon compte
+                    `;
+            }
+
+            submitButton.disabled =
+                false;
+        }
+    }
+
+
+    /* =========================================================
+       CRÉER LE COMPTE
+    ========================================================= */
+
+    async function createAccount(
+        data
+    ) {
+
+        if (!data) {
+            return;
+        }
+
+
+        setButtonLoading(
+            true
+        );
+
+
+        try {
+
+            showToast(
+                "Connexion au serveur BMJ SERVICE...",
+                "info"
+            );
+
+
+            /*
+             * APPEL DIRECT AU SERVEUR
+             *
+             * POST
+             * https://back-end-8i4t.onrender.com/api/inscription
+             */
+
+            const {
+                response,
+                result
+            } =
+                await sendRegistration(
+                    data
+                );
+
+
+            console.log(
+                "Réponse serveur inscription :",
+                result
+            );
+
+
+            /*
+             * EMAIL DÉJÀ UTILISÉ
+             */
+
+            if (
+                response.status ===
+                409
+            ) {
+
+                showToast(
+                    result.message ||
+                    "Cette adresse email est déjà utilisée.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /*
+             * ERREUR VALIDATION
+             */
+
+            if (
+                response.status ===
+                400
+            ) {
+
+                showToast(
+                    result.message ||
+                    "Les données envoyées sont invalides.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /*
+             * ERREUR SERVEUR
+             */
+
+            if (
+                response.status >=
+                500
+            ) {
+
+                showToast(
+                    result.message ||
+                    "Le serveur BMJ SERVICE a rencontré une erreur.",
+                    "error"
+                );
+
+                console.error(
+                    "Erreur serveur :",
+                    result.error ||
+                    result
+                );
+
+                return;
+            }
+
+
+            /*
+             * ERREUR RÉSEAU / CORS / ROUTE
+             */
+
+            if (
+                !response.ok
+            ) {
+
+                showToast(
+                    result.message ||
+                    "Impossible de communiquer avec le serveur.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /*
+             * LE SERVEUR DOIT RETOURNER success:true
+             */
+
+            if (
+                result.success !== true
+            ) {
+
+                showToast(
+                    result.message ||
+                    "L'inscription n'a pas été confirmée par le serveur.",
+                    "error"
+                );
+
+                return;
+            }
+
+
+            /*
+             * RÉCUPÉRATION DE L'UTILISATEUR
+             */
+
+            let user =
+                result.user ||
+                result.utilisateur ||
+                result.data?.user ||
+                result.data;
+
+
+            /*
+             * Sécurité : si le serveur dit que l'inscription
+             * est réussie mais ne retourne pas l'objet user,
+             * on reconstruit les informations de base.
+             */
+
+            if (
+                !user ||
+                typeof user !== "object"
+            ) {
+
+                user = {
+
+                    nom:
+                        data.nom,
+
+                    email:
+                        data.email,
+
+                    telephone:
+                        data.telephone,
+
+                    domaine:
+                        data.domaine,
+
+                    pays:
+                        data.pays,
+
+                    ville:
+                        data.ville,
+
+                    niveau:
+                        data.niveau,
+
+                    photo:
+                        data.photo,
+
+                    role:
+                        "user",
+
+                    premium:
+                        false,
+
+                    is_premium:
+                        false,
+
+                    blocked:
+                        false,
+
+                    is_blocked:
+                        false,
+
+                    certificate_authorized:
+                        false
+                };
+            }
+
+
+            /*
+             * IMPORTANT :
+             * On considère le compte créé uniquement après
+             * une réponse success:true du serveur.
+             */
+
+            const savedUser =
+                saveCurrentUser(
+                    user
+                );
+
+
+            console.log(
+                "Utilisateur BMJ SERVICE enregistré :",
+                {
+                    id:
+                        savedUser.id,
+
+                    email:
+                        savedUser.email,
+
+                    pays:
+                        savedUser.pays,
+
+                    ville:
+                        savedUser.ville
+                }
+            );
+
+
+            /*
+             * MESSAGE DE SUCCÈS
+             */
+
+            showToast(
+                "Inscription réussie. Redirection vers votre espace...",
+                "success"
+            );
+
+
+            /*
+             * FERMER LA MODALE
+             */
+
+            closeConfirmation();
+
+
+            /*
+             * REDIRECTION
+             *
+             * Le serveur a confirmé l'inscription.
+             */
+
+            setTimeout(
+                function () {
+
+                    window.location.href =
+                        "dashboard.html";
+
+                },
+                700
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur communication inscription :",
+                error
+            );
+
+
+            if (
+                error.name ===
+                "AbortError"
+            ) {
+
+                showToast(
+                    "Le serveur met trop de temps à répondre. Vérifiez que votre serveur Render est bien actif.",
+                    "error"
+                );
+
+            } else {
+
+                showToast(
+                    "Impossible de communiquer avec le serveur BMJ SERVICE. Vérifiez votre connexion et l'adresse du serveur.",
+                    "error"
+                );
+            }
+
+        } finally {
+
+            setButtonLoading(
+                false
+            );
+        }
+    }
+
+
+    /* =========================================================
+       SOUMISSION DU FORMULAIRE
+    ========================================================= */
+
+    formInscription.addEventListener(
+        "submit",
+        function (event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+
+            /*
+             * Empêcher deux inscriptions simultanées.
+             */
+
+            if (
+                formInscription.dataset.loading ===
+                "true"
+            ) {
+
+                return;
+            }
+
+
+            const data =
+                validateRegistration();
+
+
+            if (!data) {
+                return;
+            }
+
+
+            /*
+             * Sauvegarder temporairement les données
+             * uniquement en mémoire.
+             *
+             * Le mot de passe n'est PAS placé dans localStorage.
+             */
+
+            pendingRegistration =
+                data;
+
+
+            /*
+             * Créer la confirmation.
+             */
+
+            const modal =
+                createConfirmationModal();
+
+            const confirmText =
+                document.getElementById(
+                    "bmjConfirmText"
+                );
+
+
+            if (confirmText) {
+
+                confirmText.innerHTML =
+                    `
+                    Vous êtes sur le point de créer votre compte
+                    <strong>BMJ SERVICE</strong>.
+                    <br><br>
+                    <strong>${escapeHtml(data.nom)}</strong>
+                    <br>
+                    ${escapeHtml(data.email)}
+                    <br>
+                    ${escapeHtml(data.pays)}
+                    ${data.ville
+                        ? " — " +
+                          escapeHtml(data.ville)
+                        : ""}
+                    `;
+            }
+
+
+            modal.style.display =
+                "flex";
+        }
     );
 
-    /* ============================================================
-       INITIALISATION
-    ============================================================ */
 
-    remplirPays();
+    /* =========================================================
+       CONFIRMATION
+    ========================================================= */
 
-    mettreAJourPays();
+    const confirmationModal =
+        createConfirmationModal();
+
+    const cancelButton =
+        document.getElementById(
+            "bmjCancelConfirm"
+        );
+
+    const confirmButton =
+        document.getElementById(
+            "bmjConfirmRegistration"
+        );
+
+
+    if (cancelButton) {
+
+        cancelButton.addEventListener(
+            "click",
+            function () {
+
+                closeConfirmation();
+
+            }
+        );
+    }
+
+
+    if (confirmButton) {
+
+        confirmButton.addEventListener(
+            "click",
+            async function () {
+
+                if (
+                    !pendingRegistration
+                ) {
+                    return;
+                }
+
+                const data =
+                    pendingRegistration;
+
+                formInscription.dataset.loading =
+                    "true";
+
+                await createAccount(
+                    data
+                );
+
+                formInscription.dataset.loading =
+                    "false";
+            }
+        );
+    }
+
+
+    /*
+     * Fermer en cliquant sur l'arrière-plan.
+     */
+
+    confirmationModal.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target ===
+                confirmationModal
+            ) {
+
+                closeConfirmation();
+            }
+        }
+    );
+
+
+    /* =========================================================
+       ÉCHAPPEMENT HTML
+    ========================================================= */
+
+    function escapeHtml(
+        value
+    ) {
+
+        return String(
+            value || ""
+        )
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+    }
+
+
+    /* =========================================================
+       TOUCHE ESC POUR FERMER LA MODALE
+    ========================================================= */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key ===
+                "Escape"
+            ) {
+
+                closeConfirmation();
+            }
+        }
+    );
+
+
+    /* =========================================================
+       DIAGNOSTIC SERVEUR
+    ========================================================= */
+
+    /*
+     * On ne bloque PAS l'inscription si le serveur est encore
+     * en train de démarrer.
+     *
+     * Le vrai test se fait au moment de l'inscription.
+     */
+
+    console.log(
+        "================================================"
+    );
+
+    console.log(
+        "BMJ SERVICE — Formulaire d'inscription chargé"
+    );
+
+    console.log(
+        "Serveur :",
+        API_BASE
+    );
+
+    console.log(
+        "Route inscription :",
+        INSCRIPTION_URL
+    );
+
+    console.log(
+        "Nombre de pays disponibles :",
+        countries.length
+    );
+
+    console.log(
+        "Sélection pays :",
+        paysElement
+            ? paysElement.tagName
+            : "introuvable"
+    );
+
+    console.log(
+        "================================================"
+    );
 
 });
 </script>
