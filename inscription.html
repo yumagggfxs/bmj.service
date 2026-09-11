@@ -1810,7 +1810,6 @@
 
 
 <script>
-
 document.addEventListener("DOMContentLoaded", function () {
 
     "use strict";
@@ -1823,13 +1822,35 @@ document.addEventListener("DOMContentLoaded", function () {
     const API_BASE =
         "https://back-end-8i4t.onrender.com";
 
+    /*
+     * ROUTE PRINCIPALE D'INSCRIPTION
+     *
+     * Cette route correspond directement au serveur :
+     *
+     * POST /api/inscription
+     *
+     * Le serveur accepte :
+     * nom
+     * sexe
+     * email
+     * telephone
+     * domaine
+     * pays
+     * ville
+     * niveau
+     * password
+     * photo
+     */
 
     const INSCRIPTION_URL =
         API_BASE + "/api/inscription";
 
+    const HEALTH_URL =
+        API_BASE + "/api/health";
+
 
     /* =========================================================
-       ELEMENTS
+       ELEMENTS DU FORMULAIRE
     ========================================================= */
 
     const form =
@@ -1894,13 +1915,62 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       VERIFICATION
+       VERIFICATION FORMULAIRE
     ========================================================= */
 
     if (!form) {
 
         console.error(
-            "BMJ SERVICE : formulaire #formInscription introuvable."
+            "BMJ SERVICE : #formInscription introuvable."
+        );
+
+        return;
+    }
+
+
+    /* =========================================================
+       VERIFICATION ELEMENTS
+    ========================================================= */
+
+    const requiredElements = [
+
+        nom,
+        sexe,
+        pays,
+        indicatif,
+        telephone,
+        ville,
+        email,
+        domaine,
+        niveau,
+        password,
+        confirmPassword,
+        photo,
+        previewPhoto,
+        conditions,
+        btnInscription,
+        confirmationModal,
+        confirmationText,
+        cancelRegistration,
+        confirmRegistration
+
+    ];
+
+
+    const missingElements =
+        requiredElements.some(
+            function (element) {
+
+                return !element;
+
+            }
+        );
+
+
+    if (missingElements) {
+
+        console.error(
+            "BMJ SERVICE : certains éléments du formulaire sont introuvables."
         );
 
         return;
@@ -2359,33 +2429,28 @@ document.addEventListener("DOMContentLoaded", function () {
         pays.appendChild(placeholder);
 
 
-        countries.forEach(function (country) {
+        countries.forEach(
+            function (country) {
 
-            const option =
-                document.createElement("option");
+                const option =
+                    document.createElement("option");
 
-            /*
-             * IMPORTANT :
-             *
-             * La valeur envoyée au serveur est le nom
-             * COMPLET du pays.
-             */
+                option.value =
+                    country.name;
 
-            option.value =
-                country.name;
+                option.textContent =
+                    country.name;
 
-            option.textContent =
-                country.name;
+                option.dataset.iso =
+                    country.iso;
 
-            option.dataset.iso =
-                country.iso;
+                option.dataset.code =
+                    country.code;
 
-            option.dataset.code =
-                country.code;
+                pays.appendChild(option);
 
-            pays.appendChild(option);
-
-        });
+            }
+        );
 
     }
 
@@ -2433,18 +2498,20 @@ document.addEventListener("DOMContentLoaded", function () {
         ville.appendChild(placeholder);
 
 
-        country.cities.forEach(function (city) {
+        country.cities.forEach(
+            function (city) {
 
-            const option =
-                document.createElement("option");
+                const option =
+                    document.createElement("option");
 
-            option.value = city;
+                option.value = city;
 
-            option.textContent = city;
+                option.textContent = city;
 
-            ville.appendChild(option);
+                ville.appendChild(option);
 
-        });
+            }
+        );
 
     }
 
@@ -2454,6 +2521,10 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================================================= */
 
     populateCountries();
+
+    populateCities(null);
+
+    indicatif.value = "+243";
 
 
     /* =========================================================
@@ -2487,25 +2558,20 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /* INDICATIF */
-
             indicatif.value =
                 selectedCountry.code;
 
-
-            /* VILLES */
 
             populateCities(
                 selectedCountry
             );
 
 
-            /* DRAPEAU */
-
             const flag =
                 document.getElementById(
                     "drapeauPays"
                 );
+
 
             if (flag) {
 
@@ -2525,7 +2591,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       PHOTO PREVIEW
+       PHOTO
     ========================================================= */
 
     photo.addEventListener(
@@ -2536,6 +2602,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 photo.files &&
                 photo.files[0];
 
+
             if (!file) {
 
                 previewPhoto.src =
@@ -2545,7 +2612,9 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            if (!file.type.startsWith("image/")) {
+            if (
+                !file.type.startsWith("image/")
+            ) {
 
                 photo.value = "";
 
@@ -2561,11 +2630,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            /*
-             * LIMITE 2 MB
-             */
-
-            if (file.size > 2 * 1024 * 1024) {
+            if (
+                file.size >
+                2 * 1024 * 1024
+            ) {
 
                 photo.value = "";
 
@@ -2590,6 +2658,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     previewPhoto.src =
                         event.target.result;
+
+                };
+
+
+            reader.onerror =
+                function () {
+
+                    showToast(
+                        "Impossible de lire la photo.",
+                        "error"
+                    );
 
                 };
 
@@ -2628,6 +2707,18 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
+        if (
+            !toast ||
+            !icon ||
+            !text
+        ) {
+
+            alert(message);
+
+            return;
+        }
+
+
         text.textContent =
             message;
 
@@ -2646,7 +2737,9 @@ document.addEventListener("DOMContentLoaded", function () {
             icon.style.background =
                 "#ecfdf5";
 
-        } else if (type === "error") {
+        }
+
+        else if (type === "error") {
 
             icon.innerHTML =
                 '<i class="fa-solid fa-circle-exclamation"></i>';
@@ -2660,7 +2753,9 @@ document.addEventListener("DOMContentLoaded", function () {
             icon.style.background =
                 "#fef2f2";
 
-        } else {
+        }
+
+        else {
 
             icon.innerHTML =
                 '<i class="fa-solid fa-circle-info"></i>';
@@ -2673,6 +2768,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             icon.style.background =
                 "#e8f4fb";
+
         }
 
 
@@ -2698,7 +2794,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       VALIDATION
+       PROTECTION HTML
+    ========================================================= */
+
+    function escapeHtml(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================================================
+       VALIDATION FORMULAIRE
     ========================================================= */
 
     function validateForm() {
@@ -2775,7 +2887,9 @@ document.addEventListener("DOMContentLoaded", function () {
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
-        if (!emailRegex.test(emailValue)) {
+        if (
+            !emailRegex.test(emailValue)
+        ) {
 
             showToast(
                 "Veuillez entrer une adresse email valide.",
@@ -2840,7 +2954,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (passwordValue !== confirmValue) {
+        if (
+            passwordValue !==
+            confirmValue
+        ) {
 
             showToast(
                 "Les deux mots de passe ne correspondent pas.",
@@ -2872,19 +2989,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       MODAL
+       MODAL CONFIRMATION
     ========================================================= */
 
     function openModal() {
 
         const countryText =
-            pays.value || "Non renseigné";
+            pays.value ||
+            "Non renseigné";
 
         const cityText =
-            ville.value || "Non renseignée";
+            ville.value ||
+            "Non renseignée";
 
         const domainText =
-            domaine.value || "Non renseigné";
+            domaine.value ||
+            "Non renseigné";
 
 
         confirmationText.innerHTML =
@@ -2892,16 +3012,34 @@ document.addEventListener("DOMContentLoaded", function () {
             "Vous êtes sur le point de créer votre compte " +
             "<strong>BMJ SERVICE</strong>.<br><br>" +
 
+            "<strong>Nom :</strong> " +
+            escapeHtml(
+                nom.value.trim()
+            ) +
+            "<br>" +
+
+            "<strong>Email :</strong> " +
+            escapeHtml(
+                email.value.trim()
+            ) +
+            "<br>" +
+
             "<strong>Pays :</strong> " +
-            escapeHtml(countryText) +
+            escapeHtml(
+                countryText
+            ) +
             "<br>" +
 
             "<strong>Ville :</strong> " +
-            escapeHtml(cityText) +
+            escapeHtml(
+                cityText
+            ) +
             "<br>" +
 
             "<strong>Domaine :</strong> " +
-            escapeHtml(domainText);
+            escapeHtml(
+                domainText
+            );
 
 
         confirmationModal.classList.add(
@@ -2944,33 +3082,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       PROTECTION HTML
-    ========================================================= */
-
-    function escapeHtml(value) {
-
-        return String(value || "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-
-    }
-
-
-    /* =========================================================
-       CONVERSION PHOTO
+       CONVERSION PHOTO BASE64
     ========================================================= */
 
     function getPhotoData() {
 
         return new Promise(
-            function (resolve, reject) {
+            function (
+                resolve,
+                reject
+            ) {
 
                 const file =
                     photo.files &&
                     photo.files[0];
+
 
                 if (!file) {
 
@@ -2980,8 +3106,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                if (file.size >
-                    2 * 1024 * 1024) {
+                if (
+                    file.size >
+                    2 * 1024 * 1024
+                ) {
 
                     reject(
                         new Error(
@@ -3028,29 +3156,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       ENVOI AU SERVEUR
+       PREPARER LES DONNEES
     ========================================================= */
 
-    async function registerOnServer() {
-
-        const photoData =
-            await getPhotoData();
-
+    function buildRegistrationPayload(
+        photoData
+    ) {
 
         /*
          * IMPORTANT :
          *
          * Ces noms correspondent exactement
-         * à registerUser() dans server.js.
+         * aux champs traités par le serveur.
          */
 
-        const payload = {
+        return {
 
             nom:
                 nom.value.trim(),
 
+            sexe:
+                sexe.value.trim(),
+
             email:
-                email.value.trim().toLowerCase(),
+                email.value
+                    .trim()
+                    .toLowerCase(),
 
             telephone:
                 (
@@ -3079,9 +3210,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
         };
 
+    }
+
+
+    /* =========================================================
+       INSCRIPTION SERVEUR
+    ========================================================= */
+
+    async function registerOnServer() {
+
+        const photoData =
+            await getPhotoData();
+
+
+        const payload =
+            buildRegistrationPayload(
+                photoData
+            );
+
 
         console.log(
-            "BMJ SERVICE : envoi de l'inscription..."
+            "========================================"
+        );
+
+        console.log(
+            "BMJ SERVICE — INSCRIPTION"
+        );
+
+        console.log(
+            "URL :",
+            INSCRIPTION_URL
+        );
+
+        console.log(
+            "Payload :",
+            {
+                ...payload,
+                password: "********"
+            }
+        );
+
+        console.log(
+            "========================================"
         );
 
 
@@ -3109,14 +3279,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 await fetch(
                     INSCRIPTION_URL,
                     {
+
                         method: "POST",
 
                         headers: {
+
                             "Content-Type":
                                 "application/json",
 
                             "Accept":
                                 "application/json"
+
                         },
 
                         body:
@@ -3126,12 +3299,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         signal:
                             controller.signal
+
                     }
                 );
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             clearTimeout(timeout);
+
+
+            console.error(
+                "BMJ SERVICE — erreur réseau :",
+                error
+            );
+
 
             if (
                 error.name ===
@@ -3139,14 +3322,14 @@ document.addEventListener("DOMContentLoaded", function () {
             ) {
 
                 throw new Error(
-                    "Le serveur met trop de temps à répondre. Vérifiez que le service Render est bien démarré."
+                    "Le serveur BMJ SERVICE met trop de temps à répondre. Vérifiez que Render est démarré."
                 );
 
             }
 
 
             throw new Error(
-                "Impossible de communiquer avec le serveur BMJ SERVICE. Vérifiez votre connexion Internet et l'adresse du serveur."
+                "Impossible de communiquer avec le serveur BMJ SERVICE. Vérifiez votre connexion et l'adresse du serveur."
             );
 
         }
@@ -3155,38 +3338,57 @@ document.addEventListener("DOMContentLoaded", function () {
         clearTimeout(timeout);
 
 
-        let data = null;
-
         const rawText =
             await response.text();
 
 
-        try {
+        let data = {};
 
-            data =
-                rawText
-                    ? JSON.parse(rawText)
-                    : {};
 
-        } catch (error) {
+        if (rawText) {
 
-            data = {};
+            try {
+
+                data =
+                    JSON.parse(
+                        rawText
+                    );
+
+            }
+
+            catch (error) {
+
+                console.warn(
+                    "Réponse serveur non JSON :",
+                    rawText
+                );
+
+                data = {
+
+                    message:
+                        rawText
+
+                };
+
+            }
 
         }
 
 
         console.log(
-            "BMJ SERVICE : réponse serveur",
+            "BMJ SERVICE — réponse serveur :",
             response.status,
             data
         );
 
 
-        /*
-         * EMAIL DÉJÀ EXISTANT
-         */
+        /* =====================================================
+           EMAIL EXISTANT
+        ===================================================== */
 
-        if (response.status === 409) {
+        if (
+            response.status === 409
+        ) {
 
             throw new Error(
                 data.message ||
@@ -3196,11 +3398,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-         * ERREUR DE VALIDATION
-         */
+        /* =====================================================
+           REQUETE INVALIDE
+        ===================================================== */
 
-        if (response.status === 400) {
+        if (
+            response.status === 400
+        ) {
 
             throw new Error(
                 data.message ||
@@ -3210,11 +3414,30 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-         * ERREUR SERVEUR
-         */
+        /* =====================================================
+           NON AUTORISE
+        ===================================================== */
 
-        if (response.status >= 500) {
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
+
+            throw new Error(
+                data.message ||
+                "L'inscription n'est pas autorisée."
+            );
+
+        }
+
+
+        /* =====================================================
+           ERREUR SERVEUR
+        ===================================================== */
+
+        if (
+            response.status >= 500
+        ) {
 
             throw new Error(
                 data.message ||
@@ -3224,9 +3447,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-         * AUTRES ERREURS
-         */
+        /* =====================================================
+           AUTRE ERREUR HTTP
+        ===================================================== */
 
         if (!response.ok) {
 
@@ -3238,9 +3461,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-         * LE SERVEUR DOIT RETOURNER success:true
-         */
+        /* =====================================================
+           VERIFICATION REPONSE SERVEUR
+        ===================================================== */
 
         if (
             data.success !== true
@@ -3254,22 +3477,53 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
+        /*
+         * Le serveur doit normalement retourner :
+         *
+         * {
+         *     success: true,
+         *     user: {...}
+         * }
+         */
+
         return data;
 
     }
 
 
     /* =========================================================
-       SAUVEGARDE SESSION UTILISATEUR
+       SAUVEGARDE UTILISATEUR
     ========================================================= */
 
-    function saveCurrentUser(serverData) {
+    function saveCurrentUser(
+        serverData
+    ) {
 
         let user =
             serverData.user ||
             serverData.utilisateur ||
             null;
 
+
+        /*
+         * Compatibilité si le serveur
+         * retourne directement l'utilisateur.
+         */
+
+        if (
+            !user &&
+            serverData.id
+        ) {
+
+            user =
+                serverData;
+
+        }
+
+
+        /*
+         * Sécurité de secours.
+         */
 
         if (!user) {
 
@@ -3278,8 +3532,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 nom:
                     nom.value.trim(),
 
+                sexe:
+                    sexe.value.trim(),
+
                 email:
-                    email.value.trim().toLowerCase(),
+                    email.value
+                        .trim()
+                        .toLowerCase(),
 
                 telephone:
                     (
@@ -3289,16 +3548,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     ).trim(),
 
                 domaine:
-                    domaine.value,
+                    domaine.value.trim(),
 
                 pays:
-                    pays.value,
+                    pays.value.trim(),
 
                 ville:
-                    ville.value,
+                    ville.value.trim(),
 
                 niveau:
-                    niveau.value,
+                    niveau.value.trim(),
 
                 photo:
                     previewPhoto.src,
@@ -3316,7 +3575,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     false,
 
                 is_blocked:
-                    false
+                    false,
+
+                certificats:
+                    0,
+
+                progression:
+                    0
 
             };
 
@@ -3324,8 +3589,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /*
-         * Ne jamais conserver le mot de passe
-         * dans localStorage.
+         * NE JAMAIS CONSERVER
+         * LE MOT DE PASSE.
          */
 
         delete user.password;
@@ -3336,61 +3601,114 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /*
-         * Compatibilité frontend BMJ
+         * Compatibilité avec BMJ SERVICE.
          */
 
         user.nom =
             user.nom ||
             nom.value.trim();
 
+        user.sexe =
+            user.sexe ||
+            sexe.value.trim();
+
         user.email =
             user.email ||
-            email.value.trim().toLowerCase();
+            email.value
+                .trim()
+                .toLowerCase();
 
         user.telephone =
             user.telephone ||
             (
-                indicatif.value +
+                indicatif.value.trim() +
                 " " +
                 telephone.value.trim()
             ).trim();
 
         user.pays =
             user.pays ||
-            pays.value;
+            pays.value.trim();
 
         user.ville =
             user.ville ||
-            ville.value;
+            ville.value.trim();
 
         user.domaine =
             user.domaine ||
-            domaine.value;
+            domaine.value.trim();
 
         user.niveau =
             user.niveau ||
-            niveau.value;
+            niveau.value.trim();
 
         user.photo =
             user.photo ||
             previewPhoto.src;
 
+        user.is_premium =
+            Boolean(
+                user.is_premium
+            );
+
+        user.is_blocked =
+            Boolean(
+                user.is_blocked
+            );
+
+        user.progression =
+            Number(
+                user.progression || 0
+            );
+
 
         /*
-         * IMPORTANT :
-         * Le dashboard pourra récupérer cet utilisateur
-         * grâce à bmj_current_user.
+         * Valeurs de compatibilité
+         * utilisées par certaines anciennes
+         * pages BMJ SERVICE.
          */
 
-        localStorage.setItem(
-            "bmj_current_user",
-            JSON.stringify(user)
-        );
+        user.premium =
+            user.is_premium;
+
+        user.blocked =
+            user.is_blocked;
+
+        user.role =
+            user.role ||
+            "user";
 
 
-        /*
-         * Liste locale de compatibilité.
-         */
+        /* =====================================================
+           SESSION UTILISATEUR
+        ===================================================== */
+
+        try {
+
+            localStorage.setItem(
+                "bmj_current_user",
+                JSON.stringify(user)
+            );
+
+            console.log(
+                "BMJ SERVICE : bmj_current_user sauvegardé."
+            );
+
+        }
+
+        catch (error) {
+
+            console.warn(
+                "Impossible de sauvegarder bmj_current_user.",
+                error
+            );
+
+        }
+
+
+        /* =====================================================
+           LISTE LOCALE DE COMPATIBILITE
+        ===================================================== */
 
         try {
 
@@ -3398,21 +3716,35 @@ document.addEventListener("DOMContentLoaded", function () {
                 JSON.parse(
                     localStorage.getItem(
                         "bmj_users_list"
-                    ) || "[]"
+                    ) ||
+                    "[]"
                 );
 
 
-            if (Array.isArray(oldList)) {
+            if (
+                Array.isArray(oldList)
+            ) {
 
                 const index =
                     oldList.findIndex(
                         function (item) {
 
                             return (
-                                String(item.email || "")
-                                    .toLowerCase() ===
-                                String(user.email || "")
+
+                                String(
+                                    item.email ||
+                                    ""
+                                )
                                     .toLowerCase()
+
+                                ===
+
+                                String(
+                                    user.email ||
+                                    ""
+                                )
+                                    .toLowerCase()
+
                             );
 
                         }
@@ -3424,24 +3756,33 @@ document.addEventListener("DOMContentLoaded", function () {
                     oldList[index] =
                         user;
 
-                } else {
+                }
 
-                    oldList.push(user);
+                else {
+
+                    oldList.push(
+                        user
+                    );
 
                 }
 
 
                 localStorage.setItem(
                     "bmj_users_list",
-                    JSON.stringify(oldList)
+                    JSON.stringify(
+                        oldList
+                    )
                 );
 
             }
 
-        } catch (error) {
+        }
+
+        catch (error) {
 
             console.warn(
-                "Impossible de mettre à jour bmj_users_list."
+                "Impossible de mettre à jour bmj_users_list.",
+                error
             );
 
         }
@@ -3453,30 +3794,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       INSCRIPTION
+       SOUMISSION FORMULAIRE
     ========================================================= */
 
     form.addEventListener(
         "submit",
-        async function (event) {
+        function (event) {
 
             event.preventDefault();
 
 
-            /*
-             * VALIDATION AVANT ENVOI
-             */
-
-            if (!validateForm()) {
+            if (
+                !validateForm()
+            ) {
 
                 return;
 
             }
 
-
-            /*
-             * Afficher confirmation
-             */
 
             openModal();
 
@@ -3495,9 +3830,14 @@ document.addEventListener("DOMContentLoaded", function () {
             closeModal();
 
 
-            /*
-             * Empêcher les doubles inscriptions
-             */
+            if (
+                btnInscription.disabled
+            ) {
+
+                return;
+
+            }
+
 
             btnInscription.disabled =
                 true;
@@ -3522,7 +3862,7 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
 
                 /*
-                 * ENVOI RÉEL AU SERVER.JS
+                 * INSCRIPTION REELLE
                  */
 
                 const result =
@@ -3540,7 +3880,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 console.log(
-                    "BMJ SERVICE : inscription réussie.",
+                    "BMJ SERVICE — utilisateur créé :",
                     user
                 );
 
@@ -3552,8 +3892,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 /*
-                 * REDIRECTION UNIQUEMENT APRÈS
-                 * LA CONFIRMATION DU SERVEUR.
+                 * Petite pause pour
+                 * permettre d'afficher
+                 * le message de succès.
                  */
 
                 setTimeout(
@@ -3567,11 +3908,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     800
                 );
 
+            }
 
-            } catch (error) {
+            catch (error) {
 
                 console.error(
-                    "BMJ SERVICE — Erreur inscription :",
+                    "BMJ SERVICE — inscription échouée :",
                     error
                 );
 
@@ -3583,12 +3925,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-                /*
-                 * Réactiver le bouton
-                 */
-
                 btnInscription.disabled =
                     false;
+
 
                 btnInscription.innerHTML =
                     oldButtonHTML;
@@ -3600,7 +3939,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       VERIFICATION MOT DE PASSE EN DIRECT
+       MOT DE PASSE — CONFIRMATION
     ========================================================= */
 
     confirmPassword.addEventListener(
@@ -3615,6 +3954,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     "#dbe2ea";
 
                 return;
+
             }
 
 
@@ -3626,7 +3966,43 @@ document.addEventListener("DOMContentLoaded", function () {
                 confirmPassword.style.borderColor =
                     "#16a34a";
 
-            } else {
+            }
+
+            else {
+
+                confirmPassword.style.borderColor =
+                    "#dc2626";
+
+            }
+
+        }
+    );
+
+
+    password.addEventListener(
+        "input",
+        function () {
+
+            if (
+                !confirmPassword.value
+            ) {
+
+                return;
+
+            }
+
+
+            if (
+                password.value ===
+                confirmPassword.value
+            ) {
+
+                confirmPassword.style.borderColor =
+                    "#16a34a";
+
+            }
+
+            else {
 
                 confirmPassword.style.borderColor =
                     "#dc2626";
@@ -3644,11 +4020,6 @@ document.addEventListener("DOMContentLoaded", function () {
     telephone.addEventListener(
         "input",
         function () {
-
-            /*
-             * Autoriser chiffres, espaces,
-             * tiret et parenthèses.
-             */
 
             telephone.value =
                 telephone.value.replace(
@@ -3678,52 +4049,141 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       TEST AUTOMATIQUE DU SERVEUR
+       TEST SERVEUR
     ========================================================= */
 
-    /*
-     * On ne bloque PAS l'inscription si ce test échoue.
-     *
-     * Il sert uniquement à informer la console.
-     */
+    async function testServer() {
 
-    fetch(
-        API_BASE + "/api/health",
-        {
-            method: "GET"
-        }
-    )
-    .then(
-        function (response) {
+        try {
 
-            return response.json();
+            const controller =
+                new AbortController();
 
-        }
-    )
-    .then(
-        function (data) {
+
+            const timeout =
+                setTimeout(
+                    function () {
+
+                        controller.abort();
+
+                    },
+                    15000
+                );
+
+
+            const response =
+                await fetch(
+                    HEALTH_URL,
+                    {
+
+                        method: "GET",
+
+                        headers: {
+
+                            "Accept":
+                                "application/json"
+
+                        },
+
+                        signal:
+                            controller.signal
+
+                    }
+                );
+
+
+            clearTimeout(timeout);
+
+
+            const text =
+                await response.text();
+
+
+            let data = {};
+
+
+            try {
+
+                data =
+                    text
+                        ? JSON.parse(text)
+                        : {};
+
+            }
+
+            catch (error) {
+
+                data = {
+
+                    raw:
+                        text
+
+                };
+
+            }
+
 
             console.log(
-                "BMJ SERVICE — Serveur :",
+                "BMJ SERVICE — HEALTH :",
+                response.status,
                 data
             );
 
+
+            if (
+                response.ok &&
+                data.success === true
+            ) {
+
+                console.log(
+                    "BMJ SERVICE : serveur opérationnel."
+                );
+
+            }
+
+            else {
+
+                console.warn(
+                    "BMJ SERVICE : le serveur répond mais présente un problème."
+                );
+
+            }
+
         }
-    )
-    .catch(
-        function (error) {
+
+        catch (error) {
 
             console.warn(
-                "BMJ SERVICE — Serveur non joignable actuellement.",
+                "BMJ SERVICE — health check impossible :",
                 error
             );
 
         }
+
+    }
+
+
+    /* =========================================================
+       TEST SERVEUR AU CHARGEMENT
+    ========================================================= */
+
+    testServer();
+
+
+    /* =========================================================
+       FIN
+    ========================================================= */
+
+    console.log(
+        "BMJ SERVICE — formulaire d'inscription initialisé."
     );
 
+    console.log(
+        "Route inscription :",
+        INSCRIPTION_URL
+    );
 
 });
-
 </script>
 
 
