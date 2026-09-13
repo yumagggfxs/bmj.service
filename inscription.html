@@ -1825,6 +1825,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const INSCRIPTION_URL =
         API_BASE + "/api/inscription";
 
+    const CONNEXION_URL =
+        API_BASE + "/api/connexion";
+
     const HEALTH_URL =
         API_BASE + "/api/health";
 
@@ -1934,15 +1937,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     const missingElements =
-        requiredElements.some(
+        requiredElements.filter(
             element => !element
         );
 
 
-    if (missingElements) {
+    if (missingElements.length > 0) {
 
         console.error(
-            "BMJ SERVICE : un ou plusieurs éléments du formulaire sont introuvables."
+            "BMJ SERVICE : éléments manquants :",
+            missingElements
         );
 
         return;
@@ -2476,6 +2480,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     populateCountries();
+
     populateCities(null);
 
     indicatif.value = "+243";
@@ -2558,7 +2563,11 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            if (!file.type.startsWith("image/")) {
+            if (
+                !file.type.startsWith(
+                    "image/"
+                )
+            ) {
 
                 photo.value = "";
 
@@ -2574,7 +2583,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            if (file.size > 2 * 1024 * 1024) {
+            if (
+                file.size >
+                2 * 1024 * 1024
+            ) {
 
                 photo.value = "";
 
@@ -2737,11 +2749,26 @@ document.addEventListener("DOMContentLoaded", function () {
     function escapeHtml(value) {
 
         return String(value ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
 
     }
 
@@ -2768,7 +2795,9 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmPassword.value;
 
 
-        if (nameValue.length < 2) {
+        if (
+            nameValue.length < 2
+        ) {
 
             showToast(
                 "Veuillez entrer votre nom complet.",
@@ -2824,7 +2853,11 @@ document.addEventListener("DOMContentLoaded", function () {
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
-        if (!emailRegex.test(emailValue)) {
+        if (
+            !emailRegex.test(
+                emailValue
+            )
+        ) {
 
             showToast(
                 "Veuillez entrer une adresse email valide.",
@@ -2837,7 +2870,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (phoneValue.length < 6) {
+        if (
+            phoneValue.length < 6
+        ) {
 
             showToast(
                 "Veuillez entrer un numéro de téléphone valide.",
@@ -2876,7 +2911,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (passwordValue.length < 6) {
+        if (
+            passwordValue.length < 6
+        ) {
 
             showToast(
                 "Le mot de passe doit contenir au moins 6 caractères.",
@@ -2889,7 +2926,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (passwordValue !== confirmValue) {
+        if (
+            passwordValue !==
+            confirmValue
+        ) {
 
             showToast(
                 "Les deux mots de passe ne correspondent pas.",
@@ -2902,7 +2942,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (!conditions.checked) {
+        if (
+            !conditions.checked
+        ) {
 
             showToast(
                 "Vous devez accepter les conditions d'utilisation.",
@@ -2932,12 +2974,16 @@ document.addEventListener("DOMContentLoaded", function () {
             "<strong>BMJ SERVICE</strong>.<br><br>" +
 
             "<strong>Nom :</strong> " +
-            escapeHtml(nom.value.trim()) +
+            escapeHtml(
+                nom.value.trim()
+            ) +
 
             "<br>" +
 
             "<strong>Email :</strong> " +
-            escapeHtml(email.value.trim()) +
+            escapeHtml(
+                email.value.trim()
+            ) +
 
             "<br>" +
 
@@ -2953,22 +2999,30 @@ document.addEventListener("DOMContentLoaded", function () {
             "<br>" +
 
             "<strong>Pays :</strong> " +
-            escapeHtml(pays.value) +
+            escapeHtml(
+                pays.value
+            ) +
 
             "<br>" +
 
             "<strong>Ville :</strong> " +
-            escapeHtml(ville.value) +
+            escapeHtml(
+                ville.value
+            ) +
 
             "<br>" +
 
             "<strong>Domaine :</strong> " +
-            escapeHtml(domaine.value) +
+            escapeHtml(
+                domaine.value
+            ) +
 
             "<br>" +
 
             "<strong>Niveau :</strong> " +
-            escapeHtml(niveau.value);
+            escapeHtml(
+                niveau.value
+            );
 
 
         confirmationModal.classList.add(
@@ -3017,7 +3071,10 @@ document.addEventListener("DOMContentLoaded", function () {
     function getPhotoData() {
 
         return new Promise(
-            function (resolve, reject) {
+            function (
+                resolve,
+                reject
+            ) {
 
                 const file =
                     photo.files &&
@@ -3032,7 +3089,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                if (file.size > 2 * 1024 * 1024) {
+                if (
+                    file.size >
+                    2 * 1024 * 1024
+                ) {
 
                     reject(
                         new Error(
@@ -3086,11 +3146,6 @@ document.addEventListener("DOMContentLoaded", function () {
         photoData
     ) {
 
-        /*
-         * CES CHAMPS SONT CEUX UTILISES
-         * PAR LE SERVEUR ACTUEL.
-         */
-
         const fullPhone =
             (
                 indicatif.value.trim() +
@@ -3099,10 +3154,21 @@ document.addEventListener("DOMContentLoaded", function () {
             ).trim();
 
 
+        /*
+         * IMPORTANT :
+         *
+         * Tous les champs récupérés ici
+         * correspondent maintenant aux champs
+         * attendus par registerUser() côté serveur.
+         */
+
         return {
 
             nom:
                 nom.value.trim(),
+
+            sexe:
+                sexe.value.trim(),
 
             email:
                 email.value
@@ -3115,6 +3181,15 @@ document.addEventListener("DOMContentLoaded", function () {
             domaine:
                 domaine.value.trim(),
 
+            pays:
+                pays.value.trim(),
+
+            ville:
+                ville.value.trim(),
+
+            niveau:
+                niveau.value.trim(),
+
             password:
                 password.value,
 
@@ -3122,6 +3197,147 @@ document.addEventListener("DOMContentLoaded", function () {
                 photoData
 
         };
+
+    }
+
+
+    /* =========================================================
+       CONNEXION DE SECOURS
+       
+       Si l'inscription a créé l'utilisateur mais que
+       la réponse HTTP a été perdue, on tente de se connecter.
+    ========================================================= */
+
+    async function recoverRegistration() {
+
+        console.warn(
+            "BMJ SERVICE : tentative de récupération du compte..."
+        );
+
+
+        const recoveryController =
+            new AbortController();
+
+
+        const recoveryTimeout =
+            setTimeout(
+                function () {
+
+                    recoveryController.abort();
+
+                },
+                15000
+            );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    CONNEXION_URL,
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json",
+
+                            "Accept":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                email:
+                                    email.value
+                                        .trim()
+                                        .toLowerCase(),
+
+                                password:
+                                    password.value
+
+                            }),
+
+                        signal:
+                            recoveryController.signal
+
+                    }
+                );
+
+
+            const text =
+                await response.text();
+
+
+            let data = {};
+
+
+            if (text.trim()) {
+
+                try {
+
+                    data =
+                        JSON.parse(text);
+
+                }
+
+                catch (_) {
+
+                    data = {
+                        message: text
+                    };
+
+                }
+
+            }
+
+
+            if (
+                response.ok &&
+                data.success !== false &&
+                (
+                    data.user ||
+                    data.utilisateur ||
+                    data.id
+                )
+            ) {
+
+                console.log(
+                    "BMJ SERVICE : compte récupéré avec succès."
+                );
+
+
+                return data;
+
+            }
+
+
+            return null;
+
+        }
+
+        catch (error) {
+
+            console.warn(
+                "BMJ SERVICE : récupération impossible :",
+                error
+            );
+
+            return null;
+
+        }
+
+        finally {
+
+            clearTimeout(
+                recoveryTimeout
+            );
+
+        }
 
     }
 
@@ -3159,7 +3375,10 @@ document.addEventListener("DOMContentLoaded", function () {
             "Payload :",
             {
                 ...payload,
-                password: "********",
+
+                password:
+                    "********",
+
                 photo:
                     payload.photo
                         ? "[IMAGE BASE64]"
@@ -3233,20 +3452,41 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
+            /*
+             * IMPORTANT :
+             *
+             * Le serveur peut avoir créé le compte
+             * juste avant que la connexion HTTP
+             * soit interrompue.
+             *
+             * On tente donc une récupération.
+             */
+
+            const recovered =
+                await recoverRegistration();
+
+
+            if (recovered) {
+
+                return recovered;
+
+            }
+
+
             if (
                 error.name ===
                 "AbortError"
             ) {
 
                 throw new Error(
-                    "Le serveur BMJ SERVICE met trop de temps à répondre. Render est peut-être en train de démarrer."
+                    "Le serveur BMJ SERVICE met trop de temps à répondre. Le compte n'a pas pu être confirmé."
                 );
 
             }
 
 
             throw new Error(
-                "Impossible de communiquer avec le serveur BMJ SERVICE. Vérifiez votre connexion et l'adresse du serveur."
+                "Impossible de communiquer avec le serveur BMJ SERVICE."
             );
 
         }
@@ -3255,6 +3495,10 @@ document.addEventListener("DOMContentLoaded", function () {
         clearTimeout(timeout);
 
 
+        /* =====================================================
+           LIRE LA REPONSE
+        ===================================================== */
+
         const rawText =
             await response.text();
 
@@ -3262,7 +3506,9 @@ document.addEventListener("DOMContentLoaded", function () {
         let data = {};
 
 
-        if (rawText.trim()) {
+        if (
+            rawText.trim()
+        ) {
 
             try {
 
@@ -3276,7 +3522,7 @@ document.addEventListener("DOMContentLoaded", function () {
             catch (error) {
 
                 console.warn(
-                    "Réponse non JSON :",
+                    "BMJ SERVICE — réponse non JSON :",
                     rawText
                 );
 
@@ -3303,7 +3549,9 @@ document.addEventListener("DOMContentLoaded", function () {
            EMAIL EXISTANT
         ===================================================== */
 
-        if (response.status === 409) {
+        if (
+            response.status === 409
+        ) {
 
             throw new Error(
                 data.message ||
@@ -3314,10 +3562,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =====================================================
-           DONNEES INVALIDES
+           DONNÉES INVALIDES
         ===================================================== */
 
-        if (response.status === 400) {
+        if (
+            response.status === 400
+        ) {
 
             throw new Error(
                 data.message ||
@@ -3348,7 +3598,30 @@ document.addEventListener("DOMContentLoaded", function () {
            ERREUR SERVEUR
         ===================================================== */
 
-        if (response.status >= 500) {
+        if (
+            response.status >= 500
+        ) {
+
+            /*
+             * Si le serveur répond réellement 500,
+             * on tente quand même une récupération.
+             *
+             * Cela protège contre le cas :
+             *
+             * INSERT users réussi
+             * puis erreur user_activity.
+             */
+
+            const recovered =
+                await recoverRegistration();
+
+
+            if (recovered) {
+
+                return recovered;
+
+            }
+
 
             throw new Error(
                 data.message ||
@@ -3362,7 +3635,9 @@ document.addEventListener("DOMContentLoaded", function () {
            AUTRE ERREUR
         ===================================================== */
 
-        if (!response.ok) {
+        if (
+            !response.ok
+        ) {
 
             throw new Error(
                 data.message ||
@@ -3389,9 +3664,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /*
-         * Si le serveur répond 200/201
-         * et ne met pas explicitement success,
-         * on considère la création réussie.
+         * Une réponse 200/201 sans success:false
+         * est considérée comme une réussite.
          */
 
         return data;
@@ -3408,19 +3682,19 @@ document.addEventListener("DOMContentLoaded", function () {
     ) {
 
         let user =
-            serverData.user ||
-            serverData.utilisateur ||
+            serverData?.user ||
+            serverData?.utilisateur ||
             null;
 
 
         /*
-         * Compatibilité si le serveur
-         * retourne directement l'utilisateur.
+         * Compatibilité :
+         * serveur retournant directement l'utilisateur.
          */
 
         if (
             !user &&
-            serverData.id
+            serverData?.id
         ) {
 
             user =
@@ -3431,8 +3705,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         /*
          * Si le serveur ne renvoie pas
-         * l'objet utilisateur complet,
-         * nous construisons une version locale.
+         * l'utilisateur complet, création
+         * d'une copie locale de secours.
          */
 
         if (!user) {
@@ -3498,19 +3772,18 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        /*
-         * NE JAMAIS CONSERVER
-         * LE MOT DE PASSE.
-         */
+        /* =====================================================
+           NE JAMAIS CONSERVER LE MOT DE PASSE
+        ===================================================== */
 
         delete user.password;
         delete user.mot_de_passe;
         delete user.password_hash;
 
 
-        /*
-         * Compatibilité BMJ SERVICE.
-         */
+        /* =====================================================
+           COMPATIBILITE BMJ SERVICE
+        ===================================================== */
 
         user.nom =
             user.nom ||
@@ -3597,7 +3870,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =====================================================
-           SAUVEGARDE SESSION UTILISATEUR
+           SAUVEGARDE SESSION
         ===================================================== */
 
         try {
@@ -3624,7 +3897,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =====================================================
-           LISTE LOCALE COMPATIBILITE
+           LISTE LOCALE
         ===================================================== */
 
         try {
@@ -3646,15 +3919,19 @@ document.addEventListener("DOMContentLoaded", function () {
                         item =>
                             String(
                                 item.email || ""
-                            ).toLowerCase()
+                            )
+                            .toLowerCase()
                             ===
                             String(
                                 user.email || ""
-                            ).toLowerCase()
+                            )
+                            .toLowerCase()
                     );
 
 
-                if (index >= 0) {
+                if (
+                    index >= 0
+                ) {
 
                     oldList[index] =
                         user;
@@ -3707,7 +3984,9 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
 
 
-            if (!validateForm()) {
+            if (
+                !validateForm()
+            ) {
 
                 return;
 
@@ -3763,7 +4042,7 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
 
                 /*
-                 * INSCRIPTION REELLE
+                 * INSCRIPTION RÉELLE
                  */
 
                 const result =
@@ -3839,7 +4118,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function checkPasswords() {
 
-        if (!confirmPassword.value) {
+        if (
+            !confirmPassword.value
+        ) {
 
             confirmPassword.style.borderColor =
                 "";
@@ -3922,22 +4203,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     async function testServer() {
 
+        const controller =
+            new AbortController();
+
+
+        const timeout =
+            setTimeout(
+                function () {
+
+                    controller.abort();
+
+                },
+                15000
+            );
+
+
         try {
-
-            const controller =
-                new AbortController();
-
-
-            const timeout =
-                setTimeout(
-                    function () {
-
-                        controller.abort();
-
-                    },
-                    15000
-                );
-
 
             const response =
                 await fetch(
@@ -3960,9 +4241,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-            clearTimeout(timeout);
-
-
             const text =
                 await response.text();
 
@@ -3979,7 +4257,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
 
-            catch (error) {
+            catch (_) {
 
                 data = {
 
@@ -4027,6 +4305,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
+        finally {
+
+            clearTimeout(
+                timeout
+            );
+
+        }
+
     }
 
 
@@ -4060,11 +4346,15 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
     console.log(
+        "CONNEXION :",
+        CONNEXION_URL
+    );
+
+    console.log(
         "========================================"
     );
 
 });
-
 </script>
 
 
