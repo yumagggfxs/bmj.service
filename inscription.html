@@ -1822,26 +1822,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const API_BASE =
         "https://back-end-8i4t.onrender.com";
 
-    /*
-     * ROUTE PRINCIPALE D'INSCRIPTION
-     *
-     * Cette route correspond directement au serveur :
-     *
-     * POST /api/inscription
-     *
-     * Le serveur accepte :
-     * nom
-     * sexe
-     * email
-     * telephone
-     * domaine
-     * pays
-     * ville
-     * niveau
-     * password
-     * photo
-     */
-
     const INSCRIPTION_URL =
         API_BASE + "/api/inscription";
 
@@ -1850,7 +1830,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       ELEMENTS DU FORMULAIRE
+       ELEMENTS
     ========================================================= */
 
     const form =
@@ -1915,7 +1895,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       VERIFICATION FORMULAIRE
+       VERIFICATION
     ========================================================= */
 
     if (!form) {
@@ -1927,10 +1907,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-
-    /* =========================================================
-       VERIFICATION ELEMENTS
-    ========================================================= */
 
     const requiredElements = [
 
@@ -1959,18 +1935,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const missingElements =
         requiredElements.some(
-            function (element) {
-
-                return !element;
-
-            }
+            element => !element
         );
 
 
     if (missingElements) {
 
         console.error(
-            "BMJ SERVICE : certains éléments du formulaire sont introuvables."
+            "BMJ SERVICE : un ou plusieurs éléments du formulaire sont introuvables."
         );
 
         return;
@@ -2407,61 +2379,57 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       REMPLIR LES PAYS
+       PAYS
     ========================================================= */
 
     function populateCountries() {
 
         pays.innerHTML = "";
 
-        const placeholder =
+        const option =
             document.createElement("option");
 
-        placeholder.value = "";
-
-        placeholder.textContent =
+        option.value = "";
+        option.textContent =
             "Sélectionnez votre pays";
+        option.disabled = true;
+        option.selected = true;
 
-        placeholder.disabled = true;
-
-        placeholder.selected = true;
-
-        pays.appendChild(placeholder);
+        pays.appendChild(option);
 
 
-        countries.forEach(
-            function (country) {
+        countries.forEach(country => {
 
-                const option =
-                    document.createElement("option");
+            const item =
+                document.createElement("option");
 
-                option.value =
-                    country.name;
+            item.value =
+                country.name;
 
-                option.textContent =
-                    country.name;
+            item.textContent =
+                country.name;
 
-                option.dataset.iso =
-                    country.iso;
+            item.dataset.iso =
+                country.iso;
 
-                option.dataset.code =
-                    country.code;
+            item.dataset.code =
+                country.code;
 
-                pays.appendChild(option);
+            pays.appendChild(item);
 
-            }
-        );
+        });
 
     }
 
 
     /* =========================================================
-       REMPLIR LES VILLES
+       VILLES
     ========================================================= */
 
     function populateCities(country) {
 
         ville.innerHTML = "";
+
 
         if (!country) {
 
@@ -2469,12 +2437,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.createElement("option");
 
             option.value = "";
-
             option.textContent =
                 "Sélectionnez d'abord un pays";
-
             option.disabled = true;
-
             option.selected = true;
 
             ville.appendChild(option);
@@ -2487,41 +2452,30 @@ document.addEventListener("DOMContentLoaded", function () {
             document.createElement("option");
 
         placeholder.value = "";
-
         placeholder.textContent =
             "Sélectionnez votre ville";
-
         placeholder.disabled = true;
-
         placeholder.selected = true;
 
         ville.appendChild(placeholder);
 
 
-        country.cities.forEach(
-            function (city) {
+        country.cities.forEach(city => {
 
-                const option =
-                    document.createElement("option");
+            const option =
+                document.createElement("option");
 
-                option.value = city;
+            option.value = city;
+            option.textContent = city;
 
-                option.textContent = city;
+            ville.appendChild(option);
 
-                ville.appendChild(option);
-
-            }
-        );
+        });
 
     }
 
 
-    /* =========================================================
-       INITIALISATION PAYS
-    ========================================================= */
-
     populateCountries();
-
     populateCities(null);
 
     indicatif.value = "+243";
@@ -2535,20 +2489,14 @@ document.addEventListener("DOMContentLoaded", function () {
         "change",
         function () {
 
-            const selectedCountry =
+            const country =
                 countries.find(
-                    function (country) {
-
-                        return (
-                            country.name ===
-                            pays.value
-                        );
-
-                    }
+                    item =>
+                        item.name === pays.value
                 );
 
 
-            if (!selectedCountry) {
+            if (!country) {
 
                 indicatif.value = "+243";
 
@@ -2559,12 +2507,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             indicatif.value =
-                selectedCountry.code;
+                country.code;
 
 
-            populateCities(
-                selectedCountry
-            );
+            populateCities(country);
 
 
             const flag =
@@ -2577,12 +2523,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 flag.src =
                     "https://flagcdn.com/w160/" +
-                    selectedCountry.iso +
+                    country.iso +
                     ".png";
 
                 flag.alt =
                     "Drapeau " +
-                    selectedCountry.name;
+                    country.name;
 
             }
 
@@ -2612,9 +2558,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            if (
-                !file.type.startsWith("image/")
-            ) {
+            if (!file.type.startsWith("image/")) {
 
                 photo.value = "";
 
@@ -2630,10 +2574,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
 
-            if (
-                file.size >
-                2 * 1024 * 1024
-            ) {
+            if (file.size > 2 * 1024 * 1024) {
 
                 photo.value = "";
 
@@ -2707,11 +2648,7 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        if (
-            !toast ||
-            !icon ||
-            !text
-        ) {
+        if (!toast || !icon || !text) {
 
             alert(message);
 
@@ -2794,7 +2731,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       PROTECTION HTML
+       ESCAPE HTML
     ========================================================= */
 
     function escapeHtml(value) {
@@ -2810,7 +2747,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       VALIDATION FORMULAIRE
+       VALIDATION
     ========================================================= */
 
     function validateForm() {
@@ -2887,9 +2824,7 @@ document.addEventListener("DOMContentLoaded", function () {
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 
-        if (
-            !emailRegex.test(emailValue)
-        ) {
+        if (!emailRegex.test(emailValue)) {
 
             showToast(
                 "Veuillez entrer une adresse email valide.",
@@ -2954,10 +2889,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        if (
-            passwordValue !==
-            confirmValue
-        ) {
+        if (passwordValue !== confirmValue) {
 
             showToast(
                 "Les deux mots de passe ne correspondent pas.",
@@ -2989,23 +2921,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       MODAL CONFIRMATION
+       MODAL
     ========================================================= */
 
     function openModal() {
-
-        const countryText =
-            pays.value ||
-            "Non renseigné";
-
-        const cityText =
-            ville.value ||
-            "Non renseignée";
-
-        const domainText =
-            domaine.value ||
-            "Non renseigné";
-
 
         confirmationText.innerHTML =
 
@@ -3013,33 +2932,43 @@ document.addEventListener("DOMContentLoaded", function () {
             "<strong>BMJ SERVICE</strong>.<br><br>" +
 
             "<strong>Nom :</strong> " +
-            escapeHtml(
-                nom.value.trim()
-            ) +
+            escapeHtml(nom.value.trim()) +
+
             "<br>" +
 
             "<strong>Email :</strong> " +
+            escapeHtml(email.value.trim()) +
+
+            "<br>" +
+
+            "<strong>Téléphone :</strong> " +
             escapeHtml(
-                email.value.trim()
+                (
+                    indicatif.value.trim() +
+                    " " +
+                    telephone.value.trim()
+                ).trim()
             ) +
+
             "<br>" +
 
             "<strong>Pays :</strong> " +
-            escapeHtml(
-                countryText
-            ) +
+            escapeHtml(pays.value) +
+
             "<br>" +
 
             "<strong>Ville :</strong> " +
-            escapeHtml(
-                cityText
-            ) +
+            escapeHtml(ville.value) +
+
             "<br>" +
 
             "<strong>Domaine :</strong> " +
-            escapeHtml(
-                domainText
-            );
+            escapeHtml(domaine.value) +
+
+            "<br>" +
+
+            "<strong>Niveau :</strong> " +
+            escapeHtml(niveau.value);
 
 
         confirmationModal.classList.add(
@@ -3082,16 +3011,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       CONVERSION PHOTO BASE64
+       PHOTO → BASE64
     ========================================================= */
 
     function getPhotoData() {
 
         return new Promise(
-            function (
-                resolve,
-                reject
-            ) {
+            function (resolve, reject) {
 
                 const file =
                     photo.files &&
@@ -3106,10 +3032,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
 
 
-                if (
-                    file.size >
-                    2 * 1024 * 1024
-                ) {
+                if (file.size > 2 * 1024 * 1024) {
 
                     reject(
                         new Error(
@@ -3156,7 +3079,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       PREPARER LES DONNEES
+       CREATION DU PAYLOAD
     ========================================================= */
 
     function buildRegistrationPayload(
@@ -3164,19 +3087,22 @@ document.addEventListener("DOMContentLoaded", function () {
     ) {
 
         /*
-         * IMPORTANT :
-         *
-         * Ces noms correspondent exactement
-         * aux champs traités par le serveur.
+         * CES CHAMPS SONT CEUX UTILISES
+         * PAR LE SERVEUR ACTUEL.
          */
+
+        const fullPhone =
+            (
+                indicatif.value.trim() +
+                " " +
+                telephone.value.trim()
+            ).trim();
+
 
         return {
 
             nom:
                 nom.value.trim(),
-
-            sexe:
-                sexe.value.trim(),
 
             email:
                 email.value
@@ -3184,23 +3110,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     .toLowerCase(),
 
             telephone:
-                (
-                    indicatif.value.trim() +
-                    " " +
-                    telephone.value.trim()
-                ).trim(),
+                fullPhone,
 
             domaine:
                 domaine.value.trim(),
-
-            pays:
-                pays.value.trim(),
-
-            ville:
-                ville.value.trim(),
-
-            niveau:
-                niveau.value.trim(),
 
             password:
                 password.value,
@@ -3234,11 +3147,11 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         console.log(
-            "BMJ SERVICE — INSCRIPTION"
+            "BMJ SERVICE — INSCRIPTION SERVEUR"
         );
 
         console.log(
-            "URL :",
+            "POST :",
             INSCRIPTION_URL
         );
 
@@ -3246,7 +3159,11 @@ document.addEventListener("DOMContentLoaded", function () {
             "Payload :",
             {
                 ...payload,
-                password: "********"
+                password: "********",
+                photo:
+                    payload.photo
+                        ? "[IMAGE BASE64]"
+                        : null
             }
         );
 
@@ -3322,7 +3239,7 @@ document.addEventListener("DOMContentLoaded", function () {
             ) {
 
                 throw new Error(
-                    "Le serveur BMJ SERVICE met trop de temps à répondre. Vérifiez que Render est démarré."
+                    "Le serveur BMJ SERVICE met trop de temps à répondre. Render est peut-être en train de démarrer."
                 );
 
             }
@@ -3345,7 +3262,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let data = {};
 
 
-        if (rawText) {
+        if (rawText.trim()) {
 
             try {
 
@@ -3359,7 +3276,7 @@ document.addEventListener("DOMContentLoaded", function () {
             catch (error) {
 
                 console.warn(
-                    "Réponse serveur non JSON :",
+                    "Réponse non JSON :",
                     rawText
                 );
 
@@ -3376,7 +3293,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         console.log(
-            "BMJ SERVICE — réponse serveur :",
+            "BMJ SERVICE — réponse :",
             response.status,
             data
         );
@@ -3386,9 +3303,7 @@ document.addEventListener("DOMContentLoaded", function () {
            EMAIL EXISTANT
         ===================================================== */
 
-        if (
-            response.status === 409
-        ) {
+        if (response.status === 409) {
 
             throw new Error(
                 data.message ||
@@ -3399,12 +3314,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =====================================================
-           REQUETE INVALIDE
+           DONNEES INVALIDES
         ===================================================== */
 
-        if (
-            response.status === 400
-        ) {
+        if (response.status === 400) {
 
             throw new Error(
                 data.message ||
@@ -3415,7 +3328,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =====================================================
-           NON AUTORISE
+           AUTORISATION
         ===================================================== */
 
         if (
@@ -3425,7 +3338,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             throw new Error(
                 data.message ||
-                "L'inscription n'est pas autorisée."
+                "Le serveur refuse cette inscription."
             );
 
         }
@@ -3435,20 +3348,18 @@ document.addEventListener("DOMContentLoaded", function () {
            ERREUR SERVEUR
         ===================================================== */
 
-        if (
-            response.status >= 500
-        ) {
+        if (response.status >= 500) {
 
             throw new Error(
                 data.message ||
-                "Le serveur BMJ SERVICE a rencontré une erreur."
+                "Le serveur BMJ SERVICE a rencontré une erreur interne."
             );
 
         }
 
 
         /* =====================================================
-           AUTRE ERREUR HTTP
+           AUTRE ERREUR
         ===================================================== */
 
         if (!response.ok) {
@@ -3462,28 +3373,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =====================================================
-           VERIFICATION REPONSE SERVEUR
+           VERIFICATION REPONSE
         ===================================================== */
 
         if (
-            data.success !== true
+            data.success === false
         ) {
 
             throw new Error(
                 data.message ||
-                "Le serveur n'a pas confirmé l'inscription."
+                "Le serveur a refusé l'inscription."
             );
 
         }
 
 
         /*
-         * Le serveur doit normalement retourner :
-         *
-         * {
-         *     success: true,
-         *     user: {...}
-         * }
+         * Si le serveur répond 200/201
+         * et ne met pas explicitement success,
+         * on considère la création réussie.
          */
 
         return data;
@@ -3522,7 +3430,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /*
-         * Sécurité de secours.
+         * Si le serveur ne renvoie pas
+         * l'objet utilisateur complet,
+         * nous construisons une version locale.
          */
 
         if (!user) {
@@ -3542,7 +3452,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 telephone:
                     (
-                        indicatif.value +
+                        indicatif.value.trim() +
                         " " +
                         telephone.value.trim()
                     ).trim(),
@@ -3577,10 +3487,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 is_blocked:
                     false,
 
-                certificats:
+                progression:
                     0,
 
-                progression:
+                certificats:
                     0
 
             };
@@ -3594,29 +3504,30 @@ document.addEventListener("DOMContentLoaded", function () {
          */
 
         delete user.password;
-
         delete user.mot_de_passe;
-
         delete user.password_hash;
 
 
         /*
-         * Compatibilité avec BMJ SERVICE.
+         * Compatibilité BMJ SERVICE.
          */
 
         user.nom =
             user.nom ||
             nom.value.trim();
 
+
         user.sexe =
             user.sexe ||
             sexe.value.trim();
+
 
         user.email =
             user.email ||
             email.value
                 .trim()
                 .toLowerCase();
+
 
         user.telephone =
             user.telephone ||
@@ -3626,35 +3537,58 @@ document.addEventListener("DOMContentLoaded", function () {
                 telephone.value.trim()
             ).trim();
 
-        user.pays =
-            user.pays ||
-            pays.value.trim();
-
-        user.ville =
-            user.ville ||
-            ville.value.trim();
 
         user.domaine =
             user.domaine ||
             domaine.value.trim();
 
+
+        user.pays =
+            user.pays ||
+            pays.value.trim();
+
+
+        user.ville =
+            user.ville ||
+            ville.value.trim();
+
+
         user.niveau =
             user.niveau ||
             niveau.value.trim();
+
 
         user.photo =
             user.photo ||
             previewPhoto.src;
 
+
         user.is_premium =
             Boolean(
-                user.is_premium
+                user.is_premium ||
+                user.premium
             );
+
 
         user.is_blocked =
             Boolean(
-                user.is_blocked
+                user.is_blocked ||
+                user.blocked
             );
+
+
+        user.premium =
+            user.is_premium;
+
+
+        user.blocked =
+            user.is_blocked;
+
+
+        user.role =
+            user.role ||
+            "user";
+
 
         user.progression =
             Number(
@@ -3662,25 +3596,8 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
 
-        /*
-         * Valeurs de compatibilité
-         * utilisées par certaines anciennes
-         * pages BMJ SERVICE.
-         */
-
-        user.premium =
-            user.is_premium;
-
-        user.blocked =
-            user.is_blocked;
-
-        user.role =
-            user.role ||
-            "user";
-
-
         /* =====================================================
-           SESSION UTILISATEUR
+           SAUVEGARDE SESSION UTILISATEUR
         ===================================================== */
 
         try {
@@ -3691,7 +3608,7 @@ document.addEventListener("DOMContentLoaded", function () {
             );
 
             console.log(
-                "BMJ SERVICE : bmj_current_user sauvegardé."
+                "BMJ SERVICE : utilisateur sauvegardé."
             );
 
         }
@@ -3707,7 +3624,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         /* =====================================================
-           LISTE LOCALE DE COMPATIBILITE
+           LISTE LOCALE COMPATIBILITE
         ===================================================== */
 
         try {
@@ -3716,8 +3633,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 JSON.parse(
                     localStorage.getItem(
                         "bmj_users_list"
-                    ) ||
-                    "[]"
+                    ) || "[]"
                 );
 
 
@@ -3727,27 +3643,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const index =
                     oldList.findIndex(
-                        function (item) {
-
-                            return (
-
-                                String(
-                                    item.email ||
-                                    ""
-                                )
-                                    .toLowerCase()
-
-                                ===
-
-                                String(
-                                    user.email ||
-                                    ""
-                                )
-                                    .toLowerCase()
-
-                            );
-
-                        }
+                        item =>
+                            String(
+                                item.email || ""
+                            ).toLowerCase()
+                            ===
+                            String(
+                                user.email || ""
+                            ).toLowerCase()
                     );
 
 
@@ -3794,7 +3697,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       SOUMISSION FORMULAIRE
+       SUBMIT
     ========================================================= */
 
     form.addEventListener(
@@ -3804,9 +3707,7 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
 
 
-            if (
-                !validateForm()
-            ) {
+            if (!validateForm()) {
 
                 return;
 
@@ -3820,7 +3721,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       CONFIRMATION INSCRIPTION
+       CONFIRMATION
     ========================================================= */
 
     confirmRegistration.addEventListener(
@@ -3870,7 +3771,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 /*
-                 * SAUVEGARDE DE L'UTILISATEUR
+                 * SAUVEGARDE LOCALE
                  */
 
                 const user =
@@ -3880,7 +3781,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                 console.log(
-                    "BMJ SERVICE — utilisateur créé :",
+                    "BMJ SERVICE — compte créé :",
                     user
                 );
 
@@ -3891,12 +3792,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
 
 
-                /*
-                 * Petite pause pour
-                 * permettre d'afficher
-                 * le message de succès.
-                 */
-
                 setTimeout(
                     function () {
 
@@ -3905,7 +3800,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         );
 
                     },
-                    800
+                    900
                 );
 
             }
@@ -3939,77 +3834,50 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       MOT DE PASSE — CONFIRMATION
+       CONFIRMATION MOT DE PASSE
     ========================================================= */
+
+    function checkPasswords() {
+
+        if (!confirmPassword.value) {
+
+            confirmPassword.style.borderColor =
+                "";
+
+            return;
+
+        }
+
+
+        if (
+            password.value ===
+            confirmPassword.value
+        ) {
+
+            confirmPassword.style.borderColor =
+                "#16a34a";
+
+        }
+
+        else {
+
+            confirmPassword.style.borderColor =
+                "#dc2626";
+
+        }
+
+    }
+
 
     confirmPassword.addEventListener(
         "input",
-        function () {
-
-            if (
-                !confirmPassword.value
-            ) {
-
-                confirmPassword.style.borderColor =
-                    "#dbe2ea";
-
-                return;
-
-            }
-
-
-            if (
-                password.value ===
-                confirmPassword.value
-            ) {
-
-                confirmPassword.style.borderColor =
-                    "#16a34a";
-
-            }
-
-            else {
-
-                confirmPassword.style.borderColor =
-                    "#dc2626";
-
-            }
-
-        }
+        checkPasswords
     );
 
 
     password.addEventListener(
         "input",
-        function () {
-
-            if (
-                !confirmPassword.value
-            ) {
-
-                return;
-
-            }
-
-
-            if (
-                password.value ===
-                confirmPassword.value
-            ) {
-
-                confirmPassword.style.borderColor =
-                    "#16a34a";
-
-            }
-
-            else {
-
-                confirmPassword.style.borderColor =
-                    "#dc2626";
-
-            }
-
-        }
+        checkPasswords
     );
 
 
@@ -4131,12 +3999,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
             if (
-                response.ok &&
-                data.success === true
+                response.ok
             ) {
 
                 console.log(
-                    "BMJ SERVICE : serveur opérationnel."
+                    "BMJ SERVICE : API accessible."
                 );
 
             }
@@ -4144,7 +4011,7 @@ document.addEventListener("DOMContentLoaded", function () {
             else {
 
                 console.warn(
-                    "BMJ SERVICE : le serveur répond mais présente un problème."
+                    "BMJ SERVICE : API répond avec une erreur."
                 );
 
             }
@@ -4164,26 +4031,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =========================================================
-       TEST SERVEUR AU CHARGEMENT
+       TEST AU CHARGEMENT
     ========================================================= */
 
     testServer();
 
 
     /* =========================================================
-       FIN
+       DEBUG
     ========================================================= */
 
     console.log(
-        "BMJ SERVICE — formulaire d'inscription initialisé."
+        "========================================"
     );
 
     console.log(
-        "Route inscription :",
+        "BMJ SERVICE — INSCRIPTION INITIALISÉE"
+    );
+
+    console.log(
+        "API :",
+        API_BASE
+    );
+
+    console.log(
+        "INSCRIPTION :",
         INSCRIPTION_URL
     );
 
+    console.log(
+        "========================================"
+    );
+
 });
+
 </script>
 
 
