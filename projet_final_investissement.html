@@ -10,7 +10,10 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Projet final - Investissement | BMJ SERVICE</title>
+    <title>
+        Vérification Premium | BMJ SERVICE
+    </title>
+
 
     <style>
 
@@ -20,11 +23,15 @@
             padding: 0;
         }
 
+
         body {
+
             min-height: 100vh;
 
             display: flex;
+
             align-items: center;
+
             justify-content: center;
 
             font-family:
@@ -35,9 +42,12 @@
             background: #f5f6f8;
 
             color: #222;
+
         }
 
+
         .box {
+
             width: min(430px, 90%);
 
             padding: 35px 25px;
@@ -51,27 +61,39 @@
             text-align: center;
 
             box-shadow:
-                0 5px 20px rgba(0, 0, 0, 0.06);
+                0 5px 20px
+                rgba(0, 0, 0, 0.06);
+
         }
 
+
         .logo {
+
             width: 70px;
+
             height: 70px;
 
             object-fit: contain;
 
-            margin: 0 auto 20px;
+            margin:
+                0 auto 20px;
+
         }
 
+
         h1 {
+
             font-size: 22px;
 
             margin-bottom: 10px;
 
             color: #075985;
+
         }
 
+
         p {
+
             font-size: 14px;
 
             line-height: 1.6;
@@ -79,23 +101,43 @@
             color: #666;
 
             margin-bottom: 20px;
+
         }
 
+
         .loading {
+
             font-size: 14px;
 
             color: #777;
+
         }
 
+
         .error {
+
             color: #b91c1c;
 
             font-size: 14px;
 
             line-height: 1.6;
+
         }
 
+
+        .success {
+
+            color: #15803d;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+
+        }
+
+
         .retry {
+
             display: inline-block;
 
             margin-top: 15px;
@@ -111,6 +153,42 @@
             border-radius: 5px;
 
             font-size: 13px;
+
+        }
+
+
+        .spinner {
+
+            display: inline-block;
+
+            width: 18px;
+
+            height: 18px;
+
+            margin-right: 8px;
+
+            vertical-align: middle;
+
+            border:
+
+                2px solid #ddd;
+
+            border-top-color: #075985;
+
+            border-radius: 50%;
+
+            animation:
+                spin .8s linear infinite;
+
+        }
+
+
+        @keyframes spin {
+
+            to {
+                transform: rotate(360deg);
+            }
+
         }
 
     </style>
@@ -123,6 +201,7 @@
 
 <div class="box">
 
+
     <img
         src="images/logo.png"
         alt="BMJ SERVICE"
@@ -130,20 +209,30 @@
         onerror="this.style.display='none'"
     >
 
+
     <h1>
         Vérification du statut
     </h1>
 
+
     <p id="message">
+
         Vérification de votre abonnement Premium...
+
     </p>
+
 
     <div
         id="loading"
         class="loading"
     >
+
+        <span class="spinner"></span>
+
         Veuillez patienter...
+
     </div>
+
 
 </div>
 
@@ -153,223 +242,258 @@
 
 document.addEventListener(
     "DOMContentLoaded",
-    async function () {
+    verifierPremium
+);
 
 
-        /* =====================================================
-           RÉCUPÉRER L'UTILISATEUR
-        ===================================================== */
+/* ============================================================
+   CONFIGURATION API
+============================================================ */
 
-        const storedUser =
-            localStorage.getItem(
-                "bmj_current_user"
+const API_URL =
+    "https://back-end-8i4t.onrender.com";
+
+
+/* ============================================================
+   VERIFICATION PREMIUM
+============================================================ */
+
+async function verifierPremium() {
+
+
+    /* ========================================================
+       RECUPERER L'UTILISATEUR LOCAL
+    ======================================================== */
+
+    const storedUser =
+        localStorage.getItem(
+            "bmj_current_user"
+        );
+
+
+    /* ========================================================
+       UTILISATEUR NON CONNECTE
+    ======================================================== */
+
+    if (!storedUser) {
+
+        window.location.href =
+            "connexion.html";
+
+        return;
+
+    }
+
+
+    let user;
+
+
+    try {
+
+        user =
+            JSON.parse(
+                storedUser
+            );
+
+    } catch (error) {
+
+        console.error(
+            "[BMJ PREMIUM] LocalStorage invalide :",
+            error
+        );
+
+
+        localStorage.removeItem(
+            "bmj_current_user"
+        );
+
+
+        window.location.href =
+            "connexion.html";
+
+        return;
+
+    }
+
+
+    /* ========================================================
+       IDENTIFIANT UTILISATEUR
+    ======================================================== */
+
+    const userId =
+        user.id ||
+        user.id_bmj ||
+        user.user_id;
+
+
+    if (!userId) {
+
+        afficherErreur(
+            "Impossible d'identifier votre compte."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+
+        /* ====================================================
+           ETAPE 1
+           RECUPERATION DU COMPTE DEPUIS LE SERVEUR
+        ==================================================== */
+
+        afficherChargement(
+            "Vérification de votre abonnement Premium..."
+        );
+
+
+        /*
+         * Route principale actuelle du backend.
+         *
+         * Ancienne route :
+         * /api/utilisateurs/:id
+         *
+         * Nouvelle route :
+         * /api/users/:id
+         */
+
+        const response =
+            await fetch(
+                API_URL +
+                "/api/users/" +
+                encodeURIComponent(
+                    userId
+                ),
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    }
+                }
             );
 
 
-        /* =====================================================
-           UTILISATEUR NON CONNECTÉ
-        ===================================================== */
+        if (!response.ok) {
 
-        if (!storedUser) {
-
-            window.location.href =
-                "connexion.html";
-
-            return;
+            throw new Error(
+                "Impossible de récupérer votre compte."
+            );
 
         }
 
 
-        let user;
+        const data =
+            await response.json();
 
 
-        try {
+        console.log(
+            "[BMJ PREMIUM] COMPTE SERVEUR :",
+            data
+        );
 
-            user =
-                JSON.parse(
-                    storedUser
-                );
 
-        } catch (error) {
+        /* ====================================================
+           EXTRACTION UTILISATEUR
+        ==================================================== */
 
-            localStorage.removeItem(
-                "bmj_current_user"
+        const currentUser =
+            data?.user ||
+            data?.utilisateur ||
+            data?.data?.user ||
+            data?.data ||
+            data;
+
+
+        if (
+            !currentUser ||
+            typeof currentUser !== "object"
+        ) {
+
+            throw new Error(
+                "Les données utilisateur reçues sont invalides."
             );
-
-            window.location.href =
-                "connexion.html";
-
-            return;
 
         }
 
 
-        /* =====================================================
-           IDENTIFIANT UTILISATEUR
-        ===================================================== */
+        /* ====================================================
+           MISE A JOUR DU COMPTE LOCAL
+        ==================================================== */
 
-        const userId =
-            user.id ||
-            user.id_bmj ||
-            user.user_id;
-
-
-        if (!userId) {
-
-            afficherErreur(
-                "Impossible de vérifier votre compte."
-            );
-
-            return;
-
-        }
+        user = {
+            ...user,
+            ...currentUser
+        };
 
 
-        /* =====================================================
-           API BMJ SERVICE
-        ===================================================== */
+        /* ====================================================
+           DETERMINER LE STATUT PREMIUM
+        ==================================================== */
 
-        const API_URL =
-            "https://back-end-8i4t.onrender.com";
+        const premiumValue =
+            currentUser.is_premium ??
+            currentUser.premium ??
+            currentUser.isPremium;
 
 
-        try {
+        const isPremium =
+            premiumValue === true ||
+            premiumValue === "true" ||
+            premiumValue === 1 ||
+            premiumValue === "1";
+
+
+        console.log(
+            "[BMJ PREMIUM] PREMIUM :",
+            isPremium
+        );
+
+
+        /* ====================================================
+           SI PAS PREMIUM
+        ==================================================== */
+
+        if (!isPremium) {
 
 
             /*
-             * On récupère la version actuelle
-             * du compte depuis le serveur.
+             * IMPORTANT :
              *
-             * Cela évite de se baser uniquement
-             * sur le localStorage.
+             * On ne touche PAS à la progression Premium.
+             *
+             * Elle reste "En cours".
              */
 
-            const response =
-                await fetch(
-                    API_URL +
-                    "/api/utilisateurs/" +
-                    encodeURIComponent(userId)
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    "Impossible de récupérer le compte."
-                );
-
-            }
-
-
-            const data =
-                await response.json();
-
-
-            /*
-             * Selon la structure de l'API,
-             * l'utilisateur peut se trouver
-             * directement dans data ou dans data.user.
-             */
-
-            const currentUser =
-                data.user ||
-                data.utilisateur ||
-                data.data ||
-                data;
-
-
-            if (
-                !currentUser ||
-                typeof currentUser !== "object"
-            ) {
-
-                throw new Error(
-                    "Données utilisateur invalides."
-                );
-
-            }
-
-
-            /* =================================================
-               METTRE À JOUR LE LOCALSTORAGE
-            ================================================= */
-
-            user = {
-                ...user,
-                ...currentUser
-            };
-
-
-            localStorage.setItem(
-                "bmj_current_user",
-                JSON.stringify(user)
+            afficherMessage(
+                "Votre abonnement Premium n'est pas actif.",
+                false
             );
-
-
-            /* =================================================
-               VÉRIFICATION PREMIUM
-            ================================================= */
-
-            const premium =
-                currentUser.premium;
-
-
-            const isPremium =
-                premium === true ||
-                premium === "true" ||
-                premium === 1 ||
-                premium === "1";
-
-
-            /* =================================================
-               SI PREMIUM
-            ================================================= */
-
-            if (isPremium) {
-
-                document.getElementById(
-                    "message"
-                ).textContent =
-                    "Abonnement Premium actif. Redirection vers votre certificat...";
-
-
-                document.getElementById(
-                    "loading"
-                ).textContent =
-                    "Veuillez patienter...";
-
-
-                setTimeout(
-                    function () {
-
-                        window.location.href =
-                            "certeficat.html";
-
-                    },
-                    800
-                );
-
-
-                return;
-
-            }
-
-
-            /* =================================================
-               SI PAS PREMIUM
-            ================================================= */
-
-            document.getElementById(
-                "message"
-            ).textContent =
-                "Votre abonnement Premium n'est pas actif.";
 
 
             document.getElementById(
                 "loading"
             ).innerHTML =
-                "Vous devez activer votre abonnement pour accéder au certificat.<br><br>" +
+
+                "Vous devez activer votre abonnement " +
+                "pour poursuivre la vérification.<br><br>" +
+
                 "Redirection vers la page d'abonnement...";
+
+
+            /*
+             * On conserve les données actuelles
+             * dans le localStorage.
+             */
+
+            localStorage.setItem(
+                "bmj_current_user",
+                JSON.stringify(user)
+            );
 
 
             setTimeout(
@@ -383,23 +507,354 @@ document.addEventListener(
             );
 
 
-        } catch (error) {
+            return;
 
-            console.error(
-                "Erreur vérification Premium :",
-                error
+        }
+
+
+        /* ====================================================
+           ETAPE 2
+           PREMIUM CONFIRME
+        ==================================================== */
+
+        afficherChargement(
+            "Abonnement Premium confirmé. " +
+            "Finalisation de votre vérification..."
+        );
+
+
+        /*
+         * IMPORTANT :
+         *
+         * C'est ici que la deuxième progression
+         * commence/termine sa validation.
+         *
+         * Le serveur est responsable de passer :
+         *
+         * premium_verification_progression = 100
+         *
+         * premium_verification_completed = true
+         *
+         * uniquement parce que le compte Premium
+         * vient d'être confirmé.
+         */
+
+        const verificationResponse =
+            await fetch(
+                API_URL +
+                "/api/users/" +
+                encodeURIComponent(
+                    userId
+                ) +
+                "/premium-verification/complete",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json",
+
+                        "Accept":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        /*
+                         * On envoie l'identifiant
+                         * pour garder la requête explicite.
+                         */
+
+                        user_id:
+                            Number(userId)
+
+                    })
+                }
             );
 
 
-            afficherErreur(
-                "Impossible de vérifier votre abonnement pour le moment."
+        const verificationData =
+            await verificationResponse
+                .json()
+                .catch(
+                    function () {
+                        return {};
+                    }
+                );
+
+
+        console.log(
+            "[BMJ PREMIUM] REPONSE VERIFICATION :",
+            verificationData
+        );
+
+
+        /* ====================================================
+           ECHEC DE LA FINALISATION
+        ==================================================== */
+
+        if (
+            !verificationResponse.ok ||
+            verificationData.success === false
+        ) {
+
+            throw new Error(
+                verificationData.message ||
+                verificationData.error ||
+                "La vérification Premium n'a pas pu être finalisée."
             );
 
         }
 
-    }
-);
 
+        /* ====================================================
+           RECUPERATION DU USER MIS A JOUR
+        ==================================================== */
+
+        const verifiedUser =
+            verificationData.user ||
+            verificationData.utilisateur ||
+            verificationData.data?.user ||
+            verificationData.data;
+
+
+        if (
+            verifiedUser &&
+            typeof verifiedUser === "object"
+        ) {
+
+            user = {
+                ...user,
+                ...verifiedUser
+            };
+
+        }
+
+
+        /* ====================================================
+           FORCER LES INFORMATIONS LOCALES DE STATUT
+
+           Le serveur reste la source officielle.
+
+           Ces valeurs servent uniquement à garder
+           le localStorage cohérent immédiatement.
+        ==================================================== */
+
+        user.is_premium =
+            true;
+
+
+        user.premium =
+            true;
+
+
+        user.premium_verification_progression =
+            100;
+
+
+        user.premium_verification_completed =
+            true;
+
+
+        user.premium_verification_status =
+            "Terminé";
+
+
+        user.verification_premium_terminee =
+            true;
+
+
+        /* ====================================================
+           SAUVEGARDER L'UTILISATEUR
+        ==================================================== */
+
+        localStorage.setItem(
+            "bmj_current_user",
+            JSON.stringify(user)
+        );
+
+
+        /* ====================================================
+           VERIFICATION FINALE
+        ==================================================== */
+
+        const finalProgress =
+            Number(
+                user.premium_verification_progression
+            );
+
+
+        const finalCompleted =
+            user.premium_verification_completed ===
+            true;
+
+
+        console.log(
+            "[BMJ PREMIUM] PROGRESSION FINALE :",
+            {
+                progression:
+                    finalProgress,
+
+                terminee:
+                    finalCompleted
+            }
+        );
+
+
+        /* ====================================================
+           SUCCES
+        ==================================================== */
+
+        afficherSucces(
+            "Vérification Premium terminée."
+        );
+
+
+        document.getElementById(
+            "loading"
+        ).innerHTML =
+
+            '<span class="success">' +
+
+            "Votre statut Premium est confirmé.<br>" +
+
+            "Votre vérification est terminée.<br><br>" +
+
+            "Redirection vers votre certificat..." +
+
+            "</span>";
+
+
+        /* ====================================================
+           REDIRECTION
+        ==================================================== */
+
+        setTimeout(
+            function () {
+
+                window.location.href =
+                    "certeficat.html";
+
+            },
+            1000
+        );
+
+
+    } catch (error) {
+
+
+        console.error(
+            "[BMJ PREMIUM] ERREUR :",
+            error
+        );
+
+
+        afficherErreur(
+            error.message ||
+            "Impossible de vérifier votre abonnement pour le moment."
+        );
+
+    }
+
+}
+
+
+/* ============================================================
+   AFFICHER CHARGEMENT
+============================================================ */
+
+function afficherChargement(message) {
+
+    const messageElement =
+        document.getElementById(
+            "message"
+        );
+
+
+    const loadingElement =
+        document.getElementById(
+            "loading"
+        );
+
+
+    if (messageElement) {
+
+        messageElement.textContent =
+            message;
+
+    }
+
+
+    if (loadingElement) {
+
+        loadingElement.innerHTML =
+
+            '<span class="spinner"></span>' +
+
+            "Veuillez patienter...";
+
+    }
+
+}
+
+
+/* ============================================================
+   AFFICHER MESSAGE
+============================================================ */
+
+function afficherMessage(
+    message,
+    success = false
+) {
+
+    const messageElement =
+        document.getElementById(
+            "message"
+        );
+
+
+    if (!messageElement) {
+
+        return;
+
+    }
+
+
+    messageElement.textContent =
+        message;
+
+
+    messageElement.style.color =
+        success
+            ? "#15803d"
+            : "#666";
+
+}
+
+
+/* ============================================================
+   AFFICHER SUCCES
+============================================================ */
+
+function afficherSucces(message) {
+
+    const messageElement =
+        document.getElementById(
+            "message"
+        );
+
+
+    if (messageElement) {
+
+        messageElement.textContent =
+            message;
+
+        messageElement.style.color =
+            "#15803d";
+
+    }
+
+}
 
 
 /* ============================================================
@@ -420,20 +875,73 @@ function afficherErreur(message) {
         );
 
 
-    messageElement.textContent =
-        "Vérification impossible";
+    if (messageElement) {
+
+        messageElement.textContent =
+            "Vérification impossible";
+
+        messageElement.style.color =
+            "#b91c1c";
+
+    }
 
 
-    loadingElement.innerHTML =
-        '<div class="error">' +
-        message +
-        '</div>' +
+    if (loadingElement) {
 
-        '<a ' +
-        'href="projet_final_investissement.html" ' +
-        'class="retry">' +
-        'Réessayer' +
-        '</a>';
+        loadingElement.innerHTML =
+
+            '<div class="error">' +
+
+            escapeHTML(
+                message
+            ) +
+
+            "</div>" +
+
+            '<a ' +
+
+            'href="projet_final_investissement.html" ' +
+
+            'class="retry">' +
+
+            "Réessayer" +
+
+            "</a>";
+
+    }
+
+}
+
+
+/* ============================================================
+   SECURITE HTML
+============================================================ */
+
+function escapeHTML(value) {
+
+    return String(
+        value ?? ""
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
 
 }
 
@@ -441,4 +949,5 @@ function afficherErreur(message) {
 
 
 </body>
+
 </html>
