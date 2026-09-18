@@ -5445,6 +5445,232 @@ url("images/info.webp");
     cursor:pointer;
 
 }
+/* ============================================================
+   BADGE NOUVEAUX MESSAGES — DASHBOARD
+============================================================ */
+
+.bmj-dashboard-message-link {
+
+    position: relative;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 42px;
+
+    height: 42px;
+
+    text-decoration: none;
+
+    color: inherit;
+
+}
+
+
+.bmj-dashboard-message-link i {
+
+    font-size: 20px;
+
+}
+
+
+/* ============================================================
+   BADGE
+============================================================ */
+
+.dashboard-message-badge {
+
+    position: absolute;
+
+    top: -4px;
+
+    right: -5px;
+
+    min-width: 19px;
+
+    height: 19px;
+
+    padding: 0 5px;
+
+    border-radius: 20px;
+
+    background: #dc2626;
+
+    color: #ffffff;
+
+    border: 2px solid #ffffff;
+
+    display: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    box-shadow:
+        0 3px 10px rgba(220, 38, 38, .25);
+
+}
+
+
+/* Affiché uniquement lorsqu'il y a des messages */
+
+.dashboard-message-badge.show {
+
+    display: flex;
+
+}
+
+
+/* ============================================================
+   PETITE ANIMATION
+============================================================ */
+
+.dashboard-message-badge.has-new {
+
+    animation:
+        bmjMessagePulse 1.8s ease-in-out infinite;
+
+}
+
+
+@keyframes bmjMessagePulse {
+
+    0%,
+    100% {
+
+        transform: scale(1);
+
+    }
+
+    50% {
+
+        transform: scale(1.12);
+
+    }
+
+}
+/*==================================================
+    ICONE MESSAGES DASHBOARD
+==================================================*/
+
+.bmj-dashboard-message-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.bmj-dashboard-message-link i {
+    font-size: 20px;
+}
+
+
+/*==================================================
+    BADGE NOUVEAUX MESSAGES
+==================================================*/
+
+.dashboard-message-badge {
+
+    position: absolute;
+
+    top: -4px;
+    right: -5px;
+
+    min-width: 19px;
+    height: 19px;
+
+    padding: 0 5px;
+
+    border-radius: 20px;
+
+    background: #dc2626;
+
+    color: #ffffff;
+
+    border: 2px solid #ffffff;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    line-height: 1;
+
+    box-shadow:
+        0 3px 10px
+        rgba(220, 38, 38, .25);
+
+    z-index: 20;
+
+}
+
+
+/*==================================================
+    AFFICHER BADGE
+==================================================*/
+
+.dashboard-message-badge.show {
+
+    display: flex;
+
+}
+
+
+/*==================================================
+    ANIMATION NOUVEAUX MESSAGES
+==================================================*/
+
+.dashboard-message-badge.has-new {
+
+    animation:
+        bmjMessagePulse
+        1.8s
+        ease-in-out
+        infinite;
+
+}
+
+
+@keyframes bmjMessagePulse {
+
+    0%,
+    100% {
+
+        transform:
+            scale(1);
+
+    }
+
+    50% {
+
+        transform:
+            scale(1.12);
+
+    }
+
+}
     </style>
 <link 
 rel="stylesheet" 
@@ -5510,8 +5736,23 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         </div>
         <div class="header-right">
             <i class="fa-regular fa-bell"></i>
-            <a href="message.html" style="text-decoration: none; color: inherit;">
+            <a
+    href="message.html"
+    class="bmj-dashboard-message-link"
+    aria-label="Messages"
+    title="Messages"
+>
+
     <i class="fa-regular fa-envelope"></i>
+
+    <span
+        id="dashboardMessageBadge"
+        class="dashboard-message-badge"
+        aria-label="Nouveaux messages"
+    >
+        0
+    </span>
+
 </a>
             <div class="profile">
                 <img id="photoUtilisateur" src="images/user.png">
@@ -5966,17 +6207,19 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         <small>© 2026 BMJ SERVICE - Tous droits réservés.</small>
     </footer>
 <script>
-
 /*==================================================
         BMJ SERVICE
         SCRIPT TABLEAU DE BORD
-        VERSION : 14.0.0
+        VERSION : 15.0.0
 
         SESSION UNIQUE :
         bmj_session
 
         API :
-        https://back-end-h602.onrender.com
+        https://back-end-8i4t.onrender.com
+
+        NOUVEAU :
+        BADGE MESSAGES NON LUS
 ==================================================*/
 
 
@@ -6109,11 +6352,8 @@ function obtenirUtilisateurLocal() {
     const sources = [
 
         "bmj_current_user",
-
         "bmj_user",
-
         "currentUser",
-
         "user"
 
     ];
@@ -6132,7 +6372,9 @@ function obtenirUtilisateurLocal() {
 
 
             if (!valeur) {
+
                 continue;
+
             }
 
 
@@ -6191,6 +6433,10 @@ function normaliserUtilisateur(
     };
 
 
+    /*
+        ID
+    */
+
     user.id =
         utilisateur.id ??
         utilisateur.user_id ??
@@ -6198,6 +6444,10 @@ function normaliserUtilisateur(
         utilisateur.id_utilisateur ??
         null;
 
+
+    /*
+        ID BMJ
+    */
 
     user.id_bmj =
         utilisateur.id_bmj ??
@@ -6207,6 +6457,10 @@ function normaliserUtilisateur(
         "";
 
 
+    /*
+        NOM
+    */
+
     user.nom =
         utilisateur.nom ??
         utilisateur.name ??
@@ -6214,10 +6468,18 @@ function normaliserUtilisateur(
         "";
 
 
+    /*
+        EMAIL
+    */
+
     user.email =
         utilisateur.email ??
         "";
 
+
+    /*
+        TELEPHONE
+    */
 
     user.telephone =
         utilisateur.telephone ??
@@ -6225,11 +6487,19 @@ function normaliserUtilisateur(
         "";
 
 
+    /*
+        DOMAINE
+    */
+
     user.domaine =
         utilisateur.domaine ??
         utilisateur.domain ??
         "";
 
+
+    /*
+        PHOTO
+    */
 
     user.photo =
         utilisateur.photo ??
@@ -6464,6 +6734,7 @@ function sauvegarderUtilisateur(
                 user.token
             );
 
+
             localStorage.setItem(
                 "token",
                 user.token
@@ -6605,11 +6876,13 @@ async function synchroniserUtilisateur() {
             )}`
         );
 
+
         routes.push(
             `/api/utilisateurs/${encodeURIComponent(
                 localUser.id
             )}`
         );
+
 
         routes.push(
             `/api/users/${encodeURIComponent(
@@ -6632,6 +6905,7 @@ async function synchroniserUtilisateur() {
             )}`
         );
 
+
         routes.push(
             `/api/utilisateurs/bmj/${encodeURIComponent(
                 localUser.id_bmj
@@ -6652,6 +6926,7 @@ async function synchroniserUtilisateur() {
                 localUser.email
             )}`
         );
+
 
         routes.push(
             `/api/utilisateurs/email/${encodeURIComponent(
@@ -6815,8 +7090,10 @@ async function synchroniserUtilisateur() {
             utilisateurFinal.premium =
                 serveurNormalise.premium;
 
+
             utilisateurFinal.is_premium =
                 serveurNormalise.is_premium;
+
 
             utilisateurFinal.isPremium =
                 serveurNormalise.isPremium;
@@ -6867,7 +7144,393 @@ async function synchroniserUtilisateur() {
 
 
 /*==================================================
-        10. AFFICHER UTILISATEUR
+        10. BADGE MESSAGES NON LUS
+==================================================*/
+
+async function actualiserBadgeMessages() {
+
+    const badge =
+        document.getElementById(
+            "dashboardMessageBadge"
+        );
+
+
+    /*
+        Si le badge n'existe pas
+        sur la page, on ne fait rien.
+    */
+
+    if (!badge) {
+
+        return;
+
+    }
+
+
+    /*
+        RECUPERER UTILISATEUR
+    */
+
+    const utilisateur =
+        normaliserUtilisateur(
+            obtenirUtilisateurLocal()
+        );
+
+
+    if (!utilisateur) {
+
+        badge.textContent = "0";
+
+        badge.classList.remove(
+            "show",
+            "has-new"
+        );
+
+        return;
+
+    }
+
+
+    /*
+        ID UTILISATEUR
+    */
+
+    const userId =
+        utilisateur.id ??
+        utilisateur.user_id ??
+        utilisateur.userId ??
+        utilisateur.id_utilisateur ??
+        null;
+
+
+    if (!userId) {
+
+        badge.textContent = "0";
+
+        badge.classList.remove(
+            "show",
+            "has-new"
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        /*
+            HEADERS
+        */
+
+        const headers = {
+
+            "Accept":
+                "application/json",
+
+            "X-User-Id":
+                String(userId),
+
+            "X-UserID":
+                String(userId),
+
+            "X-BMJ-User-Id":
+                String(userId)
+
+        };
+
+
+        /*
+            TOKEN SI DISPONIBLE
+        */
+
+        if (
+            utilisateur.token
+        ) {
+
+            headers.Authorization =
+                "Bearer " +
+                utilisateur.token;
+
+        }
+
+
+        /*
+            APPEL API
+        */
+
+        const response =
+            await fetch(
+                BMJ_API_URL +
+                "/api/user/sms/unread",
+                {
+
+                    method: "GET",
+
+                    headers: headers,
+
+                    cache: "no-store"
+
+                }
+            );
+
+
+        /*
+            ERREUR API
+
+            On ne déconnecte surtout
+            pas l'utilisateur.
+        */
+
+        if (!response.ok) {
+
+            console.warn(
+                "[BMJ DASHBOARD] Impossible de récupérer les messages non lus. HTTP",
+                response.status
+            );
+
+            return;
+
+        }
+
+
+        const result =
+            await response.json();
+
+
+        /*
+            COMPTER LES MESSAGES
+        */
+
+        let nombreNonLus = 0;
+
+
+        /*
+            FORMAT :
+
+            {
+                unread: 3
+            }
+        */
+
+        if (
+            typeof result.unread ===
+            "number"
+        ) {
+
+            nombreNonLus =
+                result.unread;
+
+        }
+
+
+        /*
+            FORMAT :
+
+            {
+                count: 3
+            }
+        */
+
+        else if (
+            typeof result.count ===
+            "number"
+        ) {
+
+            nombreNonLus =
+                result.count;
+
+        }
+
+
+        /*
+            FORMAT :
+
+            {
+                unread_count: 3
+            }
+        */
+
+        else if (
+            typeof result.unread_count ===
+            "number"
+        ) {
+
+            nombreNonLus =
+                result.unread_count;
+
+        }
+
+
+        /*
+            FORMAT :
+
+            {
+                totalUnread: 3
+            }
+        */
+
+        else if (
+            typeof result.totalUnread ===
+            "number"
+        ) {
+
+            nombreNonLus =
+                result.totalUnread;
+
+        }
+
+
+        /*
+            FORMAT :
+
+            {
+                messages: [...]
+            }
+        */
+
+        else if (
+            Array.isArray(
+                result.messages
+            )
+        ) {
+
+            nombreNonLus =
+                result.messages.length;
+
+        }
+
+
+        /*
+            FORMAT :
+
+            {
+                sms: [...]
+            }
+        */
+
+        else if (
+            Array.isArray(
+                result.sms
+            )
+        ) {
+
+            nombreNonLus =
+                result.sms.length;
+
+        }
+
+
+        /*
+            FORMAT :
+
+            {
+                data: [...]
+            }
+        */
+
+        else if (
+            Array.isArray(
+                result.data
+            )
+        ) {
+
+            nombreNonLus =
+                result.data.length;
+
+        }
+
+
+        /*
+            SECURITE
+        */
+
+        nombreNonLus =
+            Math.max(
+                0,
+                Number(
+                    nombreNonLus
+                ) || 0
+            );
+
+
+        /*
+            AFFICHAGE
+        */
+
+        if (
+            nombreNonLus > 99
+        ) {
+
+            badge.textContent =
+                "99+";
+
+        } else {
+
+            badge.textContent =
+                String(
+                    nombreNonLus
+                );
+
+        }
+
+
+        /*
+            MESSAGE(S) NON LU(S)
+        */
+
+        if (
+            nombreNonLus > 0
+        ) {
+
+            badge.classList.add(
+                "show"
+            );
+
+            badge.classList.add(
+                "has-new"
+            );
+
+        } else {
+
+            badge.classList.remove(
+                "show"
+            );
+
+            badge.classList.remove(
+                "has-new"
+            );
+
+        }
+
+
+        console.log(
+            "[BMJ DASHBOARD] Messages non lus :",
+            nombreNonLus
+        );
+
+    } catch (error) {
+
+        /*
+            IMPORTANT :
+
+            Une erreur du système
+            de messages ne doit jamais
+            bloquer le dashboard.
+        */
+
+        console.warn(
+            "[BMJ DASHBOARD] Erreur badge messages :",
+            error
+        );
+
+    }
+
+}
+
+
+/*==================================================
+        11. AFFICHER UTILISATEUR
 ==================================================*/
 
 function afficherInformationsUtilisateur(
@@ -7045,7 +7708,7 @@ function afficherInformationsUtilisateur(
 
 
 /*==================================================
-        11. PROGRESSION
+        12. PROGRESSION
 ==================================================*/
 
 function afficherProgression(
@@ -7141,7 +7804,7 @@ function afficherProgression(
 
 
 /*==================================================
-        12. OUVRIR DOMAINE
+        13. OUVRIR DOMAINE
 ==================================================*/
 
 function ouvrirDomaine(
@@ -7251,6 +7914,7 @@ function ouvrirDomaine(
 
         "intelligence-artificielle":
             "ia.html",
+
         "developpement":
             "developpement_personnel.html",
 
@@ -7260,9 +7924,9 @@ function ouvrirDomaine(
         "technologie":
             "technologie.html",
 
-
         "evenement":
             "evenements.html",
+
         "eloquence":
             "eloquence.html",
 
@@ -7280,7 +7944,7 @@ function ouvrirDomaine(
 
         "investissement":
             "investissement.html",
-            
+
         "beaute":
             "esthetique.html",
 
@@ -7290,11 +7954,9 @@ function ouvrirDomaine(
         "langues":
             "langues.html",
 
-
         "trading":
             "trading.html"
 
-         
     };
 
 
@@ -7306,7 +7968,7 @@ function ouvrirDomaine(
 
 
 /*==================================================
-        13. CONTINUER FORMATION
+        14. CONTINUER FORMATION
 ==================================================*/
 
 function continuerFormation() {
@@ -7347,7 +8009,7 @@ function continuerFormation() {
 
 
 /*==================================================
-        14. CERTIFICAT
+        15. CERTIFICAT
 ==================================================*/
 
 function ouvrirCertificat() {
@@ -7376,7 +8038,7 @@ function ouvrirCertificat() {
 
 
 /*==================================================
-        15. POPUP
+        16. POPUP
 ==================================================*/
 
 function afficherPopupBMJ(
@@ -7428,6 +8090,7 @@ function afficherPopupBMJ(
                     ⚠️
                 </div>
 
+
                 <h3
                     id="bmjModalTitle"
                     style="
@@ -7437,6 +8100,7 @@ function afficherPopupBMJ(
                     Notification
                 </h3>
 
+
                 <p
                     id="bmjModalText"
                     style="
@@ -7445,6 +8109,7 @@ function afficherPopupBMJ(
                         margin-bottom:20px;
                     "
                 ></p>
+
 
                 <button
                     id="bmjModalBtn"
@@ -7535,7 +8200,7 @@ function afficherPopupBMJ(
 
 
 /*==================================================
-        16. DECONNEXION
+        17. DECONNEXION
 ==================================================*/
 
 function deconnexion() {
@@ -7583,7 +8248,7 @@ function deconnexion() {
 
 
 /*==================================================
-        17. LOGOUT
+        18. LOGOUT
 ==================================================*/
 
 function initialiserDeconnexion() {
@@ -7616,7 +8281,7 @@ function initialiserDeconnexion() {
 
 
 /*==================================================
-        18. MENU MOBILE
+        19. MENU MOBILE
 ==================================================*/
 
 function initialiserMenuMobile() {
@@ -7658,7 +8323,7 @@ function initialiserMenuMobile() {
 
 
 /*==================================================
-        19. NAVIGATION SIDEBAR
+        20. NAVIGATION SIDEBAR
 ==================================================*/
 
 function initialiserNavigation() {
@@ -7704,7 +8369,7 @@ function initialiserNavigation() {
 
 
 /*==================================================
-        20. PROTECTION DASHBOARD
+        21. PROTECTION DASHBOARD
 ==================================================*/
 
 async function initialiserDashboard() {
@@ -7773,6 +8438,16 @@ async function initialiserDashboard() {
 
 
     /*
+        BADGE MESSAGES
+
+        Affichage immédiat
+        avec la session actuelle.
+    */
+
+    actualiserBadgeMessages();
+
+
+    /*
         UI
     */
 
@@ -7813,6 +8488,16 @@ async function initialiserDashboard() {
                 utilisateurServeur
             );
 
+
+            /*
+                Après synchronisation,
+                on actualise à nouveau
+                le badge avec le user ID
+                confirmé par le serveur.
+            */
+
+            actualiserBadgeMessages();
+
         }
 
     } catch (error) {
@@ -7828,7 +8513,22 @@ async function initialiserDashboard() {
 
 
 /*==================================================
-        21. DEMARRAGE
+        22. ACTUALISATION AUTOMATIQUE
+        DU BADGE MESSAGES
+==================================================*/
+
+setInterval(
+    function() {
+
+        actualiserBadgeMessages();
+
+    },
+    30000
+);
+
+
+/*==================================================
+        23. DEMARRAGE
 ==================================================*/
 
 if (
@@ -7849,7 +8549,7 @@ if (
 
 
 /*==================================================
-        22. EXPORT GLOBAL
+        24. EXPORT GLOBAL
 ==================================================*/
 
 window.bmjDashboard = {
@@ -7874,10 +8574,11 @@ window.bmjDashboard = {
 
     afficherPopupBMJ,
 
+    actualiserBadgeMessages,
+
     deconnexion
 
 };
-
 </script>
 <!-- Modale Moderne BMJ SERVICE (Vérification Certificat) -->
 <div id="bmjModalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
