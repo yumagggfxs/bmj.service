@@ -1,39 +1,42 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 
 <head>
 
+    <meta charset="UTF-8">
 
-<meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <title>BMJ SERVICE — Mes messages</title>
 
-<title>Messagerie | BMJ SERVICE</title>
+    <meta
+        name="description"
+        content="Messagerie utilisateur BMJ SERVICE"
+    >
 
-<link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
 
-<link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
->
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
-<link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
 
 <style>
 
@@ -42,56 +45,108 @@
 ============================================================ */
 
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
 
 body {
 
-    font-family: "Poppins", sans-serif;
+    min-height: 100vh;
+
+    font-family:
+        "Poppins",
+        Arial,
+        sans-serif;
+
+    color: #fff;
 
     background:
-        linear-gradient(
-            135deg,
-            #f4f8fb,
-            #eef4f8
-        );
 
-    color: #172033;
+        radial-gradient(
+            circle at top left,
+            rgba(20,90,134,.16),
+            transparent 32%
+        ),
+
+        radial-gradient(
+            circle at bottom right,
+            rgba(212,175,55,.06),
+            transparent 30%
+        ),
+
+        #030303;
+
+    overflow-x: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* ============================================================
+   VARIABLES
+============================================================ */
+
+:root {
+
+    --blue: #145a86;
+    --blue-light: #2187c0;
+    --gold: #d4af37;
+
+    --green: #22c55e;
+    --red: #ef4444;
+    --orange: #f59e0b;
+
+    --black: #030303;
+    --panel: #0b0b0b;
+    --panel-2: #101010;
+    --panel-3: #151515;
+
+    --border:
+        rgba(255,255,255,.08);
+
+    --muted: #777;
+    --muted-2: #444;
+}
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+#userMessagingApp {
+
+    width: 100%;
 
     min-height: 100vh;
 }
 
-
-button,
-textarea,
-input {
-
-    font-family: inherit;
-
-}
-
-
-button {
-
-    cursor: pointer;
-
-}
-
-
 /* ============================================================
-   TOPBAR
+   HEADER
 ============================================================ */
 
 .topbar {
 
-    height: 70px;
+    height: 74px;
 
-    background: #145a86;
+    position: sticky;
 
-    color: white;
+    top: 0;
+
+    z-index: 1000;
 
     display: flex;
 
@@ -99,18 +154,19 @@ button {
 
     justify-content: space-between;
 
-    padding: 0 28px;
+    padding:
+        0 25px;
 
-    box-shadow:
-        0 4px 18px rgba(
-            20,
-            90,
-            134,
-            .20
-        );
+    background:
+        rgba(3,3,3,.91);
 
+    backdrop-filter:
+        blur(18px);
+
+    border-bottom:
+        1px solid
+        var(--border);
 }
-
 
 .brand {
 
@@ -118,22 +174,64 @@ button {
 
     align-items: center;
 
-    gap: 12px;
-
-    font-size: 19px;
-
-    font-weight: 700;
-
+    gap: 11px;
 }
 
-
-.brand-icon {
+.brand img {
 
     width: 42px;
-
     height: 42px;
 
-    border-radius: 13px;
+    object-fit: contain;
+}
+
+.brand-name {
+
+    font-size: 17px;
+
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+.brand-name span {
+    color: var(--gold);
+}
+
+.brand-subtitle {
+
+    color: #555;
+
+    font-size: 8px;
+
+    margin-top: 5px;
+
+    letter-spacing: 1px;
+}
+
+.top-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+.top-button {
+
+    width: 39px;
+    height: 39px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 9px;
+
+    background: #101010;
+
+    color: #888;
 
     display: flex;
 
@@ -141,161 +239,73 @@ button {
 
     justify-content: center;
 
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .14
-        );
-
+    position: relative;
 }
 
-
-.back-btn {
-
-    border: none;
-
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .13
-        );
+.top-button:hover {
 
     color: white;
 
-    padding: 10px 16px;
+    border-color:
+        rgba(20,90,134,.5);
+}
 
-    border-radius: 11px;
+.unread-badge {
+
+    position: absolute;
+
+    top: -5px;
+
+    right: -5px;
+
+    min-width: 17px;
+
+    height: 17px;
+
+    padding: 0 4px;
 
     display: flex;
 
     align-items: center;
 
-    gap: 8px;
+    justify-content: center;
 
-    transition: .2s;
+    border-radius: 20px;
 
+    background: var(--red);
+
+    color: white;
+
+    font-size: 7px;
+
+    font-weight: 700;
+
+    border:
+        2px solid
+        #030303;
 }
-
-
-.back-btn:hover {
-
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .23
-        );
-
-}
-
 
 /* ============================================================
-   PAGE
+   MAIN
 ============================================================ */
 
-.page {
+.main {
 
-    width:
-        min(
-            1180px,
-            calc(100% - 30px)
-        );
+    width: 100%;
 
-    margin: 28px auto;
+    max-width: 1250px;
 
+    margin: auto;
+
+    padding:
+        25px 20px 40px;
 }
 
+/* ============================================================
+   PAGE HEADER
+============================================================ */
 
 .page-header {
-
-    margin-bottom: 20px;
-
-}
-
-
-.page-header h1 {
-
-    font-size: 27px;
-
-    margin-bottom: 5px;
-
-}
-
-
-.page-header p {
-
-    color: #718096;
-
-    font-size: 13px;
-
-}
-
-
-/* ============================================================
-   MESSAGERIE
-============================================================ */
-
-.messaging-layout {
-
-    display: grid;
-
-    grid-template-columns:
-        370px
-        1fr;
-
-    gap: 18px;
-
-    height: 680px;
-
-}
-
-
-.card {
-
-    background: white;
-
-    border-radius: 19px;
-
-    box-shadow:
-        0 8px 30px
-        rgba(
-            20,
-            40,
-            70,
-            .08
-        );
-
-    overflow: hidden;
-
-}
-
-
-/* ============================================================
-   LISTE
-============================================================ */
-
-.messages-card {
-
-    display: flex;
-
-    flex-direction: column;
-
-}
-
-
-.messages-header {
-
-    height: 70px;
-
-    padding: 0 20px;
-
-    border-bottom:
-        1px solid #edf0f5;
 
     display: flex;
 
@@ -303,204 +313,338 @@ button {
 
     justify-content: space-between;
 
+    gap: 15px;
+
+    margin-bottom: 18px;
 }
 
+.page-title {
 
-.messages-header-left {
+    font-size: 24px;
+
+    font-weight: 800;
+}
+
+.page-description {
+
+    color: #555;
+
+    font-size: 10px;
+
+    margin-top: 5px;
+}
+
+.refresh-button {
+
+    height: 40px;
+
+    padding:
+        0 13px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 9px;
+
+    background: #101010;
+
+    color: #aaa;
+
+    font-size: 9px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+.refresh-button:hover {
+
+    color: white;
+
+    border-color:
+        rgba(20,90,134,.5);
+}
+
+/* ============================================================
+   STATS
+============================================================ */
+
+.stats {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+}
+
+.stat {
+
+    background:
+        linear-gradient(
+            145deg,
+            #101010,
+            #080808
+        );
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 12px;
+
+    padding: 13px;
 
     display: flex;
 
     align-items: center;
 
     gap: 10px;
-
 }
 
+.stat-icon {
 
-.messages-header h2 {
+    width: 34px;
+    height: 34px;
 
-    font-size: 17px;
-
-}
-
-
-.message-count {
-
-    min-width: 27px;
-
-    height: 27px;
-
-    padding: 0 8px;
-
-    border-radius: 30px;
-
-    background: #145a86;
-
-    color: white;
-
-    font-size: 11px;
-
-    font-weight: 700;
+    min-width: 34px;
 
     display: flex;
 
     align-items: center;
-
     justify-content: center;
 
+    border-radius: 9px;
+
+    background:
+        rgba(20,90,134,.12);
+
+    color: #38a1d5;
+
+    font-size: 12px;
 }
 
+.stat-value {
 
-.message-count.has-unread {
+    font-size: 18px;
 
-    background: #e11d48;
-
+    font-weight: 800;
 }
 
+.stat-label {
 
-.message-list {
+    color: #555;
 
-    flex: 1;
+    font-size: 8px;
 
-    overflow-y: auto;
-
+    margin-top: 2px;
 }
-
 
 /* ============================================================
-   MESSAGE ITEM
+   MESSAGING BOX
 ============================================================ */
 
-.message-item {
+.messaging-box {
 
-    position: relative;
+    display: grid;
+
+    grid-template-columns:
+        310px
+        minmax(0,1fr);
+
+    height:
+        calc(100vh - 205px);
+
+    min-height: 550px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #101010,
+            #080808
+        );
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 16px;
+
+    overflow: hidden;
+}
+
+/* ============================================================
+   INBOX
+============================================================ */
+
+.inbox {
+
+    border-right:
+        1px solid
+        var(--border);
 
     display: flex;
 
-    gap: 12px;
-
-    padding: 15px 17px;
-
-    border-bottom:
-        1px solid #edf0f5;
-
-    cursor: pointer;
-
-    transition: .18s;
-
-}
-
-
-.message-item:hover {
-
-    background: #f7fbff;
-
-}
-
-
-.message-item.active {
-
-    background: #eef7ff;
-
-}
-
-
-.message-item.unread {
-
-    background: #f5faff;
-
-}
-
-
-.message-item.unread::before {
-
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-
-    top: 0;
-
-    bottom: 0;
-
-    width: 4px;
-
-    background: #145a86;
-
-}
-
-
-.message-avatar {
-
-    width: 44px;
-
-    height: 44px;
-
-    flex-shrink: 0;
-
-    border-radius: 14px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    background: #edf5fb;
-
-    color: #145a86;
-
-    font-size: 17px;
-
-}
-
-
-.message-item.unread
-.message-avatar {
-
-    background: #145a86;
-
-    color: white;
-
-}
-
-
-.message-item.official
-.message-avatar {
-
-    background: #fff4dc;
-
-    color: #b77900;
-
-}
-
-
-.message-info {
+    flex-direction: column;
 
     min-width: 0;
-
-    flex: 1;
-
 }
 
+.inbox-header {
 
-.message-top {
+    padding: 14px;
+
+    border-bottom:
+        1px solid
+        var(--border);
+}
+
+.inbox-title-row {
 
     display: flex;
 
     align-items: center;
 
     justify-content: space-between;
-
-    gap: 8px;
-
 }
 
+.inbox-title {
 
-.message-item-title {
+    font-size: 11px;
 
-    font-size: 13px;
+    font-weight: 700;
+}
+
+.inbox-count {
+
+    color: #555;
+
+    font-size: 8px;
+}
+
+.search {
+
+    margin-top: 10px;
+
+    position: relative;
+}
+
+.search i {
+
+    position: absolute;
+
+    left: 11px;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
+
+    color: #444;
+
+    font-size: 10px;
+}
+
+.search input {
+
+    width: 100%;
+
+    height: 37px;
+
+    padding:
+        0 10px 0 32px;
+
+    background: #050505;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 8px;
+
+    outline: none;
+
+    color: white;
+
+    font-size: 9px;
+}
+
+.search input:focus {
+
+    border-color:
+        rgba(20,90,134,.55);
+}
+
+.inbox-list {
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 7px;
+}
+
+.message-item {
+
+    width: 100%;
+
+    border: 0;
+
+    background: transparent;
+
+    color: white;
+
+    text-align: left;
+
+    padding: 11px;
+
+    border-radius: 9px;
+
+    margin-bottom: 3px;
+
+    transition: .2s;
+}
+
+.message-item:hover {
+
+    background:
+        rgba(255,255,255,.035);
+}
+
+.message-item.active {
+
+    background:
+        rgba(20,90,134,.17);
+
+    border:
+        1px solid
+        rgba(20,90,134,.25);
+}
+
+.message-item.unread {
+
+    background:
+        rgba(20,90,134,.07);
+}
+
+.message-item-top {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 8px;
+}
+
+.message-item-subject {
+
+    font-size: 9px;
 
     font-weight: 700;
 
@@ -509,56 +653,312 @@ button {
     overflow: hidden;
 
     text-overflow: ellipsis;
-
 }
 
+.message-item-date {
 
-.message-date {
+    color: #444;
 
-    flex-shrink: 0;
+    font-size: 7px;
 
-    color: #9aa4b2;
-
-    font-size: 9px;
-
+    white-space: nowrap;
 }
 
+.message-item-preview {
 
-.message-preview {
+    color: #555;
+
+    font-size: 8px;
 
     margin-top: 5px;
 
-    color: #687386;
-
-    font-size: 11px;
-
-    line-height: 1.45;
-
-    display: -webkit-box;
-
-    -webkit-line-clamp: 2;
-
-    -webkit-box-orient: vertical;
+    white-space: nowrap;
 
     overflow: hidden;
 
+    text-overflow: ellipsis;
 }
 
-
-.message-badges {
+.message-item-bottom {
 
     display: flex;
 
     align-items: center;
 
-    gap: 5px;
+    gap: 6px;
 
-    margin-top: 7px;
-
+    margin-top: 6px;
 }
 
+.message-type {
 
-.message-badge {
+    color: #555;
+
+    font-size: 7px;
+}
+
+.unread-dot {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #38a1d5;
+}
+
+/* ============================================================
+   CONVERSATION
+============================================================ */
+
+.conversation {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.conversation-header {
+
+    min-height: 70px;
+
+    padding:
+        11px 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    border-bottom:
+        1px solid
+        var(--border);
+}
+
+.admin-profile {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 0;
+}
+
+.admin-avatar {
+
+    width: 39px;
+    height: 39px;
+
+    min-width: 39px;
+
+    border-radius: 50%;
+
+    background:
+        linear-gradient(
+            135deg,
+            #145a86,
+            #0a3048
+        );
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.admin-avatar img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+}
+
+.admin-name {
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+.admin-status {
+
+    color: #22c55e;
+
+    font-size: 7px;
+
+    margin-top: 3px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+}
+
+.admin-status i {
+    font-size: 5px;
+}
+
+.conversation-actions {
+
+    display: flex;
+
+    gap: 5px;
+}
+
+.mini-button {
+
+    width: 32px;
+    height: 32px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 7px;
+
+    background: #111;
+
+    color: #777;
+}
+
+.mini-button:hover {
+
+    color: white;
+
+    border-color:
+        rgba(20,90,134,.45);
+}
+
+/* ============================================================
+   MESSAGES
+============================================================ */
+
+.messages {
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 20px;
+}
+
+.message-row {
+
+    display: flex;
+
+    margin-bottom: 14px;
+}
+
+.message-row.admin {
+
+    justify-content: flex-start;
+}
+
+.message-row.user {
+
+    justify-content: flex-end;
+}
+
+.bubble {
+
+    max-width: 75%;
+
+    padding:
+        11px 13px;
+
+    background: #151515;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 14px;
+
+    border-bottom-left-radius: 4px;
+}
+
+.message-row.user .bubble {
+
+    background:
+        linear-gradient(
+            135deg,
+            #145a86,
+            #0d3c58
+        );
+
+    border-color:
+        rgba(40,140,200,.2);
+
+    border-bottom-right-radius: 4px;
+
+    border-bottom-left-radius: 14px;
+}
+
+.sender {
+
+    color: #555;
+
+    font-size: 7px;
+
+    margin-bottom: 5px;
+}
+
+.message-row.user .sender {
+
+    color:
+        rgba(255,255,255,.45);
+}
+
+.subject {
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    margin-bottom: 5px;
+}
+
+.text {
+
+    font-size: 10px;
+
+    line-height: 1.65;
+
+    white-space: pre-wrap;
+
+    word-break: break-word;
+}
+
+.message-info {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 5px;
+
+    margin-top: 6px;
+
+    color:
+        rgba(255,255,255,.4);
+
+    font-size: 7px;
+}
+
+.priority {
 
     display: inline-flex;
 
@@ -566,981 +966,438 @@ button {
 
     gap: 4px;
 
-    padding: 3px 7px;
+    padding:
+        3px 6px;
 
-    border-radius: 6px;
+    margin-bottom: 6px;
 
-    font-size: 8px;
+    border-radius: 5px;
 
-    font-weight: 700;
+    background:
+        rgba(255,255,255,.07);
 
+    color: #999;
+
+    font-size: 7px;
+
+    text-transform: uppercase;
 }
 
-
-.badge-official {
-
-    background: #fff4dc;
-
-    color: #a56b00;
-
+.priority.urgent {
+    color: #ff7777;
 }
 
-
-.badge-personal {
-
-    background: #e9f7ef;
-
-    color: #19713d;
-
+.priority.important {
+    color: #e4bb48;
 }
-
-
-.badge-reply {
-
-    background: #edf0ff;
-
-    color: #5262aa;
-
-}
-
-
-.badge-new {
-
-    background: #e11d48;
-
-    color: white;
-
-}
-
 
 /* ============================================================
-   EMPTY
+   COMPOSER
 ============================================================ */
 
-.messages-empty {
+.composer {
 
-    min-height: 300px;
+    padding: 10px;
 
-    display: flex;
+    border-top:
+        1px solid
+        var(--border);
 
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 30px;
-
+    background: #090909;
 }
 
-
-.messages-empty-icon {
-
-    width: 72px;
-
-    height: 72px;
-
-    border-radius: 22px;
-
-    background: #edf5fb;
-
-    color: #145a86;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 28px;
-
-    margin-bottom: 15px;
-
-}
-
-
-.messages-empty h3 {
-
-    font-size: 17px;
-
-    margin-bottom: 7px;
-
-}
-
-
-.messages-empty p {
-
-    color: #7b8797;
-
-    font-size: 12px;
-
-}
-
-
-/* ============================================================
-   DETAIL
-============================================================ */
-
-.message-detail {
-
-    display: flex;
-
-    flex-direction: column;
-
-    min-width: 0;
-
-}
-
-
-.detail-empty {
-
-    flex: 1;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 40px;
-
-}
-
-
-.detail-empty-icon {
-
-    width: 90px;
-
-    height: 90px;
-
-    border-radius: 28px;
-
-    background: #edf5fb;
-
-    color: #145a86;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 35px;
-
-    margin-bottom: 18px;
-
-}
-
-
-.detail-empty h3 {
-
-    font-size: 18px;
-
-    margin-bottom: 7px;
-
-}
-
-
-.detail-empty p {
-
-    max-width: 400px;
-
-    color: #7b8797;
-
-    font-size: 12px;
-
-}
-
-
-/* ============================================================
-   DETAIL HEADER
-============================================================ */
-
-.detail-header {
-
-    padding: 20px 24px;
-
-    border-bottom:
-        1px solid #edf0f5;
-
-}
-
-
-.detail-back {
+.reply-indicator {
 
     display: none;
 
-    border: none;
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 7px 9px;
+
+    margin-bottom: 7px;
+
+    border-radius: 7px;
+
+    background:
+        rgba(20,90,134,.1);
+
+    border:
+        1px solid
+        rgba(20,90,134,.2);
+
+    color: #5ba6d0;
+
+    font-size: 8px;
+}
+
+.reply-indicator.show {
+    display: flex;
+}
+
+.cancel-reply {
+
+    border: 0;
 
     background: transparent;
 
-    color: #145a86;
+    color: #777;
 
-    font-size: 12px;
-
-    font-weight: 600;
-
-    margin-bottom: 14px;
-
-    padding: 0;
-
+    font-size: 10px;
 }
 
+.composer-row {
 
-.detail-type {
+    display: grid;
 
-    display: inline-flex;
+    grid-template-columns:
+        1fr 130px;
+
+    gap: 6px;
+
+    margin-bottom: 6px;
+}
+
+.field {
+
+    width: 100%;
+
+    height: 38px;
+
+    padding:
+        0 10px;
+
+    background: #040404;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 8px;
+
+    color: white;
+
+    outline: none;
+
+    font-size: 9px;
+}
+
+.field:focus {
+
+    border-color:
+        rgba(20,90,134,.55);
+}
+
+textarea.field {
+
+    height: 74px;
+
+    padding: 9px 10px;
+
+    resize: none;
+
+    line-height: 1.5;
+}
+
+.composer-bottom {
+
+    display: flex;
 
     align-items: center;
 
-    gap: 7px;
+    justify-content: space-between;
 
-    padding: 6px 10px;
+    gap: 8px;
+
+    margin-top: 6px;
+}
+
+.composer-hint {
+
+    color: #444;
+
+    font-size: 7px;
+}
+
+.send-button {
+
+    height: 37px;
+
+    border: 0;
 
     border-radius: 8px;
+
+    padding:
+        0 15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #176d9f,
+            #145a86
+        );
+
+    color: white;
 
     font-size: 9px;
 
     font-weight: 700;
 
-    margin-bottom: 11px;
-
-}
-
-
-.detail-type.official {
-
-    background: #fff4dc;
-
-    color: #a56b00;
-
-}
-
-
-.detail-type.individual {
-
-    background: #e9f7ef;
-
-    color: #19713d;
-
-}
-
-
-.detail-type.reply {
-
-    background: #edf0ff;
-
-    color: #5262aa;
-
-}
-
-
-.detail-header h2 {
-
-    font-size: 20px;
-
-    line-height: 1.4;
-
-    margin-bottom: 9px;
-
-}
-
-
-.detail-meta {
-
     display: flex;
 
     align-items: center;
 
-    flex-wrap: wrap;
-
-    gap: 10px;
-
-    color: #8993a4;
-
-    font-size: 10px;
-
+    gap: 6px;
 }
 
+.send-button:disabled {
+    opacity: .5;
+}
 
-.detail-meta span {
+/* ============================================================
+   EMPTY
+============================================================ */
+
+.empty {
+
+    width: 100%;
+    height: 100%;
+
+    min-height: 180px;
 
     display: flex;
 
+    flex-direction: column;
+
     align-items: center;
 
-    gap: 5px;
+    justify-content: center;
 
+    text-align: center;
+
+    color: #444;
 }
 
+.empty i {
 
-.priority {
+    font-size: 34px;
 
-    padding: 4px 8px;
+    margin-bottom: 12px;
 
-    border-radius: 6px;
+    color: #202020;
+}
+
+.empty strong {
+
+    color: #666;
+
+    font-size: 11px;
+}
+
+.empty span {
 
     font-size: 8px;
 
-    font-weight: 700;
-
+    margin-top: 5px;
 }
-
-
-.priority.normal {
-
-    background: #edf1f5;
-
-    color: #657182;
-
-}
-
-
-.priority.important {
-
-    background: #fff4d7;
-
-    color: #9a6800;
-
-}
-
-
-.priority.urgent {
-
-    background: #ffe5e5;
-
-    color: #c53030;
-
-}
-
 
 /* ============================================================
-   DETAIL BODY
+   TOAST
 ============================================================ */
 
-.detail-body {
-
-    flex: 1;
-
-    overflow-y: auto;
-
-    padding: 25px;
-
-    background: #f9fbfd;
-
-}
-
-
-.message-content {
-
-    background: white;
-
-    border:
-        1px solid #edf0f5;
-
-    border-radius: 15px;
-
-    padding: 22px;
-
-    font-size: 13px;
-
-    line-height: 1.8;
-
-    color: #374151;
-
-    white-space: pre-wrap;
-
-    word-break: break-word;
-
-    box-shadow:
-        0 3px 12px
-        rgba(
-            20,
-            40,
-            70,
-            .03
-        );
-
-}
-
-
-/* ============================================================
-   OFFICIAL
-============================================================ */
-
-.no-reply {
-
-    margin-top: 18px;
-
-    padding: 15px;
-
-    border-radius: 12px;
-
-    background: #fff9ec;
-
-    color: #8a6700;
-
-    font-size: 10px;
-
-    display: flex;
-
-    align-items: flex-start;
-
-    gap: 9px;
-
-    line-height: 1.5;
-
-}
-
-
-/* ============================================================
-   REPLY
-============================================================ */
-
-.reply-box {
-
-    border-top:
-        1px solid #edf0f5;
-
-    background: white;
-
-    padding: 16px 20px;
-
-}
-
-
-.reply-info {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    color: #718096;
-
-    font-size: 10px;
-
-    margin-bottom: 9px;
-
-}
-
-
-.reply-form {
-
-    display: flex;
-
-    gap: 9px;
-
-}
-
-
-.reply-form textarea {
-
-    flex: 1;
-
-    min-height: 48px;
-
-    max-height: 130px;
-
-    resize: vertical;
-
-    border:
-        1px solid #dce3ea;
-
-    border-radius: 12px;
-
-    padding: 12px 14px;
-
-    outline: none;
-
-    font-size: 11px;
-
-}
-
-
-.reply-form textarea:focus {
-
-    border-color: #145a86;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(
-            20,
-            90,
-            134,
-            .08
-        );
-
-}
-
-
-.reply-btn {
-
-    width: 50px;
-
-    height: 48px;
-
-    border: none;
-
-    border-radius: 12px;
-
-    background: #145a86;
-
-    color: white;
-
-    font-size: 16px;
-
-}
-
-
-.reply-btn:hover {
-
-    background: #0f4c73;
-
-}
-
-
-.reply-btn:disabled {
-
-    opacity: .6;
-
-}
-
-
-/* ============================================================
-   LOADING
-============================================================ */
-
-.message-loading {
-
-    min-height: 260px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 9px;
-
-    color: #718096;
-
-    font-size: 12px;
-
-}
-
-
-.loading-spinner {
-
-    width: 30px;
-
-    height: 30px;
-
-    border:
-        3px solid #e2e8f0;
-
-    border-top-color: #145a86;
-
-    border-radius: 50%;
-
-    animation:
-        bmjSpin .7s linear infinite;
-
-}
-
-
-@keyframes bmjSpin {
-
-    to {
-        transform: rotate(360deg);
-    }
-
-}
-
-
-/* ============================================================
-   TOAST / NOTIFICATION
-============================================================ */
-
-.toast-container {
+#toastContainer {
 
     position: fixed;
 
-    right: 20px;
+    right: 18px;
 
-    bottom: 20px;
+    bottom: 18px;
 
-    z-index: 99999;
+    z-index: 9999;
 
     display: flex;
 
     flex-direction: column;
 
-    gap: 9px;
-
+    gap: 7px;
 }
 
+.toast {
 
-.bmj-toast {
+    min-width: 260px;
 
-    min-width: 300px;
+    padding: 12px;
 
-    max-width: 390px;
+    background: #151515;
 
-    background: white;
+    border:
+        1px solid
+        var(--border);
 
-    border-radius: 14px;
-
-    padding: 13px 15px;
+    border-radius: 10px;
 
     box-shadow:
-        0 12px 35px
-        rgba(
-            0,
-            0,
-            0,
-            .16
-        );
+        0 15px 45px
+        rgba(0,0,0,.5);
+
+    font-size: 9px;
 
     display: flex;
 
     align-items: center;
 
-    gap: 10px;
-
-    transform:
-        translateY(15px);
-
-    opacity: 0;
-
-    animation:
-        bmjToastIn .25s ease forwards;
-
+    gap: 8px;
 }
 
-
-.bmj-toast-icon {
-
-    width: 38px;
-
-    height: 38px;
-
-    flex-shrink: 0;
-
-    border-radius: 11px;
-
-    background: #edf5fb;
-
-    color: #145a86;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
+.toast.success {
+    border-color: rgba(34,197,94,.25);
 }
 
-
-.bmj-toast-text {
-
-    flex: 1;
-
-    font-size: 11px;
-
-    line-height: 1.5;
-
+.toast.error {
+    border-color: rgba(239,68,68,.25);
 }
 
-
-.bmj-toast-title {
-
-    display: block;
-
-    font-weight: 700;
-
-    color: #172033;
-
-    margin-bottom: 2px;
-
+.toast.success i {
+    color: var(--green);
 }
 
-
-.bmj-toast-message {
-
-    color: #718096;
-
+.toast.error i {
+    color: var(--red);
 }
-
-
-.bmj-toast-close {
-
-    border: none;
-
-    background: transparent;
-
-    color: #9aa4b2;
-
-    font-size: 13px;
-
-}
-
-
-@keyframes bmjToastIn {
-
-    to {
-
-        opacity: 1;
-
-        transform: translateY(0);
-
-    }
-
-}
-
 
 /* ============================================================
    MOBILE
 ============================================================ */
 
-@media (max-width: 850px) {
-
-    body {
-
-        background: #f4f7fb;
-
-    }
-
+@media (max-width:850px) {
 
     .topbar {
-
-        height: 62px;
-
-        padding: 0 14px;
-
+        padding: 0 13px;
     }
 
-
-    .brand {
-
-        font-size: 16px;
-
+    .main {
+        padding:
+            15px 10px 30px;
     }
 
-
-    .brand-icon {
-
-        width: 38px;
-
-        height: 38px;
-
+    .page-title {
+        font-size: 19px;
     }
 
-
-    .back-btn span {
-
-        display: none;
-
+    .stats {
+        grid-template-columns:
+            repeat(3,1fr);
     }
 
+    .messaging-box {
 
-    .back-btn {
-
-        padding: 9px 12px;
-
-    }
-
-
-    .page {
-
-        width: 100%;
-
-        margin: 0;
-
-    }
-
-
-    .page-header {
-
-        padding: 17px 15px 13px;
-
-        margin: 0;
-
-    }
-
-
-    .page-header h1 {
-
-        font-size: 21px;
-
-    }
-
-
-    .page-header p {
-
-        font-size: 11px;
-
-        line-height: 1.5;
-
-    }
-
-
-    .messaging-layout {
-
-        display: block;
+        grid-template-columns:
+            1fr;
 
         height:
-            calc(
-                100vh - 135px
-            );
-
+            calc(100vh - 245px);
     }
 
-
-    .card {
-
-        border-radius: 0;
-
-        box-shadow: none;
-
-    }
-
-
-    .messages-card {
-
-        height: 100%;
-
-    }
-
-
-    .message-list {
-
-        max-height: none;
-
-    }
-
-
-    .message-detail {
-
-        position: fixed;
-
-        inset: 62px 0 0 0;
-
-        z-index: 1000;
-
+    .inbox {
         display: none;
-
-        border-radius: 0;
-
     }
 
-
-    .message-detail.mobile-open {
-
-        display: flex;
-
-    }
-
-
-    .detail-back {
-
-        display: block;
-
-    }
-
-
-    .detail-header {
-
-        padding: 15px 17px;
-
-    }
-
-
-    .detail-header h2 {
-
-        font-size: 17px;
-
-    }
-
-
-    .detail-body {
-
-        padding: 15px;
-
-    }
-
-
-    .message-content {
-
-        padding: 17px;
-
-        font-size: 12px;
-
-        line-height: 1.75;
-
-    }
-
-
-    .reply-box {
-
-        padding: 11px;
-
-    }
-
-
-    .reply-form {
-
-        align-items: flex-end;
-
-    }
-
-
-    .reply-form textarea {
-
-        min-height: 45px;
-
-    }
-
-
-    .reply-btn {
-
-        width: 45px;
-
-        height: 45px;
-
-    }
-
-
-    .toast-container {
-
-        left: 12px;
-
-        right: 12px;
-
-        bottom: 12px;
-
-    }
-
-
-    .bmj-toast {
-
-        min-width: 0;
-
+    .conversation {
         width: 100%;
-
-        max-width: none;
-
     }
 
+    .bubble {
+        max-width: 88%;
+    }
+}
+
+@media (max-width:550px) {
+
+    .brand-subtitle {
+        display: none;
+    }
+
+    .brand-name {
+        font-size: 14px;
+    }
+
+    .brand img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .page-header {
+        align-items: flex-start;
+    }
+
+    .page-description {
+        max-width: 230px;
+    }
+
+    .refresh-button span {
+        display: none;
+    }
+
+    .stats {
+        gap: 6px;
+    }
+
+    .stat {
+        padding: 9px;
+    }
+
+    .stat-icon {
+        width: 29px;
+        height: 29px;
+        min-width: 29px;
+    }
+
+    .stat-value {
+        font-size: 15px;
+    }
+
+    .stat-label {
+        font-size: 7px;
+    }
+
+    .conversation-header {
+        padding: 9px;
+    }
+
+    .messages {
+        padding: 12px;
+    }
+
+    .composer-row {
+        grid-template-columns: 1fr;
+    }
+
+    .composer-row select {
+        display: none;
+    }
+
+    .composer-hint {
+        display: none;
+    }
+
+    .send-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .composer-bottom {
+        display: block;
+    }
+
+    #toastContainer {
+        left: 10px;
+        right: 10px;
+    }
+
+    .toast {
+        min-width: auto;
+    }
 }
 
 </style>
@@ -1549,3297 +1406,1865 @@ button {
 
 <body>
 
-<header class="topbar">
+
+<div id="userMessagingApp">
 
 
-<div class="brand">
+    <!-- ============================================================
+         HEADER
+    ============================================================ -->
 
-    <div class="brand-icon">
+    <header class="topbar">
 
-        <i class="fa-solid fa-envelope"></i>
+        <div class="brand">
 
-    </div>
+            <img
+                src="images/logo.png"
+                alt="BMJ SERVICE"
+                onerror="this.style.display='none'"
+            >
 
-    <span>BMJ SERVICE</span>
+            <div>
 
-</div>
+                <div class="brand-name">
+                    BMJ <span>SERVICE</span>
+                </div>
 
-
-<button
-    type="button"
-    class="back-btn"
-    id="backButton"
->
-
-    <i class="fa-solid fa-arrow-left"></i>
-
-    <span>Retour</span>
-
-</button>
-
-</header>
-
-<main class="page">
-
-<div class="page-header">
-
-    <h1>Ma messagerie</h1>
-
-    <p>
-        Retrouvez vos messages personnels et les communications officielles de BMJ SERVICE.
-    </p>
-
-</div>
-
-
-<div class="messaging-layout">
-
-
-    <!-- ====================================================
-         LISTE
-    ===================================================== -->
-
-    <div class="card messages-card">
-
-        <div class="messages-header">
-
-            <div class="messages-header-left">
-
-                <h2>Messages</h2>
-
-                <div
-                    class="message-count"
-                    id="messageCount"
-                >
-                    0
+                <div class="brand-subtitle">
+                    APPRENDRE • RÉUSSIR • PROSPÉRER
                 </div>
 
             </div>
 
-            <i
-                class="fa-solid fa-inbox"
-                style="color:#145a86;"
-            ></i>
-
         </div>
 
 
-        <div
-            class="message-list"
-            id="messagesContainer"
-        >
-
-            <div class="message-loading">
-
-                <div class="loading-spinner"></div>
-
-                <strong>
-                    Chargement de votre messagerie
-                </strong>
-
-                <small>
-                    Quelques instants...
-                </small>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- ====================================================
-         DETAIL
-    ===================================================== -->
-
-    <div
-        class="card message-detail"
-        id="messageDetail"
-    >
-
-        <div class="detail-empty">
-
-            <div class="detail-empty-icon">
-
-                <i class="fa-regular fa-envelope-open"></i>
-
-            </div>
-
-            <h3>
-                Sélectionnez un message
-            </h3>
-
-            <p>
-                Cliquez sur une notification pour lire le message
-                complet et répondre lorsqu'une réponse est autorisée.
-            </p>
-
-        </div>
-
-    </div>
-
-
-</div>
-```
-
-</main>
-
-<div
-    class="toast-container"
-    id="toastContainer"
-></div>
-
-<script>
-/* ============================================================
-   BMJ SERVICE
-   MESSAGERIE UTILISATEUR
-   VERSION CORRIGÉE — NOUVEAU SERVER
-   ============================================================ */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    /* ============================================================
-       1. CONFIGURATION
-    ============================================================ */
-
-    const API_URL =
-        "https://back-end-h602.onrender.com";
-
-    const API_TIMEOUT = 15000;
-    const REFRESH_INTERVAL = 30000;
-    const RETRY_DELAY = 1200;
-
-
-    /* ============================================================
-       2. ÉTAT
-    ============================================================ */
-
-    let currentUser = null;
-    let currentMessages = [];
-    let currentMessage = null;
-
-    let syncInProgress = false;
-    let lastSyncTime = 0;
-    let refreshTimer = null;
-
-
-    /* ============================================================
-       3. ELEMENTS
-    ============================================================ */
-
-    const messagesContainer =
-        document.getElementById(
-            "messagesContainer"
-        );
-
-    const messageDetail =
-        document.getElementById(
-            "messageDetail"
-        );
-
-    const messageCount =
-        document.getElementById(
-            "messageCount"
-        );
-
-    const toastContainer =
-        document.getElementById(
-            "toastContainer"
-        );
-
-
-    /* ============================================================
-       4. UTILISATEUR CONNECTÉ
-    ============================================================ */
-
-    function getCurrentUser() {
-
-        const keys = [
-            "bmj_current_user",
-            "currentUser",
-            "bmj_user",
-            "user"
-        ];
-
-        for (const key of keys) {
-
-            const raw =
-                localStorage.getItem(key);
-
-            if (!raw) {
-                continue;
-            }
-
-            try {
-
-                const user =
-                    JSON.parse(raw);
-
-                if (
-                    user &&
-                    (
-                        user.id ||
-                        user.user_id
-                    )
-                ) {
-
-                    return user;
-                }
-
-            }
-            catch (error) {
-
-                console.warn(
-                    "Session invalide :",
-                    error
-                );
-            }
-        }
-
-        return null;
-    }
-
-
-    function getUserId() {
-
-        if (!currentUser) {
-            return null;
-        }
-
-        const id =
-            Number(
-                currentUser.id ||
-                currentUser.user_id
-            );
-
-        if (
-            !Number.isInteger(id) ||
-            id <= 0
-        ) {
-            return null;
-        }
-
-        return id;
-    }
-
-
-    /* ============================================================
-       5. CACHE LOCAL
-    ============================================================ */
-
-    function getCacheKey() {
-
-        const userId =
-            getUserId();
-
-        return userId
-            ? `bmj_messages_cache_${userId}`
-            : null;
-    }
-
-
-    function getCacheTimeKey() {
-
-        const userId =
-            getUserId();
-
-        return userId
-            ? `bmj_messages_cache_time_${userId}`
-            : null;
-    }
-
-
-    function getCachedMessages() {
-
-        const key =
-            getCacheKey();
-
-        if (!key) {
-            return [];
-        }
-
-        try {
-
-            const raw =
-                localStorage.getItem(key);
-
-            if (!raw) {
-                return [];
-            }
-
-            const data =
-                JSON.parse(raw);
-
-            return Array.isArray(data)
-                ? data
-                : [];
-
-        }
-        catch (error) {
-
-            console.warn(
-                "Cache messages invalide :",
-                error
-            );
-
-            return [];
-        }
-    }
-
-
-    function saveCache(messages) {
-
-        const key =
-            getCacheKey();
-
-        const timeKey =
-            getCacheTimeKey();
-
-        if (
-            !key ||
-            !timeKey
-        ) {
-            return;
-        }
-
-        try {
-
-            const safeMessages =
-                Array.isArray(messages)
-                    ? messages
-                    : [];
-
-            localStorage.setItem(
-                key,
-                JSON.stringify(
-                    safeMessages
-                )
-            );
-
-            localStorage.setItem(
-                timeKey,
-                String(Date.now())
-            );
-
-        }
-        catch (error) {
-
-            console.warn(
-                "Impossible de sauvegarder le cache :",
-                error
-            );
-        }
-    }
-
-
-    function clearMessageCache() {
-
-        const key =
-            getCacheKey();
-
-        const timeKey =
-            getCacheTimeKey();
-
-        if (key) {
-            localStorage.removeItem(key);
-        }
-
-        if (timeKey) {
-            localStorage.removeItem(timeKey);
-        }
-    }
-
-
-    /* ============================================================
-       6. SÉCURITÉ HTML
-    ============================================================ */
-
-    function escapeHTML(value) {
-
-        return String(
-            value ?? ""
-        )
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-            .replace(
-                /</g,
-                "&lt;"
-            )
-            .replace(
-                />/g,
-                "&gt;"
-            )
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-            .replace(
-                /'/g,
-                "&#039;"
-            );
-    }
-
-
-    function truncate(
-        value,
-        length = 110
-    ) {
-
-        const text =
-            String(
-                value || ""
-            );
-
-        return text.length > length
-            ? text.substring(
-                0,
-                length
-            ) + "..."
-            : text;
-    }
-
-
-    /* ============================================================
-       7. DATES
-    ============================================================ */
-
-    function parseDate(value) {
-
-        if (!value) {
-            return null;
-        }
-
-        const date =
-            new Date(value);
-
-        if (
-            Number.isNaN(
-                date.getTime()
-            )
-        ) {
-            return null;
-        }
-
-        return date;
-    }
-
-
-    function formatDate(value) {
-
-        const date =
-            parseDate(value);
-
-        if (!date) {
-            return "";
-        }
-
-        return date.toLocaleDateString(
-            "fr-FR",
-            {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric"
-            }
-        );
-    }
-
-
-    function formatDateTime(value) {
-
-        const date =
-            parseDate(value);
-
-        if (!date) {
-            return "";
-        }
-
-        return date.toLocaleString(
-            "fr-FR",
-            {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit"
-            }
-        );
-    }
-
-
-    /* ============================================================
-       8. NORMALISATION DES MESSAGES
-    ============================================================ */
-
-    function normalizeMessage(message) {
-
-        if (
-            !message ||
-            typeof message !== "object"
-        ) {
-            return null;
-        }
-
-        const normalized = {
-            ...message
-        };
-
-
-        /* ID */
-
-        normalized.id =
-            Number(message.id);
-
-
-        /* TYPE */
-
-        normalized.type =
-            getMessageType(message);
-
-
-        /* STATUT */
-
-        normalized.status =
-            normalizeStatus(
-                message.status
-            );
-
-
-        /* PRIORITÉ */
-
-        normalized.priority =
-            normalizePriority(
-                message.priority
-            );
-
-
-        /* AUDIENCE */
-
-        normalized.audience =
-            normalizeAudience(
-                message.audience
-            );
-
-
-        /* DATE */
-
-        normalized.created_at =
-            message.created_at ||
-            message.createdAt ||
-            message.date ||
-            null;
-
-
-        return normalized;
-    }
-
-
-    function getMessageType(message) {
-
-        const type =
-            String(
-                message?.type ||
-                message?.message_type ||
-                ""
-            )
-                .toLowerCase()
-                .trim();
-
-
-        /*
-         * NOUVEAU SERVER
-         */
-
-        if (
-            type === "official" ||
-            type === "announcement" ||
-            type === "annonce"
-        ) {
-            return "official";
-        }
-
-
-        if (
-            type === "user_reply" ||
-            type === "reply" ||
-            type === "reponse"
-        ) {
-            return "user_reply";
-        }
-
-
-        if (
-            type === "user" ||
-            type === "individual" ||
-            type === "personal"
-        ) {
-            return "user";
-        }
-
-
-        /*
-         * Si le serveur indique
-         * l'audience officielle.
-         */
-
-        if (
-            message?.audience === "all" ||
-            message?.audience === "standard" ||
-            message?.audience === "premium"
-        ) {
-            return "official";
-        }
-
-
-        return "user";
-    }
-
-
-    function normalizeStatus(status) {
-
-        const value =
-            String(
-                status || ""
-            )
-                .toLowerCase()
-                .trim();
-
-
-        if (
-            value === "read" ||
-            value === "lu"
-        ) {
-            return "read";
-        }
-
-
-        if (
-            value === "replied" ||
-            value === "answered"
-        ) {
-            return "replied";
-        }
-
-
-        return "unread";
-    }
-
-
-    function normalizePriority(priority) {
-
-        const value =
-            String(
-                priority || "normal"
-            )
-                .toLowerCase()
-                .trim();
-
-
-        if (
-            value === "high" ||
-            value === "haute" ||
-            value === "urgent"
-        ) {
-            return "high";
-        }
-
-
-        if (
-            value === "low" ||
-            value === "basse"
-        ) {
-            return "low";
-        }
-
-
-        return "normal";
-    }
-
-
-    function normalizeAudience(audience) {
-
-        const value =
-            String(
-                audience || ""
-            )
-                .toLowerCase()
-                .trim();
-
-
-        if (
-            value === "all" ||
-            value === "tous" ||
-            value === "everyone"
-        ) {
-            return "all";
-        }
-
-
-        if (
-            value === "premium"
-        ) {
-            return "premium";
-        }
-
-
-        if (
-            value === "standard"
-        ) {
-            return "standard";
-        }
-
-
-        if (
-            value === "individual" ||
-            value === "user"
-        ) {
-            return "individual";
-        }
-
-
-        if (
-            value === "admin"
-        ) {
-            return "admin";
-        }
-
-
-        return value;
-    }
-
-
-    function isOfficial(message) {
-
-        return getMessageType(
-            message
-        ) === "official";
-    }
-
-
-    function isUserMessage(message) {
-
-        return getMessageType(
-            message
-        ) === "user";
-    }
-
-
-    function isUserReply(message) {
-
-        return getMessageType(
-            message
-        ) === "user_reply";
-    }
-
-
-    /* ============================================================
-       9. RÉPONSE AUTORISÉE
-    ============================================================ */
-
-    function canReply(message) {
-
-        if (!message) {
-            return false;
-        }
-
-
-        /*
-         * Les annonces officielles
-         * ne reçoivent pas de réponse.
-         */
-
-        if (
-            isOfficial(message)
-        ) {
-            return false;
-        }
-
-
-        /*
-         * Une réponse déjà envoyée
-         * ne reçoit pas de réponse.
-         */
-
-        if (
-            isUserReply(message)
-        ) {
-            return false;
-        }
-
-
-        /*
-         * Seul un message personnel
-         * venant de l'administration
-         * peut recevoir une réponse.
-         */
-
-        if (
-            !isUserMessage(message)
-        ) {
-            return false;
-        }
-
-
-        if (
-            message.sender_type &&
-            String(
-                message.sender_type
-            )
-                .toLowerCase() !==
-            "admin"
-        ) {
-
-            return false;
-        }
-
-
-        /*
-         * Vérification destinataire.
-         */
-
-        const userId =
-            getUserId();
-
-
-        const recipientId =
-            Number(
-                message.recipient_user_id ||
-                message.user_id ||
-                message.recipient_id
-            );
-
-
-        return (
-            Number.isInteger(
-                recipientId
-            ) &&
-            recipientId ===
-            Number(userId)
-        );
-    }
-
-
-    /* ============================================================
-       10. API REQUEST
-    ============================================================ */
-
-    async function apiRequest(
-        endpoint,
-        options = {},
-        timeout = API_TIMEOUT
-    ) {
-
-        const controller =
-            new AbortController();
-
-        const timer =
-            setTimeout(
-                () => {
-                    controller.abort();
-                },
-                timeout
-            );
-
-
-        try {
-
-            const response =
-                await fetch(
-                    API_URL + endpoint,
-                    {
-                        ...options,
-
-                        cache:
-                            "no-store",
-
-                        signal:
-                            controller.signal,
-
-                        headers: {
-
-                            Accept:
-                                "application/json",
-
-                            ...(options.body
-                                ? {
-                                    "Content-Type":
-                                        "application/json"
-                                }
-                                : {}),
-
-                            ...(options.headers ||
-                                {})
-                        }
-                    }
-                );
-
-
-            const text =
-                await response.text();
-
-
-            let data = null;
-
-
-            if (text) {
-
-                try {
-
-                    data =
-                        JSON.parse(text);
-
-                }
-                catch (error) {
-
-                    console.error(
-                        "Réponse serveur invalide :",
-                        text
-                    );
-
-                    throw new Error(
-                        "Réponse invalide du serveur."
-                    );
-                }
-            }
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    data?.message ||
-                    data?.error ||
-                    `Erreur serveur ${response.status}`
-                );
-            }
-
-
-            return data;
-
-
-        }
-        catch (error) {
-
-            if (
-                error?.name ===
-                "AbortError"
-            ) {
-
-                throw new Error(
-                    "Le serveur met trop de temps à répondre."
-                );
-            }
-
-            throw error;
-
-
-        }
-        finally {
-
-            clearTimeout(
-                timer
-            );
-        }
-    }
-
-
-    /* ============================================================
-       11. TOAST
-    ============================================================ */
-
-    function showToast(
-        title,
-        text,
-        type = "info"
-    ) {
-
-        if (!toastContainer) {
-            return;
-        }
-
-
-        const toast =
-            document.createElement(
-                "div"
-            );
-
-
-        toast.className =
-            `bmj-toast bmj-toast-${type}`;
-
-
-        let icon =
-            "fa-envelope";
-
-
-        if (type === "success") {
-            icon =
-                "fa-circle-check";
-        }
-
-        if (type === "error") {
-            icon =
-                "fa-circle-exclamation";
-        }
-
-
-        toast.innerHTML = `
-
-            <div class="bmj-toast-icon">
-
-                <i class="fa-solid ${icon}"></i>
-
-            </div>
-
-            <div class="bmj-toast-text">
-
-                <span class="bmj-toast-title">
-
-                    ${escapeHTML(title)}
-
-                </span>
-
-                <span class="bmj-toast-message">
-
-                    ${escapeHTML(text)}
-
-                </span>
-
-            </div>
+        <div class="top-actions">
 
             <button
-                type="button"
-                class="bmj-toast-close"
-                aria-label="Fermer"
+                class="top-button"
+                title="Actualiser"
+                onclick="loadEverything()"
             >
 
-                <i class="fa-solid fa-xmark"></i>
+                <i class="fa-solid fa-rotate"></i>
 
             </button>
 
-        `;
+
+            <button
+                class="top-button"
+                title="Messages non lus"
+                onclick="loadUnread()"
+            >
+
+                <i class="fa-solid fa-bell"></i>
+
+                <span
+                    class="unread-badge"
+                    id="unreadBadge"
+                    style="display:none"
+                >
+                    0
+                </span>
+
+            </button>
 
 
-        toastContainer.appendChild(
-            toast
-        );
+            <button
+                class="top-button"
+                title="Retour au tableau de bord"
+                onclick="goToDashboard()"
+            >
+
+                <i class="fa-solid fa-house"></i>
+
+            </button>
+
+        </div>
+
+    </header>
 
 
-        const close =
-            toast.querySelector(
-                ".bmj-toast-close"
-            );
+    <!-- ============================================================
+         MAIN
+    ============================================================ -->
+
+    <main class="main">
 
 
-        if (close) {
+        <div class="page-header">
 
-            close.addEventListener(
-                "click",
-                () => toast.remove()
-            );
-        }
+            <div>
 
+                <div class="page-title">
+                    Mes messages
+                </div>
+
+                <div class="page-description">
+                    Consultez vos communications avec l'administration BMJ SERVICE.
+                </div>
+
+            </div>
+
+
+            <button
+                class="refresh-button"
+                onclick="loadEverything()"
+            >
+
+                <i class="fa-solid fa-rotate"></i>
+
+                <span>
+                    Actualiser
+                </span>
+
+            </button>
+
+        </div>
+
+
+        <!-- ========================================================
+             STATS
+        ======================================================== -->
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                </div>
+
+                <div>
+
+                    <div
+                        class="stat-value"
+                        id="statTotal"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-label">
+                        Messages
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-envelope-open"></i>
+
+                </div>
+
+                <div>
+
+                    <div
+                        class="stat-value"
+                        id="statRead"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-label">
+                        Lus
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-icon">
+
+                    <i class="fa-solid fa-envelope-circle-check"></i>
+
+                </div>
+
+                <div>
+
+                    <div
+                        class="stat-value"
+                        id="statUnread"
+                    >
+                        0
+                    </div>
+
+                    <div class="stat-label">
+                        Non lus
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================================================
+             MESSAGING
+        ======================================================== -->
+
+        <div class="messaging-box">
+
+
+            <!-- ====================================================
+                 INBOX
+            ==================================================== -->
+
+            <section class="inbox">
+
+                <div class="inbox-header">
+
+                    <div class="inbox-title-row">
+
+                        <div class="inbox-title">
+                            Boîte de réception
+                        </div>
+
+                        <div
+                            class="inbox-count"
+                            id="messageCount"
+                        >
+                            0 message
+                        </div>
+
+                    </div>
+
+
+                    <div class="search">
+
+                        <i class="fa-solid fa-magnifying-glass"></i>
+
+                        <input
+                            type="search"
+                            id="messageSearch"
+                            placeholder="Rechercher un message..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="inbox-list"
+                    id="inboxList"
+                >
+
+                    <div class="empty">
+
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+
+                        <strong>
+                            Chargement...
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ====================================================
+                 CONVERSATION
+            ==================================================== -->
+
+            <section class="conversation">
+
+
+                <div class="conversation-header">
+
+                    <div class="admin-profile">
+
+                        <div class="admin-avatar">
+
+                            <img
+                                src="images/logo.png"
+                                alt="BMJ"
+                            >
+
+                        </div>
+
+                        <div>
+
+                            <div class="admin-name">
+                                Administration BMJ SERVICE
+                            </div>
+
+                            <div class="admin-status">
+
+                                <i class="fa-solid fa-circle"></i>
+
+                                Service de communication
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="conversation-actions">
+
+                        <button
+                            class="mini-button"
+                            title="Marquer tous comme lus"
+                            onclick="markAllRead()"
+                        >
+
+                            <i class="fa-solid fa-check-double"></i>
+
+                        </button>
+
+
+                        <button
+                            class="mini-button"
+                            title="Actualiser"
+                            onclick="loadEverything()"
+                        >
+
+                            <i class="fa-solid fa-rotate"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="messages"
+                    id="messages"
+                >
+
+                    <div class="empty">
+
+                        <i class="fa-regular fa-comments"></i>
+
+                        <strong>
+                            Sélectionnez un message
+                        </strong>
+
+                        <span>
+                            Vos communications avec BMJ SERVICE apparaîtront ici.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ==================================================
+                     COMPOSER
+                ================================================== -->
+
+                <div class="composer">
+
+
+                    <div
+                        class="reply-indicator"
+                        id="replyIndicator"
+                    >
+
+                        <span>
+                            <i class="fa-solid fa-reply"></i>
+                            Réponse à l'administration
+                        </span>
+
+                        <button
+                            class="cancel-reply"
+                            onclick="cancelReply()"
+                        >
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                        </button>
+
+                    </div>
+
+
+                    <div class="composer-row">
+
+                        <input
+                            type="text"
+                            class="field"
+                            id="messageSubject"
+                            placeholder="Objet..."
+                            maxlength="150"
+                        >
+
+                        <select
+                            class="field"
+                            id="messagePriority"
+                        >
+
+                            <option value="normal">
+                                Normal
+                            </option>
+
+                            <option value="important">
+                                Important
+                            </option>
+
+                            <option value="urgent">
+                                Urgent
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <textarea
+                        class="field"
+                        id="messageText"
+                        maxlength="10000"
+                        placeholder="Écrivez votre réponse à l'administration..."
+                    ></textarea>
+
+
+                    <div class="composer-bottom">
+
+                        <div class="composer-hint">
+
+                            Ctrl + Entrée pour envoyer
+
+                        </div>
+
+
+                        <button
+                            class="send-button"
+                            id="sendButton"
+                            onclick="sendReply()"
+                        >
+
+                            <i class="fa-solid fa-paper-plane"></i>
+
+                            Envoyer
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- ================================================================
+     TOAST
+================================================================ -->
+
+<div id="toastContainer"></div>
+
+
+<script>
+
+/* ============================================================
+   CONFIGURATION
+============================================================ */
+
+const API_BASE =
+    "https://back-end-8i4t.onrender.com";
+
+
+const USER_STORAGE_KEY =
+    "bmj_current_user";
+
+
+let currentUser =
+    null;
+
+
+let userId =
+    null;
+
+
+let messages =
+    [];
+
+
+let selectedMessageId =
+    null;
+
+
+let replyParentId =
+    null;
+
+
+/* ============================================================
+   DOM
+============================================================ */
+
+function getEl(id) {
+    return document.getElementById(id);
+}
+
+
+/* ============================================================
+   ESCAPE
+============================================================ */
+
+function escapeHtml(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+/* ============================================================
+   TOAST
+============================================================ */
+
+function toast(
+    message,
+    type = "success"
+) {
+
+    const container =
+        getEl("toastContainer");
+
+
+    const item =
+        document.createElement("div");
+
+
+    item.className =
+        `toast ${type}`;
+
+
+    const icon =
+        type === "success"
+            ? "fa-circle-check"
+            : "fa-circle-exclamation";
+
+
+    item.innerHTML = `
+        <i class="fa-solid ${icon}"></i>
+        <span>${escapeHtml(message)}</span>
+    `;
+
+
+    container.appendChild(item);
+
+
+    setTimeout(() => {
+
+        item.style.opacity = "0";
+
+        item.style.transform =
+            "translateY(10px)";
 
         setTimeout(
-            () => {
-
-                if (
-                    toast.isConnected
-                ) {
-                    toast.remove();
-                }
-
-            },
-            5000
+            () => item.remove(),
+            250
         );
+
+    }, 3500);
+}
+
+
+/* ============================================================
+   DATE
+============================================================ */
+
+function formatDate(date) {
+
+    if (!date) return "—";
+
+
+    const d =
+        new Date(date);
+
+
+    if (
+        Number.isNaN(
+            d.getTime()
+        )
+    ) {
+
+        return String(date);
     }
 
 
-    /* ============================================================
-       12. COMPTEUR
-    ============================================================ */
+    return d.toLocaleString(
+        "fr-FR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+}
 
-    function updateCount() {
 
-        if (!messageCount) {
+/* ============================================================
+   API
+============================================================ */
+
+async function apiRequest(
+    endpoint,
+    options = {}
+) {
+
+    const headers = {
+        "Content-Type":
+            "application/json",
+
+        ...(options.headers || {})
+    };
+
+
+    /*
+     * Le système actuel identifie l'utilisateur
+     * grâce à son ID BMJ.
+     */
+
+    if (userId) {
+
+        headers["X-User-Id"] =
+            String(userId);
+
+        headers["X-BMJ-User-Id"] =
+            String(userId);
+    }
+
+
+    const response =
+        await fetch(
+            `${API_BASE}${endpoint}`,
+            {
+                ...options,
+                headers
+            }
+        );
+
+
+    let data = null;
+
+
+    try {
+
+        data =
+            await response.json();
+
+    } catch {
+
+        data = null;
+    }
+
+
+    if (!response.ok) {
+
+        const error =
+            new Error(
+                data?.message ||
+                data?.error ||
+                `Erreur HTTP ${response.status}`
+            );
+
+
+        error.status =
+            response.status;
+
+
+        error.data =
+            data;
+
+
+        throw error;
+    }
+
+
+    return data;
+}
+
+
+/* ============================================================
+   LOAD USER
+============================================================ */
+
+function loadCurrentUser() {
+
+    const raw =
+        localStorage.getItem(
+            USER_STORAGE_KEY
+        );
+
+
+    if (!raw) {
+
+        goToLogin();
+
+        return false;
+    }
+
+
+    try {
+
+        currentUser =
+            JSON.parse(raw);
+
+    } catch {
+
+        goToLogin();
+
+        return false;
+    }
+
+
+    userId =
+        Number(
+            currentUser?.id_bmj ??
+            currentUser?.id ??
+            currentUser?.user_id
+        );
+
+
+    if (
+        !Number.isInteger(userId) ||
+        userId <= 0
+    ) {
+
+        goToLogin();
+
+        return false;
+    }
+
+
+    return true;
+}
+
+
+/* ============================================================
+   LOGIN REDIRECT
+============================================================ */
+
+function goToLogin() {
+
+    window.location.href =
+        "connexion.html";
+}
+
+
+/* ============================================================
+   DASHBOARD
+============================================================ */
+
+function goToDashboard() {
+
+    window.location.href =
+        "dashboard.html";
+}
+
+
+/* ============================================================
+   LOAD EVERYTHING
+============================================================ */
+
+async function loadEverything() {
+
+    try {
+
+        await Promise.all([
+            loadMessages(),
+            loadUnread()
+        ]);
+
+    } catch (error) {
+
+        console.error(
+            "[USER SMS]",
+            error
+        );
+
+
+        if (
+            error.status === 401 ||
+            error.status === 403
+        ) {
+
+            toast(
+                error.message ||
+                "Votre session utilisateur n'est plus valide.",
+                "error"
+            );
+
             return;
         }
 
 
+        toast(
+            error.message ||
+            "Impossible de charger les messages.",
+            "error"
+        );
+    }
+}
+
+
+/* ============================================================
+   LOAD MESSAGES
+============================================================ */
+
+async function loadMessages() {
+
+    const list =
+        getEl("inboxList");
+
+
+    list.innerHTML = `
+        <div class="empty">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <strong>Chargement...</strong>
+        </div>
+    `;
+
+
+    try {
+
+        const result =
+            await apiRequest(
+                "/api/user/sms"
+            );
+
+
+        messages =
+            result?.messages ||
+            result?.data ||
+            (Array.isArray(result)
+                ? result
+                : []);
+
+
+        updateStats();
+
+        renderInbox(
+            messages
+        );
+
+
+        /*
+         * Si un message était ouvert,
+         * on recharge sa conversation.
+         */
+
+        if (selectedMessageId) {
+
+            const exists =
+                messages.some(
+                    item =>
+                        Number(item.id) ===
+                        Number(selectedMessageId)
+                );
+
+
+            if (exists) {
+
+                await openMessage(
+                    selectedMessageId,
+                    false
+                );
+            }
+        }
+
+    } catch (error) {
+
+        console.error(
+            "[USER LOAD MESSAGES]",
+            error
+        );
+
+
+        list.innerHTML = `
+            <div class="empty">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <strong>Impossible de charger</strong>
+                <span>${escapeHtml(error.message)}</span>
+            </div>
+        `;
+
+        throw error;
+    }
+}
+
+
+/* ============================================================
+   STATS
+============================================================ */
+
+function updateStats() {
+
+    const total =
+        messages.length;
+
+
+    const unread =
+        messages.filter(
+            item =>
+                !item.is_read &&
+                item.sender_type !== "user"
+        ).length;
+
+
+    const read =
+        total - unread;
+
+
+    getEl("statTotal")
+        .textContent =
+        total;
+
+
+    getEl("statRead")
+        .textContent =
+        Math.max(0, read);
+
+
+    getEl("statUnread")
+        .textContent =
+        unread;
+
+
+    getEl("messageCount")
+        .textContent =
+        `${total} message${total > 1 ? "s" : ""}`;
+
+
+    updateUnreadBadge(unread);
+}
+
+
+/* ============================================================
+   UNREAD
+============================================================ */
+
+async function loadUnread() {
+
+    try {
+
+        const result =
+            await apiRequest(
+                "/api/user/sms/unread"
+            );
+
+
         const unread =
-            currentMessages.filter(
-                message =>
-                    normalizeStatus(
-                        message.status
-                    ) !== "read"
+            result?.count ??
+            result?.unread ??
+            result?.messages?.length ??
+            (Array.isArray(result)
+                ? result.length
+                : 0);
+
+
+        updateUnreadBadge(
+            Number(unread) || 0
+        );
+
+
+        if (
+            getEl("statUnread")
+        ) {
+
+            getEl("statUnread")
+                .textContent =
+                Number(unread) || 0;
+        }
+
+    } catch (error) {
+
+        /*
+         * Si l'endpoint unread n'est pas disponible,
+         * on utilise les données déjà chargées.
+         */
+
+        const unread =
+            messages.filter(
+                item =>
+                    !item.is_read &&
+                    item.sender_type !== "user"
             ).length;
 
 
-        /*
-         * Le compteur affiche le nombre
-         * de messages non lus.
-         */
-
-        messageCount.textContent =
-            unread;
+        updateUnreadBadge(unread);
+    }
+}
 
 
-        messageCount.classList.toggle(
-            "has-unread",
-            unread > 0
-        );
+function updateUnreadBadge(count) {
+
+    const badge =
+        getEl("unreadBadge");
 
 
-        /*
-         * Compatibilité avec d'autres
-         * éléments de compteur éventuels.
-         */
+    const value =
+        Number(count) || 0;
 
-        document
-            .querySelectorAll(
-                "[data-message-unread-count]"
-            )
-            .forEach(element => {
 
-                element.textContent =
-                    unread;
+    if (value <= 0) {
 
-                element.classList.toggle(
-                    "has-unread",
-                    unread > 0
-                );
-            });
+        badge.style.display =
+            "none";
+
+        return;
     }
 
 
-    /* ============================================================
-       13. RENDRE LA LISTE
-    ============================================================ */
-
-    function renderMessages(
-        messages = currentMessages
-    ) {
-
-        if (!messagesContainer) {
-            return;
-        }
+    badge.style.display =
+        "flex";
 
 
-        const list =
-            Array.isArray(messages)
-                ? messages
-                : [];
+    badge.textContent =
+        value > 99
+            ? "99+"
+            : value;
+}
 
 
-        updateCount();
+/* ============================================================
+   RENDER INBOX
+============================================================ */
+
+function renderInbox(items) {
+
+    const list =
+        getEl("inboxList");
 
 
-        if (
-            list.length === 0
-        ) {
+    if (!items.length) {
 
-            messagesContainer.innerHTML = `
-
-                <div class="messages-empty">
-
-                    <div class="messages-empty-icon">
-
-                        <i class="fa-regular fa-envelope-open"></i>
-
-                    </div>
-
-                    <h3>
-                        Aucun message
-                    </h3>
-
-                    <p>
-                        Votre boîte de réception
-                        est actuellement vide.
-                    </p>
-
-                </div>
-
-            `;
-
-            return;
-        }
-
-
-        const sorted =
-            [...list].sort(
-                (a, b) => {
-
-                    const dateA =
-                        parseDate(
-                            a.created_at
-                        );
-
-                    const dateB =
-                        parseDate(
-                            b.created_at
-                        );
-
-
-                    return (
-                        (dateB?.getTime() || 0) -
-                        (dateA?.getTime() || 0)
-                    );
-                }
-            );
-
-
-        messagesContainer.innerHTML =
-            sorted
-                .map(
-                    createMessageItem
-                )
-                .join("");
-
-
-        messagesContainer
-            .querySelectorAll(
-                "[data-message-id]"
-            )
-            .forEach(item => {
-
-                item.addEventListener(
-                    "click",
-                    () => {
-
-                        const id =
-                            Number(
-                                item.dataset.messageId
-                            );
-
-                        if (
-                            Number.isInteger(
-                                id
-                            )
-                        ) {
-
-                            openMessage(
-                                id
-                            );
-                        }
-                    }
-                );
-            });
-    }
-
-
-    /* ============================================================
-       14. CARTE MESSAGE
-    ============================================================ */
-
-    function createMessageItem(
-        message
-    ) {
-
-        const type =
-            getMessageType(
-                message
-            );
-
-
-        const unread =
-            normalizeStatus(
-                message.status
-            ) !== "read";
-
-
-        let icon =
-            "fa-envelope";
-
-
-        let title =
-            "BMJ SERVICE";
-
-
-        let badge = `
-
-            <span class="
-                message-badge
-                badge-personal
-            ">
-
-                <i class="fa-solid fa-envelope"></i>
-
-                Message
-
-            </span>
-
+        list.innerHTML = `
+            <div class="empty">
+                <i class="fa-regular fa-envelope"></i>
+                <strong>Votre boîte est vide</strong>
+                <span>Vous n'avez aucun message pour le moment.</span>
+            </div>
         `;
 
-
-        /*
-         * MESSAGE PERSONNEL
-         */
-
-        if (
-            type === "user"
-        ) {
-
-            icon =
-                "fa-user";
+        return;
+    }
 
 
-            title =
-                message.sender_name ||
-                "BMJ SERVICE";
+    list.innerHTML =
+        items.map(item => {
+
+            const unread =
+                !item.is_read &&
+                item.sender_type !== "user";
 
 
-            badge = `
-
-                <span class="
-                    message-badge
-                    badge-personal
-                ">
-
-                    <i class="fa-solid fa-user"></i>
-
-                    Personnel
-
-                </span>
-
-            `;
-        }
+            const active =
+                Number(item.id) ===
+                Number(selectedMessageId);
 
 
-        /*
-         * ANNONCE
-         */
-
-        else if (
-            type === "official"
-        ) {
-
-            icon =
-                "fa-bullhorn";
+            const subject =
+                item.subject ||
+                "Sans objet";
 
 
-            title =
-                "BMJ SERVICE";
+            const preview =
+                item.message ||
+                "";
 
 
-            badge = `
+            return `
 
-                <span class="
-                    message-badge
-                    badge-official
-                ">
-
-                    <i class="fa-solid fa-bullhorn"></i>
-
-                    Annonce
-
-                </span>
-
-            `;
-        }
-
-
-        /*
-         * RÉPONSE
-         */
-
-        else if (
-            type === "user_reply"
-        ) {
-
-            icon =
-                "fa-reply";
-
-
-            title =
-                "Votre réponse";
-
-
-            badge = `
-
-                <span
-                    class="
-                        message-badge
-                        badge-reply
+                <button
+                    class="message-item
+                        ${unread ? "unread" : ""}
+                        ${active ? "active" : ""}
                     "
+                    onclick="openMessage(${Number(item.id)})"
                 >
 
-                    <i class="fa-solid fa-reply"></i>
+                    <div class="message-item-top">
 
-                    Votre réponse
-
-                </span>
-
-            `;
-        }
-
-
-        return `
-
-            <article
-
-                class="
-                    message-item
-                    ${unread ? "unread" : ""}
-                    ${type === "official"
-                        ? "official"
-                        : ""}
-                "
-
-                data-message-id="${escapeHTML(
-                    message.id
-                )}"
-            >
-
-                <div class="message-avatar">
-
-                    <i class="
-                        fa-solid
-                        ${icon}
-                    "></i>
-
-                </div>
-
-
-                <div class="message-info">
-
-                    <div class="message-top">
-
-                        <div class="message-item-title">
-
-                            ${escapeHTML(
-                                title
-                            )}
-
+                        <div class="message-item-subject">
+                            ${escapeHtml(subject)}
                         </div>
 
-
-                        <div class="message-date">
-
-                            ${escapeHTML(
-                                formatDate(
-                                    message.created_at
-                                )
+                        <div class="message-item-date">
+                            ${formatShortDate(
+                                item.created_at
                             )}
-
                         </div>
 
                     </div>
 
-
-                    <div class="message-subject">
-
-                        ${escapeHTML(
-                            message.subject ||
-                            "Sans objet"
-                        )}
-
+                    <div class="message-item-preview">
+                        ${escapeHtml(preview)}
                     </div>
 
+                    <div class="message-item-bottom">
 
-                    <div class="message-preview">
-
-                        ${escapeHTML(
-                            truncate(
-                                message.content ||
-                                "",
-                                105
-                            )
-                        )}
-
-                    </div>
-
-
-                    <div class="message-badges">
-
-                        ${badge}
-
+                        <span class="message-type">
+                            ${
+                                item.sender_type === "admin"
+                                    ? "Administration"
+                                    : "Vous"
+                            }
+                        </span>
 
                         ${
                             unread
-                                ? `
-
-                                    <span
-                                        class="
-                                            message-badge
-                                            badge-new
-                                        "
-                                    >
-
-                                        Nouveau
-
-                                    </span>
-
-                                `
-                                : ""
+                            ? `
+                                <span
+                                    class="unread-dot"
+                                ></span>
+                              `
+                            : ""
                         }
+
+                    </div>
+
+                </button>
+
+            `;
+
+        }).join("");
+}
+
+
+/* ============================================================
+   SHORT DATE
+============================================================ */
+
+function formatShortDate(date) {
+
+    if (!date) return "";
+
+
+    const d =
+        new Date(date);
+
+
+    if (
+        Number.isNaN(
+            d.getTime()
+        )
+    ) {
+
+        return "";
+    }
+
+
+    return d.toLocaleDateString(
+        "fr-FR",
+        {
+            day: "2-digit",
+            month: "2-digit"
+        }
+    );
+}
+
+
+/* ============================================================
+   SEARCH
+============================================================ */
+
+function searchMessages() {
+
+    const query =
+        getEl("messageSearch")
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    if (!query) {
+
+        renderInbox(messages);
+
+        return;
+    }
+
+
+    const filtered =
+        messages.filter(item => {
+
+            const text = [
+
+                item.subject,
+                item.message,
+                item.priority,
+                item.sender_type
+
+            ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+            return text.includes(query);
+        });
+
+
+    renderInbox(filtered);
+}
+
+
+/* ============================================================
+   OPEN MESSAGE
+============================================================ */
+
+async function openMessage(
+    id,
+    markRead = true
+) {
+
+    const message =
+        messages.find(
+            item =>
+                Number(item.id) ===
+                Number(id)
+        );
+
+
+    if (!message) {
+
+        toast(
+            "Message introuvable.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    selectedMessageId =
+        Number(id);
+
+
+    renderInbox(messages);
+
+
+    try {
+
+        const result =
+            await apiRequest(
+                `/api/user/sms/${id}/conversation`
+            );
+
+
+        const conversation =
+            result?.messages ||
+            result?.conversation ||
+            result?.data ||
+            (Array.isArray(result)
+                ? result
+                : []);
+
+
+        renderConversation(
+            conversation.length
+                ? conversation
+                : [message]
+        );
+
+
+        if (
+            markRead &&
+            !message.is_read &&
+            message.sender_type !== "user"
+        ) {
+
+            await markAsRead(
+                id,
+                false
+            );
+        }
+
+    } catch (error) {
+
+        /*
+         * Fallback :
+         * si la conversation complète n'est pas
+         * disponible, on affiche au moins le message.
+         */
+
+        renderConversation([
+            message
+        ]);
+
+
+        console.warn(
+            "[USER OPEN MESSAGE]",
+            error
+        );
+    }
+}
+
+
+/* ============================================================
+   RENDER CONVERSATION
+============================================================ */
+
+function renderConversation(items) {
+
+    const box =
+        getEl("messages");
+
+
+    if (!items.length) {
+
+        box.innerHTML = `
+            <div class="empty">
+                <i class="fa-regular fa-comments"></i>
+                <strong>Aucun message</strong>
+                <span>Cette conversation est vide.</span>
+            </div>
+        `;
+
+        return;
+    }
+
+
+    box.innerHTML =
+        items.map(item => {
+
+            const isUser =
+                item.sender_type === "user";
+
+
+            const priority =
+                item.priority ||
+                "normal";
+
+
+            return `
+
+                <div
+                    class="message-row ${
+                        isUser
+                            ? "user"
+                            : "admin"
+                    }"
+                >
+
+                    <div class="bubble">
+
+                        <div class="sender">
+
+                            ${
+                                isUser
+                                    ? "Vous"
+                                    : "Administration BMJ SERVICE"
+                            }
+
+                        </div>
+
+
+                        ${
+                            priority !== "normal"
+                            ? `
+                                <div
+                                    class="priority ${escapeHtml(priority)}"
+                                >
+
+                                    <i class="fa-solid fa-flag"></i>
+
+                                    ${escapeHtml(priority)}
+
+                                </div>
+                              `
+                            : ""
+                        }
+
+
+                        ${
+                            item.subject
+                            ? `
+                                <div class="subject">
+                                    ${escapeHtml(
+                                        item.subject
+                                    )}
+                                </div>
+                              `
+                            : ""
+                        }
+
+
+                        <div class="text">
+
+                            ${escapeHtml(
+                                item.message
+                            )}
+
+                        </div>
+
+
+                        <div class="message-info">
+
+                            <span>
+                                ${formatDate(
+                                    item.created_at
+                                )}
+                            </span>
+
+                            ${
+                                isUser
+                                ? `
+                                    <i
+                                        class="fa-solid fa-check-double"
+                                    ></i>
+                                  `
+                                : ""
+                            }
+
+                        </div>
 
                     </div>
 
                 </div>
 
-            </article>
+            `;
 
-        `;
-    }
+        }).join("");
 
 
-    /* ============================================================
-       15. OUVRIR UN MESSAGE
-    ============================================================ */
+    box.scrollTop =
+        box.scrollHeight;
+}
 
-    function openMessage(id) {
+
+/* ============================================================
+   MARK READ
+============================================================ */
+
+async function markAsRead(
+    id,
+    reload = true
+) {
+
+    try {
+
+        await apiRequest(
+            `/api/user/sms/${id}/read`,
+            {
+                method: "PATCH"
+            }
+        );
+
 
         const message =
-            currentMessages.find(
+            messages.find(
                 item =>
                     Number(item.id) ===
                     Number(id)
             );
 
 
-        if (!message) {
+        if (message) {
 
-            showToast(
-                "Message introuvable",
-                "Actualisez votre messagerie.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        currentMessage =
-            message;
-
-
-        renderMessageDetail(
-            message
-        );
-
-
-        /*
-         * Marquage automatique comme lu.
-         */
-
-        if (
-            normalizeStatus(
-                message.status
-            ) !== "read"
-        ) {
-
-            markAsRead(
-                message.id
-            );
-        }
-    }
-
-
-    /* ============================================================
-       16. DÉTAIL DU MESSAGE
-    ============================================================ */
-
-    function renderMessageDetail(
-        message
-    ) {
-
-        if (!messageDetail) {
-            return;
-        }
-
-
-        const type =
-            getMessageType(
-                message
-            );
-
-
-        const official =
-            type === "official";
-
-
-        const reply =
-            type === "user_reply";
-
-
-        const replyAllowed =
-            canReply(
-                message
-            );
-
-
-        let icon =
-            "fa-envelope";
-
-
-        let label =
-            "Message";
-
-
-        let typeClass =
-            "individual";
-
-
-        if (
-            type === "user"
-        ) {
-
-            icon =
-                "fa-user";
-
-            label =
-                "Message personnel";
-
-            typeClass =
-                "individual";
-        }
-
-
-        if (
-            official
-        ) {
-
-            icon =
-                "fa-bullhorn";
-
-            label =
-                "Annonce BMJ SERVICE";
-
-            typeClass =
-                "official";
-        }
-
-
-        if (
-            reply
-        ) {
-
-            icon =
-                "fa-reply";
-
-            label =
-                "Votre réponse";
-
-            typeClass =
-                "reply";
-        }
-
-
-        const priority =
-            normalizePriority(
-                message.priority
-            );
-
-
-        let priorityLabel =
-            "Normale";
-
-
-        if (
-            priority === "high"
-        ) {
-
-            priorityLabel =
-                "Haute";
-        }
-
-
-        if (
-            priority === "low"
-        ) {
-
-            priorityLabel =
-                "Basse";
-        }
-
-
-        messageDetail.innerHTML = `
-
-            <div class="detail-header">
-
-                <button
-                    type="button"
-                    class="detail-back"
-                    id="detailBack"
-                >
-
-                    <i class="fa-solid fa-arrow-left"></i>
-
-                    Retour aux messages
-
-                </button>
-
-
-                <div
-                    class="
-                        detail-type
-                        ${escapeHTML(
-                            typeClass
-                        )}
-                    "
-                >
-
-                    <i
-                        class="
-                            fa-solid
-                            ${icon}
-                        "
-                    ></i>
-
-                    ${escapeHTML(
-                        label
-                    )}
-
-                </div>
-
-
-                <h2>
-
-                    ${escapeHTML(
-                        message.subject ||
-                        "Sans objet"
-                    )}
-
-                </h2>
-
-
-                <div class="detail-meta">
-
-                    <span>
-
-                        <i
-                            class="
-                                fa-regular
-                                fa-calendar
-                            "
-                        ></i>
-
-                        ${escapeHTML(
-                            formatDateTime(
-                                message.created_at
-                            )
-                        )}
-
-                    </span>
-
-
-                    <span
-                        class="
-                            priority
-                            ${escapeHTML(
-                                priority
-                            )}
-                        "
-                    >
-
-                        ${escapeHTML(
-                            priorityLabel
-                        )}
-
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="detail-body">
-
-                <div class="message-content">
-
-                    ${escapeHTML(
-                        message.content ||
-                        ""
-                    )}
-
-                </div>
-
-
-                ${
-                    official
-                        ? `
-
-                            <div class="no-reply">
-
-                                <i
-                                    class="
-                                        fa-solid
-                                        fa-bullhorn
-                                    "
-                                ></i>
-
-                                <div>
-
-                                    <strong>
-                                        Communication officielle
-                                    </strong>
-
-                                    <br>
-
-                                    Cette annonce a été envoyée
-                                    par BMJ SERVICE.
-
-                                </div>
-
-                            </div>
-
-                        `
-                        : ""
-                }
-
-
-                ${
-                    reply
-                        ? `
-
-                            <div class="no-reply">
-
-                                <i
-                                    class="
-                                        fa-solid
-                                        fa-circle-check
-                                    "
-                                ></i>
-
-                                <div>
-
-                                    <strong>
-                                        Réponse envoyée
-                                    </strong>
-
-                                    <br>
-
-                                    Votre réponse a été transmise
-                                    à l'administration.
-
-                                </div>
-
-                            </div>
-
-                        `
-                        : ""
-                }
-
-
-            </div>
-
-
-            ${
-                replyAllowed
-                    ? createReplyBox()
-                    : ""
-            }
-
-        `;
-
-
-        messageDetail.classList.add(
-            "mobile-open"
-        );
-
-
-        const back =
-            document.getElementById(
-                "detailBack"
-            );
-
-
-        if (back) {
-
-            back.addEventListener(
-                "click",
-                closeDetail
-            );
-        }
-
-
-        const form =
-            document.getElementById(
-                "messageReplyForm"
-            );
-
-
-        if (form) {
-
-            form.addEventListener(
-                "submit",
-                sendReply
-            );
-        }
-    }
-
-
-    /* ============================================================
-       17. ZONE DE RÉPONSE
-    ============================================================ */
-
-    function createReplyBox() {
-
-        return `
-
-            <div class="reply-box">
-
-                <div class="reply-info">
-
-                    <i
-                        class="
-                            fa-solid
-                            fa-reply
-                        "
-                    ></i>
-
-                    Vous pouvez répondre
-                    à ce message
-
-                </div>
-
-
-                <form
-                    id="messageReplyForm"
-                    class="reply-form"
-                >
-
-                    <textarea
-                        id="replyContent"
-                        maxlength="5000"
-                        placeholder="Écrivez votre réponse..."
-                        required
-                    ></textarea>
-
-
-                    <div class="reply-footer">
-
-                        <span
-                            id="replyCounter"
-                        >
-                            0 / 5000
-                        </span>
-
-
-                        <button
-                            type="submit"
-                            class="reply-btn"
-                            id="replyButton"
-                            title="Envoyer la réponse"
-                        >
-
-                            <i
-                                class="
-                                    fa-solid
-                                    fa-paper-plane
-                                "
-                            ></i>
-
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        `;
-    }
-
-
-    /* ============================================================
-       18. COMPTEUR RÉPONSE
-    ============================================================ */
-
-    function initReplyCounter() {
-
-        const textarea =
-            document.getElementById(
-                "replyContent"
-            );
-
-
-        const counter =
-            document.getElementById(
-                "replyCounter"
-            );
-
-
-        if (
-            !textarea ||
-            !counter
-        ) {
-            return;
-        }
-
-
-        const update =
-            () => {
-
-                counter.textContent =
-                    `${textarea.value.length} / 5000`;
-            };
-
-
-        textarea.addEventListener(
-            "input",
-            update
-        );
-
-
-        update();
-    }
-
-
-    /* ============================================================
-       19. ENVOYER UNE RÉPONSE
-       
-       POST
-       /api/utilisateurs/:userId/messages/:messageId/reply
-    ============================================================ */
-
-    async function sendReply(
-        event
-    ) {
-
-        event.preventDefault();
-
-
-        if (!currentMessage) {
-            return;
-        }
-
-
-        const userId =
-            getUserId();
-
-
-        if (!userId) {
-
-            showToast(
-                "Connexion requise",
-                "Votre session utilisateur est introuvable.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if (
-            !canReply(
-                currentMessage
-            )
-        ) {
-
-            showToast(
-                "Réponse impossible",
-                "Vous ne pouvez pas répondre à ce message.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        const textarea =
-            document.getElementById(
-                "replyContent"
-            );
-
-
-        const button =
-            document.getElementById(
-                "replyButton"
-            );
-
-
-        if (!textarea) {
-            return;
-        }
-
-
-        const content =
-            textarea.value.trim();
-
-
-        if (!content) {
-
-            showToast(
-                "Réponse vide",
-                "Veuillez écrire votre réponse.",
-                "error"
-            );
-
-            textarea.focus();
-
-            return;
-        }
-
-
-        if (
-            content.length > 5000
-        ) {
-
-            showToast(
-                "Réponse trop longue",
-                "Votre réponse ne peut pas dépasser 5000 caractères.",
-                "error"
-            );
-
-            return;
-        }
-
-
-        if (button) {
-
-            button.disabled =
+            message.is_read =
                 true;
-
-            button.innerHTML = `
-
-                <i
-                    class="
-                        fa-solid
-                        fa-spinner
-                        fa-spin
-                    "
-                ></i>
-
-            `;
         }
 
 
-        try {
+        updateStats();
 
-            const data =
-                await apiRequest(
-
-                    `/api/utilisateurs/${encodeURIComponent(
-                        userId
-                    )}/messages/${encodeURIComponent(
-                        currentMessage.id
-                    )}/reply`,
-
-                    {
-                        method:
-                            "POST",
-
-                        body:
-                            JSON.stringify({
-                                content
-                            })
-                    }
-                );
-
-
-            if (
-                data &&
-                data.success === false
-            ) {
-
-                throw new Error(
-                    data.message ||
-                    "Impossible d'envoyer la réponse."
-                );
-            }
-
-
-            /*
-             * Si le serveur retourne
-             * directement le message créé,
-             * on peut l'ajouter au cache.
-             */
-
-            const createdMessage =
-                data?.message ||
-                data?.data ||
-                null;
-
-
-            if (
-                createdMessage &&
-                createdMessage.id
-            ) {
-
-                const normalized =
-                    normalizeMessage(
-                        createdMessage
-                    );
-
-
-                if (normalized) {
-
-                    const exists =
-                        currentMessages.some(
-                            item =>
-                                Number(
-                                    item.id
-                                ) ===
-                                Number(
-                                    normalized.id
-                                )
-                        );
-
-
-                    if (!exists) {
-
-                        currentMessages.unshift(
-                            normalized
-                        );
-
-                        saveCache(
-                            currentMessages
-                        );
-                    }
-                }
-            }
-
-
-            showToast(
-                "Réponse envoyée",
-                "Votre message a été transmis à BMJ SERVICE.",
-                "success"
-            );
-
-
-            /*
-             * On ferme le détail.
-             */
-
-            closeDetail();
-
-
-            /*
-             * On resynchronise avec
-             * PostgreSQL pour avoir
-             * la vraie conversation.
-             */
-
-            await syncMessages(
-                true
-            );
-
-
-        }
-        catch (error) {
-
-            console.error(
-                "Erreur envoi réponse :",
-                error
-            );
-
-
-            showToast(
-                "Erreur",
-                error?.message ||
-                "Impossible d'envoyer votre réponse.",
-                "error"
-            );
-
-
-            if (button) {
-
-                button.disabled =
-                    false;
-
-                button.innerHTML = `
-
-                    <i
-                        class="
-                            fa-solid
-                            fa-paper-plane
-                        "
-                    ></i>
-
-                `;
-            }
-        }
-    }
-
-
-    /* ============================================================
-       20. MARQUER COMME LU
-       
-       PATCH
-       /api/utilisateurs/:userId/messages/:messageId/read
-    ============================================================ */
-
-    async function markAsRead(
-        messageId
-    ) {
-
-        const userId =
-            getUserId();
-
-
-        if (
-            !userId ||
-            !messageId
-        ) {
-            return;
-        }
-
-
-        const message =
-            currentMessages.find(
-                item =>
-                    Number(
-                        item.id
-                    ) ===
-                    Number(
-                        messageId
-                    )
-            );
-
-
-        if (!message) {
-            return;
-        }
-
-
-        /*
-         * Mise à jour immédiate
-         * de l'interface.
-         */
-
-        message.status =
-            "read";
-
-
-        message.read_at =
-            new Date().toISOString();
-
-
-        saveCache(
-            currentMessages
+        renderInbox(
+            messages
         );
 
 
-        updateCount();
+        if (reload) {
 
-
-        /*
-         * Mise à jour serveur.
-         */
-
-        try {
-
-            await apiRequest(
-
-                `/api/utilisateurs/${encodeURIComponent(
-                    userId
-                )}/messages/${encodeURIComponent(
-                    messageId
-                )}/read`,
-
-                {
-                    method:
-                        "PATCH"
-                },
-
-                8000
-            );
-
+            await loadUnread();
         }
-        catch (error) {
 
-            console.warn(
-                "Erreur marquage comme lu :",
-                error
-            );
+    } catch (error) {
 
-            /*
-             * On ne remet pas l'interface
-             * en arrière : le serveur pourra
-             * être resynchronisé plus tard.
-             */
-        }
+        console.warn(
+            "[USER MARK READ]",
+            error
+        );
     }
+}
 
 
-    /* ============================================================
-       21. EXTRAIRE LES MESSAGES DE LA RÉPONSE
-    ============================================================ */
+/* ============================================================
+   MARK ALL READ
+============================================================ */
 
-    function extractMessages(data) {
+async function markAllRead() {
 
-        if (
-            Array.isArray(data)
-        ) {
-            return data;
-        }
+    try {
 
-
-        if (
-            Array.isArray(
-                data?.messages
-            )
-        ) {
-            return data.messages;
-        }
-
-
-        if (
-            Array.isArray(
-                data?.data
-            )
-        ) {
-            return data.data;
-        }
-
-
-        if (
-            Array.isArray(
-                data?.results
-            )
-        ) {
-            return data.results;
-        }
-
-
-        return [];
-    }
-
-
-    /* ============================================================
-       22. SYNCHRONISATION
-       
-       GET
-       /api/utilisateurs/:userId/messages
-    ============================================================ */
-
-    async function syncMessages(
-        force = false
-    ) {
-
-        const userId =
-            getUserId();
-
-
-        if (!userId) {
-            return false;
-        }
-
-
-        if (
-            syncInProgress
-        ) {
-            return false;
-        }
-
-
-        /*
-         * Évite de faire plusieurs
-         * requêtes immédiatement.
-         */
-
-        if (
-            !force &&
-            Date.now() -
-            lastSyncTime <
-            3000
-        ) {
-
-            return false;
-        }
-
-
-        syncInProgress =
-            true;
-
-
-        lastSyncTime =
-            Date.now();
-
-
-        try {
-
-            let data = null;
-
-
-            /*
-             * Première tentative.
-             */
-
-            try {
-
-                data =
-                    await apiRequest(
-
-                        `/api/utilisateurs/${encodeURIComponent(
-                            userId
-                        )}/messages`,
-
-                        {
-                            method:
-                                "GET"
-                        }
-                    );
-
+        await apiRequest(
+            "/api/user/sms/read-all",
+            {
+                method: "PATCH"
             }
-            catch (firstError) {
-
-                console.warn(
-                    "Première synchronisation échouée, nouvelle tentative..."
-                );
+        );
 
 
-                await new Promise(
-                    resolve =>
-                        setTimeout(
-                            resolve,
-                            RETRY_DELAY
-                        )
-                );
-
-
-                data =
-                    await apiRequest(
-
-                        `/api/utilisateurs/${encodeURIComponent(
-                            userId
-                        )}/messages`,
-
-                        {
-                            method:
-                                "GET"
-                        }
-                    );
-            }
-
-
-            /*
-             * Le serveur peut renvoyer
-             * success:true.
-             */
-
-            if (
-                data &&
-                data.success === false
-            ) {
-
-                throw new Error(
-                    data.message ||
-                    "Impossible de récupérer les messages."
-                );
-            }
-
-
-            const rawMessages =
-                extractMessages(
-                    data
-                );
-
-
-            /*
-             * Normalisation.
-             */
-
-            const normalizedMessages =
-                rawMessages
-                    .map(
-                        normalizeMessage
-                    )
-                    .filter(
-                        message =>
-                            message &&
-                            Number.isInteger(
-                                message.id
-                            ) &&
-                            message.id > 0
-                    );
-
-
-            /*
-             * Suppression des doublons
-             * par ID.
-             */
-
-            const unique =
-                new Map();
-
-
-            normalizedMessages.forEach(
-                message => {
-
-                    unique.set(
-                        Number(
-                            message.id
-                        ),
-                        message
-                    );
-                }
-            );
-
-
-            const messages =
-                Array.from(
-                    unique.values()
-                );
-
-
-            /*
-             * Tri récent → ancien.
-             */
-
-            messages.sort(
-                (a, b) => {
-
-                    const dateA =
-                        parseDate(
-                            a.created_at
-                        );
-
-                    const dateB =
-                        parseDate(
-                            b.created_at
-                        );
-
-
-                    return (
-                        (dateB?.getTime() || 0) -
-                        (dateA?.getTime() || 0)
-                    );
-                }
-            );
-
-
-            /*
-             * Ancienne liste.
-             */
-
-            const previous =
-                Array.isArray(
-                    currentMessages
-                )
-                    ? currentMessages
-                    : [];
-
-
-            const previousIds =
-                new Set(
-                    previous.map(
-                        message =>
-                            Number(
-                                message.id
-                            )
-                    )
-                );
-
-
-            /*
-             * Nouvelle liste.
-             */
-
-            currentMessages =
-                messages;
-
-
-            /*
-             * Sauvegarde cache.
-             */
-
-            saveCache(
-                currentMessages
-            );
-
-
-            /*
-             * Affichage.
-             */
-
-            renderMessages(
-                currentMessages
-            );
-
-
-            /*
-             * Détection nouveaux messages.
-             */
-
-            const newMessages =
-                currentMessages.filter(
-                    message =>
-                        !previousIds.has(
-                            Number(
-                                message.id
-                            )
-                        )
-                );
-
-
-            /*
-             * Ne pas afficher de toast
-             * lors du tout premier chargement.
-             */
-
-            if (
-                previous.length > 0 &&
-                newMessages.length > 0
-            ) {
-
-                /*
-                 * Les réponses de l'utilisateur
-                 * ne doivent pas déclencher
-                 * une notification "nouveau message".
-                 */
-
-                const incoming =
-                    newMessages.filter(
-                        message =>
-                            !isUserReply(
-                                message
-                            )
-                    );
-
+        messages.forEach(
+            message => {
 
                 if (
-                    incoming.length > 0
+                    message.sender_type !== "user"
                 ) {
 
-                    const latest =
-                        [...incoming]
-                            .sort(
-                                (a, b) =>
-                                    (
-                                        parseDate(
-                                            b.created_at
-                                        )?.getTime() ||
-                                        0
-                                    ) -
-                                    (
-                                        parseDate(
-                                            a.created_at
-                                        )?.getTime() ||
-                                        0
-                                    )
-                            )[0];
-
-
-                    if (
-                        isOfficial(
-                            latest
-                        )
-                    ) {
-
-                        showToast(
-                            "Nouvelle annonce",
-                            latest.subject ||
-                            "Vous avez reçu une nouvelle annonce.",
-                            "info"
-                        );
-
-                    }
-                    else {
-
-                        showToast(
-                            "Nouveau message",
-                            latest.subject ||
-                            "Vous avez reçu un nouveau message.",
-                            "info"
-                        );
-                    }
-                }
-            }
-
-
-            return true;
-
-
-        }
-        catch (error) {
-
-            console.warn(
-                "Synchronisation messagerie échouée :",
-                error
-            );
-
-
-            /*
-             * Si le serveur n'est pas disponible,
-             * on conserve les données locales.
-             */
-
-            if (
-                currentMessages.length === 0
-            ) {
-
-                const cached =
-                    getCachedMessages();
-
-
-                if (
-                    cached.length > 0
-                ) {
-
-                    currentMessages =
-                        cached
-                            .map(
-                                normalizeMessage
-                            )
-                            .filter(
-                                Boolean
-                            );
-
-
-                    renderMessages(
-                        currentMessages
-                    );
-                }
-            }
-
-
-            return false;
-
-
-        }
-        finally {
-
-            syncInProgress =
-                false;
-        }
-    }
-
-
-    /* ============================================================
-       23. CHARGEMENT INITIAL
-    ============================================================ */
-
-    async function loadMessages() {
-
-        currentUser =
-            getCurrentUser();
-
-
-        const userId =
-            getUserId();
-
-
-        if (!userId) {
-
-            showLoginState();
-
-            return;
-        }
-
-
-        /*
-         * Affichage instantané du cache.
-         */
-
-        const cached =
-            getCachedMessages();
-
-
-        if (
-            cached.length > 0
-        ) {
-
-            currentMessages =
-                cached
-                    .map(
-                        normalizeMessage
-                    )
-                    .filter(
-                        Boolean
-                    );
-
-
-            renderMessages(
-                currentMessages
-            );
-        }
-        else {
-
-            showLoadingState();
-        }
-
-
-        /*
-         * Puis synchronisation serveur.
-         */
-
-        await syncMessages(
-            true
-        );
-    }
-
-
-    /* ============================================================
-       24. ÉTAT CHARGEMENT
-    ============================================================ */
-
-    function showLoadingState() {
-
-        if (!messagesContainer) {
-            return;
-        }
-
-
-        messagesContainer.innerHTML = `
-
-            <div class="messages-empty">
-
-                <div class="messages-empty-icon">
-
-                    <i
-                        class="
-                            fa-solid
-                            fa-spinner
-                            fa-spin
-                        "
-                    ></i>
-
-                </div>
-
-                <h3>
-                    Chargement...
-                </h3>
-
-                <p>
-                    Récupération de vos messages.
-                </p>
-
-            </div>
-
-        `;
-    }
-
-
-    /* ============================================================
-       25. ÉTAT NON CONNECTÉ
-    ============================================================ */
-
-    function showLoginState() {
-
-        if (!messagesContainer) {
-            return;
-        }
-
-
-        messagesContainer.innerHTML = `
-
-            <div class="messages-empty">
-
-                <div class="messages-empty-icon">
-
-                    <i
-                        class="
-                            fa-solid
-                            fa-user-lock
-                        "
-                    ></i>
-
-                </div>
-
-                <h3>
-                    Connexion requise
-                </h3>
-
-                <p>
-                    Connectez-vous pour accéder
-                    à votre messagerie.
-                </p>
-
-            </div>
-
-        `;
-
-
-        updateCount();
-    }
-
-
-    /* ============================================================
-       26. FERMER LE DÉTAIL
-    ============================================================ */
-
-    function closeDetail() {
-
-        if (!messageDetail) {
-            return;
-        }
-
-
-        messageDetail.classList.remove(
-            "mobile-open"
-        );
-
-
-        currentMessage =
-            null;
-
-
-        /*
-         * Sur desktop, on remet
-         * l'état vide.
-         */
-
-        if (
-            window.innerWidth > 850
-        ) {
-
-            messageDetail.innerHTML = `
-
-                <div class="detail-empty">
-
-                    <div class="detail-empty-icon">
-
-                        <i
-                            class="
-                                fa-regular
-                                fa-envelope-open
-                            "
-                        ></i>
-
-                    </div>
-
-                    <h3>
-                        Sélectionnez un message
-                    </h3>
-
-                    <p>
-                        Choisissez un message
-                        dans votre boîte de réception
-                        pour le lire.
-                    </p>
-
-                </div>
-
-            `;
-        }
-    }
-
-
-    /* ============================================================
-       27. RETOUR
-    ============================================================ */
-
-    const backButton =
-        document.getElementById(
-            "backButton"
-        );
-
-
-    if (backButton) {
-
-        backButton.addEventListener(
-            "click",
-            function () {
-
-                if (
-                    window.history.length > 1
-                ) {
-
-                    window.history.back();
-
-                }
-                else {
-
-                    window.location.href =
-                        "index.html";
+                    message.is_read =
+                        true;
                 }
 
             }
         );
+
+
+        updateStats();
+
+        renderInbox(
+            messages
+        );
+
+
+        await loadUnread();
+
+
+        toast(
+            "Tous les messages sont marqués comme lus.",
+            "success"
+        );
+
+    } catch (error) {
+
+        toast(
+            error.message ||
+            "Impossible de marquer les messages comme lus.",
+            "error"
+        );
     }
+}
 
 
-    /* ============================================================
-       28. RAFRAÎCHISSEMENT AUTOMATIQUE
-    ============================================================ */
+/* ============================================================
+   REPLY
+============================================================ */
 
-    function startAutoRefresh() {
+function prepareReply() {
 
-        if (
-            refreshTimer
-        ) {
+    if (!selectedMessageId) {
 
-            clearInterval(
-                refreshTimer
-            );
-        }
-
-
-        refreshTimer =
-            setInterval(
-                function () {
-
-                    /*
-                     * Ne pas solliciter Render
-                     * si l'utilisateur n'est pas
-                     * devant la page.
-                     */
-
-                    if (
-                        document.visibilityState !==
-                        "visible"
-                    ) {
-                        return;
-                    }
-
-
-                    if (
-                        syncInProgress
-                    ) {
-                        return;
-                    }
-
-
-                    syncMessages(
-                        false
-                    );
-
-                },
-                REFRESH_INTERVAL
-            );
-    }
-
-
-    /* ============================================================
-       29. RETOUR SUR LA PAGE
-    ============================================================ */
-
-    document.addEventListener(
-        "visibilitychange",
-        function () {
-
-            if (
-                document.visibilityState ===
-                "visible"
-            ) {
-
-                /*
-                 * Quand l'utilisateur revient
-                 * sur la page, on récupère
-                 * immédiatement les nouveaux messages.
-                 */
-
-                syncMessages(
-                    true
-                );
-            }
-        }
-    );
-
-
-    /* ============================================================
-       30. RECONNEXION RÉSEAU
-    ============================================================ */
-
-    window.addEventListener(
-        "online",
-        function () {
-
-            showToast(
-                "Connexion rétablie",
-                "Synchronisation de la messagerie...",
-                "success"
-            );
-
-
-            syncMessages(
-                true
-            );
-        }
-    );
-
-
-    /* ============================================================
-       31. DÉCONNEXION RÉSEAU
-    ============================================================ */
-
-    window.addEventListener(
-        "offline",
-        function () {
-
-            showToast(
-                "Connexion interrompue",
-                "Vos messages enregistrés restent disponibles.",
-                "error"
-            );
-        }
-    );
-
-
-    /* ============================================================
-       32. API PUBLIQUE
-    ============================================================ */
-
-    window.BMJMessages = {
-
-        loadMessages,
-
-        syncMessages,
-
-        openMessage,
-
-        closeDetail,
-
-        markAsRead,
-
-        getCachedMessages,
-
-        getCurrentUser,
-
-        getCurrentUserId:
-            getUserId,
-
-        clearCache:
-            clearMessageCache
-    };
-
-
-    /* ============================================================
-       33. INITIALISATION
-    ============================================================ */
-
-    currentUser =
-        getCurrentUser();
-
-
-    if (!currentUser) {
-
-        showLoginState();
+        toast(
+            "Sélectionnez d'abord un message.",
+            "error"
+        );
 
         return;
     }
 
 
-    /*
-     * Chargement.
-     */
-
-    loadMessages();
-
-
-    /*
-     * Actualisation toutes les 30 secondes.
-     */
-
-    startAutoRefresh();
+    const message =
+        messages.find(
+            item =>
+                Number(item.id) ===
+                Number(selectedMessageId)
+        );
 
 
-    /* ============================================================
-       34. NETTOYAGE
-    ============================================================ */
+    if (!message) {
+        return;
+    }
 
-    window.addEventListener(
-        "beforeunload",
-        function () {
 
-            if (
-                refreshTimer
-            ) {
+    replyParentId =
+        Number(
+            message.parent_id ||
+            message.id
+        );
 
-                clearInterval(
-                    refreshTimer
+
+    getEl("replyIndicator")
+        .classList
+        .add("show");
+
+
+    getEl("messageSubject")
+        .value =
+        message.subject
+            ? `Re: ${removeRePrefix(message.subject)}`
+            : "Réponse";
+
+
+    getEl("messageText")
+        .focus();
+}
+
+
+/* ============================================================
+   REMOVE RE
+============================================================ */
+
+function removeRePrefix(subject) {
+
+    return String(subject || "")
+        .replace(
+            /^(re:\s*)+/i,
+            ""
+        )
+        .trim();
+}
+
+
+/* ============================================================
+   CANCEL REPLY
+============================================================ */
+
+function cancelReply() {
+
+    replyParentId =
+        null;
+
+
+    getEl("replyIndicator")
+        .classList
+        .remove("show");
+
+
+    getEl("messageSubject")
+        .value = "";
+}
+
+
+/* ============================================================
+   SEND REPLY
+============================================================ */
+
+async function sendReply() {
+
+    const message =
+        getEl("messageText")
+            .value
+            .trim();
+
+
+    const subject =
+        getEl("messageSubject")
+            .value
+            .trim();
+
+
+    const priority =
+        getEl("messagePriority")
+            .value;
+
+
+    if (!message) {
+
+        toast(
+            "Écrivez votre message.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    if (!replyParentId) {
+
+        if (selectedMessageId) {
+
+            const selected =
+                messages.find(
+                    item =>
+                        Number(item.id) ===
+                        Number(selectedMessageId)
                 );
 
-                refreshTimer =
-                    null;
-            }
+
+            replyParentId =
+                Number(
+                    selected?.parent_id ||
+                    selected?.id ||
+                    0
+                );
         }
+    }
+
+
+    if (!replyParentId) {
+
+        toast(
+            "Sélectionnez un message auquel répondre.",
+            "error"
+        );
+
+        return;
+    }
+
+
+    const button =
+        getEl("sendButton");
+
+
+    button.disabled =
+        true;
+
+
+    button.innerHTML = `
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        Envoi...
+    `;
+
+
+    try {
+
+        await apiRequest(
+            `/api/user/sms/${replyParentId}/reply`,
+            {
+                method: "POST",
+
+                body: JSON.stringify({
+                    subject,
+                    message,
+                    priority
+                })
+            }
+        );
+
+
+        getEl("messageSubject")
+            .value = "";
+
+
+        getEl("messageText")
+            .value = "";
+
+
+        getEl("messagePriority")
+            .value =
+            "normal";
+
+
+        cancelReply();
+
+
+        toast(
+            "Votre réponse a été envoyée.",
+            "success"
+        );
+
+
+        await loadMessages();
+
+
+        if (selectedMessageId) {
+
+            await openMessage(
+                selectedMessageId,
+                false
+            );
+        }
+
+    } catch (error) {
+
+        console.error(
+            "[USER SMS REPLY]",
+            error
+        );
+
+
+        toast(
+            error.message ||
+            "Impossible d'envoyer votre réponse.",
+            "error"
+        );
+
+    } finally {
+
+        button.disabled =
+            false;
+
+
+        button.innerHTML = `
+            <i class="fa-solid fa-paper-plane"></i>
+            Envoyer
+        `;
+    }
+}
+
+
+/* ============================================================
+   KEYBOARD
+============================================================ */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.ctrlKey &&
+            event.key === "Enter"
+        ) {
+
+            event.preventDefault();
+
+            sendReply();
+        }
+
+    }
+);
+
+
+/* ============================================================
+   SEARCH EVENT
+============================================================ */
+
+getEl("messageSearch")
+    .addEventListener(
+        "input",
+        searchMessages
     );
 
 
-});
+/* ============================================================
+   INIT
+============================================================ */
+
+(async function init() {
+
+    const valid =
+        loadCurrentUser();
+
+
+    if (!valid) {
+        return;
+    }
+
+
+    await loadEverything();
+
+})();
+
 </script>
 
 </body>
