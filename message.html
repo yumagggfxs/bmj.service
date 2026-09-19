@@ -47,37 +47,45 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>BMJ SERVICE — Messagerie</title>
+<title>BMJ SERVICE — Messagerie</title>
 
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    >
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+>
 
 <style>
 
 /* ============================================================
    BMJ SERVICE
-   MESSAGERIE — VERSION ORGANISÉE
-   IDS CONSERVÉS
+   MESSAGERIE
+   VERSION PROPRE ET RÉORGANISÉE
+
+   TOUS LES IDS EXISTANTS SONT CONSERVÉS
+============================================================ */
+
+
+/* ============================================================
+   VARIABLES
 ============================================================ */
 
 :root {
 
     --blue: #145a86;
     --blue-dark: #0d4668;
+    --blue-light: #eaf3f8;
 
     --gold: #d4af37;
 
@@ -89,14 +97,17 @@
 
     --muted: #73808c;
 
-    --border: #e2e8ed;
+    --border: #dfe6eb;
 
-    --chat-background: #efeae2;
+    --chat: #efeae2;
 
-    --message-in: #ffffff;
+    --incoming: #ffffff;
 
-    --message-out: #d9fdd3;
+    --outgoing: #d9fdd3;
 
+    --danger: #dc3545;
+
+    --success: #1b8b50;
 }
 
 
@@ -104,21 +115,35 @@
    RESET
 ============================================================ */
 
-* {
+*,
+*::before,
+*::after {
+
     box-sizing: border-box;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+
+html,
+body {
+
+    width: 100%;
+    height: 100%;
+
     margin: 0;
     padding: 0;
 }
 
-html,
-body {
-    width: 100%;
-    height: 100%;
-}
 
 body {
 
-    font-family: "Poppins", Arial, sans-serif;
+    font-family:
+        "Poppins",
+        Arial,
+        sans-serif;
 
     background: var(--background);
 
@@ -127,39 +152,52 @@ body {
     overflow: hidden;
 }
 
+
 button,
 input,
 textarea,
 select {
+
     font-family: inherit;
 }
 
+
 button {
+
     cursor: pointer;
 }
 
 
 /* ============================================================
-   HEADER
+   HEADER PRINCIPAL
 ============================================================ */
 
 .top-header {
 
     width: 100%;
-    height: 70px;
+    height: 68px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
-    padding: 0 22px;
+    padding:
+        0 20px;
 
-    background: #ffffff;
+    background: var(--white);
 
-    border-bottom: 1px solid var(--border);
+    border-bottom:
+        1px solid var(--border);
 
     box-shadow:
-        0 2px 10px rgba(15, 23, 42, 0.05);
+        0 2px 12px
+        rgba(15, 23, 42, .05);
+
+    position: relative;
+
+    z-index: 20;
 }
 
 
@@ -168,16 +206,19 @@ button {
     min-width: 0;
 
     display: flex;
+
     align-items: center;
 
-    gap: 11px;
+    gap: 10px;
 }
 
 
 .brand > img {
 
-    width: 43px;
-    height: 43px;
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
 
     object-fit: cover;
 
@@ -186,6 +227,7 @@ button {
 
 
 .brand-text {
+
     min-width: 0;
 }
 
@@ -203,6 +245,7 @@ button {
 
 
 .brand-name span {
+
     color: var(--gold);
 }
 
@@ -213,7 +256,9 @@ button {
 
     color: var(--muted);
 
-    font-size: 9px;
+    font-size: 8px;
+
+    white-space: nowrap;
 }
 
 
@@ -230,27 +275,27 @@ button {
 .header-message-button,
 .dashboard-button {
 
-    height: 39px;
+    height: 38px;
+
+    border: 0;
+
+    border-radius: 9px;
 
     display: inline-flex;
 
     align-items: center;
 
     justify-content: center;
-
-    border: 0;
-
-    border-radius: 9px;
 }
 
 
 .header-message-button {
 
+    width: 38px;
+
     position: relative;
 
-    width: 39px;
-
-    background: #f2f6f8;
+    background: #f1f5f7;
 
     color: var(--blue);
 }
@@ -260,11 +305,12 @@ button {
 
     gap: 7px;
 
-    padding: 0 12px;
+    padding:
+        0 12px;
 
     background: var(--blue);
 
-    color: #ffffff;
+    color: #fff;
 
     font-size: 10px;
 
@@ -282,20 +328,21 @@ button {
     min-width: 17px;
     height: 17px;
 
-    padding: 0 4px;
+    padding:
+        0 4px;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    border-radius: 20px;
+    border-radius: 50px;
 
-    background: #dc3545;
+    background: var(--danger);
 
-    color: #ffffff;
+    color: #fff;
 
-    font-size: 9px;
+    font-size: 8px;
 
     font-weight: 700;
 }
@@ -309,9 +356,10 @@ button {
 
     width: 100%;
 
-    height: calc(100vh - 70px);
+    height:
+        calc(100vh - 68px);
 
-    padding: 16px;
+    padding: 15px;
 
     overflow-y: auto;
 
@@ -320,12 +368,14 @@ button {
 
 
 /* ============================================================
-   EN-TÊTE DE PAGE
+   HEADER DE PAGE
 ============================================================ */
 
 .page-header {
 
     width: 100%;
+
+    min-height: 47px;
 
     display: flex;
 
@@ -335,7 +385,7 @@ button {
 
     gap: 15px;
 
-    margin-bottom: 13px;
+    margin-bottom: 12px;
 }
 
 
@@ -345,35 +395,40 @@ button {
 
     align-items: center;
 
-    gap: 11px;
+    gap: 10px;
+
+    min-width: 0;
 }
 
 
 .page-title-icon {
 
-    width: 43px;
-    height: 43px;
+    width: 42px;
+    height: 42px;
 
-    flex: 0 0 43px;
+    flex: 0 0 42px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
-    border-radius: 11px;
+    border-radius: 10px;
 
-    background: #e7f1f7;
+    background: var(--blue-light);
 
     color: var(--blue);
 
-    font-size: 18px;
+    font-size: 17px;
 }
 
 
 .page-title h1 {
 
-    font-size: 19px;
+    font-size: 18px;
+
+    font-weight: 700;
 
     line-height: 1.2;
 }
@@ -385,7 +440,7 @@ button {
 
     color: var(--muted);
 
-    font-size: 9px;
+    font-size: 8px;
 }
 
 
@@ -395,22 +450,24 @@ button {
 
     align-items: center;
 
-    gap: 9px;
+    gap: 8px;
 
-    padding: 6px 9px;
+    padding:
+        6px 9px;
 
-    border: 1px solid var(--border);
+    border:
+        1px solid var(--border);
 
     border-radius: 10px;
 
-    background: #ffffff;
+    background: #fff;
 }
 
 
 .user-info img {
 
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
 
     object-fit: cover;
 
@@ -430,7 +487,7 @@ button {
 
     max-width: 220px;
 
-    margin-top: 2px;
+    margin-top: 1px;
 
     color: var(--muted);
 
@@ -459,7 +516,7 @@ button {
 
     gap: 10px;
 
-    margin-bottom: 13px;
+    margin-bottom: 12px;
 }
 
 
@@ -467,41 +524,46 @@ button {
 
     min-width: 0;
 
+    min-height: 59px;
+
     display: flex;
 
     align-items: center;
 
     gap: 9px;
 
-    padding: 11px;
+    padding:
+        10px;
 
-    border: 1px solid var(--border);
+    background: #fff;
 
-    border-radius: 11px;
+    border:
+        1px solid var(--border);
 
-    background: #ffffff;
+    border-radius: 10px;
 }
 
 
 .stat-icon {
 
-    width: 37px;
-    height: 37px;
+    width: 36px;
+    height: 36px;
 
-    flex: 0 0 37px;
+    flex: 0 0 36px;
 
     display: flex;
 
     align-items: center;
+
     justify-content: center;
 
     border-radius: 9px;
 
-    background: #e9f3f8;
+    background: var(--blue-light);
 
     color: var(--blue);
 
-    font-size: 14px;
+    font-size: 13px;
 }
 
 
@@ -517,7 +579,7 @@ button {
 
     margin-top: 2px;
 
-    font-size: 18px;
+    font-size: 17px;
 
     font-weight: 700;
 
@@ -529,7 +591,7 @@ button {
 
     background: #eaf7ef;
 
-    color: #1b8b50;
+    color: var(--success);
 }
 
 
@@ -542,32 +604,35 @@ button {
 
 
 /* ============================================================
-   MESSAGERIE PRINCIPALE
+   CONTENEUR PRINCIPAL
 ============================================================ */
 
 .messaging-container {
 
     width: 100%;
 
-    height: calc(100vh - 212px);
+    height:
+        calc(100vh - 205px);
 
-    min-height: 430px;
+    min-height: 440px;
 
     display: grid;
 
     grid-template-columns:
-        315px minmax(0, 1fr);
+        320px minmax(0, 1fr);
 
     overflow: hidden;
 
-    border: 1px solid var(--border);
+    background: #fff;
+
+    border:
+        1px solid var(--border);
 
     border-radius: 12px;
 
-    background: #ffffff;
-
     box-shadow:
-        0 5px 20px rgba(15, 23, 42, 0.05);
+        0 5px 20px
+        rgba(15, 23, 42, .06);
 }
 
 
@@ -580,31 +645,42 @@ button {
     min-width: 0;
     min-height: 0;
 
+    height: 100%;
+
     display: flex;
 
     flex-direction: column;
 
     overflow: hidden;
 
-    border-right: 1px solid var(--border);
+    background: #fff;
 
-    background: #ffffff;
+    border-right:
+        1px solid var(--border);
 }
 
 
+/* ============================================================
+   HEADER BOÎTE
+============================================================ */
+
 .inbox-header {
 
-    flex-shrink: 0;
+    flex: 0 0 auto;
 
-    padding: 13px;
+    padding:
+        13px;
 
-    border-bottom: 1px solid var(--border);
+    background: #fff;
 
-    background: #ffffff;
+    border-bottom:
+        1px solid var(--border);
 }
 
 
 .inbox-title-row {
+
+    width: 100%;
 
     display: flex;
 
@@ -612,13 +688,13 @@ button {
 
     justify-content: space-between;
 
-    gap: 8px;
-
     margin-bottom: 9px;
 }
 
 
 .inbox-title {
+
+    color: var(--text);
 
     font-size: 12px;
 
@@ -628,11 +704,11 @@ button {
 
 .message-count {
 
-    min-width: 23px;
-
+    min-width: 22px;
     height: 20px;
 
-    padding: 0 6px;
+    padding:
+        0 6px;
 
     display: flex;
 
@@ -640,9 +716,9 @@ button {
 
     justify-content: center;
 
-    border-radius: 20px;
+    border-radius: 30px;
 
-    background: #e9f3f8;
+    background: var(--blue-light);
 
     color: var(--blue);
 
@@ -652,9 +728,14 @@ button {
 }
 
 
+/* ============================================================
+   RECHERCHE
+============================================================ */
+
 .search-box {
 
-    height: 36px;
+    width: 100%;
+    height: 35px;
 
     display: flex;
 
@@ -662,15 +743,25 @@ button {
 
     gap: 8px;
 
-    padding: 0 10px;
+    padding:
+        0 10px;
 
-    border: 1px solid #dfe6eb;
+    background: #f7f9fa;
+
+    border:
+        1px solid #e1e7eb;
 
     border-radius: 8px;
 
-    background: #f8fafb;
-
     color: #87939d;
+}
+
+
+.search-box i {
+
+    flex: 0 0 auto;
+
+    font-size: 10px;
 }
 
 
@@ -694,6 +785,10 @@ button {
 }
 
 
+/* ============================================================
+   LISTE
+============================================================ */
+
 .inbox-list {
 
     flex: 1;
@@ -703,20 +798,20 @@ button {
     overflow-x: hidden;
 
     overflow-y: auto;
+
+    background: #fff;
 }
 
 
-.inbox-list::-webkit-scrollbar,
-.conversation::-webkit-scrollbar {
+.inbox-list::-webkit-scrollbar {
 
     width: 5px;
 }
 
 
-.inbox-list::-webkit-scrollbar-thumb,
-.conversation::-webkit-scrollbar-thumb {
+.inbox-list::-webkit-scrollbar-thumb {
 
-    background: #cbd3d9;
+    background: #ccd4d9;
 
     border-radius: 20px;
 }
@@ -724,7 +819,9 @@ button {
 
 .loading {
 
-    min-height: 130px;
+    width: 100%;
+
+    min-height: 120px;
 
     display: flex;
 
@@ -741,7 +838,7 @@ button {
 
 
 /* ============================================================
-   ITEMS DE LA BOÎTE
+   ITEMS DE MESSAGES
 ============================================================ */
 
 .inbox-item,
@@ -750,15 +847,19 @@ button {
 
     width: 100%;
 
+    min-height: 72px;
+
     display: block;
 
-    padding: 11px 12px;
+    padding:
+        10px 11px;
 
     border: 0;
 
-    border-bottom: 1px solid #edf0f2;
+    border-bottom:
+        1px solid #edf0f2;
 
-    background: #ffffff;
+    background: #fff;
 
     color: var(--text);
 
@@ -784,14 +885,19 @@ button {
 .inbox-message.active {
 
     background: #eaf3f8;
+
+    box-shadow:
+        inset 3px 0 0 var(--blue);
 }
 
 
 /* ============================================================
-   LECTEUR
+   LECTEUR DE CONVERSATION
 ============================================================ */
 
 .message-view {
+
+    position: relative;
 
     min-width: 0;
     min-height: 0;
@@ -805,19 +911,21 @@ button {
 
     overflow: hidden;
 
-    background: var(--chat-background);
+    background: var(--chat);
 }
 
 
 /* ============================================================
-   HEADER MESSAGE
+   HEADER CONVERSATION
 ============================================================ */
 
 .message-view-header {
 
-    flex-shrink: 0;
+    flex: 0 0 auto;
 
-    min-height: 63px;
+    min-height: 62px;
+
+    width: 100%;
 
     display: flex;
 
@@ -825,13 +933,17 @@ button {
 
     justify-content: space-between;
 
-    gap: 12px;
+    gap: 10px;
 
-    padding: 9px 13px;
+    padding:
+        9px 13px;
 
-    border-bottom: 1px solid var(--border);
+    background: #fff;
 
-    background: #ffffff;
+    border-bottom:
+        1px solid var(--border);
+
+    z-index: 3;
 }
 
 
@@ -844,6 +956,8 @@ button {
 
 
 .message-view-title {
+
+    width: 100%;
 
     min-width: 0;
 
@@ -877,7 +991,8 @@ button {
 
     flex: 0 0 auto;
 
-    padding: 3px 7px;
+    padding:
+        3px 7px;
 
     border-radius: 20px;
 
@@ -941,7 +1056,8 @@ button {
 
     gap: 6px;
 
-    padding: 0 10px;
+    padding:
+        0 10px;
 
     border: 0;
 
@@ -949,7 +1065,7 @@ button {
 
     background: var(--blue);
 
-    color: #ffffff;
+    color: #fff;
 
     font-size: 9px;
 
@@ -964,7 +1080,7 @@ button {
 
 
 /* ============================================================
-   AUCUN MESSAGE
+   ZONE VIDE
 ============================================================ */
 
 .no-message {
@@ -973,13 +1089,15 @@ button {
 
     min-height: 0;
 
+    width: 100%;
+
     display: flex;
 
     align-items: center;
 
     justify-content: center;
 
-    background: var(--chat-background);
+    background: var(--chat);
 }
 
 
@@ -995,10 +1113,11 @@ button {
 
 .no-message-icon {
 
-    width: 60px;
-    height: 60px;
+    width: 62px;
+    height: 62px;
 
-    margin: 0 auto 11px;
+    margin:
+        0 auto 12px;
 
     display: flex;
 
@@ -1008,20 +1127,23 @@ button {
 
     border-radius: 50%;
 
-    background: #ffffff;
+    background: #fff;
 
     color: var(--blue);
 
     font-size: 23px;
 
     box-shadow:
-        0 2px 9px rgba(0, 0, 0, 0.06);
+        0 2px 10px
+        rgba(0,0,0,.06);
 }
 
 
 .no-message-content h3 {
 
     font-size: 13px;
+
+    font-weight: 600;
 }
 
 
@@ -1033,7 +1155,7 @@ button {
 
     font-size: 9px;
 
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
 
@@ -1043,7 +1165,7 @@ button {
 
 .conversation {
 
-    flex: 1;
+    flex: 1 1 auto;
 
     min-width: 0;
     min-height: 0;
@@ -1056,19 +1178,20 @@ button {
 
     align-items: stretch !important;
 
-    gap: 3px !important;
+    gap: 4px !important;
 
-    padding: 16px 18px !important;
+    padding:
+        14px 16px 16px 16px !important;
 
     overflow-x: hidden !important;
 
     overflow-y: auto !important;
 
-    background-color: var(--chat-background);
+    background-color: var(--chat);
 
     background-image:
         radial-gradient(
-            rgba(120, 105, 85, 0.10) 1px,
+            rgba(100, 90, 70, .09) 1px,
             transparent 1px
         );
 
@@ -1076,11 +1199,31 @@ button {
 }
 
 
+.conversation::-webkit-scrollbar {
+
+    width: 5px;
+}
+
+
+.conversation::-webkit-scrollbar-thumb {
+
+    background: rgba(80,80,80,.25);
+
+    border-radius: 20px;
+}
+
+
 /* ============================================================
-   BULLE MESSAGE
-   IMPORTANT :
-   LA BULLE S'ADAPTE AU TEXTE
+   BULLES
 ============================================================ */
+
+/*
+   RÈGLE IMPORTANTE :
+
+   La bulle possède seulement un petit padding.
+   Le contenu possède ZERO padding.
+   Aucun retrait de texte.
+*/
 
 .message-bubble {
 
@@ -1090,28 +1233,36 @@ button {
 
     width: fit-content !important;
 
-    max-width: min(68%, 650px) !important;
+    max-width:
+        min(70%, 650px) !important;
 
     min-width: 0 !important;
 
-    margin: 0 0 3px 0 !important;
+    margin:
+        0 0 3px 0 !important;
 
-    padding: 6px 9px 5px !important;
+    padding:
+        6px 8px 5px 8px !important;
 
     border: 0 !important;
 
     border-radius: 8px !important;
 
     box-shadow:
-        0 1px 1px rgba(0, 0, 0, .10) !important;
+        0 1px 1px
+        rgba(0,0,0,.12) !important;
 
     text-align: left !important;
 
-    line-height: 1.4 !important;
+    text-indent: 0 !important;
+
+    line-height: 1.45 !important;
 
     overflow-wrap: anywhere !important;
 
     word-break: normal !important;
+
+    white-space: normal !important;
 }
 
 
@@ -1127,11 +1278,14 @@ button {
 
     margin-right: auto !important;
 
-    background: var(--message-in) !important;
+    background:
+        var(--incoming) !important;
 
-    color: #172033 !important;
+    color:
+        #172033 !important;
 
-    border-top-left-radius: 2px !important;
+    border-top-left-radius:
+        2px !important;
 }
 
 
@@ -1148,9 +1302,11 @@ button {
     width: 0;
     height: 0;
 
-    border-top: 6px solid #ffffff;
+    border-top:
+        6px solid #fff;
 
-    border-left: 6px solid transparent;
+    border-left:
+        6px solid transparent;
 }
 
 
@@ -1166,11 +1322,14 @@ button {
 
     margin-right: 0 !important;
 
-    background: var(--message-out) !important;
+    background:
+        var(--outgoing) !important;
 
-    color: #172033 !important;
+    color:
+        #172033 !important;
 
-    border-top-right-radius: 2px !important;
+    border-top-right-radius:
+        2px !important;
 }
 
 
@@ -1187,15 +1346,17 @@ button {
     width: 0;
     height: 0;
 
-    border-top: 6px solid var(--message-out);
+    border-top:
+        6px solid var(--outgoing);
 
-    border-right: 6px solid transparent;
+    border-right:
+        6px solid transparent;
 }
 
 
 /* ============================================================
-   CONTENU DU MESSAGE
-   ZÉRO RETRAIT
+   CONTENU
+   ZÉRO ESPACE À GAUCHE
 ============================================================ */
 
 .message-content {
@@ -1206,33 +1367,50 @@ button {
 
     max-width: none !important;
 
-    margin: 0 !important;
+    min-width: 0 !important;
 
-    padding: 0 !important;
+    margin:
+        0 !important;
 
-    color: inherit !important;
+    padding:
+        0 !important;
 
-    font-family: inherit !important;
+    border: 0 !important;
 
-    font-size: 12px !important;
+    text-align:
+        left !important;
 
-    font-weight: 400 !important;
+    text-indent:
+        0 !important;
 
-    line-height: 1.45 !important;
+    font-family:
+        inherit !important;
 
-    text-align: left !important;
+    font-size:
+        12px !important;
 
-    white-space: pre-wrap !important;
+    font-weight:
+        400 !important;
 
-    overflow-wrap: anywhere !important;
+    line-height:
+        1.45 !important;
 
-    word-break: normal !important;
+    color:
+        inherit !important;
+
+    white-space:
+        pre-wrap !important;
+
+    overflow-wrap:
+        anywhere !important;
+
+    word-break:
+        normal !important;
 }
 
 
 /* ============================================================
-   PARAGRAPHES
-   AUCUN RETRAIT
+   PARAGRAPHES INTERNES
 ============================================================ */
 
 .message-content p,
@@ -1242,31 +1420,103 @@ button {
 
     width: auto !important;
 
+    min-width: 0 !important;
+
     max-width: none !important;
 
-    margin: 0 !important;
+    margin:
+        0 !important;
 
-    padding: 0 !important;
+    padding:
+        0 !important;
 
-    font-size: inherit !important;
+    border: 0 !important;
 
-    font-weight: inherit !important;
+    text-align:
+        left !important;
 
-    line-height: inherit !important;
+    text-indent:
+        0 !important;
+
+    font-family:
+        inherit !important;
+
+    font-size:
+        inherit !important;
+
+    font-weight:
+        inherit !important;
+
+    line-height:
+        inherit !important;
+
+    color:
+        inherit !important;
+}
+
+
+/* ============================================================
+   SPAN / DIV / TEXTE INTERNE
+============================================================ */
+
+.message-bubble span,
+.message-bubble div,
+.message-content span,
+.message-content div {
+
+    margin:
+        0 !important;
+
+    padding:
+        0 !important;
+
+    text-align:
+        left !important;
+
+    text-indent:
+        0 !important;
+}
+
+
+/* ============================================================
+   FORCE LE DÉBUT DU TEXTE
+============================================================ */
+
+/*
+   Cette partie est volontairement forte.
+
+   Elle empêche un ancien style de type :
+
+   margin-left
+   padding-left
+   text-indent
+   width 100%
+   text-align center
+
+   de repousser le texte.
+*/
+
+.message-bubble,
+.message-bubble *,
+.message-content,
+.message-content * {
+
+    text-indent: 0 !important;
 
     text-align: left !important;
 }
 
 
-/* ============================================================
-   TOUS LES ÉLÉMENTS INTERNES
-============================================================ */
+.message-content,
+.message-content p,
+.message-content span,
+.message-content div {
 
-.message-bubble *,
-.message-content * {
+    margin-left:
+        0 !important;
 
-    text-align: left !important;
-
+    padding-left:
+        0 !important;
 }
 
 
@@ -1280,19 +1530,26 @@ button {
 
     width: auto !important;
 
-    margin: 0 0 2px 0 !important;
+    margin:
+        0 0 2px 0 !important;
 
-    padding: 0 !important;
+    padding:
+        0 !important;
 
-    color: inherit !important;
+    font-size:
+        9px !important;
 
-    font-size: 9px !important;
+    font-weight:
+        700 !important;
 
-    font-weight: 700 !important;
+    line-height:
+        1.25 !important;
 
-    line-height: 1.25 !important;
+    text-align:
+        left !important;
 
-    text-align: left !important;
+    text-indent:
+        0 !important;
 }
 
 
@@ -1306,25 +1563,36 @@ button {
 
     width: auto !important;
 
-    margin: 0 0 2px 0 !important;
+    margin:
+        0 0 2px 0 !important;
 
-    padding: 0 !important;
+    padding:
+        0 !important;
 
-    color: var(--blue) !important;
+    color:
+        var(--blue) !important;
 
-    font-size: 8px !important;
+    font-size:
+        8px !important;
 
-    font-weight: 600 !important;
+    font-weight:
+        600 !important;
 
-    line-height: 1.25 !important;
+    line-height:
+        1.25 !important;
 
-    text-align: left !important;
+    text-align:
+        left !important;
+
+    text-indent:
+        0 !important;
 }
 
 
 .message-bubble.user .message-sender {
 
-    color: #397b35 !important;
+    color:
+        #397b35 !important;
 }
 
 
@@ -1338,28 +1606,35 @@ button {
 
     width: fit-content !important;
 
-    margin: 3px 0 0 auto !important;
+    margin:
+        3px 0 0 auto !important;
 
-    padding: 0 !important;
+    padding:
+        0 !important;
 
-    color: #84909a !important;
+    color:
+        #84909a !important;
 
-    font-size: 7px !important;
+    font-size:
+        7px !important;
 
-    line-height: 1 !important;
+    line-height:
+        1 !important;
 
-    text-align: right !important;
+    text-align:
+        right !important;
 }
 
 
 .message-bubble.user .message-time {
 
-    color: #5d8060 !important;
+    color:
+        #5d8060 !important;
 }
 
 
 /* ============================================================
-   ACTIONS MESSAGE
+   ACTIONS
 ============================================================ */
 
 .message-actions {
@@ -1370,19 +1645,22 @@ button {
 
     gap: 5px;
 
-    margin-top: 4px;
+    margin-top:
+        4px;
 }
 
 
 .message-bubble.admin .message-actions {
 
-    justify-content: flex-start;
+    justify-content:
+        flex-start;
 }
 
 
 .message-bubble.user .message-actions {
 
-    justify-content: flex-end;
+    justify-content:
+        flex-end;
 }
 
 
@@ -1403,31 +1681,96 @@ button {
 
     border-radius: 50%;
 
-    background: rgba(0, 0, 0, .06);
+    background:
+        rgba(0,0,0,.06);
 
-    color: #53616d;
+    color:
+        #53616d;
 }
 
 
 /* ============================================================
-   ZONE DE RÉPONSE
+   IMAGES
+============================================================ */
+
+.message-bubble img {
+
+    display: block;
+
+    width: auto;
+
+    max-width: 100%;
+
+    height: auto;
+
+    margin:
+        4px 0;
+
+    padding: 0;
+
+    border-radius: 6px;
+}
+
+
+/* ============================================================
+   LIENS
+============================================================ */
+
+.message-bubble a {
+
+    color: inherit;
+
+    text-decoration: underline;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ============================================================
+   CITATION
+============================================================ */
+
+.message-bubble blockquote {
+
+    margin:
+        4px 0;
+
+    padding:
+        0 0 0 7px;
+
+    border-left:
+        3px solid
+        rgba(0,0,0,.18);
+
+    text-align:
+        left;
+}
+
+
+/* ============================================================
+   ZONE RÉPONSE
 ============================================================ */
 
 .reply-area {
 
-    flex-shrink: 0;
+    flex: 0 0 auto;
 
     width: 100%;
 
-    padding: 9px 11px;
+    padding:
+        9px 11px;
 
-    border-top: 1px solid #dfe4e8;
+    background:
+        #f0f2f5;
 
-    background: #f0f2f5;
+    border-top:
+        1px solid #dfe4e8;
 }
 
 
 .reply-indicator {
+
+    width: 100%;
 
     display: flex;
 
@@ -1437,17 +1780,23 @@ button {
 
     gap: 8px;
 
-    padding: 7px 9px;
+    padding:
+        7px 9px;
 
-    margin-bottom: 7px;
+    margin-bottom:
+        7px;
 
-    border-radius: 8px;
+    border-radius:
+        8px;
 
-    background: #e7f0f5;
+    background:
+        #e7f0f5;
 
-    color: var(--blue);
+    color:
+        var(--blue);
 
-    font-size: 8px;
+    font-size:
+        8px;
 }
 
 
@@ -1463,13 +1812,17 @@ button {
 
     background: transparent;
 
-    color: #687783;
+    color:
+        #687783;
 
-    font-size: 8px;
+    font-size:
+        8px;
 }
 
 
 .reply-fields {
+
+    width: 100%;
 
     display: grid;
 
@@ -1478,7 +1831,8 @@ button {
 
     gap: 7px;
 
-    margin-bottom: 7px;
+    margin-bottom:
+        7px;
 }
 
 
@@ -1489,19 +1843,26 @@ button {
 
     height: 36px;
 
-    padding: 0 10px;
+    padding:
+        0 10px;
 
-    border: 1px solid #dfe7ec;
+    border:
+        1px solid #dfe7ec;
 
-    border-radius: 8px;
+    border-radius:
+        8px;
 
-    outline: none;
+    outline:
+        none;
 
-    background: #ffffff;
+    background:
+        #fff;
 
-    color: #273548;
+    color:
+        #273548;
 
-    font-size: 9px;
+    font-size:
+        9px;
 }
 
 
@@ -1509,45 +1870,63 @@ button {
 .reply-fields select:focus,
 #replyText:focus {
 
-    border-color: var(--blue);
+    border-color:
+        var(--blue);
 }
 
 
 #replyText {
 
+    display: block;
+
     width: 100%;
 
-    min-height: 65px;
+    min-height:
+        64px;
 
-    max-height: 140px;
+    max-height:
+        140px;
 
-    padding: 9px 10px;
+    padding:
+        9px 10px;
 
-    resize: vertical;
+    resize:
+        vertical;
 
-    border: 1px solid #dfe7ec;
+    border:
+        1px solid #dfe7ec;
 
-    border-radius: 8px;
+    border-radius:
+        8px;
 
-    outline: none;
+    outline:
+        none;
 
-    background: #ffffff;
+    background:
+        #fff;
 
-    color: #273548;
+    color:
+        #273548;
 
-    font-size: 10px;
+    font-size:
+        10px;
 
-    line-height: 1.45;
+    line-height:
+        1.45;
 }
 
 
 .reply-bottom {
 
+    width: 100%;
+
     display: flex;
 
-    justify-content: flex-end;
+    justify-content:
+        flex-end;
 
-    margin-top: 7px;
+    margin-top:
+        7px;
 }
 
 
@@ -1563,25 +1942,33 @@ button {
 
     gap: 7px;
 
-    padding: 0 13px;
+    padding:
+        0 13px;
 
-    border: 0;
+    border:
+        0;
 
-    border-radius: 8px;
+    border-radius:
+        8px;
 
-    background: var(--blue);
+    background:
+        var(--blue);
 
-    color: #ffffff;
+    color:
+        #fff;
 
-    font-size: 9px;
+    font-size:
+        9px;
 
-    font-weight: 600;
+    font-weight:
+        600;
 }
 
 
 .send-button:hover {
 
-    background: var(--blue-dark);
+    background:
+        var(--blue-dark);
 }
 
 
@@ -1608,72 +1995,6 @@ button {
 
 
 /* ============================================================
-   IMAGES
-============================================================ */
-
-.message-bubble img {
-
-    display: block;
-
-    max-width: 100%;
-
-    height: auto;
-
-    margin: 4px 0;
-
-    border-radius: 6px;
-}
-
-
-/* ============================================================
-   LIENS
-============================================================ */
-
-.message-bubble a {
-
-    color: inherit;
-
-    text-decoration: underline;
-
-    overflow-wrap: anywhere;
-}
-
-
-/* ============================================================
-   CITATION
-============================================================ */
-
-.message-bubble blockquote {
-
-    margin: 4px 0;
-
-    padding-left: 7px;
-
-    border-left: 3px solid rgba(0,0,0,.18);
-
-    text-align: left;
-}
-
-
-/* ============================================================
-   AUCUN SCROLL HORIZONTAL
-============================================================ */
-
-body,
-.page,
-.messaging-container,
-.inbox,
-.inbox-list,
-.message-view,
-.conversation {
-
-    max-width: 100%;
-
-    overflow-x: hidden;
-}
-
-
-/* ============================================================
    TABLETTE
 ============================================================ */
 
@@ -1685,9 +2006,11 @@ body,
             285px minmax(0, 1fr);
     }
 
+
     .message-bubble {
 
-        max-width: 75% !important;
+        max-width:
+            76% !important;
     }
 }
 
@@ -1700,119 +2023,159 @@ body,
 
     .top-header {
 
-        height: 64px;
+        height: 63px;
 
-        padding: 0 11px;
+        padding:
+            0 10px;
     }
 
 
     .page {
 
-        height: calc(100vh - 64px);
+        height:
+            calc(100vh - 63px);
 
-        padding: 9px;
+        padding:
+            8px;
     }
 
 
     .page-header {
 
-        align-items: flex-start;
+        align-items:
+            flex-start;
     }
 
 
     .page-title h1 {
 
-        font-size: 17px;
+        font-size:
+            16px;
     }
 
 
     .page-title p {
 
-        font-size: 8px;
+        font-size:
+            7px;
     }
 
 
     .user-info {
 
-        display: none;
+        display:
+            none;
     }
 
 
     .stats-grid {
 
-        gap: 6px;
+        gap:
+            6px;
     }
 
 
     .stat-card {
 
-        padding: 8px;
+        min-height:
+            54px;
 
-        gap: 6px;
+        padding:
+            7px;
+
+        gap:
+            5px;
+    }
+
+
+    .stat-icon {
+
+        width:
+            31px;
+
+        height:
+            31px;
+
+        flex-basis:
+            31px;
     }
 
 
     .stat-label {
 
-        font-size: 7px;
+        font-size:
+            7px;
     }
 
 
     .stat-value {
 
-        font-size: 15px;
+        font-size:
+            14px;
     }
 
 
     .messaging-container {
 
-        height: calc(100vh - 198px);
+        height:
+            calc(100vh - 195px);
 
-        min-height: 400px;
+        min-height:
+            400px;
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
 
 
     .inbox {
 
-        height: 185px;
+        height:
+            185px;
 
-        border-right: 0;
+        border-right:
+            0;
 
-        border-bottom: 1px solid var(--border);
+        border-bottom:
+            1px solid var(--border);
     }
 
 
     .message-view {
 
-        min-height: 0;
+        min-height:
+            0;
     }
 
 
     .conversation {
 
-        padding: 12px 9px !important;
+        padding:
+            11px 8px 12px 8px !important;
     }
 
 
     .message-bubble {
 
-        max-width: 86% !important;
+        max-width:
+            87% !important;
 
-        padding: 6px 8px 5px !important;
+        padding:
+            6px 8px 5px 8px !important;
     }
 
 
     .message-content {
 
-        font-size: 12px !important;
+        font-size:
+            12px !important;
     }
 
 
     .reply-fields {
 
-        grid-template-columns: 1fr;
+        grid-template-columns:
+            1fr;
     }
 }
 
@@ -1825,33 +2188,39 @@ body,
 
     .brand-tagline {
 
-        display: none;
+        display:
+            none;
     }
 
 
     .brand-name {
 
-        font-size: 16px;
+        font-size:
+            16px;
     }
 
 
     .dashboard-button span {
 
-        display: none;
+        display:
+            none;
     }
 
 
     .dashboard-button {
 
-        width: 38px;
+        width:
+            38px;
 
-        padding: 0;
+        padding:
+            0;
     }
 
 
     .page {
 
-        padding: 7px;
+        padding:
+            6px;
     }
 
 
@@ -1864,185 +2233,207 @@ body,
 
     .stat-card {
 
-        gap: 4px;
+        padding:
+            6px;
 
-        padding: 7px;
+        gap:
+            3px;
     }
 
 
     .stat-icon {
 
-        width: 30px;
-        height: 30px;
+        width:
+            29px;
 
-        flex-basis: 30px;
+        height:
+            29px;
 
-        font-size: 11px;
+        flex-basis:
+            29px;
+
+        font-size:
+            10px;
     }
 
 
     .stat-label {
 
-        font-size: 6.5px;
+        font-size:
+            6px;
     }
 
 
     .stat-value {
 
-        font-size: 14px;
+        font-size:
+            13px;
     }
 
 
     .messaging-container {
 
-        height: calc(100vh - 187px);
+        height:
+            calc(100vh - 184px);
     }
 
 
     .inbox {
 
-        height: 160px;
+        height:
+            160px;
     }
 
 
     .conversation {
 
-        padding: 9px 7px !important;
+        padding:
+            8px 6px 10px 6px !important;
     }
 
 
     .message-bubble {
 
-        max-width: 91% !important;
+        max-width:
+            92% !important;
 
-        padding: 6px 8px 5px !important;
+        padding:
+            6px 7px 5px 7px !important;
     }
 
 
     .message-content {
 
-        font-size: 12px !important;
+        font-size:
+            11.5px !important;
     }
 
 
     .message-view-header {
 
-        min-height: 57px;
+        min-height:
+            56px;
 
-        padding: 8px;
+        padding:
+            8px;
     }
 
 
     .reply-area {
 
-        padding: 7px;
+        padding:
+            7px;
     }
 
 
     .reply-bottom {
 
-        display: block;
+        display:
+            block;
     }
 
 
     .send-button {
 
-        width: 100%;
+        width:
+            100%;
     }
 }
 
 
 /* ============================================================
-   RÈGLE FINALE
-   EMPÊCHE LE COMPORTEMENT "LETTRE / PARAGRAPHE"
+   PROTECTION CONTRE LES STYLES QUI CRÉENT UN RETRAIT
 ============================================================ */
 
-.message-bubble,
-.message-bubble p,
-.message-bubble span,
-.message-bubble div,
-.message-content,
-.message-content p,
-.message-content span,
-.message-content div {
+.message-bubble > .message-content {
 
-    text-align: left !important;
+    margin:
+        0 !important;
 
-    text-indent: 0 !important;
+    padding:
+        0 !important;
 }
 
 
-.message-bubble,
-.message-content,
-.message-content p,
-.message-bubble p {
+.message-bubble > p {
 
-    margin-left: 0 !important;
+    margin:
+        0 !important;
 
-    padding-left: 0 !important;
+    padding:
+        0 !important;
+}
+
+
+.message-content > p:first-child {
+
+    margin-top:
+        0 !important;
+
+    padding-top:
+        0 !important;
+}
+
+
+.message-content > p:last-child {
+
+    margin-bottom:
+        0 !important;
+
+    padding-bottom:
+        0 !important;
 }
 
 
 /*
-   On garde uniquement le padding extérieur
-   de la bulle elle-même.
+   PAS DE CENTRAGE DANS UNE BULLE
 */
 
-.message-bubble {
+.message-bubble[style*="text-align"],
+.message-content[style*="text-align"],
+.message-content p[style*="text-align"] {
 
-    padding-left: 9px !important;
-    padding-right: 9px !important;
+    text-align:
+        left !important;
 }
 
 
-.message-content {
+/*
+   PAS D'INDENTATION
+*/
 
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+.message-bubble[style*="text-indent"],
+.message-content[style*="text-indent"],
+.message-content p[style*="text-indent"] {
+
+    text-indent:
+        0 !important;
 }
 
 
-.message-content p {
+/*
+   PAS DE MARGE GAUCHE
+*/
 
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+.message-bubble[style*="margin-left"],
+.message-content[style*="margin-left"],
+.message-content p[style*="margin-left"] {
+
+    margin-left:
+        0 !important;
 }
 
 
-/* ============================================================
-   IMPORTANT
-   PAS DE LARGEUR ARTIFICIELLE
-============================================================ */
+/*
+   PAS DE PADDING GAUCHE
+*/
 
-.message-content,
-.message-content p,
-.message-bubble p {
+.message-bubble[style*="padding-left"],
+.message-content[style*="padding-left"],
+.message-content p[style*="padding-left"] {
 
-    width: auto !important;
-
-    max-width: none !important;
-}
-
-
-/* ============================================================
-   ESPACEMENT ENTRE LES MESSAGES
-============================================================ */
-
-.conversation > .message-bubble {
-
-    margin-top: 0 !important;
-
-    margin-bottom: 4px !important;
-}
-
-
-/* ============================================================
-   DERNIER MESSAGE
-============================================================ */
-
-.conversation > .message-bubble:last-child {
-
-    margin-bottom: 0 !important;
+    padding-left:
+        0 !important;
 }
 
 </style>
@@ -2132,7 +2523,7 @@ body,
 
 
     <!-- ========================================================
-         PAGE HEADER
+         TITRE
     ======================================================== -->
 
     <section class="page-header">
@@ -2199,7 +2590,6 @@ body,
     ======================================================== -->
 
     <section class="stats-grid">
-
 
         <div class="stat-card">
 
@@ -2347,7 +2737,7 @@ body,
 
 
         <!-- ====================================================
-             LECTEUR MESSAGE
+             CONVERSATION
         ==================================================== -->
 
         <section class="message-view">
@@ -2405,7 +2795,7 @@ body,
 
 
             <!-- =================================================
-                 AUCUN MESSAGE
+                 ÉTAT VIDE
             ================================================= -->
 
             <div
@@ -2554,6 +2944,9 @@ body,
 ============================================================ -->
 
 <div id="toastContainer"></div>
+
+
+
     <script>
 
 
