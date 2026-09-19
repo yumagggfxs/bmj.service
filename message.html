@@ -41,405 +41,1146 @@
     >
 
 
-    <style>
+    <!DOCTYPE html>
+<html lang="fr">
 
-      /* ============================================================
-   BMJ SERVICE — INTERFACE MESSAGES
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>BMJ SERVICE — Messagerie</title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+<style>
+
+/* ============================================================
+   BMJ SERVICE
+   INTERFACE MESSAGERIE
    STYLE WHATSAPP
+   IDS CONSERVÉS
+============================================================ */
+
+:root {
+
+    --blue: #145a86;
+    --blue-dark: #0d4668;
+
+    --gold: #d4af37;
+
+    --background: #f4f7f9;
+
+    --white: #ffffff;
+
+    --text: #172033;
+
+    --muted: #73808c;
+
+    --border: #e2e8ed;
+
+    --chat-background: #efeae2;
+
+    --message-in: #ffffff;
+
+    --message-out: #d9fdd3;
+
+}
+
+
+/* ============================================================
+   RESET
 ============================================================ */
 
 * {
+
     box-sizing: border-box;
+
     margin: 0;
+
     padding: 0;
+
 }
+
 
 html,
 body {
+
     width: 100%;
+
     height: 100%;
+
 }
+
 
 body {
+
     font-family: "Poppins", Arial, sans-serif;
-    background: #f5f7fa;
-    color: #172033;
-    overflow: hidden;
-}
 
+    background: var(--background);
 
-/* ============================================================
-   CONTENEUR PRINCIPAL
-============================================================ */
-
-.messaging-container {
-    width: 100%;
-    height: 100vh;
-
-    display: grid;
-    grid-template-columns: 360px minmax(0, 1fr);
-
-    background: #ffffff;
+    color: var(--text);
 
     overflow: hidden;
+
 }
 
 
-/* ============================================================
-   LISTE DES CONVERSATIONS
-============================================================ */
-
-.inbox {
-    min-width: 0;
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-
-    background: #ffffff;
-
-    border-right: 1px solid #e5e7eb;
-
-    overflow: hidden;
-}
-
-
-/* ============================================================
-   HEADER INBOX
-============================================================ */
-
-.inbox-header {
-    flex-shrink: 0;
-
-    min-height: 72px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 15px 18px;
-
-    background: #145a86;
-    color: #ffffff;
-}
-
-.inbox-header h2,
-.inbox-header h3,
-.inbox-header strong {
-    margin: 0;
-
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.inbox-header p {
-    margin: 3px 0 0;
-
-    font-size: 11px;
-    opacity: .85;
-}
-
-
-/* ============================================================
-   RECHERCHE
-============================================================ */
-
-.inbox-search {
-    flex-shrink: 0;
-
-    padding: 12px;
-
-    background: #f7f8fa;
-
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.inbox-search input {
-    width: 100%;
-
-    height: 42px;
-
-    padding: 0 14px;
-
-    border: 1px solid #dfe3e8;
-    border-radius: 10px;
-
-    outline: none;
-
-    background: #ffffff;
-
-    color: #172033;
+button,
+input,
+textarea,
+select {
 
     font-family: inherit;
-    font-size: 13px;
+
 }
 
-.inbox-search input:focus {
-    border-color: #145a86;
+
+button {
+
+    cursor: pointer;
+
 }
 
 
 /* ============================================================
-   LISTE
+   HEADER
 ============================================================ */
 
-.conversations-list {
-    flex: 1;
+.top-header {
 
-    min-height: 0;
+    width: 100%;
+
+    height: 72px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 22px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid var(--border);
+
+    box-shadow:
+        0 2px 10px rgba(15, 23, 42, 0.05);
+
+}
+
+
+.brand {
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+}
+
+
+.brand > img {
+
+    width: 43px;
+
+    height: 43px;
+
+    object-fit: cover;
+
+    border-radius: 10px;
+
+}
+
+
+.brand-text {
+
+    min-width: 0;
+
+}
+
+
+.brand-name {
+
+    color: var(--blue);
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    line-height: 1.15;
+
+}
+
+
+.brand-name span {
+
+    color: var(--gold);
+
+}
+
+
+.brand-tagline {
+
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+}
+
+
+.header-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+}
+
+
+.header-message-button,
+.dashboard-button {
+
+    height: 40px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 12px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+}
+
+
+.header-message-button {
+
+    position: relative;
+
+    width: 40px;
+
+    padding: 0;
+
+    background: #f2f6f8;
+
+    color: var(--blue);
+
+}
+
+
+.dashboard-button {
+
+    background: var(--blue);
+
+    color: #ffffff;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+}
+
+
+.header-unread-badge {
+
+    position: absolute;
+
+    top: -4px;
+
+    right: -3px;
+
+    min-width: 17px;
+
+    height: 17px;
+
+    padding: 0 4px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: #dc3545;
+
+    color: #ffffff;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+}
+
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+.page {
+
+    width: 100%;
+
+    height: calc(100vh - 72px);
+
+    padding: 18px;
 
     overflow-y: auto;
 
-    background: #ffffff;
-}
+    overflow-x: hidden;
 
-.conversations-list::-webkit-scrollbar {
-    width: 6px;
-}
-
-.conversations-list::-webkit-scrollbar-thumb {
-    background: #cbd5df;
-    border-radius: 20px;
 }
 
 
-/* ============================================================
-   ITEM CONVERSATION
-============================================================ */
-
-.conversation-item {
-    width: 100%;
+.page-header {
 
     display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.page-title {
+
+    display: flex;
+
     align-items: center;
 
     gap: 12px;
 
-    padding: 13px 15px;
+}
 
-    border: 0;
-    border-bottom: 1px solid #eef0f2;
+
+.page-title-icon {
+
+    width: 45px;
+
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background: #e7f1f7;
+
+    color: var(--blue);
+
+    font-size: 18px;
+
+}
+
+
+.page-title h1 {
+
+    font-size: 20px;
+
+    line-height: 1.2;
+
+}
+
+
+.page-title p {
+
+    margin-top: 4px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+}
+
+
+.user-info {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding: 7px 10px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 11px;
 
     background: #ffffff;
 
-    cursor: pointer;
-
-    text-align: left;
-
-    transition: background .15s ease;
 }
 
-.conversation-item:hover {
-    background: #f4f7f9;
+
+.user-info img {
+
+    width: 37px;
+
+    height: 37px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
 }
 
-.conversation-item.active {
-    background: #eaf3f8;
+
+.user-info-name {
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+}
+
+
+.user-info-email {
+
+    max-width: 220px;
+
+    margin-top: 2px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
 }
 
 
 /* ============================================================
-   AVATAR
+   STATISTIQUES
 ============================================================ */
 
-.conversation-avatar {
-    flex: 0 0 44px;
+.stats-grid {
 
-    width: 44px;
-    height: 44px;
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-bottom: 15px;
+
+}
+
+
+.stat-card {
+
+    min-width: 0;
 
     display: flex;
+
     align-items: center;
+
+    gap: 10px;
+
+    padding: 13px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+}
+
+
+.stat-icon {
+
+    width: 39px;
+
+    height: 39px;
+
+    flex: 0 0 39px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #e9f3f8;
+
+    color: var(--blue);
+
+}
+
+
+.stat-label {
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+}
+
+
+.stat-value {
+
+    margin-top: 2px;
+
+    font-size: 19px;
+
+    font-weight: 700;
+
+}
+
+
+.stat-card.read .stat-icon {
+
+    background: #eaf7ef;
+
+    color: #1b8b50;
+
+}
+
+
+.stat-card.unread .stat-icon {
+
+    background: #fff2e5;
+
+    color: #d77a13;
+
+}
+
+
+/* ============================================================
+   MESSAGERIE PRINCIPALE
+============================================================ */
+
+.messaging-container {
+
+    width: 100%;
+
+    height: calc(100vh - 222px);
+
+    min-height: 430px;
+
+    display: grid;
+
+    grid-template-columns:
+        330px minmax(0, 1fr);
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+
+    border-radius: 13px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 5px 20px rgba(15, 23, 42, 0.05);
+
+}
+
+
+/* ============================================================
+   BOITE DE RECEPTION
+============================================================ */
+
+.inbox {
+
+    min-width: 0;
+
+    min-height: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    border-right: 1px solid var(--border);
+
+    background: #ffffff;
+
+}
+
+
+.inbox-header {
+
+    flex-shrink: 0;
+
+    padding: 14px;
+
+    border-bottom: 1px solid var(--border);
+
+    background: #ffffff;
+
+}
+
+
+.inbox-title-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 8px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.inbox-title {
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+.message-count {
+
+    min-width: 23px;
+
+    height: 21px;
+
+    padding: 0 6px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 20px;
+
+    background: #e9f3f8;
+
+    color: var(--blue);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+}
+
+
+.search-box {
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 0 10px;
+
+    border: 1px solid #dfe6eb;
+
+    border-radius: 9px;
+
+    background: #f8fafb;
+
+    color: #87939d;
+
+}
+
+
+.search-box input {
+
+    width: 100%;
+
+    min-width: 0;
+
+    height: 100%;
+
+    border: 0;
+
+    outline: 0;
+
+    background: transparent;
+
+    color: var(--text);
+
+    font-size: 10px;
+
+}
+
+
+.inbox-list {
+
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-x: hidden;
+
+    overflow-y: auto;
+
+}
+
+
+.inbox-list::-webkit-scrollbar {
+
+    width: 6px;
+
+}
+
+
+.inbox-list::-webkit-scrollbar-thumb {
+
+    background: #cbd3d9;
+
+    border-radius: 20px;
+
+}
+
+
+.loading {
+
+    min-height: 130px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+}
+
+
+/* ============================================================
+   ELEMENTS DE LISTE
+============================================================ */
+
+.inbox-item,
+.message-item,
+.inbox-message {
+
+    width: 100%;
+
+    display: block;
+
+    padding: 12px 13px;
+
+    border: 0;
+
+    border-bottom: 1px solid #edf0f2;
+
+    background: #ffffff;
+
+    color: var(--text);
+
+    text-align: left;
+
+    cursor: pointer;
+
+}
+
+
+.inbox-item:hover,
+.message-item:hover,
+.inbox-message:hover {
+
+    background: #f5f8fa;
+
+}
+
+
+.inbox-item.active,
+.message-item.active,
+.inbox-message.active {
+
+    background: #eaf3f8;
+
+}
+
+
+/* ============================================================
+   LECTEUR MESSAGE
+============================================================ */
+
+.message-view {
+
+    min-width: 0;
+
+    min-height: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: var(--chat-background);
+
+}
+
+
+/* ============================================================
+   HEADER DU MESSAGE
+============================================================ */
+
+.message-view-header {
+
+    flex-shrink: 0;
+
+    min-height: 66px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 11px 15px;
+
+    border-bottom: 1px solid var(--border);
+
+    background: #ffffff;
+
+}
+
+
+.message-view-header-left {
+
+    min-width: 0;
+
+    flex: 1;
+
+}
+
+
+.message-view-title {
+
+    min-width: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+}
+
+
+.message-view-title h2 {
+
+    min-width: 0;
+
+    margin: 0;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+}
+
+
+.message-priority {
+
+    flex: 0 0 auto;
+
+    padding: 3px 7px;
+
+    border-radius: 20px;
+
+    font-size: 8px;
+
+    font-weight: 600;
+
+}
+
+
+.priority-normal {
+
+    background: #edf2f5;
+
+    color: #607080;
+
+}
+
+
+.priority-important {
+
+    background: #fff2d9;
+
+    color: #a56b00;
+
+}
+
+
+.priority-urgent {
+
+    background: #ffe3e3;
+
+    color: #b72b2b;
+
+}
+
+
+.message-view-meta {
+
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+}
+
+
+.reply-top-button {
+
+    flex: 0 0 auto;
+
+    height: 35px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 0 11px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: var(--blue);
+
+    color: #ffffff;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+}
+
+
+.reply-top-button:hover {
+
+    background: var(--blue-dark);
+
+}
+
+
+/* ============================================================
+   AUCUN MESSAGE
+============================================================ */
+
+.no-message {
+
+    flex: 1;
+
+    min-height: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--chat-background);
+
+}
+
+
+.no-message-content {
+
+    max-width: 330px;
+
+    padding: 25px;
+
+    text-align: center;
+
+}
+
+
+.no-message-icon {
+
+    width: 64px;
+
+    height: 64px;
+
+    margin: 0 auto 12px;
+
+    display: flex;
+
+    align-items: center;
+
     justify-content: center;
 
     border-radius: 50%;
 
-    background: #145a86;
-
-    color: #ffffff;
-
-    font-size: 15px;
-    font-weight: 700;
-
-    overflow: hidden;
-}
-
-.conversation-avatar img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-}
-
-
-/* ============================================================
-   INFORMATIONS CONVERSATION
-============================================================ */
-
-.conversation-info {
-    min-width: 0;
-
-    flex: 1;
-}
-
-.conversation-name {
-    display: block;
-
-    margin-bottom: 3px;
-
-    color: #172033;
-
-    font-size: 13px;
-    font-weight: 600;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.conversation-preview {
-    display: block;
-
-    color: #7b8794;
-
-    font-size: 11px;
-
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-
-/* ============================================================
-   ZONE MESSAGE
-============================================================ */
-
-.message-view {
-    min-width: 0;
-    min-height: 0;
-
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-
-    overflow: hidden;
-
-    background: #efeae2;
-}
-
-
-/* ============================================================
-   HEADER MESSAGE
-============================================================ */
-
-.message-header {
-    flex-shrink: 0;
-
-    min-height: 70px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 12px 18px;
-
     background: #ffffff;
 
-    border-bottom: 1px solid #e1e5e9;
+    color: var(--blue);
 
-    z-index: 5;
+    font-size: 24px;
+
+    box-shadow:
+        0 2px 9px rgba(0, 0, 0, 0.06);
+
 }
 
-.message-header-info {
-    min-width: 0;
-    flex: 1;
+
+.no-message-content h3 {
+
+    font-size: 14px;
+
 }
 
-.message-header h2,
-.message-header h3 {
-    margin: 0;
 
-    color: #172033;
+.no-message-content p {
 
-    font-size: 15px;
-    font-weight: 700;
+    margin-top: 5px;
 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.message-header p {
-    margin: 3px 0 0;
-
-    color: #7b8794;
+    color: var(--muted);
 
     font-size: 10px;
+
+    line-height: 1.6;
+
 }
 
 
 /* ============================================================
-   ZONE DE CONVERSATION
+   CONVERSATION
+   STYLE WHATSAPP
 ============================================================ */
 
 .conversation {
+
     flex: 1;
+
+    min-width: 0;
 
     min-height: 0;
 
     width: 100%;
 
     display: flex !important;
+
     flex-direction: column !important;
+
     align-items: stretch !important;
 
-    gap: 3px !important;
+    gap: 2px !important;
 
-    padding: 22px 28px !important;
+    padding: 20px 24px !important;
 
     overflow-x: hidden !important;
+
     overflow-y: auto !important;
 
-    background:
+    background-color: var(--chat-background);
+
+    background-image:
         radial-gradient(
-            rgba(255,255,255,.25) 1px,
+            rgba(120, 105, 85, 0.12) 1px,
             transparent 1px
         );
 
-    background-color: #efeae2;
-
     background-size: 18px 18px;
+
 }
 
-
-/* scrollbar */
 
 .conversation::-webkit-scrollbar {
-    width: 7px;
+
+    width: 6px;
+
 }
 
-.conversation::-webkit-scrollbar-track {
-    background: transparent;
-}
 
 .conversation::-webkit-scrollbar-thumb {
-    background: rgba(80, 80, 80, .25);
+
+    background: rgba(80, 80, 80, 0.25);
 
     border-radius: 20px;
-}
 
-.conversation::-webkit-scrollbar-thumb:hover {
-    background: rgba(80, 80, 80, .4);
 }
 
 
 /* ============================================================
-   BULLE MESSAGE
+   BULLE DE MESSAGE
 ============================================================ */
 
 .message-bubble {
+
     position: relative;
 
     display: block !important;
@@ -447,9 +1188,11 @@ body {
     width: fit-content !important;
 
     /*
-       La bulle ne doit jamais devenir une grande colonne.
-       Elle s'adapte au contenu.
+       IMPORTANT :
+       La bulle prend la largeur du message.
+       Elle ne devient PAS une grande colonne.
     */
+
     max-width: min(72%, 620px) !important;
 
     min-width: 0 !important;
@@ -463,99 +1206,116 @@ body {
     border-radius: 8px !important;
 
     box-shadow:
-        0 1px 1px rgba(0, 0, 0, .10) !important;
+        0 1px 1px rgba(0, 0, 0, 0.10) !important;
 
     text-align: left !important;
+
+    line-height: 1.45 !important;
 
     overflow-wrap: anywhere !important;
 
     word-break: normal !important;
 
-    line-height: 1.45 !important;
-
-    box-sizing: border-box !important;
 }
 
 
 /* ============================================================
-   MESSAGE REÇU
+   MESSAGE RECU
    GAUCHE
 ============================================================ */
 
 .message-bubble.admin {
+
     align-self: flex-start !important;
 
     margin-left: 0 !important;
+
     margin-right: auto !important;
 
-    background: #ffffff !important;
+    background: var(--message-in) !important;
 
-    color: #111827 !important;
+    color: #172033 !important;
 
     border-top-left-radius: 3px !important;
+
 }
 
 
-/* petite pointe gauche */
+/* pointe gauche */
 
 .message-bubble.admin::before {
+
     content: "";
 
     position: absolute;
 
     left: -6px;
+
     top: 0;
 
     width: 0;
+
     height: 0;
 
     border-top: 7px solid #ffffff;
+
     border-left: 7px solid transparent;
+
 }
 
 
 /* ============================================================
-   MESSAGE ENVOYÉ
+   MESSAGE ENVOYE
    DROITE
 ============================================================ */
 
 .message-bubble.user {
+
     align-self: flex-end !important;
 
     margin-left: auto !important;
+
     margin-right: 0 !important;
 
-    background: #d9fdd3 !important;
+    background: var(--message-out) !important;
 
-    color: #111827 !important;
+    color: #172033 !important;
 
     border-top-right-radius: 3px !important;
+
 }
 
 
-/* petite pointe droite */
+/* pointe droite */
 
 .message-bubble.user::before {
+
     content: "";
 
     position: absolute;
 
     right: -6px;
+
     top: 0;
 
     width: 0;
+
     height: 0;
 
-    border-top: 7px solid #d9fdd3;
+    border-top: 7px solid var(--message-out);
+
     border-right: 7px solid transparent;
+
 }
 
 
 /* ============================================================
    CONTENU DU MESSAGE
+   AUCUN CENTRAGE
 ============================================================ */
 
 .message-content {
+
     display: block !important;
 
     width: auto !important;
@@ -563,35 +1323,71 @@ body {
     max-width: none !important;
 
     margin: 0 !important;
-    padding: 0 !important;
 
-    text-align: left !important;
+    padding: 0 !important;
 
     color: inherit !important;
 
     font-family: inherit !important;
 
-    font-size: 14px !important;
+    font-size: 13px !important;
 
     font-weight: 400 !important;
 
-    line-height: 1.45 !important;
+    line-height: 1.48 !important;
+
+    text-align: left !important;
 
     white-space: pre-wrap !important;
 
     overflow-wrap: anywhere !important;
 
     word-break: normal !important;
+
+}
+
+
+.message-content p {
+
+    display: block !important;
+
+    width: auto !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    font-size: inherit !important;
+
+    line-height: inherit !important;
+
+    text-align: left !important;
+
+}
+
+
+.message-bubble p {
+
+    margin: 0 !important;
+
+    padding: 0 !important;
+
+    text-align: left !important;
+
 }
 
 
 /*
-   Empêche les éléments internes de centrer le texte.
+   Force tous les éléments internes à rester à gauche.
 */
 
-.message-content *,
-.message-bubble * {
+.message-bubble *,
+.message-content * {
+
     text-align: left !important;
+
 }
 
 
@@ -600,82 +1396,100 @@ body {
 ============================================================ */
 
 .message-subject {
+
     display: block !important;
 
     width: auto !important;
 
     margin: 0 0 3px 0 !important;
+
     padding: 0 !important;
 
     color: inherit !important;
 
-    font-size: 11px !important;
+    font-size: 10px !important;
 
     font-weight: 700 !important;
 
     line-height: 1.3 !important;
 
     text-align: left !important;
+
 }
 
 
 /* ============================================================
-   EXPÉDITEUR
+   EXPEDITEUR
 ============================================================ */
 
 .message-sender {
+
     display: block !important;
 
+    width: auto !important;
+
     margin: 0 0 3px 0 !important;
+
     padding: 0 !important;
 
-    color: #145a86 !important;
+    color: var(--blue) !important;
 
-    font-size: 10px !important;
+    font-size: 9px !important;
 
     font-weight: 600 !important;
 
     line-height: 1.3 !important;
 
     text-align: left !important;
+
 }
 
+
 .message-bubble.user .message-sender {
+
     color: #397b35 !important;
+
 }
 
 
 /* ============================================================
-   DATE / HEURE
+   HEURE
 ============================================================ */
 
 .message-time {
+
     display: block !important;
 
     width: fit-content !important;
 
     margin: 3px 0 0 auto !important;
+
     padding: 0 !important;
 
-    color: #86919a !important;
+    color: #84909a !important;
 
-    font-size: 9px !important;
+    font-size: 8px !important;
 
     line-height: 1 !important;
 
     text-align: right !important;
+
 }
 
+
 .message-bubble.user .message-time {
+
     color: #5d8060 !important;
+
 }
 
 
 /* ============================================================
-   ACTIONS MESSAGE
+   ACTIONS
 ============================================================ */
 
 .message-actions {
+
     display: flex;
 
     align-items: center;
@@ -683,184 +1497,297 @@ body {
     gap: 5px;
 
     margin-top: 5px;
+
 }
+
 
 .message-bubble.admin .message-actions {
+
     justify-content: flex-start;
+
 }
+
 
 .message-bubble.user .message-actions {
+
     justify-content: flex-end;
+
 }
 
 
-/* ============================================================
-   BOUTONS
-============================================================ */
-
 .message-actions button {
+
+    width: 26px;
+
+    height: 26px;
+
+    padding: 0;
+
     display: inline-flex;
 
     align-items: center;
+
     justify-content: center;
-
-    width: 28px;
-    height: 28px;
-
-    padding: 0;
 
     border: 0;
 
     border-radius: 50%;
 
-    background: rgba(0, 0, 0, .06);
+    background: rgba(0, 0, 0, 0.06);
 
     color: #53616d;
 
-    cursor: pointer;
-
-    transition:
-        background .15s ease,
-        transform .15s ease;
-}
-
-.message-actions button:hover {
-    background: rgba(0, 0, 0, .12);
-
-    transform: translateY(-1px);
 }
 
 
 /* ============================================================
-   ZONE SAISIE
+   ZONE REPONSE
 ============================================================ */
 
-.message-composer {
+.reply-area {
+
     flex-shrink: 0;
 
     width: 100%;
 
-    display: flex;
+    padding: 10px 12px;
 
-    align-items: flex-end;
-
-    gap: 8px;
-
-    padding: 10px 14px;
+    border-top: 1px solid #dfe4e8;
 
     background: #f0f2f5;
 
-    border-top: 1px solid #dfe3e6;
 }
 
 
-/* textarea */
+.reply-indicator {
 
-.message-composer textarea,
-#messageText,
-#modalMessageText {
-    flex: 1;
+    display: flex;
 
-    min-width: 0;
+    align-items: center;
 
-    min-height: 44px;
-    max-height: 140px;
+    justify-content: space-between;
 
-    padding: 12px 15px;
+    gap: 8px;
 
-    border: 1px solid #d8dde2;
+    padding: 8px 10px;
 
-    border-radius: 10px;
+    margin-bottom: 8px;
 
-    outline: none;
+    border-radius: 8px;
 
-    resize: none;
+    background: #e7f0f5;
 
-    background: #ffffff;
+    color: var(--blue);
 
-    color: #172033;
+    font-size: 9px;
 
-    font-family: inherit;
-
-    font-size: 13px;
-
-    line-height: 1.45;
-}
-
-.message-composer textarea:focus,
-#messageText:focus,
-#modalMessageText:focus {
-    border-color: #145a86;
 }
 
 
-/* bouton envoyer */
-
-.message-composer button,
-#sendMessage,
-#modalSendMessage {
-    flex: 0 0 auto;
-
-    min-width: 44px;
-    height: 44px;
+.cancel-reply {
 
     display: inline-flex;
 
     align-items: center;
-    justify-content: center;
 
-    padding: 0 15px;
+    gap: 4px;
 
     border: 0;
 
-    border-radius: 10px;
+    background: transparent;
 
-    background: #145a86;
+    color: #687783;
+
+    font-size: 9px;
+
+}
+
+
+.reply-fields {
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr) 180px;
+
+    gap: 7px;
+
+    margin-bottom: 7px;
+
+}
+
+
+.reply-fields input,
+.reply-fields select {
+
+    width: 100%;
+
+    height: 38px;
+
+    padding: 0 11px;
+
+    border: 1px solid #dfe7ec;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #273548;
+
+    font-size: 10px;
+
+}
+
+
+.reply-fields input:focus,
+.reply-fields select:focus,
+#replyText:focus {
+
+    border-color: var(--blue);
+
+}
+
+
+#replyText {
+
+    width: 100%;
+
+    min-height: 70px;
+
+    max-height: 150px;
+
+    padding: 10px 11px;
+
+    resize: vertical;
+
+    border: 1px solid #dfe7ec;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background: #ffffff;
+
+    color: #273548;
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+}
+
+
+.reply-bottom {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-top: 7px;
+
+}
+
+
+.send-button {
+
+    height: 38px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 0 13px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    background: var(--blue);
 
     color: #ffffff;
 
-    font-family: inherit;
+    font-size: 10px;
 
-    font-size: 13px;
     font-weight: 600;
 
-    cursor: pointer;
-
-    transition:
-        background .15s ease,
-        transform .15s ease;
 }
 
-.message-composer button:hover,
-#sendMessage:hover,
-#modalSendMessage:hover {
-    background: #0e496d;
 
-    transform: translateY(-1px);
+.send-button:hover {
+
+    background: var(--blue-dark);
+
 }
 
 
 /* ============================================================
-   MODALE MESSAGE
+   TOAST
 ============================================================ */
 
-#messageModal {
+#toastContainer {
+
     position: fixed;
 
-    inset: 0;
+    right: 18px;
 
-    z-index: 9999;
+    bottom: 18px;
 
-    display: none;
+    z-index: 10000;
 
-    align-items: center;
-    justify-content: center;
+    display: flex;
 
-    padding: 20px;
+    flex-direction: column;
 
-    background: rgba(15, 23, 42, .55);
+    gap: 7px;
 
-    backdrop-filter: blur(3px);
+}
+
+
+/* ============================================================
+   PAS DE SCROLL HORIZONTAL
+============================================================ */
+
+body,
+.page,
+.messaging-container,
+.inbox,
+.inbox-list,
+.message-view,
+.conversation {
+
+    max-width: 100%;
+
+    overflow-x: hidden;
+
+}
+
+
+/* ============================================================
+   TABLETTE
+============================================================ */
+
+@media (max-width: 1000px) {
+
+    .messaging-container {
+
+        grid-template-columns:
+            290px minmax(0, 1fr);
+
+    }
+
+
+    .message-bubble {
+
+        max-width: 78% !important;
+
+    }
+
 }
 
 
@@ -868,158 +1795,302 @@ body {
    MOBILE
 ============================================================ */
 
-@media (max-width: 900px) {
+@media (max-width: 760px) {
+
+    .top-header {
+
+        height: 64px;
+
+        padding: 0 12px;
+
+    }
+
+
+    .page {
+
+        height: calc(100vh - 64px);
+
+        padding: 10px;
+
+    }
+
+
+    .page-header {
+
+        align-items: flex-start;
+
+    }
+
+
+    .page-title h1 {
+
+        font-size: 17px;
+
+    }
+
+
+    .page-title p {
+
+        font-size: 9px;
+
+    }
+
+
+    .user-info {
+
+        display: none;
+
+    }
+
+
+    .stats-grid {
+
+        gap: 7px;
+
+    }
+
+
+    .stat-card {
+
+        padding: 9px;
+
+    }
+
+
+    .stat-label {
+
+        font-size: 8px;
+
+    }
+
+
+    .stat-value {
+
+        font-size: 16px;
+
+    }
+
 
     .messaging-container {
-        grid-template-columns: 300px minmax(0, 1fr);
-    }
 
-    .message-bubble {
-        max-width: 78% !important;
-    }
+        height: calc(100vh - 205px);
 
-    .conversation {
-        padding: 18px 16px !important;
-    }
-}
+        min-height: 400px;
 
-
-/* ============================================================
-   PETIT ÉCRAN
-============================================================ */
-
-@media (max-width: 700px) {
-
-    .messaging-container {
         grid-template-columns: 1fr;
+
     }
 
-    /*
-       La liste peut être masquée par le JS
-       lorsque l'utilisateur ouvre une conversation.
-    */
 
     .inbox {
-        min-width: 0;
+
+        height: 190px;
+
+        border-right: 0;
+
+        border-bottom: 1px solid var(--border);
+
     }
+
 
     .message-view {
-        min-width: 0;
+
+        min-height: 0;
+
     }
+
 
     .conversation {
-        padding: 14px 10px !important;
 
-        gap: 2px !important;
+        padding: 13px 9px !important;
+
     }
 
+
     .message-bubble {
+
         max-width: 86% !important;
 
         padding: 7px 9px 6px !important;
 
-        border-radius: 8px !important;
     }
+
 
     .message-content {
-        font-size: 13.5px !important;
 
-        line-height: 1.45 !important;
+        font-size: 13px !important;
+
     }
 
-    .message-subject {
-        font-size: 10.5px !important;
+
+    .reply-fields {
+
+        grid-template-columns: 1fr;
+
     }
 
-    .message-time {
-        font-size: 8.5px !important;
-    }
-
-    .message-header {
-        min-height: 60px;
-
-        padding: 10px 12px;
-    }
-
-    .message-composer {
-        padding: 8px;
-    }
 }
 
 
 /* ============================================================
-   TRÈS PETIT ÉCRAN
+   PETIT MOBILE
 ============================================================ */
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
 
-    .conversation {
-        padding: 10px 7px !important;
+    .brand-tagline {
+
+        display: none;
+
     }
 
+
+    .brand-name {
+
+        font-size: 16px;
+
+    }
+
+
+    .dashboard-button span {
+
+        display: none;
+
+    }
+
+
+    .dashboard-button {
+
+        width: 39px;
+
+        padding: 0;
+
+    }
+
+
+    .page {
+
+        padding: 7px;
+
+    }
+
+
+    .stats-grid {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
+
+    .stat-card {
+
+        gap: 5px;
+
+        padding: 7px;
+
+    }
+
+
+    .stat-icon {
+
+        width: 31px;
+
+        height: 31px;
+
+        flex-basis: 31px;
+
+        font-size: 12px;
+
+    }
+
+
+    .stat-label {
+
+        font-size: 7px;
+
+    }
+
+
+    .stat-value {
+
+        font-size: 14px;
+
+    }
+
+
+    .messaging-container {
+
+        height: calc(100vh - 192px);
+
+    }
+
+
+    .inbox {
+
+        height: 165px;
+
+    }
+
+
+    .conversation {
+
+        padding: 10px 7px !important;
+
+    }
+
+
     .message-bubble {
+
         max-width: 91% !important;
 
         padding: 6px 8px 5px !important;
+
     }
+
 
     .message-content {
-        font-size: 13px !important;
+
+        font-size: 12.5px !important;
+
     }
 
-    .message-header h2,
-    .message-header h3 {
-        font-size: 13px;
+
+    .message-view-header {
+
+        min-height: 58px;
+
+        padding: 9px;
+
     }
 
-    .message-composer textarea,
-    #messageText,
-    #modalMessageText {
-        font-size: 12px;
 
-        min-height: 42px;
+    .reply-area {
 
-        padding: 10px 11px;
+        padding: 7px;
+
     }
 
-    .message-composer button,
-    #sendMessage,
-    #modalSendMessage {
-        height: 42px;
 
-        min-width: 42px;
+    .reply-bottom {
 
-        padding: 0 11px;
+        display: block;
+
     }
+
+
+    .send-button {
+
+        width: 100%;
+
+    }
+
 }
 
 
 /* ============================================================
-   MESSAGE VIDE
-============================================================ */
-
-.empty-messages,
-.no-messages {
-    width: 100%;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    min-height: 180px;
-
-    color: #7b8794;
-
-    font-size: 13px;
-
-    text-align: center;
-}
-
-
-/* ============================================================
-   IMPORTANT :
-   AUCUN CENTRAGE DES TEXTES DE MESSAGE
+   IMPORTANT
+   EMPÊCHE LE TEXTE DE SE COMPORTER COM UNE LETTRE
 ============================================================ */
 
 .message-bubble,
@@ -1030,81 +2101,76 @@ body {
 .message-content p,
 .message-content span,
 .message-content div {
+
     text-align: left !important;
+
 }
 
 
-/* ============================================================
-   ÉVITER LES GRANDES LETTRES / PARAGRAPHES
-============================================================ */
-
 .message-bubble p {
+
     width: auto !important;
 
     max-width: none !important;
 
     margin: 0 !important;
+
     padding: 0 !important;
 
-    font-size: inherit !important;
-
-    line-height: inherit !important;
 }
 
 
 /* ============================================================
-   LIENS DANS LES MESSAGES
-============================================================ */
-
-.message-bubble a {
-    color: inherit;
-
-    text-decoration: underline;
-
-    overflow-wrap: anywhere;
-}
-
-
-/* ============================================================
-   IMAGES DANS LES MESSAGES
+   IMAGES DANS MESSAGE
 ============================================================ */
 
 .message-bubble img {
+
     display: block;
 
     max-width: 100%;
 
     height: auto;
 
+    margin: 4px 0;
+
     border-radius: 6px;
 
-    margin: 4px 0;
 }
 
 
 /* ============================================================
-   CITATIONS / BLOCS
+   LIENS
+============================================================ */
+
+.message-bubble a {
+
+    color: inherit;
+
+    text-decoration: underline;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+/* ============================================================
+   BLOCKQUOTE
 ============================================================ */
 
 .message-bubble blockquote {
+
     margin: 4px 0;
 
     padding-left: 8px;
 
-    border-left: 3px solid rgba(0, 0, 0, .18);
+    border-left: 3px solid rgba(0,0,0,.18);
 
     text-align: left;
+
 }
 
-
-/* ============================================================
-   SÉLECTION TEXTE
-============================================================ */
-
-.message-bubble ::selection {
-    background: rgba(20, 90, 134, .20);
-}
-    </style>
+</style>
 
 </head>
 
@@ -1112,31 +2178,173 @@ body {
 <body>
 
 
-    <!-- ============================================================
-         HEADER
-    ============================================================ -->
+<!-- ============================================================
+     HEADER
+============================================================ -->
 
-    <header class="top-header">
+<header class="top-header">
 
-        <div class="brand">
+    <div class="brand">
+
+        <img
+            src="images/logo.png"
+            alt="BMJ SERVICE"
+        >
+
+        <div class="brand-text">
+
+            <div class="brand-name">
+                BMJ <span>SERVICE</span>
+            </div>
+
+            <div class="brand-tagline">
+                Apprendre. Réussir. Prospérer.
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="header-actions">
+
+        <button
+            class="header-message-button"
+            type="button"
+            title="Messages"
+        >
+
+            <i class="fa-solid fa-envelope"></i>
+
+            <span
+                id="unreadBadge"
+                class="header-unread-badge"
+            >
+                0
+            </span>
+
+        </button>
+
+
+        <button
+            class="dashboard-button"
+            type="button"
+            onclick="allerDashboard()"
+        >
+
+            <i class="fa-solid fa-gauge-high"></i>
+
+            <span>
+                Tableau de bord
+            </span>
+
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- ============================================================
+     APPLICATION
+============================================================ -->
+
+<main
+    id="userMessagingApp"
+    class="page"
+    style="display:none;"
+>
+
+
+    <!-- ========================================================
+         PAGE HEADER
+    ======================================================== -->
+
+    <section class="page-header">
+
+        <div class="page-title">
+
+            <div class="page-title-icon">
+
+                <i class="fa-solid fa-envelope-open-text"></i>
+
+            </div>
+
+            <div>
+
+                <h1>
+                    Ma messagerie
+                </h1>
+
+                <p>
+                    Consultez les messages envoyés par BMJ SERVICE.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="userInfo"
+            class="user-info"
+        >
 
             <img
-                src="images/logo.png"
-                alt="BMJ SERVICE"
+                id="userPhoto"
+                src="images/user.png"
+                alt="Utilisateur"
             >
 
-            <div class="brand-text">
+            <div class="user-info-content">
 
-                <div class="brand-name">
-
-                    BMJ <span>SERVICE</span>
-
+                <div
+                    id="userName"
+                    class="user-info-name"
+                >
+                    Utilisateur
                 </div>
 
-                <div class="brand-tagline">
+                <div
+                    id="userEmail"
+                    class="user-info-email"
+                >
+                    —
+                </div>
 
-                    Apprendre. Réussir. Prospérer.
+            </div>
 
+        </div>
+
+    </section>
+
+
+    <!-- ========================================================
+         STATISTIQUES
+    ======================================================== -->
+
+    <section class="stats-grid">
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-envelope"></i>
+
+            </div>
+
+            <div>
+
+                <div class="stat-label">
+                    Total messages
+                </div>
+
+                <div
+                    id="statTotal"
+                    class="stat-value"
+                >
+                    0
                 </div>
 
             </div>
@@ -1144,79 +2352,102 @@ body {
         </div>
 
 
-        <div class="header-actions">
+        <div class="stat-card read">
 
-            <button
-                class="header-message-button"
-                type="button"
-                title="Messages"
-            >
+            <div class="stat-icon">
 
-                <i class="fa-solid fa-envelope"></i>
+                <i class="fa-solid fa-envelope-open"></i>
 
-                <span
-                    id="unreadBadge"
-                    class="header-unread-badge"
+            </div>
+
+            <div>
+
+                <div class="stat-label">
+                    Messages lus
+                </div>
+
+                <div
+                    id="statRead"
+                    class="stat-value"
                 >
                     0
-                </span>
+                </div>
 
-            </button>
-
-
-            <button
-                class="dashboard-button"
-                type="button"
-                onclick="allerDashboard()"
-            >
-
-                <i class="fa-solid fa-gauge-high"></i>
-
-                <span>
-                    Tableau de bord
-                </span>
-
-            </button>
+            </div>
 
         </div>
 
-    </header>
+
+        <div class="stat-card unread">
+
+            <div class="stat-icon">
+
+                <i class="fa-solid fa-envelope-circle-exclamation"></i>
+
+            </div>
+
+            <div>
+
+                <div class="stat-label">
+                    Messages non lus
+                </div>
+
+                <div
+                    id="statUnread"
+                    class="stat-value"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
 
 
-    <!-- ============================================================
-         APPLICATION
-    ============================================================ -->
+    <!-- ========================================================
+         MESSAGERIE
+    ======================================================== -->
 
-    <main
-        id="userMessagingApp"
-        class="page"
-        style="display:none;"
-    >
+    <section class="messaging-container">
 
 
-        <!-- ========================================================
-             PAGE HEADER
-        ======================================================== -->
+        <!-- ====================================================
+             LISTE DES MESSAGES
+        ==================================================== -->
 
-        <section class="page-header">
+        <aside class="inbox">
 
-            <div class="page-title">
 
-                <div class="page-title-icon">
+            <div class="inbox-header">
 
-                    <i class="fa-solid fa-envelope-open-text"></i>
+                <div class="inbox-title-row">
+
+                    <div class="inbox-title">
+                        Boîte de réception
+                    </div>
+
+                    <div
+                        id="messageCount"
+                        class="message-count"
+                    >
+                        0
+                    </div>
 
                 </div>
 
-                <div>
 
-                    <h1>
-                        Ma messagerie
-                    </h1>
+                <div class="search-box">
 
-                    <p>
-                        Consultez les messages envoyés par BMJ SERVICE.
-                    </p>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        id="messageSearch"
+                        type="search"
+                        placeholder="Rechercher un message..."
+                        autocomplete="off"
+                    >
 
                 </div>
 
@@ -1224,410 +2455,227 @@ body {
 
 
             <div
-                id="userInfo"
-                class="user-info"
+                id="inboxList"
+                class="inbox-list"
             >
 
-                <img
-                    id="userPhoto"
-                    src="images/user.png"
-                    alt="Utilisateur"
-                >
+                <div class="loading">
 
-                <div class="user-info-content">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
 
-                    <div
-                        id="userName"
-                        class="user-info-name"
-                    >
-                        Utilisateur
+                    Chargement des messages...
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ====================================================
+             LECTEUR MESSAGE
+        ==================================================== -->
+
+        <section class="message-view">
+
+
+            <div
+                id="messageViewHeader"
+                class="message-view-header"
+                style="display:none;"
+            >
+
+                <div class="message-view-header-left">
+
+                    <div class="message-view-title">
+
+                        <h2 id="messageSubject">
+                            Message
+                        </h2>
+
+                        <span
+                            id="messagePriority"
+                            class="message-priority priority-normal"
+                        >
+                            normal
+                        </span>
+
                     </div>
 
+
                     <div
-                        id="userEmail"
-                        class="user-info-email"
+                        id="messageMeta"
+                        class="message-view-meta"
                     >
                         —
                     </div>
 
                 </div>
 
-            </div>
 
-        </section>
-
-
-        <!-- ========================================================
-             STATISTIQUES
-        ======================================================== -->
-
-        <section class="stats-grid">
-
-
-            <div class="stat-card">
-
-                <div class="stat-icon">
-
-                    <i class="fa-solid fa-envelope"></i>
-
-                </div>
-
-                <div>
-
-                    <div class="stat-label">
-                        Total messages
-                    </div>
-
-                    <div
-                        id="statTotal"
-                        class="stat-value"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="stat-card read">
-
-                <div class="stat-icon">
-
-                    <i class="fa-solid fa-envelope-open"></i>
-
-                </div>
-
-                <div>
-
-                    <div class="stat-label">
-                        Messages lus
-                    </div>
-
-                    <div
-                        id="statRead"
-                        class="stat-value"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="stat-card unread">
-
-                <div class="stat-icon">
-
-                    <i class="fa-solid fa-envelope-circle-exclamation"></i>
-
-                </div>
-
-                <div>
-
-                    <div class="stat-label">
-                        Messages non lus
-                    </div>
-
-                    <div
-                        id="statUnread"
-                        class="stat-value"
-                    >
-                        0
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ========================================================
-             MESSAGERIE
-        ======================================================== -->
-
-        <section class="messaging-container">
-
-
-            <!-- ====================================================
-                 LISTE DES MESSAGES
-            ==================================================== -->
-
-            <aside class="inbox">
-
-
-                <div class="inbox-header">
-
-                    <div class="inbox-title-row">
-
-                        <div class="inbox-title">
-
-                            Boîte de réception
-
-                        </div>
-
-                        <div
-                            id="messageCount"
-                            class="message-count"
-                        >
-                            0
-                        </div>
-
-                    </div>
-
-
-                    <div class="search-box">
-
-                        <i class="fa-solid fa-magnifying-glass"></i>
-
-                        <input
-                            id="messageSearch"
-                            type="search"
-                            placeholder="Rechercher un message..."
-                            autocomplete="off"
-                        >
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    id="inboxList"
-                    class="inbox-list"
+                <button
+                    id="topReplyButton"
+                    class="reply-top-button"
+                    type="button"
                 >
 
-                    <div class="loading">
+                    <i class="fa-solid fa-reply"></i>
 
-                        <i class="fa-solid fa-spinner fa-spin"></i>
+                    <span>
+                        Répondre
+                    </span>
 
-                        Chargement des messages...
+                </button>
+
+            </div>
+
+
+            <div
+                id="noMessage"
+                class="no-message"
+            >
+
+                <div class="no-message-content">
+
+                    <div class="no-message-icon">
+
+                        <i class="fa-solid fa-envelope-open"></i>
 
                     </div>
+
+                    <h3>
+                        Sélectionnez un message
+                    </h3>
+
+                    <p>
+                        Sélectionnez un message dans votre boîte
+                        de réception pour consulter son contenu.
+                    </p>
 
                 </div>
 
-            </aside>
+            </div>
 
 
-            <!-- ====================================================
-                 LECTEUR MESSAGE
-            ==================================================== -->
+            <!-- =================================================
+                 CONVERSATION
+            ================================================= -->
 
-            <section class="message-view">
+            <div
+                id="conversation"
+                class="conversation"
+                style="display:none;"
+            >
+            </div>
 
+
+            <!-- =================================================
+                 REPONSE
+            ================================================= -->
+
+            <div
+                id="replyArea"
+                class="reply-area"
+            >
 
                 <div
-                    id="messageViewHeader"
-                    class="message-view-header"
-                    style="display:none;"
+                    id="replyIndicator"
+                    class="reply-indicator"
                 >
 
-                    <div class="message-view-header-left">
-
-                        <div class="message-view-title">
-
-                            <h2
-                                id="messageSubject"
-                            >
-                                Message
-                            </h2>
-
-                            <span
-                                id="messagePriority"
-                                class="message-priority priority-normal"
-                            >
-                                normal
-                            </span>
-
-                        </div>
-
-                        <div
-                            id="messageMeta"
-                            class="message-view-meta"
-                        >
-                            —
-                        </div>
-
-                    </div>
-
-
-                    <button
-                        id="topReplyButton"
-                        class="reply-top-button"
-                        type="button"
-                    >
+                    <span>
 
                         <i class="fa-solid fa-reply"></i>
 
-                        <span>
-                            Répondre
-                        </span>
+                        Réponse au message sélectionné
+
+                    </span>
+
+
+                    <button
+                        class="cancel-reply"
+                        type="button"
+                        onclick="cancelReply()"
+                    >
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                        Annuler
 
                     </button>
 
                 </div>
 
 
-                <div
-                    id="noMessage"
-                    class="no-message"
-                >
+                <div class="reply-fields">
 
-                    <div class="no-message-content">
-
-                        <div class="no-message-icon">
-
-                            <i class="fa-solid fa-envelope-open"></i>
-
-                        </div>
-
-                        <h3>
-                            Sélectionnez un message
-                        </h3>
-
-                        <p>
-                            Sélectionnez un message dans votre boîte
-                            de réception pour consulter son contenu.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    id="conversation"
-                    class="conversation"
-                    style="display:none;"
-                >
-                </div>
-
-
-                <!-- =================================================
-                     REPONSE
-                ================================================= -->
-
-                <div
-                    id="replyArea"
-                    class="reply-area"
-                >
-
-                    <div
-                        id="replyIndicator"
-                        class="reply-indicator"
+                    <input
+                        id="replySubject"
+                        type="text"
+                        placeholder="Objet de la réponse"
+                        maxlength="180"
                     >
 
-                        <span>
 
-                            <i class="fa-solid fa-reply"></i>
+                    <select
+                        id="replyPriority"
+                    >
 
-                            Réponse au message sélectionné
+                        <option value="normal">
+                            Priorité normale
+                        </option>
 
-                        </span>
+                        <option value="important">
+                            Important
+                        </option>
 
+                        <option value="urgent">
+                            Urgent
+                        </option>
 
-                        <button
-                            class="cancel-reply"
-                            type="button"
-                            onclick="cancelReply()"
-                        >
-
-                            <i class="fa-solid fa-xmark"></i>
-
-                            Annuler
-
-                        </button>
-
-                    </div>
-
-
-                    <div class="reply-fields">
-
-                        <input
-                            id="replySubject"
-                            type="text"
-                            placeholder="Objet de la réponse"
-                            maxlength="180"
-                        >
-
-
-                        <select
-                            id="replyPriority"
-                            style="
-                                width:100%;
-                                border:1px solid #dfe7ec;
-                                border-radius:9px;
-                                background:#f9fbfc;
-                                outline:none;
-                                font-size:11px;
-                                color:#273548;
-                                padding:10px 12px;
-                            "
-                        >
-
-                            <option value="normal">
-                                Priorité normale
-                            </option>
-
-                            <option value="important">
-                                Important
-                            </option>
-
-                            <option value="urgent">
-                                Urgent
-                            </option>
-
-                        </select>
-
-                    </div>
-
-
-                    <textarea
-                        id="replyText"
-                        placeholder="Écrivez votre réponse..."
-                        maxlength="5000"
-                    ></textarea>
-
-
-                    <div class="reply-bottom">
-
-                        <button
-                            id="sendButton"
-                            class="send-button"
-                            type="button"
-                            onclick="sendReply()"
-                        >
-
-                            <i class="fa-solid fa-paper-plane"></i>
-
-                            Envoyer la réponse
-
-                        </button>
-
-                    </div>
+                    </select>
 
                 </div>
 
-            </section>
+
+                <textarea
+                    id="replyText"
+                    placeholder="Écrivez votre réponse..."
+                    maxlength="5000"
+                ></textarea>
+
+
+                <div class="reply-bottom">
+
+                    <button
+                        id="sendButton"
+                        class="send-button"
+                        type="button"
+                        onclick="sendReply()"
+                    >
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                        Envoyer la réponse
+
+                    </button>
+
+                </div>
+
+            </div>
 
         </section>
 
-    </main>
+    </section>
+
+</main>
 
 
-    <!-- ============================================================
-         TOAST
-    ============================================================ -->
+<!-- ============================================================
+     TOAST
+============================================================ -->
 
-    <div id="toastContainer"></div>
-
-
-    <!-- ============================================================
-         SCRIPT
-    ============================================================ -->
+<div id="toastContainer"></div>
 
     <script>
 
