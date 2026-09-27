@@ -5676,6 +5676,412 @@ url("images/info.webp");
 rel="stylesheet" 
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+<style>
+
+
+/* ============================================================
+   BMJ SERVICE — POPUP CHOIX STANDARD / PREMIUM
+============================================================ */
+
+#bmjPlanModal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(7, 18, 31, .72);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    animation: bmjPlanFadeIn .25s ease;
+}
+
+#bmjPlanModal * {
+    box-sizing: border-box;
+}
+
+.bmj-plan-dialog {
+    position: relative;
+    width: min(960px, 100%);
+    max-height: min(900px, calc(100vh - 48px));
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 28px;
+    background: #fff;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, .34);
+    animation: bmjPlanSlideUp .3s ease;
+}
+
+.bmj-plan-dialog::-webkit-scrollbar {
+    width: 7px;
+}
+
+.bmj-plan-dialog::-webkit-scrollbar-thumb {
+    background: #cfd8e3;
+    border-radius: 20px;
+}
+
+.bmj-plan-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    z-index: 3;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #526173;
+    background: rgba(255,255,255,.9);
+    box-shadow: 0 7px 22px rgba(15, 35, 55, .12);
+    transition: .2s ease;
+}
+
+.bmj-plan-close:hover {
+    transform: rotate(5deg) scale(1.05);
+    color: #fff;
+    background: #145a86;
+}
+
+.bmj-plan-header {
+    position: relative;
+    overflow: hidden;
+    padding: 42px 55px 34px;
+    text-align: center;
+    background:
+        radial-gradient(circle at 10% 0%, rgba(212,175,55,.22), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(20,90,134,.28), transparent 34%),
+        linear-gradient(135deg, #0d4568 0%, #145a86 48%, #0d6d8f 100%);
+    color: #fff;
+}
+
+.bmj-plan-header::after {
+    content: "";
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    right: -100px;
+    bottom: -160px;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 50%;
+}
+
+.bmj-plan-logo-wrap {
+    position: relative;
+    z-index: 1;
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 17px;
+    padding: 8px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,.96);
+    box-shadow: 0 14px 32px rgba(0,0,0,.18);
+}
+
+.bmj-plan-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 12px;
+}
+
+.bmj-plan-header h2 {
+    position: relative;
+    z-index: 1;
+    margin: 0 45px 9px;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+.bmj-plan-header p {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    color: rgba(255,255,255,.88);
+    font-size: 15px;
+    line-height: 1.65;
+}
+
+.bmj-plan-info {
+    position: relative;
+    z-index: 1;
+    width: fit-content;
+    max-width: 100%;
+    margin: 18px auto 0;
+    padding: 9px 15px;
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,.10);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.bmj-plan-info i {
+    color: #f4d77b;
+}
+
+.bmj-plan-body {
+    padding: 32px 34px 34px;
+}
+
+.bmj-plan-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.bmj-plan-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 27px;
+    border: 1px solid #e3e9ef;
+    border-radius: 23px;
+    background: #fff;
+    box-shadow: 0 9px 28px rgba(19, 42, 61, .07);
+    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+
+.bmj-plan-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 17px 38px rgba(19, 42, 61, .12);
+}
+
+.bmj-plan-card.free:hover {
+    border-color: #8bb8d2;
+}
+
+.bmj-plan-card.premium {
+    border: 2px solid #d4af37;
+    background: linear-gradient(180deg, #fffdf5 0%, #fff 46%);
+}
+
+.bmj-plan-badge {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: #745c0c;
+    background: #f8e7a7;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.bmj-plan-card-icon {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 18px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.bmj-plan-card.free .bmj-plan-card-icon {
+    color: #145a86;
+    background: #eaf4fa;
+}
+
+.bmj-plan-card.premium .bmj-plan-card-icon {
+    color: #8a6a0b;
+    background: #fff0b9;
+}
+
+.bmj-plan-card h3 {
+    margin: 0 0 8px;
+    color: #172b3d;
+    font-size: 21px;
+    font-weight: 800;
+}
+
+.bmj-plan-card > p {
+    min-height: 48px;
+    margin: 0 0 19px;
+    color: #647486;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.bmj-plan-features {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 23px;
+}
+
+.bmj-plan-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #34495a;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.bmj-plan-feature i {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #1b8a59;
+    font-size: 10px;
+}
+
+.bmj-plan-feature.locked {
+    color: #84909b;
+}
+
+.bmj-plan-feature.locked i {
+    color: #687786;
+    background: #edf1f4;
+}
+
+.bmj-plan-feature strong {
+    color: #145a86;
+}
+
+.bmj-plan-button {
+    width: 100%;
+    min-height: 50px;
+    margin-top: auto;
+    border: 0;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 800;
+    transition: .2s ease;
+}
+
+.bmj-plan-button.free-btn {
+    color: #145a86;
+    background: #edf6fb;
+}
+
+.bmj-plan-button.free-btn:hover {
+    color: #fff;
+    background: #145a86;
+    transform: translateY(-1px);
+}
+
+.bmj-plan-button.premium-btn {
+    color: #fff;
+    background: linear-gradient(135deg, #b78d1b, #d4af37, #b78d1b);
+    box-shadow: 0 9px 20px rgba(181, 141, 27, .23);
+}
+
+.bmj-plan-button.premium-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 13px 25px rgba(181, 141, 27, .30);
+}
+
+.bmj-plan-footer {
+    padding: 0 34px 28px;
+    text-align: center;
+    color: #8794a1;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.bmj-standard-lock {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    padding: 6px 9px;
+    border-radius: 999px;
+    color: #fff;
+    background: rgba(20, 38, 53, .88);
+    box-shadow: 0 5px 14px rgba(0,0,0,.16);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+@keyframes bmjPlanFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes bmjPlanSlideUp {
+    from { opacity: 0; transform: translateY(24px) scale(.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 720px) {
+    #bmjPlanModal {
+        padding: 12px;
+        align-items: flex-start;
+    }
+
+    .bmj-plan-dialog {
+        max-height: calc(100vh - 24px);
+        border-radius: 22px;
+    }
+
+    .bmj-plan-header {
+        padding: 32px 22px 27px;
+    }
+
+    .bmj-plan-header h2 {
+        margin-left: 25px;
+        margin-right: 25px;
+        font-size: 25px;
+    }
+
+    .bmj-plan-header p {
+        font-size: 13px;
+    }
+
+    .bmj-plan-body {
+        padding: 22px 17px;
+    }
+
+    .bmj-plan-options {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .bmj-plan-card {
+        padding: 22px;
+    }
+
+    .bmj-plan-card > p {
+        min-height: auto;
+    }
+
+    .bmj-plan-footer {
+        padding: 0 20px 22px;
+    }
+}
+
+</style>
 <body>
 
     <!--====================================
@@ -6210,7 +6616,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 /*==================================================
         BMJ SERVICE
         SCRIPT TABLEAU DE BORD
-        VERSION : 15.0.0
+        VERSION : 16.0.0
 
         SESSION UNIQUE :
         bmj_session
@@ -7816,154 +8222,451 @@ function ouvrirDomaine(
             obtenirUtilisateurLocal()
         );
 
-
     if (!utilisateur) {
-
-        window.location.replace(
-            "connexion.html"
-        );
-
+        window.location.replace("connexion.html");
         return;
-
     }
-
 
     const domaineNormalise =
-        normaliserTexte(
-            domaine
-        );
+        normaliserTexte(domaine);
 
+    const estPremium =
+        utilisateur.isPremium === true ||
+        utilisateur.premium === true ||
+        utilisateur.is_premium === true;
 
     /*
-        FORMATIONS PREMIUM
+        PREMIUM : tous les domaines sont accessibles.
     */
-
-    const DOMAINES_PREMIUM = [
-
-        "informatique",
-
-        "cybersecurite"
-
-    ];
-
-
-    if (
-        DOMAINES_PREMIUM.includes(
-            domaineNormalise
-        ) &&
-        !utilisateur.isPremium
-    ) {
-
-        afficherPopupBMJ(
-
-            "Accès Premium",
-
-            `
-                Cette formation est réservée
-                aux utilisateurs <strong>Premium</strong>.
-                <br><br>
-                Activez votre compte Premium
-                pour continuer.
-            `,
-
-            "error"
-
-        );
-
+    if (!estPremium && domaineNormalise !== BMJ_DOMAINE_GRATUIT) {
+        afficherPopupChoixPlan(true);
         return;
-
     }
 
+    utilisateur.domaine = domaine;
 
-    /*
-        MEMORISER DOMAINE
-    */
-
-    utilisateur.domaine =
-        domaine;
-
-
-    sauvegarderUtilisateur(
-        utilisateur
-    );
-
-
-    /*
-        REDIRECTION
-    */
+    sauvegarderUtilisateur(utilisateur);
 
     const pages = {
-
-        "marketing":
-            "marketing.html",
-
-        "entrepreneuriat":
-            "entrepreneuriat.html",
-
-        "leadership":
-            "leadership.html",
-
-        "finance":
-            "finance.html",
-
-        "sante":
-            "sante_environnement.html",
-
-        "sante et environnement":
-            "sante_environnement.html",
-
-        "intelligence-artificielle":
-            "ia.html",
-
-        "developpement":
-            "developpement_personnel.html",
-
-        "developpement personnel":
-            "developpement_personnel.html",
-
-        "technologie":
-            "technologie.html",
-
-        "evenement":
-            "evenements.html",
-
-        "eloquence":
-            "eloquence.html",
-
-        "informatique":
-            "informatique.html",
-
-        "education":
-            "education.html",
-
-        "agriculture":
-            "agriculture.html",
-
-        "management":
-            "management.html",
-
-        "investissement":
-            "investissement.html",
-
-        "beaute":
-            "esthetique.html",
-
-        "evenements":
-            "evenements.html",
-
-        "langues":
-            "langues.html",
-
-        "trading":
-            "trading.html"
-
+        "marketing": "marketing.html",
+        "entrepreneuriat": "entrepreneuriat.html",
+        "leadership": "leadership.html",
+        "finance": "finance.html",
+        "sante": "sante_environnement.html",
+        "sante et environnement": "sante_environnement.html",
+        "intelligence-artificielle": "ia.html",
+        "developpement": "developpement_personnel.html",
+        "developpement personnel": "developpement_personnel.html",
+        "technologie": "technologie.html",
+        "evenement": "evenements.html",
+        "evenements": "evenements.html",
+        "eloquence": "eloquence.html",
+        "informatique": "informatique.html",
+        "education": "education.html",
+        "agriculture": "agriculture.html",
+        "management": "management.html",
+        "investissement": "investissement.html",
+        "beaute": "esthetique.html",
+        "langues": "langues.html",
+        "trading": "trading.html"
     };
-
 
     window.location.href =
         pages[domaineNormalise] ||
         "formations.html";
+}
 
+
+/*==================================================
+        12 BIS. CHOIX DU PLAN STANDARD / PREMIUM
+==================================================*/
+
+/*
+    UN SEUL DOMAINE RESTE GRATUIT POUR UN COMPTE STANDARD.
+    Ici : Marketing Digital.
+
+    Pour changer le domaine gratuit, modifier uniquement cette valeur.
+*/
+const BMJ_DOMAINE_GRATUIT = "marketing";
+
+
+function obtenirCleChoixPlan() {
+
+    const utilisateur =
+        normaliserUtilisateur(
+            obtenirUtilisateurLocal()
+        );
+
+    if (!utilisateur) {
+        return null;
+    }
+
+    const identite =
+        utilisateur.id ??
+        utilisateur.id_bmj ??
+        utilisateur.email ??
+        "user";
+
+    const session =
+        obtenirSessionBMJ?.() || null;
+
+    const connexion =
+        utilisateur.login_at ||
+        session?.login_at ||
+        session?.created_at ||
+        "session";
+
+    return "bmj_plan_choisi_" +
+        String(identite) + "_" +
+        String(connexion);
+}
+
+
+function standardAChoisiVersionGratuite() {
+
+    const cle = obtenirCleChoixPlan();
+
+    return !!cle &&
+        localStorage.getItem(cle) === "free";
+}
+
+
+function memoriserChoixVersionGratuite() {
+
+    const cle = obtenirCleChoixPlan();
+
+    if (!cle) {
+        return;
+    }
+
+    localStorage.setItem(cle, "free");
+}
+
+
+function fermerPopupChoixPlan() {
+
+    const modal =
+        document.getElementById("bmjPlanModal");
+
+    if (modal) {
+        modal.remove();
+    }
+}
+
+
+function afficherPopupChoixPlan(force = false) {
+
+    const utilisateur =
+        normaliserUtilisateur(
+            obtenirUtilisateurLocal()
+        );
+
+    if (!utilisateur) {
+        return;
+    }
+
+    const estPremium =
+        utilisateur.isPremium === true ||
+        utilisateur.premium === true ||
+        utilisateur.is_premium === true;
+
+    if (estPremium) {
+        fermerPopupChoixPlan();
+        return;
+    }
+
+    if (!force && standardAChoisiVersionGratuite()) {
+        return;
+    }
+
+    let modal =
+        document.getElementById("bmjPlanModal");
+
+    if (!modal) {
+
+        modal = document.createElement("div");
+        modal.id = "bmjPlanModal";
+
+        modal.innerHTML = `
+            <div class="bmj-plan-dialog" role="dialog" aria-modal="true" aria-labelledby="bmjPlanTitle">
+
+                <button
+                    type="button"
+                    class="bmj-plan-close"
+                    id="bmjPlanClose"
+                    aria-label="Fermer"
+                    title="Fermer"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="bmj-plan-header">
+
+                    <div class="bmj-plan-logo-wrap">
+                        <img
+                            src="images/logo.png"
+                            class="bmj-plan-logo"
+                            alt="BMJ SERVICE"
+                        >
+                    </div>
+
+                    <h2 id="bmjPlanTitle">
+                        Choisissez votre formule
+                    </h2>
+
+                    <p>
+                        Commencez gratuitement avec un domaine,
+                        ou passez à Premium pour débloquer
+                        l'ensemble des formations BMJ SERVICE.
+                    </p>
+
+                    <div class="bmj-plan-info">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Le compte Standard donne accès à 1 seul domaine gratuitement.</span>
+                    </div>
+
+                </div>
+
+                <div class="bmj-plan-body">
+
+                    <div class="bmj-plan-options">
+
+                        <article class="bmj-plan-card free">
+
+                            <div class="bmj-plan-card-icon">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+
+                            <h3>Continuer gratuitement</h3>
+
+                            <p>
+                                Une formule simple pour commencer
+                                ton apprentissage sans paiement.
+                            </p>
+
+                            <div class="bmj-plan-features">
+
+                                <div class="bmj-plan-feature">
+                                    <i class="fa-solid fa-check"></i>
+                                    <span>
+                                        Accès à <strong>Marketing Digital</strong>
+                                    </span>
+                                </div>
+
+                                <div class="bmj-plan-feature locked">
+                                    <i class="fa-solid fa-lock"></i>
+                                    <span>
+                                        Les autres domaines restent verrouillés
+                                    </span>
+                                </div>
+
+                                <div class="bmj-plan-feature locked">
+                                    <i class="fa-solid fa-lock"></i>
+                                    <span>
+                                        Passage à Premium possible à tout moment
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="bmj-plan-button free-btn"
+                                id="bmjPlanFree"
+                            >
+                                <i class="fa-solid fa-arrow-right"></i>
+                                Continuer avec la version gratuite
+                            </button>
+
+                        </article>
+
+
+                        <article class="bmj-plan-card premium">
+
+                            <span class="bmj-plan-badge">
+                                <i class="fa-solid fa-star"></i>
+                                Premium
+                            </span>
+
+                            <div class="bmj-plan-card-icon">
+                                <i class="fa-solid fa-crown"></i>
+                            </div>
+
+                            <h3>Passer à Premium</h3>
+
+                            <p>
+                                Débloque tous les domaines et
+                                profite de l'accès complet à BMJ SERVICE.
+                            </p>
+
+                            <div class="bmj-plan-features">
+
+                                <div class="bmj-plan-feature">
+                                    <i class="fa-solid fa-check"></i>
+                                    <span>Accès à <strong>tous les domaines</strong></span>
+                                </div>
+
+                                <div class="bmj-plan-feature">
+                                    <i class="fa-solid fa-check"></i>
+                                    <span>Toutes les formations disponibles</span>
+                                </div>
+
+                                <div class="bmj-plan-feature">
+                                    <i class="fa-solid fa-check"></i>
+                                    <span>Compte Premium activé après paiement</span>
+                                </div>
+
+                            </div>
+
+                            <button
+                                type="button"
+                                class="bmj-plan-button premium-btn"
+                                id="bmjPlanPremium"
+                            >
+                                <i class="fa-solid fa-crown"></i>
+                                Continuer avec Premium
+                            </button>
+
+                        </article>
+
+                    </div>
+
+                </div>
+
+                <div class="bmj-plan-footer">
+                    Tu peux modifier ton choix plus tard en passant à la formule Premium.
+                </div>
+
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        const close =
+            document.getElementById("bmjPlanClose");
+
+        const free =
+            document.getElementById("bmjPlanFree");
+
+        const premium =
+            document.getElementById("bmjPlanPremium");
+
+        if (close) {
+            close.addEventListener("click", fermerPopupChoixPlan);
+        }
+
+        if (free) {
+            free.addEventListener("click", function() {
+
+                memoriserChoixVersionGratuite();
+                fermerPopupChoixPlan();
+
+                /*
+                    Le domaine gratuit devient immédiatement visible.
+                */
+                actualiserBadgesDomainesPremium();
+            });
+        }
+
+        if (premium) {
+            premium.addEventListener("click", function() {
+                window.location.href = "paiement.html";
+            });
+        }
+
+        modal.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                fermerPopupChoixPlan();
+            }
+        });
+
+        document.addEventListener("keydown", function bmjPlanEscape(event) {
+            if (event.key === "Escape") {
+                const current = document.getElementById("bmjPlanModal");
+                if (current) {
+                    fermerPopupChoixPlan();
+                    document.removeEventListener("keydown", bmjPlanEscape);
+                }
+            }
+        });
+    }
+}
+
+
+function actualiserBadgesDomainesPremium() {
+
+    const utilisateur =
+        normaliserUtilisateur(
+            obtenirUtilisateurLocal()
+        );
+
+    if (!utilisateur) {
+        return;
+    }
+
+    const estPremium =
+        utilisateur.isPremium === true ||
+        utilisateur.premium === true ||
+        utilisateur.is_premium === true;
+
+    document.querySelectorAll(".domaine-card").forEach(function(card) {
+
+        const ancien =
+            card.querySelector(".bmj-standard-lock");
+
+        if (ancien) {
+            ancien.remove();
+        }
+
+        const onclick =
+            card.getAttribute("onclick") || "";
+
+        const match =
+            onclick.match(/ouvrirDomaine\(['"]([^'"]+)['"]\)/);
+
+        if (!match) {
+            return;
+        }
+
+        const domaine =
+            normaliserTexte(match[1]);
+
+        card.style.position = "relative";
+
+        if (!estPremium && domaine !== BMJ_DOMAINE_GRATUIT) {
+
+            const lock = document.createElement("span");
+            lock.className = "bmj-standard-lock";
+            lock.innerHTML = '<i class="fa-solid fa-lock"></i> Premium';
+            card.appendChild(lock);
+        }
+    });
+}
+
+
+function verifierChoixPlanBMJ(utilisateur) {
+
+    if (!utilisateur) {
+        return;
+    }
+
+    const estPremium =
+        utilisateur.isPremium === true ||
+        utilisateur.premium === true ||
+        utilisateur.is_premium === true;
+
+    actualiserBadgesDomainesPremium();
+
+    if (estPremium) {
+        fermerPopupChoixPlan();
+        return;
+    }
+
+    if (!standardAChoisiVersionGratuite()) {
+        setTimeout(function() {
+            afficherPopupChoixPlan(false);
+        }, 450);
+    }
 }
 
 
@@ -7978,33 +8681,16 @@ function continuerFormation() {
             obtenirUtilisateurLocal()
         );
 
-
     if (!utilisateur) {
-
-        window.location.replace(
-            "connexion.html"
-        );
-
+        window.location.replace("connexion.html");
         return;
-
     }
 
-
-    if (
-        utilisateur.domaine
-    ) {
-
-        ouvrirDomaine(
-            utilisateur.domaine
-        );
-
+    if (utilisateur.domaine) {
+        ouvrirDomaine(utilisateur.domaine);
     } else {
-
-        window.location.href =
-            "formations.html";
-
+        ouvrirDomaine(BMJ_DOMAINE_GRATUIT);
     }
-
 }
 
 
@@ -8498,6 +9184,8 @@ async function initialiserDashboard() {
 
             actualiserBadgeMessages();
 
+            verifierChoixPlanBMJ(utilisateurServeur);
+
         }
 
     } catch (error) {
@@ -8506,6 +9194,12 @@ async function initialiserDashboard() {
             "Synchronisation serveur impossible.",
             error
         );
+
+        /*
+            Même sans réponse du serveur, on garde la logique locale
+            pour que le compte Standard ne perde pas son interface.
+        */
+        verifierChoixPlanBMJ(utilisateur);
 
     }
 
